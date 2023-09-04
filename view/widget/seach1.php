@@ -5,19 +5,18 @@ date_default_timezone_set('America/Sao_Paulo');
 
 
 $idbusines = $_GET["q"];
+include_once('../../model/classes/tblOperations.php');
 $tblOperations1 = new Operations();
 $tblOperations1->setidOperation($idbusines);
 $resultstblOperations = $tblOperations1->consulta("WHERE idOperation = :idOperation");
 
 if ($tblOperations1 != null) {
-  if (is_array($resultstblOperations) || is_object($resultstblOperations)) {
-    foreach ($resultstblOperations as $rowoperation) {
-      $_SESSION["FlagOperation"] = $FlagOperation = $rowoperation->FlagOperation;
-    }
+  foreach ($resultstblOperations as $rowoperation) {
+    $_SESSION["FlagOperation"] = $FlagOperation = $rowoperation->FlagOperation;
   }
-}
-
-if ($FlagOperation  != "D") {
+} ?>
+<input type="hidden" name="flagtipo" value="<?php echo  $_SESSION["FlagOperation"]; ?>">
+<?php if ($FlagOperation  != "D") {
 
   if ($_SESSION["tipoflag"] == "B" && $FlagOperation  == "B") { ?>
     <div class="row">
@@ -30,18 +29,19 @@ if ($FlagOperation  != "D") {
     </div>
     <div class="col-sm-12">
       <div class="form-floating">
-        <select name="business[]" class=" form-select categmulti border-dark inputtamanho" multiple id="floatingSelectGrid" aria-label="Floating label select example">
+        <select name="business[]" class=" form-select categmulti border-dark inputtamanho" multiple='multiple' id="floatingSelectGrid" aria-label="Floating label select example">
           <option>Select</option>
           <?php
           include_once('../../model/classes/tblBusiness.php');
           $tblBusiness = new Business();
           $resultstblBusiness = $tblBusiness->consulta("WHERE FlagOperation = '0'");
           if ($tblBusiness != null) {
-              if (is_array($resultstblBusiness) || is_object($resultstblBusiness)) {
-                  foreach ($resultstblBusiness as $rowcor) { ?>
-              <option value="<?php echo $rowpaises->idBusiness; ?>"><?php echo $rowpaises->NmBusiness; ?></option>
+            if (is_array($resultstblBusiness) || is_object($resultstblBusiness)) {
+              foreach ($resultstblBusiness as $rowBusiness) { ?>
+                <option value="<?php echo $rowBusiness->idBusiness; ?>"><?php echo $rowBusiness->NmBusiness; ?></option>
           <?php  }
-          }}
+            }
+          }
           ?>
         </select>
         <label for="floatingSelectGrid">Define type Service:</label>
@@ -66,10 +66,11 @@ if ($FlagOperation  != "D") {
           $tblBusiness = new Business();
           $resultstblBusiness = $tblBusiness->consulta("WHERE FlagOperation = '0'");
           if ($tblBusiness != null) {
-              if (is_array($resultstblBusiness) || is_object($resultstblBusiness)) {
-                  foreach ($resultstblBusiness as $rowcor) {  ?>
-              <option value="<?php echo $rowpaises->idBusiness; ?>"><?php echo $rowpaises->NmBusiness; ?></option>
-          <?php  }}
+            if (is_array($resultstblBusiness) || is_object($resultstblBusiness)) {
+              foreach ($resultstblBusiness as $rowBusiness) {  ?>
+                <option value="<?php echo $rowBusiness->idBusiness; ?>"><?php echo $rowBusiness->NmBusiness; ?></option>
+          <?php  }
+            }
           }
           ?>
         </select>

@@ -68,7 +68,7 @@ if ($resultsCountry != null) {
 
     <title>Matching Business</title>
     <link rel="stylesheet" href="assets/css/geral.css">
-
+   
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-4bw+/aepP/YC94hEpVNVgiZdgIC5+VKNBQNGCHeKRQN+PtmoHDEXuppvnDJzQIu9" crossorigin="anonymous">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
 
@@ -83,6 +83,7 @@ if ($resultsCountry != null) {
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
     <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
     <link rel="stylesheet" href="assets/css/feed.css">
+    <link rel="stylesheet" href="assets/css/navbar.css">
     <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick.css" />
     <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick-theme.css" />
     <script type="text/javascript" src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
@@ -322,7 +323,7 @@ if ($resultsCountry != null) {
                                     <form action="../controller/homeController.php" method="POST" enctype="multipart/form-data">
                                         <div class="col-md-12">
 
-                                            <textarea style="overflow: hidden;overflow-wrap: break-word;resize: none;font-size: initial;height: 36.6px;" name="txtpos" class="form-control " rows="1" placeholder="Write a post..." id="myTextarea" maxlength="500"></textarea>
+                                            <textarea name="txtpos" class="form-control input-new-post" rows="1" placeholder="Write a post..." id="myTextarea" maxlength="500"></textarea>
                                         </div>
                                         <br>
                                         <div class="col-md-12 d-flex justify-content-center">
@@ -487,7 +488,7 @@ if ($resultsCountry != null) {
 
                                                 <div class=" row align-content-center">
                                                     <div class="row">
-                                                        <div class="col-2">
+                                                        <div class="col-1">
                                                             <img src="<?php if ($imgpostuser != "Avatar.png" && $imgpostuser != "" && file_exists("" . $imgpostuser)) {
                                                                             echo "" . $imgpostuser;
                                                                         } else {
@@ -495,8 +496,8 @@ if ($resultsCountry != null) {
                                                                         } ?>" alt="user" class="nav-profile-img  " onerror="this.onerror=null; this.src='/assets/img/Avatar.png'">
 
                                                         </div>
-                                                        <div class="col-7 p-2 color-preto">
-                                                            <a href="../viewProfile.php?profile=<?php echo $rowfeed->IdClient; ?>" class="color-preto text-decoration-none">
+                                                        <div class="col-8 p-2 color-preto">
+                                                            <a href="viewProfile.php?profile=<?php echo $rowfeed->IdClient; ?>" class="color-preto text-decoration-none">
                                                                 <h3 class="fonte-titulo text-decoration-none">
                                                                     <?php
                                                                     echo $usernamepost;
@@ -662,7 +663,7 @@ if ($resultsCountry != null) {
                                                     <div class="col-6 d-flex justify-content-end">
                                                         <a id="btnCommnet" data-toggle="modal" data-target="#modalEditarProduto" data-id="<?php echo $rowfeed->IdFeed;
                                                                                                                                             ?>" class="btn btn-third pl-4 pr-4 no-border p-3 hero-image-container2"><span class="btn-comment-post">
-                                                                0 &nbsp;&nbsp; <i class="bi bi-chat-square-text">
+                                                                0 &nbsp;&nbsp; <i class="fa fa-comment">
                                                                     Comentarios</i>
                                                             </span></a>
 
@@ -848,23 +849,8 @@ if ($resultsCountry != null) {
         //Initialization of treeviews
 
         $('#tree1').treed();
-        let profileMenu = document.getElementById("profileMenu");
+   
 
-
-        function toggleMenu() {
-            profileMenu.classList.toggle("open-menu");
-        }
-
-        let networkMenu = document.getElementById("networkMenu");
-
-        function toggleMenuNetwork() {
-            profileMenu.classList.toggle("open-menu");
-        }
-
-        function toggleNotifyMenu() {
-            const notifyMenu = document.getElementById('notifyMenu')
-            notifyMenu.classList.toggle("open-menu");
-        }
 
         window.addEventListener('scroll', function() {
             var navbar = document.getElementById('navbar');

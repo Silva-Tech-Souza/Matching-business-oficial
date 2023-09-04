@@ -6,24 +6,26 @@ header("Access-Control-Allow-Origin: *");
 
 <nav id="navbar" class="bg-light-alt container-fluid position-fixed" style="z-index: 9999999; padding-top: 10px;">
 
-<script>
+    <script>
+        
+        function toggleMenuNetwork() {
+            const networkMenu = document.getElementById('networkMenu');
+            console.log('Entrou aqui');
+            networkMenu.classList.toggle("open-menu");
+        }
 
-function toggleNotifyMenu() {
-    const notifyMenu = document.getElementById('notifyMenu');
-    notifyMenu.classList.toggle("open-menu");
-}
+        function toggleNotifyMenu() {
+            const notifyMenu = document.getElementById('notifyMenu');
+            notifyMenu.classList.toggle("open-menu");
+        }
 
-function toggleMenu() {
-    profileMenu.classList.toggle("open-menu");
-}
+        function toggleMenu() {
+            const profileMenu = document.getElementById('profileMenu');
+            profileMenu.classList.toggle("open-menu");
+        }
 
-function clicarNotif(){
-
-
-
-}
-
-</script>
+        function clicarNotif() {}
+    </script>
 
     <div class="card d-flex pb-2 justify-content-center shadow-none d-none d-md-block" style="background-color: #00000000; border: 1px; margin-bottom: 0px !important;">
 
@@ -86,17 +88,17 @@ function clicarNotif(){
                                             if ($resultsSearchProfile != null) {
                                                 $count = 0;
                                                 foreach ($resultsSearchProfile as $results) {
-                                                    if($results->estadoNotif == 0){
+                                                    if ($results->estadoNotif == 0) {
                                                         $count = $count + 1;
                                                     }
                                                 }
-                                        
 
-                                            if($count != 0){
-                                                echo '<span class="badge rounded-pill badge-notification bg-danger">'. $count.'</span>';  
-                                            } 
-                                        } 
-                                            
+
+                                                if ($count != 0) {
+                                                    echo '<span class="badge rounded-pill badge-notification bg-danger">' . $count . '</span>';
+                                                }
+                                            }
+
                                             ?></a>
                             </li>
                             <li><img src=" <?php if ($imgperfil != "Avatar.png" && $imgperfil != "") {
@@ -187,14 +189,14 @@ function clicarNotif(){
                                         if ($resultsSearchProfile != null) {
                                             $count = 0;
                                             foreach ($resultsSearchProfile as $results) {
-                                                if($results->estadoNotif == 0){
+                                                if ($results->estadoNotif == 0) {
                                                     $count = $count + 1;
                                                 }
-                                        }
-                                        if($count != 0){
-                                            echo '<span class="badge rounded-pill badge-notification bg-danger">'. $count.'</span>';  
-                                        } 
-                                    } ?></a>
+                                            }
+                                            if ($count != 0) {
+                                                echo '<span class="badge rounded-pill badge-notification bg-danger">' . $count . '</span>';
+                                            }
+                                        } ?></a>
                         </li>&nbsp;&nbsp;&nbsp;&nbsp;
 
                     </ul>
@@ -226,7 +228,7 @@ function clicarNotif(){
                 foreach ($resultsSearchProfile as $rownotif) {
                     $idCliente = $rownotif->idUsuario;
                     $estadoNotif = $rownotif->estadoNotif;
-                    
+
 
                     include_once('../model/classes/tblUserClients.php');
                     $userClients = new UserClients();
@@ -279,35 +281,26 @@ function clicarNotif(){
                         $timeAgoN = "Alguns segundos atrás";
                     }
 
-                    if($estadoNotif == 2){
-
-
-
-                    }else if($estadoNotif == 1){
-
-
-
-                    }else{
-
-
-
+                    if ($estadoNotif == 2) {
+                    } else if ($estadoNotif == 1) {
+                    } else {
                     }
 
-//                    $searchProfileResults = new SearchProfile_Results();
-//                    $searchProfileResults->setid($rownotif->id);
+                    //                    $searchProfileResults = new SearchProfile_Results();
+                    //                    $searchProfileResults->setid($rownotif->id);
 
-//                    $searchProfileResults->atualizar('estadoNotif = 1 WHERE id = :id');
+                    //                    $searchProfileResults->atualizar('estadoNotif = 1 WHERE id = :id');
 
-                ?>
+            ?>
 
                     <form action="../controller/notificacaoController.php" method="POST">
-                            <input type="hidden" id="id" name="id"value="<?php echo $rownotif->id;?>">
-                            <input type="hidden" id="url" name="url" value="<?php echo $rownotif->url;?>">
-                        <a class="notification notif-zoom" >
-                            
+                        <input type="hidden" id="id" name="id" value="<?php echo $rownotif->id; ?>">
+                        <input type="hidden" id="url" name="url" value="<?php echo $rownotif->url; ?>">
+                        <a class="notification notif-zoom">
+
                             <div class="row justify-content-center">
-                                        <div class="col-2 justify-content-center">
-                                            <img src="
+                                <div class="col-2 justify-content-center">
+                                    <img src="
                                             <?php
                                             if ($imgpostuser != "Avatar.png" && $imgpostuser != "") {
                                                 echo "../" . $imgpostuser;
@@ -316,31 +309,31 @@ function clicarNotif(){
                                             }
                                             ?>
                                             " alt="user" class="nav-profile-img" onclick="toggleMenu()">
-                                                        </div>
-                                                        <div class="col-8 justify-itens-center">
-                                                            <span>
-                                            <?php echo  $textNotif; ?> 
-                                            </span><span id="notify-time" style="color: grey !important;">
-                                            <?php echo $timeAgoN; ?>
-                                                            </span>
-                                                        </div>
-                                                        <div class="col-2 d-flex justify-content-center">
-                                                            <button style="color: black !important;" class="delete-btn" type="submit">
-                                                                <i class="fa-solid fa-trash icon-notif-zoom"></i></button>
-                                                        </div>
-                                                    </div>
-                                                </a>
-                                                <hr style="background-color: #ffffff66;">';
+                                </div>
+                                <div class="col-8 justify-itens-center">
+                                    <span>
+                                        <?php echo  $textNotif; ?>
+                                    </span><span id="notify-time" style="color: grey !important;">
+                                        <?php echo $timeAgoN; ?>
+                                    </span>
+                                </div>
+                                <div class="col-2 d-flex justify-content-center">
+                                    <button style="color: black !important;" class="delete-btn" type="submit">
+                                        <i class="fa-solid fa-trash icon-notif-zoom"></i></button>
+                                </div>
+                            </div>
+                        </a>
+                        <hr style="background-color: #ffffff66;">';
 
                         </a>
                     </form>
 
-                    
+
 
             <?php
                 }
             } ?>
-            
+
         </div>
     </div>
 

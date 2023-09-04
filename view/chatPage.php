@@ -59,7 +59,7 @@ if ($resultsoperation != null) {
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-4bw+/aepP/YC94hEpVNVgiZdgIC5+VKNBQNGCHeKRQN+PtmoHDEXuppvnDJzQIu9" crossorigin="anonymous">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
-  <link rel="stylesheet" href="assets/css/geral.css">
+ 
   <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
   <script src="https://kit.fontawesome.com/f51201541f.js" crossorigin="anonymous"></script>
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
@@ -72,8 +72,9 @@ if ($resultsoperation != null) {
   <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
   <link rel='stylesheet' href='https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.0.3/css/font-awesome.css'> <link rel="stylesheet" href="../../assets/css/chatPage.css">
   <title>Messaging</title>
+  <link rel="stylesheet" href="assets/css/geral.css">
   <link rel="stylesheet" href="assets/css/feed.css">
-  <link rel="stylesheet" href="assets/css/chatPage.css">
+  <link rel="stylesheet" href="assets/css/navbar.css">
 </head>
 
 <body class="funcolinhas">

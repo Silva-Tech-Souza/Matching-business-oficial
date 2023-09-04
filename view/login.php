@@ -64,26 +64,31 @@ date_default_timezone_set('America/Sao_Paulo');
                   </div>
                   <div class="col-sm-12">
                     <div class="form-group" style="text-align: start;">
-                      <label class="color-branco" for="password">Password </label>
-                      <input class="inputlogin form-control" type="password" id="password" name="password" required placeholder="type your password"><br><br>
+                      <label class="color-branco" for="password">Password</label>
+                      <div class="password-container">
+                        <input class="inputlogin form-control" type="password" id="password" name="password" required placeholder="Type your password">
+                        <div class="input-group-text" id="togglePassword">
+                          <i class="fas fa-eye"></i>
+                        </div>
+                      </div>
                     </div>
                   </div>
                   <div class="col-sm-12">
                     <div class="form-group" style="text-align: start;">
                       <label class="color-branco" for="remember" id="keep-credentials">Remember me</label>
-                      <input type="checkbox"id="keep-credentials-input" name="remember_me"><br><br>
+                      <input type="checkbox" id="keep-credentials-input" name="remember_me"><br><br>
                     </div>
                   </div>
 
                   <p class="color-branco errologintxt"><?php echo $_SESSION['loginerro']; ?></p>
                   <button type="submit" name="signupsubmit" class="login-btn">Login</button><br><br>
-                  <div class="social-media-icons">
-                    <a href="#" class="btn btn-outline-light btn-floating m-1" id="meuBotaoDeDownload" role="button"><i class="fa fa-android"></i></a>
-                    <a href="#" onclick="alert('Para adicionar este aplicativo à tela inicial, acesse o botão de compartilhar e selecione Adicionar à tela inicial')" class="btn btn-outline-light btn-floating m-1" role="button"><i class="fa-brands fa-apple"></i></a>
+                  <div class="social-media-icons m-0">
+                    <a href="#" class="btn btn-outline-light btn-floating m-0 btn-mobile" id="meuBotaoDeDownload" role="button"><i class="fa fa-android icone-btn-mobile"></i></a>
+                    <a href="#" onclick="alert('Para adicionar este aplicativo à tela inicial, acesse o botão de compartilhar e selecione Adicionar à tela inicial')" class="btn btn-outline-light btn-floating m-0 btn-mobile" role="button"><i class="fa-brands fa-apple icone-btn-mobile"></i></a>
                   </div>
                   <div class="cancel-login">
                     <span class="color-branco">Or</span><br>
-                    <a href="signup.php"class="btn btn-primary create-btn-modal ">
+                    <a href="signup.php" class="btn btn-primary create-btn-modal ">
                       Create an account
                     </a>
                   </div>
@@ -155,6 +160,16 @@ date_default_timezone_set('America/Sao_Paulo');
           deferredPrompt = null;
         });
       }
+    });
+  </script>
+
+  <script>
+    const passwordField = document.getElementById('password');
+    const togglePasswordButton = document.getElementById('togglePassword');
+
+    togglePasswordButton.addEventListener('click', function() {
+      const type = passwordField.getAttribute('type') === 'password' ? 'text' : 'password';
+      passwordField.setAttribute('type', type);
     });
   </script>
 </body>

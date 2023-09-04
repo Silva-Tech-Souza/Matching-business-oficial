@@ -108,6 +108,7 @@ if ($resultsBusinessCategory != null) {
   <link rel="stylesheet" href="assets/css/feed.css">
   <link rel="stylesheet" href="assets/css/geral.css">
   <link rel="stylesheet" href="assets/css/profile.css">
+  <link rel="stylesheet" href="assets/css/navbar.css">
 </head>
 
 <body class="funcolinhas">
@@ -172,7 +173,7 @@ if ($resultsBusinessCategory != null) {
             <div class="card mb-4 cardcenter cardbg shadow">
               <div class="card-body ">
                 <i class="bi bi-globe iconesize"></i>
-                <p class="text-muted mb-4 txtinsite"><a href="#mynetwork" data-toggle="tab">My Network</a></p>
+                <p class="text-muted mb-4 txtinsite" style="height: 75%"><a href="#mynetwork" data-toggle="tab">My Network</a></p>
                 <p class="text-muted txtinsite valoresinsi"><b><?php
                                                                 //$sqlView = "SELECT * FROM tblconect WHERE idUserReceb = :idUserReceb AND status = '1'";
                                                                 //$queryView = $dbh->prepare($sqlView);
@@ -204,7 +205,7 @@ if ($resultsBusinessCategory != null) {
             <div class="card mb-4 cardcenter cardbg shadow">
               <div class="card-body ">
                 <i class="bi bi-clock-history iconesize"></i>
-                <p class="text-muted mb-4 txtinsite"><a href="#" data-toggle="modal" data-target="#exampleModalconect" class="nav-link">Want to Connect</a></p>
+                <p class="text-muted mb-4 txtinsite" style="height: 75%"><a href="#" data-toggle="modal" data-target="#exampleModalconect" class="nav-link">Want to Connect</a></p>
                 <p class="text-muted txtinsite valoresinsi"><b><?php
                                                                 //$sqlView = "SELECT * FROM tblconect WHERE idUserReceb = :idUserReceb AND status = '0'";
                                                                 //$queryView = $dbh->prepare($sqlView);
@@ -238,7 +239,7 @@ if ($resultsBusinessCategory != null) {
             <div class="card mb-4 cardcenter cardbg shadow">
               <div class="card-body ">
                 <i class="bi bi-bookmark-check iconesize"></i>
-                <p class="text-muted mb-4 txtinsite"><a href="#">My saved search</a></p>
+                <p class="text-muted mb-4 txtinsite" style="height: 75%"><a href="#">My saved search</a></p>
                 <p class="text-muted txtinsite valoresinsi"><b>0</b></p>
               </div>
             </div>
@@ -246,7 +247,7 @@ if ($resultsBusinessCategory != null) {
             <div class="card mb-4 cardcenter cardbg shadow">
               <div class="card-body ">
                 <i class="bi bi-eye iconesize"></i>
-                <p class="text-muted mb-4 txtinsite"><a href="#" data-toggle="modal" data-target="#exampleModal" class="nav-link">Views</a></p>
+                <p class="text-muted mb-4 txtinsite" style="height: 75%"><a href="#" data-toggle="modal" data-target="#exampleModal" class="nav-link">Views</a></p>
                 <p class="text-muted txtinsite valoresinsi"><b><?php
                                                                 //$sqlView = "SELECT * FROM tblviews WHERE idView = :idView ";
                                                                 //$queryView = $dbh->prepare($sqlView);
@@ -301,8 +302,8 @@ if ($resultsBusinessCategory != null) {
             </div>
           </div>
 
-          <div class="card mb-4 cardbg mb-lg-0">
-            <div class="card-body cardbg cardbg shadow">
+          <div class="card  cardbg mb-4">
+            <div class="card-body cardbg cardbg shadow ">
               <h3 class="text-muted valoresinsi "><b>Description:</b></h3>
               <p class="text-muted mb-4 txttipoperfil"><?php echo $descricao; ?></p>
             </div>

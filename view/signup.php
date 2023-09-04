@@ -74,7 +74,7 @@ if ($_SESSION['sessao'] > 0) {
   <div class="container m-auto">
     <div class="col-12">
       <div class="row">
-        <div class="col-lg-6 col-12">
+        <div class="col-lg-8 col-12">
           <div class="mt-5">
             <h1 class="color-branco titulologin" style="font-size: 40px;">Welcome to <span style="color:#0057e4;">Matching Business Online.</span></h1>
             <p class="color-branco desclogin d-none d-md-block">Dear user,<br>
@@ -91,7 +91,7 @@ if ($_SESSION['sessao'] > 0) {
           </div>
         </div>
 
-        <div class="col-lg-6 col-12 ">
+        <div class="col-lg-4 col-12 ">
           <div class="cardcadastro">
           <form  action="../controller/signupController.php" method="POST" enctype="multipart/form-data">
               <div class="row">
@@ -176,7 +176,7 @@ if ($_SESSION['sessao'] > 0) {
                 </div>
                
 
-                <a href="index.php" style="display: flex; flex-direction: column; text-align: center; margin-top: 1rem; margin-left: 1rem; 
+                <a href="login.php" style="display: flex; flex-direction: column; text-align: center; margin-top: 1rem; margin-left: 1rem; 
                             font-size: 1.5rem; text-decoration: none; ">(Go back to homepage instead)</a>
               </div>
             </form>

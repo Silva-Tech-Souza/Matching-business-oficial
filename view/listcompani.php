@@ -2,20 +2,22 @@
 session_start();
 error_reporting(0);
 date_default_timezone_set('America/Sao_Paulo');
-include('../../conexao/conexao.php');
-
 if ($_SESSION["id"] < 0 || $_SESSION["id"] == "") {
-  header("Location: index.php");
+  header("Location: login.php");
 }
-
 $iduser = $_SESSION["id"];
+
 $_SESSION["n"] = 5;
-$sql = "SELECT * from tblUserClients WHERE idClient = :idClient";
-$query = $dbh->prepare($sql);
-$query->bindParam(':idClient', $iduser, PDO::PARAM_INT);
-$query->execute();
-$results = $query->fetchAll(PDO::FETCH_OBJ);
-if ($query->rowCount() > 0) {
+
+include_once('../model/classes/tblUserClients.php');
+
+$userClients = new UserClients();
+
+$userClients->setidClient($iduser);
+
+$results = $userClients->consulta("WHERE idClient = :idClient");
+
+if ($results != null) {
   foreach ($results as $row) {
     $username =  $row->FirstName . " " . $row->LastName;
     $FirstName = $row->FirstName;
@@ -39,36 +41,28 @@ if ($query->rowCount() > 0) {
   <meta charset="UTF-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="assets/css/geral.css">
+
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-4bw+/aepP/YC94hEpVNVgiZdgIC5+VKNBQNGCHeKRQN+PtmoHDEXuppvnDJzQIu9" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+
   <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
   <script src="https://kit.fontawesome.com/f51201541f.js" crossorigin="anonymous"></script>
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/autosize.js/4.0.2/autosize.min.js"></script>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
   <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
-
-
-  <link rel="stylesheet" href="../../assets/css/bootstrap/back.css">
-
-  <link rel="stylesheet" href="../../assets/css/bootstrap/bootstrap-datetimepicker.min.css">
-  <link rel="stylesheet" href="../../assets/css/bootstrap/bootstrap.min.css">
-  <link rel="stylesheet" href="../../assets/css/bootstrap/dataTables.bootstrap4.min.css">
-  <link rel="stylesheet" href="../../assets/css/bootstrap/font-awesome.min.css">
-
-
-  <link rel="stylesheet" href="../../assets/css/feed.css">
-  <link rel="stylesheet" href="../../assets/css/bootstrap/style.css">
-  <link rel="stylesheet" href="../../assets/css/bootstrap/line-awesome.min.css">
-
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.5.0/font/bootstrap-icons.css">
-
-  <link rel="stylesheet" href="../../assets/css/profile.css">
-  <link href="https://www.jqueryscript.net/css/jquerysctipttop.css" rel="stylesheet" type="text/css">
-  <link rel="stylesheet" type="text/css" href="https://bootswatch.com/superhero/bootstrap.min.css">
-  <script src="https://code.jquery.com/jquery-1.12.4.min.js"></script>
-  <link rel="stylesheet" type="text/css" href="../../assets/css/jquery.dropdown.css">
-  <script src="../../assets/js/jquery.dropdown.js"></script>
-  <script type="text/javascript" src="../../assets/js/mock.js"></script>
+  <link rel="stylesheet" href="assets/css/feed.css">
+  <link rel="stylesheet" href="assets/css/navbar.css">
+  <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick.css" />
+  <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick-theme.css" />
+  <script type="text/javascript" src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/autosize.js/4.0.2/autosize.min.js"></script>
   <title>Searches Profile</title>
   <style>
     .sidebar-inner.slimscroll {
@@ -84,467 +78,178 @@ if ($query->rowCount() > 0) {
       list-style: none;
     }
 
-    .sidebar .sidebar-menu>ul>li>a span {
-      font-size: small;
-      white-space: revert;
-      /* Força a quebra de linha dentro dos elementos <li> */
-    }
+  
 
-    /* Hide all steps by default: */
-    .tab {
-      display: none;
-    }
 
-    #prevBtn {
-      background-color: #bbbbbb;
-    }
-
-    /* Make circles that indicate the steps of the form: */
-    .step {
-      height: 15px;
-      width: 15px;
-      margin: 0 2px;
-      background-color: #bbbbbb;
-      border: none;
-      border-radius: 50%;
-      display: inline-block;
-      opacity: 0.5;
-    }
-
-    .step.active {
-      opacity: 1;
-    }
-
-    /* Mark the steps that are finished and valid: */
-    .step.finish {
-      background-color: #04AA6D;
-    }
+   
   </style>
 </head>
 
 <body class="funcolinhas">
-<script>
-        function showbusines(str) {
 
-            if (str == "") {
-                document.getElementById("refHint").innerHTML = "";
-                return;
-            }
-            var xmlhttp = new XMLHttpRequest();
-            xmlhttp.onreadystatechange = function() {
-                if (this.readyState == 4 && this.status == 200) {
-                    document.getElementById("refHint").innerHTML = this.responseText;
-                }
-            }
-            xmlhttp.open("GET", "modal/seach1.php?q=" + str, true);
-            xmlhttp.send();
-        }
-
-        function showbusines2(str) {
-
-            if (str == "") {
-                document.getElementById("refHint2").innerHTML = "";
-                return;
-            }
-            var xmlhttp = new XMLHttpRequest();
-            xmlhttp.onreadystatechange = function() {
-                if (this.readyState == 4 && this.status == 200) {
-                    document.getElementById("refHint2").innerHTML = this.responseText;
-                    applyCustomStyles(); 
-                }
-            }
-            xmlhttp.open("GET", "modal/seach2.php?q=" + str, true);
-            xmlhttp.send();
-        }
-        function applyCustomStyles() {
-  var selectElement = document.getElementById("mul-2");
-  selectElement.style.width = '200px'; // Or any other desired width
-}
-    </script>
-  <nav id="navbar" class="bg-light-alt container-fluid position-fixed" style="z-index: 9999999; padding-top: 10px;">
-    <div class="card d-flex justify-content-center shadow-none" style="background-color: #00000000; border: 1px; margin-bottom: 0px !important;">
-      <div class=" row d-flex justify-content-center">
-        <div class="col-3 d-flex justify-content-center">
-          <div class="d-flex align-items-center" style="margin: 0px;">
-            <a href="home/index.php" class="logo"><img src="<?php echo "../../assets/img/logo.png"; ?>" alt="logo"></a>
-            <span class="mobile-only" style="color: #fff; font-size:large;">Matching <span style="color: #0098e4;">Business</span>
-              Online</span>
-          </div>
-        </div>
-        <div class="col-6" style="padding: 0px !important">
-          <div class="d-flex card card-body" style="margin-bottom: 0px !important; border-radius:20px; max-height: 42px;">
-            <div class="">
-
-              <i class="fas fa-search"></i>
-              <input style="width: auto; height: auto;" type="text" id="search-input" list="search-list" placeholder="What are you looking for?" onfocus="showSearchIdeas()" onblur="hideSearchIdeas()">
-
-              <datalist id="search-list">
-                <?php
-                $sqlOperation = "SELECT * from tblOperations WHERE FlagOperation != '0' LIMIT 8";
-                $queryOperation = $dbh->prepare($sqlOperation);
-                $queryOperation->execute();
-                $resultsOperation = $queryOperation->fetchAll(PDO::FETCH_OBJ);
-                if ($queryOperation->rowCount() > 0) {
-                  foreach ($resultsOperation as $rowOperation) { ?>
-                    <option value="<?php echo $rowOperation->NmOperation; ?>">
-                  <?php }
-                } ?>
-              </datalist>
-            </div>
-          </div>
-        </div>
-
-        <div class="col-3" style="padding: 0px !important">
-          <div class="d-flex align-items-center">
-
-            <div class="navbarcenter ">
-              <ul>
-                <li><a href="chatPage.php"><i class="bi bi-chat-dots-fill" style="font-size: 14px;"></i><span style="font-size: 14px;">&nbsp;Messaging</span></a></li>
-                <li><a href="#" onclick="toggleNotifyMenu()"><i class="bi bi-bell-fill"></i><span style="font-size: 14px;">&nbsp;Notifications</span><?php
-                                                                                                                                                      $sqlNotifbolinha = "SELECT * from tblsearchprofile_results WHERE idClienteEncontrado = :idClienteEncontrado ORDER BY datahora DESC";
-                                                                                                                                                      $queryNotifbolinha = $dbh->prepare($sqlNotifbolinha);
-                                                                                                                                                      $queryNotifbolinha->bindParam(':idClienteEncontrado', $iduser, PDO::PARAM_INT);
-                                                                                                                                                      $queryNotifbolinha->execute();
-                                                                                                                                                      $queryNotifbolinha->fetchAll(PDO::FETCH_OBJ);
-                                                                                                                                                      if ($queryNotifbolinha->rowCount() != 0) {
-                                                                                                                                                      ?>
-                      <span class="badge rounded-pill badge-notification bg-danger">
-
-                        <?php echo $queryNotifbolinha->rowCount();  ?>
-                      </span>
-                    <?php   } ?></a></li>
-                <li><img src=" <?php if ($imgperfil != "Avatar.png" && $imgperfil != "") {
-                                  echo  $imgperfil;
-                                } else {
-                                  echo "../../assets/img/Avatar.png";
-                                } ?>" alt="user" class="nav-profile-img" onclick="toggleMenu();"></li>
-              </ul>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-
-
-    <!-- Notify Menu -->
-    <div class="profile-menu-wrap empty-menu" id="notifyMenu" style="border-top-left-radius: 0px;">
-      <div class="notify-menu">
-        <div class="empty-box" style="display: none;">
-          <img src="../../assets/img/empty.svg">
-          <span>There's nothing here for now. </span>
-        </div>
-        <?php
-        $sqlNotif = "SELECT * from tblsearchprofile_results WHERE idClienteEncontrado = :idClienteEncontrado ORDER BY datahora DESC";
-        $queryNotif = $dbh->prepare($sqlNotif);
-        $queryNotif->bindParam(':idClienteEncontrado', $iduser, PDO::PARAM_INT);
-        $queryNotif->execute();
-        $resultsNotif = $queryNotif->fetchAll(PDO::FETCH_OBJ);
-        if ($queryNotif->rowCount() > 0) {
-          foreach ($resultsNotif as $rownotif) {
-            $idCliente = $rownotif->idUsuario;
-            $sqlusernotif = "SELECT * from tblUserClients WHERE idClient = :idClient";
-            $queryusernotif = $dbh->prepare($sqlusernotif);
-            $queryusernotif->bindParam(':idClient', $idCliente, PDO::PARAM_INT);
-            $queryusernotif->execute();
-            $resultsusernotif = $queryusernotif->fetchAll(PDO::FETCH_OBJ);
-            if ($queryusernotif->rowCount() > 0) {
-              foreach ($resultsusernotif as $rowusernotif) {
-                $usernamepost = $rowusernotif->FirstName . " " . $rowusernotif->LastName;
-                $idpostoperation = $rowusernotif->IdOperation;
-                $imgpostuser = $rowusernotif->PersonalUserPicturePath;
-              }
-            }
-
-            $idTipoNotif = $rownotif->idTipoNotif;
-            if ($idTipoNotif == 5) {
-              $textNotif = "<p  class='d-inline' style='color: white; font-size: 11px;'>" . $usernamepost . " </p><p class='d-inline' style='color: #f2f2f2;'></p> <p class='d-inline' style='color: #7dbaf0;'>liked</p><p class='d-inline' style='color: #f2f2f2;'> your post !</p><br>";
-            } else if ($idTipoNotif == 2) {
-              $textNotif = "<p  class='d-inline' style='color: white; font-size: 11px;'>" . $usernamepost . " </p><p class='d-inline' style='color: #f2f2f2;'></p> <p class='d-inline' style='color: #7dbaf0;'>viewed </p><p class='d-inline' style='color: #f2f2f2;'>  your profile!</p><br>";
-            } else if ($idTipoNotif == 4) {
-              $textNotif = "<p  class='d-inline' style='color: white; font-size: 11px;'>" . $usernamepost . " </p><p class='d-inline' style='color: #f2f2f2;'></p> <p class='d-inline' style='color: #7dbaf0;'>invited  </p><p class='d-inline' style='color: #f2f2f2;'>  you to be part of his network!</p><br>";
-            } else  if ($idTipoNotif == 6) {
-              $textNotif = "<p  class='d-inline' style='color: white; font-size: 11px;'>" . $usernamepost . " </p><p class='d-inline' style='color: #f2f2f2;'></p> <p class='d-inline' style='color: #7dbaf0;'>accepted </p><p class='d-inline' style='color: #f2f2f2;'> your connection!</p><br>";
-            }
-
-            $postDateTime = new DateTime($rownotif->datahora);
-            // Obtenha o objeto DateTime da data e hora atual
-            $currentTime = new DateTime();
-            // Calcula a diferença entre a data e hora atual e a da postagem
-            $timeDiff = $postDateTime->diff($currentTime);
-            // Formata o tempo decorrido com base nas unidades (ano, mês, dia, hora, minuto, segundo)
-            if ($timeDiff->y > 0) {
-              $timeAgoN = $timeDiff->y . " ano(s) atrás";
-            } elseif ($timeDiff->m > 0) {
-              $timeAgoN = $timeDiff->m . " mês(es) atrás";
-            } elseif ($timeDiff->d > 0) {
-              $timeAgoN = $timeDiff->d . " dia(s) atrás";
-            } elseif ($timeDiff->h > 0) {
-              $timeAgoN = $timeDiff->h . " hora(s) atrás";
-            } elseif ($timeDiff->i > 0) {
-              $timeAgoN = $timeDiff->i . " minuto(s) atrás";
-            } else {
-              $timeAgoN = "Alguns segundos atrás";
-            }
-        ?>
-            <a href="#" class="notification">
-              <div class="row justify-content-center">
-                <div class="col-2 justify-content-center">
-                  <img src="<?php if ($imgpostuser != "Avatar.png" && $imgpostuser != "") {
-                              echo  $imgpostuser;
-                            } else {
-                              echo  "../../assets/img/Avatar.png";
-                            } ?>" alt="user" class="nav-profile-img">
-                </div>
-                <div class="col-8 justify-itens-center">
-                  <span><?php echo  $textNotif; ?> </span><span id="notify-time" style="color: grey !important;">
-                    <?php echo $timeAgoN; ?>
-                  </span>
-                </div>
-                <div class="col-2 d-flex justify-content-center">
-                  <button style="color: black !important;" class="delete-btn" onclick="deleteNotification(event)">
-                    <i class="fa-solid fa-trash" style="color: #cb1a1a;"></i></button>
-                </div>
-              </div>
-            </a>
-            <hr style="background-color: #ffffff66;">
-        <?php }
-        } ?>
-      </div>
-    </div>
-
-
-
-
-
-
-
-
-    <!-- --------------------------------profile-drop-down-menu---------------------------- -->
-    <div class="profile-menu-wrap" id="profileMenu" style="background-color: #002d4b !important; border-bottom-right-radius: 10px; border-bottom-left-radius: 10px;">
-      <div class="profile-menu" style="background-color: #002d4b !important;">
-
-        <a href="profile.php" class="profile-menu-link expand-zoom-menu">
-          <i class="bi bi-person-lines-fill fa-2x" style="color: white;"></i>
-          <p style="color: #ffffff; margin-bottom: 0px !important; text-decoration: none;">&nbsp;&nbsp;&nbsp;&nbsp;My Profile</p>
-          <i class="bi bi-caret-right-fill" style="color: white;"></i>
-        </a>
-
-
-        <a href="searchPage.php  " class="profile-menu-link expand-zoom-menu">
-          <i class="bi bi bi-search fa-2x" style="color: white;"></i>
-          <p style="color: #ffffff; margin-bottom: 0px !important; text-decoration: none;">&nbsp;&nbsp;&nbsp;&nbsp;My Search</p>
-          <i class="bi bi-caret-right-fill" style="color: white;"></i>
-        </a>
-
-        <a href="#" class="profile-menu-link expand-zoom-menu">
-          <i class="bi bi bi-gear-fill fa-2x" style="color: white;"></i>
-          <p style="color: #ffffff; margin-bottom: 0px !important; text-decoration: none;">&nbsp;&nbsp;&nbsp;&nbsp;Settings & Privacy</p>
-          <i class="bi bi-caret-right-fill" style="color: white;"></i>
-        </a>
-
-        <a href="#" class="profile-menu-link expand-zoom-menu">
-          <i class="bi bi-gem fa-2x" style="color: white;"></i>
-          <p style="color: #ffffff; margin-bottom: 0px !important; text-decoration: none;">&nbsp;&nbsp;&nbsp;&nbsp;Try Premium</p>
-          <i class="bi bi-caret-right-fill" style="color: white;"></i>
-        </a>
-
-        <a href="../../backend/logout.php" class="profile-menu-link expand-zoom-menu-logout ">
-          <i class="bi bi-box-arrow-left fa-2x" style="color: #ff6363;"></i>
-          <p style="margin-bottom: 0px !important; text-decoration: none; color: #ff6363;">&nbsp;&nbsp;&nbsp;&nbsp;Logout</p>
-          <i class="bi bi-caret-right-fill" style="color: #ff6363;"></i>
-        </a>
-      </div>
-    </div>
-
-  </nav>
+  <?php include_once("widget/navbar.php"); ?>
   <br><br><br><br><br>
+
   <div class="main-wrapper">
-    <div class="sidebar" id="sidebar" style=" background: #002d4b;">
+    <div class="sidebar" id="sidebar" style=" max-width: 300px;background: #002d4b;">
       <div class="sidebar-inner slimscroll">
         <div id="sidebar-menu" class="sidebar-menu">
-          <ul>
-            <?php
-            $sqlmenush = "SELECT * from tblBusiness";
-            $querymenush = $dbh->prepare($sqlmenush);
-            $querymenush->execute();
-            $resultmenush = $querymenush->fetchAll(PDO::FETCH_OBJ);
-            if ($querymenush->rowCount() > 0) {
-              foreach ($resultmenush as $rowusmenush) {
-                $teste = str_replace('/', '/ ', $rowusmenush->NmBusiness);
-            ?>
-                <li>
-                  <a style="font-size: small;" href=""><?php
-                                                        $sql = "SELECT * from tblUserClients WHERE SatBusinessId = :SatBusinessId";
-                                                        $query = $dbh->prepare($sql);
-                                                        $query->bindParam(':SatBusinessId', $rowusmenush->idBusiness, PDO::PARAM_INT);
-                                                        $query->execute();
-                                                        echo       $query->rowCount()   ?> <span> <?php echo $teste; ?></span> </a>
-                </li>
+          <div class="card rounded-4 shadow  treeviewmin panddingardtreeview">
+            <div class="card-body p-0 m-0">
+              <div class="col-12 mh-25">
+                <h2>Matching Business Online</h2>
                 <hr>
-            <?php }
-            } ?>
-          </ul>
-        </div>
-      </div>
-    </div>
-    <div class="page-wrapper" style="
-    margin-top: 0px;
+              </div>
+              <div class="row p-2 ml-0">
+                <ul id="tree1">
+                  <?php
+                  include_once('../model/classes/tblOperations.php');
 
-    padding-top: 5px;
-">
-      <div class="content container-fluid">
-        <div class="row">
-          <div class=" col-xl-9">
-
-          </div>
-          <div class="col-xl-3" style=" padding: 0;">
-            <div class="card cardbg mb-4 shadow">
-              <div class="card-body">
-                <h1 class="modal-title txtnomeperfil">Create Search Profile:</h1>
-                <form id="regForm" method="POST" enctype="multipart/form-data">
-                  <div class="row">
-                    <!-- One "tab" for each step in the form: -->
-                    <div class="tab" style="margin-top: 21px;">
-                      <div class="col-sm-12">
-                        <div class="form-group">
-                          <label class="txtinput" style="font-size: small;">Operation:</label>
-                          <select class="form-control bordainput" onchange="showbusines(this.value)" name="corbusiness">
-
+                  $operations = new Operations();
+                  $resultsOperation = $operations->consulta("WHERE FlagOperation != '0'");
+                  if ($resultsOperation != null) {
+                    foreach ($resultsOperation as $rowOperation) {
+                  ?>
+                      <li><a href="searchPage.php?operation=<?php echo $rowOperation->idOperation; ?>"><?php
+                                                                                                        if ($rowOperation->FlagOperation != "D") {
+                                                                                                          echo "<i class='fa-solid fa-add indicator ' ></i>";
+                                                                                                        } ?>
+                          <?php echo trim($rowOperation->NmOperation);  ?></a>
+                        <?php if ($rowOperation->FlagOperation != "D") { ?>
+                          <ul>
                             <?php
-                            $sql = "SELECT * from tblOperations ";
-                            $query = $dbh->prepare($sql);
-                            $query->execute();
-                            $results = $query->fetchAll(PDO::FETCH_OBJ);
-                            if ($query->rowCount() > 0) {
-                              foreach ($results as $row) { ?>
-                                <option <?php if ($row->NmOperation ==  $NmBusiness) {
-                                          echo "selected";
-                                        } ?> value="<?php echo $row->idOperation; ?>"><?php echo $row->NmOperation; ?></option>
-                            <?php     }
-                            }
+                            include_once('../model/classes/tblBusiness.php');
+                            $business = new Business();
+                            $resultsbusiness = $business->consulta("WHERE FlagOperation = '0' ORDER BY NmBusiness ASC");
+                            if ($business != null) {
+                              foreach ($resultsbusiness as $rowbusiness) {
                             ?>
-                          </select>
-                        </div>
-                      </div>
-                    </div>
-                    <div class="col-sm-12" id="refHint"></div>
-                    <div class="col-sm-12" id="refHint2"></div>
-                      
-                    
-                    <div class="tab" style="margin-top: 21px;">
-                      <div class="col-sm-12">
-                        <div class="form-group ">
-                          <label class="txtinput" style="font-size: small;">Country:</label>
-                          <div class="dropdown-mul-2" style="max-width: 261px;    min-width: 230px;">
-                            <select name="" class="form-control bordainput select" id="mul-2" multiple >
-                              <?php
-                              $sqlpaises = "SELECT * FROM tblCountry";
-                              $querypaises = $dbh->prepare($sqlpaises);
-                              $querypaises->execute();
-                              $resulpaises = $querypaises->fetchAll(PDO::FETCH_OBJ);
-                              if ($querypaises->rowCount() > 0) {
-                                foreach ($resulpaises as $rowpaises) { ?>
-                                  <option <?php if($rowpaises->idCountry==384){echo "selected";} ?> value="<?php echo $rowpaises->idCountry; ?>"><?php echo $rowpaises->NmCountry; ?></option>
-                              <?php  }
-                              }
-                              ?>
-                            </select>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                  
-                    
-                    <div class="tab" style="margin-top: 21px;">
-                      <div class="col-sm-12">
-                        <div class="form-group ">
-                          <label class="txtinput" style="font-size: small;">Search ID:</label>
-                          <input type="text" name="idseach"  class="form-control bordainput" id="idseach"  required>
-                        </div>
-                      </div>
-                    </div>
-                    <div class="col-sm-8">
-                      <div class="form-group">
-                        <button type="button" id="prevBtn" onclick="nextPrev(-1)" class="btn btn-primary " class="btn btn-primary  submit-btn" style="border: 0px !important;
-    font-size: small;
-    min-width: auto;padding: 4px 14px;
-">Previous</button>
-                      </div>
-                    </div>
-                    <div class="col-sm-4">
-                      <div class="form-group" style="
-    text-align: end;
-">
-                        <button type="button" id="nextBtn" onclick="nextPrev(1)" class="btn btn-primary  submit-btn" style="border: 0px !important;
-    font-size: small;
-    min-width: auto;padding: 4px 14px;
-">Next</button>
-                      </div>
+                                <li><a class="sizewidgh" href="searchPage.php?busines=<?php echo $rowbusiness->idBusiness; ?>"><?php echo "<i class='fa-solid fa-add indicator ' ></i>";
+                                                                                                                                echo trim($rowbusiness->NmBusiness); ?>
+                                    <ul>
+                                      <?php
+                                      include_once('../model/classes/tblBusinessCategory.php');
+                                      $BusinessCategory = new BusinessCategory();
+                                      $resultsBusinessCategory = $BusinessCategory->consulta("WHERE idBusiness = $rowbusiness->idBusiness ORDER BY NmBusinessCategory ASC");
+                                      if ($BusinessCategory != null) {
+                                        foreach ($resultsBusinessCategory as $rowresultsBusinessCategory) {
+                                      ?><li><a class="sizewidghsub" href="searchPage.php?categoria=<?php echo $rowresultsBusinessCategory->idBusinessCategory; ?>"><?php echo trim($rowresultsBusinessCategory->NmBusinessCategory); ?></a>
+
+                                          </li><?php
+                                              }
+                                            }
+                                                ?>
 
 
+                                    </ul>
+                                </li>
+                            <?php }
+                            } ?>
+                          </ul>
+                        <?php } ?>
+                      </li>
 
-                    </div>
-                    <!-- Circles which indicates the steps of the form: -->
-                    <div class="col-sm-12">
-                      <div style="text-align:center;margin-top:40px;">
-                        <span class="step"></span>
-                        <span class="step"></span>
-                        <span class="step"></span>
-                        <span class="step"></span>
-                      </div>
-                    </div>
-                  </div>
-                </form>
+                      <hr>
+                  <?php }
+                  } ?>
+                </ul>
               </div>
             </div>
           </div>
         </div>
       </div>
     </div>
+    <div class="page-wrapper" style="margin-top: 0px;padding-top: 5px;">
+      <div class="content container-fluid">
+        <div class="row">
+          <div class=" col-xl-12">
+
+          </div>
+        
+        </div>
+      </div>
+    </div>
   </div>
   </div>
 
 
 
 
-  <!-- Select2 JS -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.bundle.min.js" integrity="sha384-HwwvtgBNo3bZJJLYd8oVXjrBZt8cqVSpeBNS5n7C8IVInixGAoxmnlMuBnhbgrkm" crossorigin="anonymous"></script>
   <script>
-    var Random = Mock.Random;
+    $.fn.extend({
+      treed: function(o) {
 
-    $('.dropdown-mul-2').dropdown({
+        var openedClass = 'glyphicon-minus-sign';
+        var closedClass = 'glyphicon-plus-sign';
 
-      searchable: false
+
+        //initialize each of the top levels
+        var tree = $(this);
+        tree.addClass("tree");
+        tree.find('li').has("ul").each(function() {
+          var branch = $(this); //li with children ul
+
+          branch.addClass('branch');
+          branch.on('click', function(e) {
+            if (this == e.target) {
+
+              $(this).children().children().toggle();
+            }
+          })
+          branch.children().children().toggle();
+        });
+        //fire event from the dynamically added icon
+        tree.find('.branch .indicator').each(function() {
+          $(this).on('click', function() {
+            $(this).closest('li').click();
+          });
+        });
+        //fire event to open branch if the li contains an anchor instead of text
+        tree.find('.branch>a').each(function() {
+          $(this).on('click', function(e) {
+            $(this).closest('li').click();
+            e.preventDefault();
+          });
+        });
+        //fire event to open branch if the li contains a button instead of text
+        tree.find('.branch>button').each(function() {
+          $(this).on('click', function(e) {
+            $(this).closest('li').click();
+            e.preventDefault();
+          });
+        });
+      }
     });
 
-  
-  </script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.5.0/js/bootstrap.bundle.min.js"></script>
-  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/jQuery-slimScroll/1.3.8/jquery.slimscroll.min.js"></script>
-  <script>
-    let profileMenu = document.getElementById("profileMenu");
+    //Initialization of treeviews
 
-    function toggleMenu() {
-      profileMenu.classList.toggle("open-menu");
-    }
-  </script>
+    $('#tree1').treed();
 
-  <script>
-    // JavaScript / jQuery
-    // JavaScript / jQuery
+
+
+    window.addEventListener('scroll', function() {
+      var navbar = document.getElementById('navbar');
+      if (window.pageYOffset > 0) {
+        navbar.classList.add('colored');
+        navbar.classList.remove('transparent');
+      } else {
+        navbar.classList.remove('colored');
+        navbar.classList.add('transparent');
+      }
+    });
     $(document).ready(function() {
       // Ao clicar em um link de produto
-      $('.hero-image-container').click(function() {
+      $('.hero-image-container2').click(function() {
         // Obtenha o ID do produto associado ao link clicado
-        var idProduto = $(this).data('id');
-        console.log(idProduto);
+        var idFeed = $(this).data('id');
+        console.log(idFeed);
         // Use o ID do produto para fazer uma requisição AJAX para buscar os dados do produto no servidor
         $.ajax({
           type: 'GET',
-          url: 'modal/getproduto.php', // Substitua pelo caminho correto
+          url: 'visualizarComent.php', // Substitua pelo caminho correto
           data: {
-            idProduto: idProduto
+            idFeed: idFeed
           },
           success: function(data) {
             // Preencha o conteúdo do modal com as informações do produto
@@ -567,6 +272,23 @@ if ($query->rowCount() > 0) {
       });
     });
 
+    document.querySelector('.collapse-chat').addEventListener('click', function() {
+      this.classList.toggle('open');
+    });
+
+
+
+    document.getElementById('comentbtn').addEventListener('click', function(e) {
+      e.preventDefault(); // Impede o comportamento padrão do link
+      var viewsElement = document.getElementById('modalEditarProduto');
+      if (viewsElement.classList.contains('d-none')) {
+        viewsElement.classList.remove('d-none');
+        viewsElement.classList.add('show');
+      } else {
+        viewsElement.classList.add('d-none');
+      }
+    });
+
     function likeColor(element) {
       var likeIcon = element.previousElementSibling;
       likeIcon.classList.add("red-like"); // Adiciona a classe CSS "red-like" ao ícone de like
@@ -576,6 +298,7 @@ if ($query->rowCount() > 0) {
     $(document).ready(function() {
       function readURL(input) {
         if (input.files && input.files[0]) {
+          console.log("teste");
           var reader = new FileReader();
           reader.onload = function(e) {
             if (input.id === 'file-input') {
@@ -603,24 +326,11 @@ if ($query->rowCount() > 0) {
         readURL(this);
       });
     });
-    document.querySelector('.collapse-chat').addEventListener('click', function() {
-      this.classList.toggle('open');
-    });
 
 
 
 
 
-    window.addEventListener('scroll', function() {
-      var navbar = document.getElementById('navbar');
-      if (window.pageYOffset > 0) {
-        navbar.classList.add('colored');
-        navbar.classList.remove('transparent');
-      } else {
-        navbar.classList.remove('colored');
-        navbar.classList.add('transparent');
-      }
-    });
 
     /* Set the width of the sidebar to 250px (show it) */
     function openNav() {
@@ -633,10 +343,7 @@ if ($query->rowCount() > 0) {
     }
 
 
-    function toggleNotifyMenu() {
-      const notifyMenu = document.getElementById('notifyMenu')
-      notifyMenu.classList.toggle("open-menu");
-    }
+
 
     document.addEventListener('DOMContentLoaded', function() {
       var dropdownToggle = document.querySelector('.notify-dropdown-toggle');
@@ -679,6 +386,21 @@ if ($query->rowCount() > 0) {
     // Carousel Script
 
 
+    populateSlider();
+    populateSlider();
+
+    // delete the initial movie in the html
+    const initialMovie = document.getElementById("movie0");
+    initialMovie.remove();
+
+    // Update the indicators that show which page we're currently on
+    function updateIndicators(index) {
+      indicators.forEach((indicator) => {
+        indicator.classList.remove("active");
+      });
+      let newActiveIndicator = indicators[index];
+      newActiveIndicator.classList.add("active");
+    }
 
     // Scroll Left button
     btnLeft.addEventListener("click", (e) => {
@@ -767,20 +489,18 @@ if ($query->rowCount() > 0) {
 
     // Adiciona o evento de scroll para chamar a função
     window.addEventListener('scroll', adicionarFundoComScroll);
-    // Adiciona o evento de scroll para chamar a função
-    window.addEventListener('scroll', adicionarFundoComScroll);
 
-    function atualizarFeed() {
+    /*function atualizarFeed() {
 
-      var xmlhttp = new XMLHttpRequest();
-      xmlhttp.onreadystatechange = function() {
-        if (this.readyState == 4 && this.status == 200) {
-          document.getElementById("divFeedUpdate").innerHTML = this.responseText;
+        var xmlhttp = new XMLHttpRequest();
+        xmlhttp.onreadystatechange = function() {
+            if (this.readyState == 4 && this.status == 200) {
+                document.getElementById("divFeedUpdate").innerHTML = this.responseText;
+            }
         }
-      }
-      xmlhttp.open("GET", "atualizarFeed.php", true);
-      xmlhttp.send();
-    }
+        xmlhttp.open("GET", "atualizarFeed.php", true);
+        xmlhttp.send();
+    }*/
 
     $(document).ready(function() {
       // Detecta o evento de rolagem
@@ -788,135 +508,9 @@ if ($query->rowCount() > 0) {
         // Verifica se chegou ao final da página
         if ($(window).scrollTop() + $(window).height() >= $(document).height()) {
           // Chama a função quando o usuário chegar ao final da página
-          atualizarFeed();
+          // atualizarFeed();
         }
       });
-    });
-  </script>
-  <script>
-    var currentTab = 0; // Current tab is set to be the first tab (0)
-    showTab(currentTab); // Display the current tab
-
-    function showTab(n) {
-      // This function will display the specified tab of the form...
-      var x = document.getElementsByClassName("tab");
-      x[n].style.display = "block";
-      //... and fix the Previous/Next buttons:
-      if (n == 0) {
-        document.getElementById("prevBtn").style.display = "none";
-      } else {
-        document.getElementById("prevBtn").style.display = "inline";
-      }
-      if (n == (x.length - 1)) {
-        document.getElementById("nextBtn").innerHTML = "Submit";
-      } else {
-        document.getElementById("nextBtn").innerHTML = "Next";
-      }
-      //... and run a function that will display the correct step indicator:
-      fixStepIndicator(n)
-    }
-
-    function nextPrev(n) {
-      // This function will figure out which tab to display
-      var x = document.getElementsByClassName("tab");
-      // Exit the function if any field in the current tab is invalid:
-      if (n == 1 && !validateForm()) return false;
-      // Hide the current tab:
-      x[currentTab].style.display = "none";
-      // Increase or decrease the current tab by 1:
-      currentTab = currentTab + n;
-      // if you have reached the end of the form...
-      if (currentTab >= x.length) {
-        // ... the form gets submitted:
-        document.getElementById("regForm").submit();
-        return false;
-      }
-      // Otherwise, display the correct tab:
-      showTab(currentTab);
-    }
-
-    function validateForm() {
-      // This function deals with validation of the form fields
-      var x, y, i, valid = true;
-      x = document.getElementsByClassName("tab");
-      y = x[currentTab].getElementsByTagName("input");
-      // A loop that checks every input field in the current tab:
-      for (i = 0; i < y.length; i++) {
-        // If a field is empty...
-        if (y[i].value == "") {
-          // add an "invalid" class to the field:
-          y[i].className += " invalid";
-          // and set the current valid status to false
-          valid = false;
-        }
-      }
-      // If the valid status is true, mark the step as finished and valid:
-      if (valid) {
-        document.getElementsByClassName("step")[currentTab].className += " finish";
-      }
-      return valid; // return the valid status
-    }
-
-    function fixStepIndicator(n) {
-      // This function removes the "active" class of all steps...
-      var i, x = document.getElementsByClassName("step");
-      for (i = 0; i < x.length; i++) {
-        x[i].className = x[i].className.replace(" active", "");
-      }
-      //... and adds the "active" class on the current step:
-      x[n].className += " active";
-    }
-  </script>
-  <script>
-    var Random = Mock.Random;
-    var json1 = Mock.mock({
-      "data|10-50": [{
-        name: function() {
-          return Random.name(true)
-        },
-        "id|+1": 1,
-        "disabled|1-2": true,
-        groupName: 'Group Name',
-        "groupId|1-4": 1,
-        "selected": false
-      }]
-    });
-
-    $('.dropdown-mul-1').dropdown({
-      data: json1.data,
-      limitCount: 40,
-      multipleMode: 'label',
-      choice: function() {
-        // console.log(arguments,this);
-      }
-    });
-
-    var json2 = Mock.mock({
-      "data|10000-10000": [{
-        name: function() {
-          return Random.name(true)
-        },
-        "id|+1": 1,
-        "disabled": false,
-        groupName: 'Group Name',
-        "groupId|1-4": 1,
-        "selected": false
-      }]
-    });
-
-    $('.dropdown-mul-2').dropdown({
-      limitCount: 5,
-      searchable: false
-    });
-
-    $('.dropdown-sin-1').dropdown({
-      readOnly: true,
-      input: '<input type="text" maxLength="20" placeholder="Search">'
-    });
-
-    $('.dropdown-sin-2').dropdown({
-      data: json2.data,
-      input: '<input type="text" maxLength="20" placeholder="Search">'
     });
   </script>
 </body>

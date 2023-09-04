@@ -445,3 +445,23 @@ body {
     padding: 13px;
     max-width: 400px !important;
 }
+
+.icone-btn-mobile {
+    font-size: 15px;
+}
+
+.btn-mobile {
+    width: 40px;
+}
+
+.password-container {
+    position: relative;
+}
+
+.password-container .input-group-text {
+    position: absolute;
+    right: 10px;
+    top: 50%;
+    transform: translateY(-50%);
+    cursor: pointer;
+}

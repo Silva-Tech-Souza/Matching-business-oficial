@@ -6,16 +6,18 @@ header("Access-Control-Allow-Origin: *");
 include('../../../conexao/conexao.php');
 
 $idbusines2 = $_GET["q"];
-$sqloperacao2 = "SELECT * from tblBusiness WHERE idBusiness = :idBusiness";
-$sqloperacao2 = $dbh->prepare($sqloperacao2);
-$sqloperacao2->bindParam(':idBusiness', $idbusines2, PDO::PARAM_INT);
-$sqloperacao2->execute();
-$resultsoperacao2 = $sqloperacao2->fetchAll(PDO::FETCH_OBJ);
-if ($sqloperacao2->rowCount() > 0) {
-    foreach ($resultsoperacao2 as $rowoperacao2) {
-        $idBusiness = $rowoperacao2->idBusiness;
+
+include_once('../../model/classes/tblBusiness.php');
+$tblBusiness = new Business();
+$tblBusiness ->setidBusiness($idbusines2);
+$resultstblBusiness = $tblBusiness->consulta(" WHERE idBusiness = :idBusiness");
+if ($tblBusiness != null) {
+    if (is_array($resultstblBusiness) || is_object($resultstblBusiness)) {
+        foreach ($resultstblBusiness as $rowBusiness) {
+
+        $idBusiness = $rowBusiness->idBusiness;
     }
-}
+}}
 ?>
 <div class="row">
     <div class="col-">
@@ -30,16 +32,16 @@ if ($sqloperacao2->rowCount() > 0) {
     <select name="category[]" class=" form-select categmulti border-dark inputtamanho" multiple  id="floatingSelectGrid" aria-label="Floating label select example">
     <option>Select</option>
             <?php
-            $sqlpaises = "SELECT * FROM tblBusinessCategory  WHERE idBusiness = :idBusiness";
-            $querypaises = $dbh->prepare($sqlpaises);
-            $querypaises->bindParam(':idBusiness', $idBusiness, PDO::PARAM_INT);
-            $querypaises->execute();
-            $resulpaises = $querypaises->fetchAll(PDO::FETCH_OBJ);
-            if ($querypaises->rowCount() > 0) {
-                foreach ($resulpaises as $rowpaises) { ?>
-                    <option <?php if ($rowpaises->idBusinessCategory == 2) {
+            include_once('../../model/classes/tblBusinessCategory.php');
+            $tblBusinessCategory = new BusinessCategory();
+            $tblBusinessCategory->setidBusiness($idBusiness);
+            $resultstblBusinessCategory = $tblBusinessCategory->consulta(" WHERE idBusiness = :idBusiness");
+            if ($tblBusinessCategory != null) {
+            
+                    foreach ($resultstblBusinessCategory as $rowBusiness) { ?>
+                    <option <?php if ($rowBusiness->idBusinessCategory == 2) {
                                 echo "selected";
-                            } ?> value="<?php echo $rowpaises->idBusinessCategory; ?>"><?php echo $rowpaises->NmBusinessCategory; ?></option>
+                            } ?> value="<?php echo $rowBusiness->idBusinessCategory; ?>"><?php echo $rowBusiness->NmBusinessCategory; ?></option>
             <?php  }
             }
             ?>

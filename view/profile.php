@@ -69,7 +69,7 @@ if ($resultsbusiness != null) {
 }
 
 
-$NmBusinessCategory="";
+$NmBusinessCategory = "";
 include_once('../model/classes/tblBusinessCategory.php');
 $BusinessCategory = new BusinessCategory();
 $BusinessCategory->setidBusinessCategory($idoperation);
@@ -148,558 +148,217 @@ if ($resultsBusinessCategory != null) {
 
   <!-- Header -->
   <?php include_once("widget/navbar.php"); ?><br><br><br><br><br>
-  <div class="col-md-12 d-flex justify-content-center margemcelulr">
-    <div class="col-md-12">
-      <div class="row">
-        <div class="col-lg-4 scrollable-column">
-          <div class="card mb-4 cardbg">
-            <div class="card-body text-center  cardbg shadow">
+  <!-- Body -->
+  <div class="col-12">
+    <div class="row">
+      <!-- Card Perfil -->
+      <div class="col-4 p-3">
+        <div class="col-12">
+          <div class="card card-body p-0">
+            <div class="col-12">
+              <img src="assets/img/wp.jpeg" alt="" style="width: 100%; height: 120px;">
               <img src="<?php if ($imgperfil != "Avatar.png" && $imgperfil != "") {
                           echo $imgperfil;
                         } else {
                           echo "assets/img/Avatar.png";
-                        } ?>" alt="avatar" class="rounded-circle img-fluid img-profile-card">
-              <h5 class="my-3 txtnomeperfil"><?php echo $username; ?></h5>
-              <p class="text-muted mb-1 txttipoperfil"> <?php echo $jobtitle . " at " . $companyname; ?></p>
-              <p class="text-muted mb-4 txttipoperfil"><?php echo $pais; ?></p>
-              <div class="d-flex justify-content-center mb-2">
-
-                <a href="#" class="btn btn-outline-primary ms-1" data-toggle="modal" data-target="#add_perfil"><i class="bi bi-pen icon-btn-card"></i>&nbsp;Edit</a>
-              </div>
+                        } ?>" alt="avatar" class="rounded-circle img-fluid img-profile-card position-absolute" style="top: 40px; left: 20px;">
             </div>
-          </div>
+            <div class="col-12 d-flex justify-content-end">
+              <h5 class="my-3 txtnomeperfil" style="padding-right: 10px;"><?php echo $username; ?> </h5>
 
-          <div class="row m-0">
-            <div class="card mb-4 cardcenter cardbg shadow">
-              <div class="card-body ">
-                <i class="bi bi-globe iconesize"></i>
-                <p class="text-muted mb-4 txtinsite" style="height: 75%"><a href="#mynetwork" data-toggle="tab">My Network</a></p>
-                <p class="text-muted txtinsite valoresinsi"><b><?php
-                                                                //$sqlView = "SELECT * FROM tblconect WHERE idUserReceb = :idUserReceb AND status = '1'";
-                                                                //$queryView = $dbh->prepare($sqlView);
-                                                                //$queryView->bindParam(':idUserReceb', $iduser, PDO::PARAM_INT);
-                                                                //$queryView->execute();
-                                                                //$queryView->fetchAll(PDO::FETCH_OBJ);
-
-                                                                include_once('../model/classes/tblConect.php');
-
-                                                                $conect = new Conect();
-
-                                                                $conect->setidUserReceb($iduser);
-
-                                                                $resultConect = $conect->consulta("WHERE idUserReceb = :idUserReceb AND status = '1'");
-
-                                                                $numView = 0;
-
-                                                                if ($resultConect != null) {
-                                                                  foreach ($resultConect as $resultConectUnid) {
-                                                                    $numView += 1;
-                                                                  }
-                                                                }
-
-                                                                echo $numView;
-                                                                ?></b></p>
-              </div>
             </div>
+            <div class="col-12 d-flex justify-content-end mb-4">
 
-            <div class="card mb-4 cardcenter cardbg shadow">
-              <div class="card-body ">
-                <i class="bi bi-clock-history iconesize"></i>
-                <p class="text-muted mb-4 txtinsite" style="height: 75%"><a href="#" data-toggle="modal" data-target="#exampleModalconect" class="nav-link">Want to Connect</a></p>
-                <p class="text-muted txtinsite valoresinsi"><b><?php
-                                                                //$sqlView = "SELECT * FROM tblconect WHERE idUserReceb = :idUserReceb AND status = '0'";
-                                                                //$queryView = $dbh->prepare($sqlView);
-                                                                //$queryView->bindParam(':idUserReceb', $iduser, PDO::PARAM_INT);
-                                                                //$queryView->execute();
-                                                                //$queryView->fetchAll(PDO::FETCH_OBJ);
-                                                                //echo $queryView->rowCount();
-
-                                                                include_once('../model/classes/tblConect.php');
-
-                                                                $conect = new Conect();
-
-                                                                $conect->setidUserReceb($iduser);
-
-                                                                $resultConect = $conect->consulta("WHERE idUserReceb = :idUserReceb AND status = '0'");
-
-                                                                $numView = 0;
-
-                                                                if ($resultConect != null) {
-                                                                  foreach ($resultConect as $resultConectUnid) {
-                                                                    $numView += 1;
-                                                                  }
-                                                                }
-
-                                                                echo $numView;
-
-                                                                ?></b></p>
-              </div>
-            </div>
-
-            <div class="card mb-4 cardcenter cardbg shadow">
-              <div class="card-body ">
-                <i class="bi bi-bookmark-check iconesize"></i>
-                <p class="text-muted mb-4 txtinsite" style="height: 75%"><a href="#">My saved search</a></p>
-                <p class="text-muted txtinsite valoresinsi"><b>0</b></p>
-              </div>
-            </div>
-
-            <div class="card mb-4 cardcenter cardbg shadow">
-              <div class="card-body ">
-                <i class="bi bi-eye iconesize"></i>
-                <p class="text-muted mb-4 txtinsite" style="height: 75%"><a href="#" data-toggle="modal" data-target="#exampleModal" class="nav-link">Views</a></p>
-                <p class="text-muted txtinsite valoresinsi"><b><?php
-                                                                //$sqlView = "SELECT * FROM tblviews WHERE idView = :idView ";
-                                                                //$queryView = $dbh->prepare($sqlView);
-                                                                //$queryView->bindParam(':idView', $iduser, PDO::PARAM_INT);
-                                                                //$queryView->execute();
-                                                                //$queryView->fetchAll(PDO::FETCH_OBJ);
-                                                                //echo $queryView->rowCount();
-
-                                                                include_once('../model/classes/tblViews.php');
-
-                                                                $views = new Views();
-
-                                                                $views->setidView($iduser);
-
-                                                                $resultviews = $views->consulta(" WHERE idView = :idView ");
-
-                                                                $numView = 0;
-
-                                                                if ($resultviews != null) {
-                                                                  foreach ($resultviews as $resultviewsUnid) {
-                                                                    $numView += 1;
-                                                                  }
-                                                                }
-
-                                                                echo $numView;
-
-                                                                ?></b></p>
-              </div>
-            </div>
-          </div>
-
-
-          <div class="card mb-4 cardbg ">
-            <div class="card-body p-0 cardbg shadow">
-              <ul class="list-group cardbg list-group-flush rounded-3 txtopertion">
-                <li class="list-group-item cardbg d-flex justify-content-between align-items-center p-3">
-                  <p class="mb-0"><b>Core Business:</b></p>
-                  <p class="mb-0"> <?php echo $NmBusiness; ?></p>
-                </li>
-                <?php if ($corebusiness == "1" || $corebusiness == "2" || $corebusiness == "3" || $corebusiness == "4" || $corebusiness == "5") {
-                ?>
-                  <li class="list-group-item d-flex cardbg justify-content-between align-items-center p-3">
-                    <p class="mb-0"><b>Business:</b></p>
-                    <p class="mb-0"> <?php echo $NmBusinesscor; ?></p>
-                  </li>
-                  <li class="list-group-item d-flex cardbg justify-content-between align-items-center p-3">
-                    <p class="mb-0"><b>Business Category:</b></p>
-                    <p class="mb-0"> <?php echo $NmBusinessCategory; ?></p>
-                  </li>
-                <?php }  ?>
-              </ul>
-            </div>
-          </div>
-
-          <div class="card  cardbg mb-4">
-            <div class="card-body cardbg cardbg shadow ">
-              <h3 class="text-muted valoresinsi "><b>Description:</b></h3>
-              <p class="text-muted mb-4 txttipoperfil"><?php echo $descricao; ?></p>
+              <p class="text-muted mb-1 txttipoperfil" style="padding-right: 10px;"> <?php echo $jobtitle . " at " . $companyname; ?></p>
             </div>
           </div>
         </div>
-        <div class="col-lg-8  scrollable-column ">
-
-          <div class="tab-content" id="networkview">
-            <div id="mynetwork" class="tab-pane fade">
-              <div class="card cardbg mb-4">
-                <div class="card-body">
-                  <div class="row">
-                    <div class="col-sm-1">
-                      <p class="text-muted mb-0">
-                        <button id="closeMyNetwork" class="btn btn-outline-primary ms-1">
-                          <i class="bi bi-x-circle-fill icon-btn-card"></i>
-                        </button>
-                      </p>
-                    </div>
-                    <div class="col-sm-11">
-                      <h2 class="text-muted valoresinsi"><b>My Network</b></h2>
-                    </div>
+        <div class="col-12 mt-4">
+          <div class="row">
+            <div class="col-6">
+              <div class="card card-body ">
+                <div class="row">
+                  <div class="col-8 d-flex justify-content-start">
+                    <p class="text-muted d-inline m-0"><a href="#">My saved search</a></p>
                   </div>
-                  <hr class="m-1">
-                  <div class="col">
-                    <ul>
-                      <?php
-                      $sqlconect = "SELECT * FROM tblconect WHERE idUserReceb = :idUserReceb AND status = '1'  ORDER BY datapedido DESC";
-                      $queryconect = $dbh->prepare($sqlconect);
-                      $queryconect->bindParam(':idUserReceb', $iduser, PDO::PARAM_INT);
-                      $queryconect->execute();
-                      $resulconect = $queryconect->fetchAll(PDO::FETCH_OBJ);
-
-
-
-                      if ($queryconect->rowCount() > 0) {
-                        foreach ($resulconect as $rowviews) {
-
-                      ?>
-                          <?php
-                          $sqlclientes = "SELECT * from tblUserClients WHERE idClient = :idClient";
-                          $querycliente = $dbh->prepare($sqlclientes);
-                          $querycliente->bindParam(':idClient', $rowviews->idUserPed, PDO::PARAM_INT);
-                          $querycliente->execute();
-                          $resultscliente = $querycliente->fetchAll(PDO::FETCH_OBJ);
-                          if ($querycliente->rowCount() > 0) {
-                            foreach ($resultscliente as $rowcliente) {
-                              $sqlOperation = "SELECT * from tblOperations WHERE FlagOperation != '0' AND idOperation = :idOperation";
-                              $queryOperation = $dbh->prepare($sqlOperation);
-                              $queryOperation->bindParam(':idOperation', $rowcliente->CoreBusinessId, PDO::PARAM_INT);
-                              $queryOperation->execute();
-                              $resultsOperation = $queryOperation->fetchAll(PDO::FETCH_OBJ);
-                              if ($queryOperation->rowCount() > 0) {
-                                foreach ($resultsOperation as $rowOperation) { ?>
-
-                                  <li class="recommended-user mb-2">
-                                    <form method="POST" enctype="multipart/form-data" class="w-100 h-100 d-flex">
-                                      <input class="form-control bordainput" value="<?php echo $rowviews->id; ?>" autocomplete="off" name="idconectar" type="hidden">
-                                      <input class="form-control bordainput" value="<?php echo $rowviews->idUserPed; ?>" autocomplete="off" name="idperfilpedido" type="hidden">
-                                      <div class="col-2 justify-content-center m-0 p-0 text-align-center">
-                                        <a href="viewProfile.php?profile=<?php echo $rowcliente->idClient; ?>">
-                                          <img class="h-50 w-50 p-1" src="<?php if ($rowOperation->PersonalUserPicturePath != "Avatar.png" && $rowOperation->PersonalUserPicturePath != "") {
-                                                                            echo "../" . $rowOperation->PersonalUserPicturePath;
-                                                                          } else {
-                                                                            echo "../../assets/img/Avatar.png";
-                                                                          } ?>" alt="user" alt="An unknown user."></a>
-                                      </div>
-                                      <div class="col-5 p-0">
-                                        <p class="mb-0 network-username-text"><b><a class="color-preto" href="viewProfile.php?profile=<?php echo $rowcliente->idClient; ?>"><?php echo $rowcliente->FirstName; ?></b> </a></p>
-                                        <p class="network-operation-text"><a href="viewProfile.php?profile=<?php echo $rowcliente->idClient; ?>"><?php echo $rowOperation->NmOperation; ?></a></p>
-                                        <p class="network-timeago-text"><?php
-                                                                        $postDateTime = new DateTime($rowviews->datapedido);
-
-                                                                        // Obtenha o objeto DateTime da data e hora atual
-                                                                        $currentTime = new DateTime();
-
-                                                                        // Calcula a diferença entre a data e hora atual e a da postagem
-                                                                        $timeDiff = $postDateTime->diff($currentTime);
-
-                                                                        // Formata o tempo decorrido com base nas unidades (ano, mês, dia, hora, minuto, segundo)
-                                                                        if ($timeDiff->y > 0) {
-                                                                          $timeAgo = $timeDiff->y . " ano(s) atrás";
-                                                                        } elseif ($timeDiff->m > 0) {
-                                                                          $timeAgo = $timeDiff->m . " mês(es) atrás";
-                                                                        } elseif ($timeDiff->d > 0) {
-                                                                          $timeAgo = $timeDiff->d . " dia(s) atrás";
-                                                                        } elseif ($timeDiff->h > 0) {
-                                                                          $timeAgo = $timeDiff->h . " hora(s) atrás";
-                                                                        } elseif ($timeDiff->i > 0) {
-                                                                          $timeAgo = $timeDiff->i . " minuto(s) atrás";
-                                                                        } else {
-                                                                          $timeAgo = "Alguns segundos atrás";
-                                                                        }
-
-                                                                        echo $timeAgo; ?></p>
-                                      </div>
-                                      <div class="col-2 justify-content-center">
-                                        <button type="submit" name="desconectar" value="desconectar" class="btn btn-outline-danger ms-1 m-1"><i class="bi bi-person-x-fill icon-btn-card"></i>&nbsp;Disconnect</button>
-
-                                      </div>
-                                      <div class="col-2 justify-content-center">
-                                        <a href="viewProfile.php?profile=<?php echo $rowcliente->idClient; ?>" class="btn btn-outline-primary ms-1 m-1"><i class="bi bi-eye-fill icon-btn-card"></i>&nbsp;View</a>
-                                      </div>
-                                    </form>
-                                  </li>
-                                  <hr>
-                          <?php }
-                              }
-                            }
-                          } ?>
-                      <?php }
-                      } ?>
-                    </ul>
+                  <div class="col-4 d-flex justify-content-end align-middle">
+                    <p class="text-muted d-inline m-0"><b>0</b></p>
                   </div>
+
+
                 </div>
+
+
+
               </div>
             </div>
-          </div>
+            <div class="col-6">
+              <div class="card card-body ">
+                <div class="row">
+                  <div class="col-8 d-flex justify-content-start">
+                    <p class="text-muted d-inline m-0"><a href="#" data-toggle="modal" data-target="#exampleModalconect" class="nav-link">Want to Connect</a></p>
+                  </div>
+                  <div class="col-4 d-flex justify-content-end align-middle">
+                    <p class="text-muted d-inline m-0"><b><?php include_once('../model/classes/tblConect.php');
 
-          <div class="card cardbg mb-4">
-            <div class="card-body">
-              <div class="row">
-                <div class="col-sm-11">
-                  <h2 class="text-muted valoresinsi"><b>Products</b></h2>
-                </div>
-                <div class="col-sm-1">
-                  <p class="text-muted mb-0"><a href="#" class="btn btn-outline-primary ms-1 m-1" data-toggle="modal" data-target="#add_produto"><i class="bi bi-plus-circle-fill" style="font-size: 14px;"></i></a></p>
-                </div>
-              </div>
-              <hr class="m-1">
-              <div class="row rowProduct overflow-auto">
-                <?php
-                  include_once('../model/classes/tblProducts.php');
-                  $products = new Products();
-                  $products->setidClient($iduser);
-                  $resultsProdutos = $products->consulta("WHERE idClient = :idClient  ORDER BY idProduct ASC ");
-                  if ($resultsProdutos != null) {
-                      if (is_array($resultsProdutos) || is_object($resultsProdutos)) {
-                          foreach ($resultsProdutos as $rowProdutos) {
-                ?>
-                    <div class="mb-4 ml-1">
-                      <div class="card-container">
-                        <a data-toggle="modal" data-target="#modalEditarProduto" data-toggle="modal" data-target="#add_produto" data-id="<?php echo $rowProdutos->idProduct; ?>" class="hero-image-container">
-                          <img class="hero-image produto-img" src="<?php
-                                                                    $sqlProdutos = "SELECT * from tblProductPictures WHERE idProduct = :idProduct ";
-                                                                    $queryProdutos1 = $dbh->prepare($sqlProdutos);
-                                                                    $queryProdutos1->bindParam(':idProduct', $rowProdutos->idProduct, PDO::PARAM_INT);
-                                                                    $queryProdutos1->execute();
-                                                                    $resultsProdutos1 = $queryProdutos1->fetchAll(PDO::FETCH_OBJ);
-                                                                    if ($queryProdutos1->rowCount() > 0) {
-                                                                      foreach ($resultsProdutos1 as $rowProdutos1) {
-                                                                        echo "../../" . $rowProdutos1->tblProductPicturePath;
-                                                                      }
-                                                                    } else {
-                                                                      echo "https://images.unsplash.com/photo-1507608158173-1dcec673a2e5?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1470&q=80";
-                                                                    }
-                                                                    ?>" alt="Spinning glass cube" />
-                        </a>
-                        <main class="main-content mt-0 w-100">
-                          <h1 class="mb-0"><a class="cortardescricao color-branco desc-perfil-text" href="#"><?php echo $rowProdutos->ProductName; ?></a></h1>
-                          <p class="cortardescricao color-cinza-b produto-desc-text"><?php echo $rowProdutos->ProdcuctDescription; ?></p>
-                        </main>
-                      </div>
-                    </div>
+                                                          $conect = new Conect();
 
-                <?php } }
-                } ?>
-              </div>
-            </div>
+                                                          $conect->setidUserReceb($iduser);
 
-          </div>
+                                                          $resultConect = $conect->consulta("WHERE idUserReceb = :idUserReceb AND status = '0'");
 
-        </div>
-      </div>
-    </div>
-  </div>
+                                                          $numView = 0;
 
-
-  <div id="modalEditarProduto" class="modal custom-modal fade" role="dialog">
-    <div class="modal-dialog modal-dialog-centered modal-lg">
-      <div class="modal-content">
-
-        <div class="modal-body">
-          <h1 id="modalProductName" class="mb-0"></h1>
-          <p id="modalProductDescription" class="color-cinza-b produto-desc-text"></p>
-        </div>
-
-      </div>
-    </div>
-  </div>
-
-  <div class="modal custom-modal fade" id="exampleModal" role="dialog">
-    <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
-      <div class="modal-content">
-        <div class="modal-header">
-          <h5 class="modal-title" id="exampleModalLabel">Views</h5>
-          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-            <span aria-hidden="true">&times;</span>
-          </button>
-        </div>
-        <div class="modal-body">
-          <ul class="m-0 overflow-y p-1 ul-view">
-            <?php
-            $sqlViews = "SELECT * FROM tblviews WHERE idView = :idView ORDER BY datacriacao DESC";
-            $queryViews = $dbh->prepare($sqlViews);
-            $queryViews->bindParam(':idView', $iduser, PDO::PARAM_INT);
-            $queryViews->execute();
-            $resultviews = $queryViews->fetchAll(PDO::FETCH_OBJ);
-
-            if ($queryViews->rowCount() > 0) {
-              foreach ($resultviews as $rowviews) {
-
-            ?>
-                <?php
-                $sqlclientes = "SELECT * from tblUserClients WHERE idClient = :idClient";
-                $querycliente = $dbh->prepare($sqlclientes);
-                $querycliente->bindParam(':idClient', $rowviews->idUser, PDO::PARAM_INT);
-                $querycliente->execute();
-                $resultscliente = $querycliente->fetchAll(PDO::FETCH_OBJ);
-                if ($querycliente->rowCount() > 0) {
-                  foreach ($resultscliente as $rowcliente) {
-                    $sqlOperation = "SELECT * from tblOperations WHERE FlagOperation != '0' AND idOperation = :idOperation";
-                    $queryOperation = $dbh->prepare($sqlOperation);
-                    $queryOperation->bindParam(':idOperation', $rowcliente->CoreBusinessId, PDO::PARAM_INT);
-                    $queryOperation->execute();
-                    $resultsOperation = $queryOperation->fetchAll(PDO::FETCH_OBJ);
-                    if ($queryOperation->rowCount() > 0) {
-                      foreach ($resultsOperation as $rowOperation) {
-
-
-                ?>
-
-                        <li class="recommended-user icone-net mb-1">
-
-                          <div class="col-2 justify-content-center m-0 p-0">
-                            <a href="viewProfile.php?profile=<?php echo $rowcliente->idClient; ?>">
-                              <img src="<?php if ($rowOperation->PersonalUserPicturePath != "Avatar.png" && $rowOperation->PersonalUserPicturePath != "") {
-                                          echo "../" . $rowOperation->PersonalUserPicturePath;
-                                        } else {
-                                          echo "../../assets/img/Avatar.png";
-                                        } ?>" alt="user" alt="An unknown user."></a>
-                          </div>
-                          <div class="col-7 p-0">
-                            <p class="network-username-text"><a class="color-preto" href="viewProfile.php?profile=<?php echo $rowcliente->idClient; ?>"><b><?php echo $rowcliente->FirstName; ?><b> </a></p>
-                            <p class="network-operation-text"><a href="viewProfile.php?profile=<?php echo $rowcliente->idClient; ?>"><?php echo $rowOperation->NmOperation; ?></a></p>
-                            <p class="network-timeago-text"><?php
-                                                            $postDateTime = new DateTime($rowviews->datacriacao);
-
-                                                            // Obtenha o objeto DateTime da data e hora atual
-                                                            $currentTime = new DateTime();
-
-                                                            // Calcula a diferença entre a data e hora atual e a da postagem
-                                                            $timeDiff = $postDateTime->diff($currentTime);
-
-                                                            // Formata o tempo decorrido com base nas unidades (ano, mês, dia, hora, minuto, segundo)
-                                                            if ($timeDiff->y > 0) {
-                                                              $timeAgo = $timeDiff->y . " ano(s) atrás";
-                                                            } elseif ($timeDiff->m > 0) {
-                                                              $timeAgo = $timeDiff->m . " mês(es) atrás";
-                                                            } elseif ($timeDiff->d > 0) {
-                                                              $timeAgo = $timeDiff->d . " dia(s) atrás";
-                                                            } elseif ($timeDiff->h > 0) {
-                                                              $timeAgo = $timeDiff->h . " hora(s) atrás";
-                                                            } elseif ($timeDiff->i > 0) {
-                                                              $timeAgo = $timeDiff->i . " minuto(s) atrás";
-                                                            } else {
-                                                              $timeAgo = "Alguns segundos atrás";
+                                                          if ($resultConect != null) {
+                                                            foreach ($resultConect as $resultConectUnid) {
+                                                              $numView += 1;
                                                             }
+                                                          }
 
-                                                            echo $timeAgo; ?></p>
-                          </div>
-                          <div class="col-2 justify-content-center">
-                            <a href="viewProfile.php?profile=<?php echo $rowcliente->idClient; ?>">
-                              <i class="bi bi-eye-fill fa-2x icon-network" style="color: #0000007d !important;"></i>
-                            </a>
-                          </div>
+                                                          echo $numView; ?></b></p>
+                  </div>
 
-                        </li>
-                        <hr>
-                <?php }
-                    }
-                  }
-                } ?>
-            <?php }
-            } ?>
-          </ul>
+
+                </div>
+
+
+
+              </div>
+            </div>
+          </div>
+
         </div>
-        <div class="modal-footer">
+
+        <div class="col-12 mt-4">
+          <div class="row">
+            <div class="col-6">
+              <div class="card card-body ">
+                <div class="row">
+                  <div class="col-8 d-flex justify-content-start">
+                    <p class="text-muted d-inline m-0"><a href="#">My Network</a></p>
+                  </div>
+                  <div class="col-4 d-flex justify-content-end align-middle">
+                    <p class="text-muted d-inline m-0"><b><?php
+
+
+                                                          include_once('../model/classes/tblConect.php');
+
+                                                          $conect = new Conect();
+
+                                                          $conect->setidUserReceb($iduser);
+
+                                                          $resultConect = $conect->consulta("WHERE idUserReceb = :idUserReceb AND status = '1'");
+
+                                                          $numView = 0;
+
+                                                          if ($resultConect != null) {
+                                                            foreach ($resultConect as $resultConectUnid) {
+                                                              $numView += 1;
+                                                            }
+                                                          }
+
+                                                          echo $numView;
+                                                          ?></b></p>
+                  </div>
+
+
+                </div>
+
+
+
+              </div>
+            </div>
+            <div class="col-6">
+              <div class="card card-body ">
+                <div class="row">
+                  <div class="col-8 d-flex justify-content-start">
+                    <p class="text-muted d-inline m-0"><a href="#" data-toggle="modal" data-target="#exampleModalconect" class="nav-link">Views</a></p>
+                  </div>
+                  <div class="col-4 d-flex justify-content-end align-middle">
+                    <p class="text-muted d-inline m-0"><b><?php
+
+
+                                                          include_once('../model/classes/tblViews.php');
+
+                                                          $views = new Views();
+
+                                                          $views->setidView($iduser);
+
+                                                          $resultviews = $views->consulta(" WHERE idView = :idView ");
+
+                                                          $numView = 0;
+
+                                                          if ($resultviews != null) {
+                                                            foreach ($resultviews as $resultviewsUnid) {
+                                                              $numView += 1;
+                                                            }
+                                                          }
+
+                                                          echo $numView;
+
+                                                          ?></b></p>
+                  </div>
+
+
+                </div>
+
+
+
+              </div>
+            </div>
+          </div>
+
         </div>
       </div>
+      <div class="col-4 p-3">
+        <div class="card card-body ">
+          <div class="col-12">
+            <div class="row">
+              <div class="col-7 d-flex justify-content-start">
+                <p class="mb-0"><b>Core Business:</b></p>
+
+              </div>
+              <div class="col-5 d-flex justify-content-end align-middle">
+                <p class="mb-0"> <?php echo $NmBusiness; ?></p>
+              </div>
+              <?php if ($corebusiness == "1" || $corebusiness == "2" || $corebusiness == "3" || $corebusiness == "4" || $corebusiness == "5") {
+              ?>
+                <hr>
+                <div class="col-7 d-flex justify-content-start">
+                  <p class="mb-0"><b>Business:</b></p>
+
+                </div>
+                <div class="col-5 d-flex justify-content-end align-middle">
+                  <p class="mb-0"> <?php echo $NmBusinesscor; ?></p>
+                </div>
+                <hr>
+                <div class="col-7 d-flex justify-content-start">
+                  <p class="mb-0"><b>Business Category:</b></p>
+
+                </div>
+                <div class="col-5 d-flex justify-content-end align-middle">
+                  <p class="mb-0"> <?php echo $NmBusinessCategory; ?></p>
+                </div>
+              <?php }  ?>
+            </div>
+          </div>
+        </div>
+        <div class="card card-body mt-3 h-75">
+          <div class="col-12">
+            <p class="mb-0" style="font-size:medium;"><b>Description</b></p>
+          </div>
+          <div class="col-12">
+            <p class="text-muted"><?php echo $descricao; ?></p>
+          </div>
+        </div>
+      </div>
+
     </div>
   </div>
 
-
-  <div class="modal custom-modal fade" id="exampleModalconect" role="dialog">
-    <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
-      <div class="modal-content">
-        <div class="modal-header">
-          <h5 class="modal-title" id="exampleModalLabel">Want to Connect</h5>
-          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-            <span aria-hidden="true">&times;</span>
-          </button>
-        </div>
-        <div class="modal-body">
-          <ul class="m-0 overflow-auto p-1 ul-view">
-            <?php
-            $sqlconect = "SELECT * FROM tblconect WHERE idUserReceb = :idUserReceb AND status = '0'  ORDER BY datapedido DESC";
-            $queryconect = $dbh->prepare($sqlconect);
-            $queryconect->bindParam(':idUserReceb', $iduser, PDO::PARAM_INT);
-            $queryconect->execute();
-            $resulconect = $queryconect->fetchAll(PDO::FETCH_OBJ);
-
-            if ($queryconect->rowCount() > 0) {
-              foreach ($resulconect as $rowviews) {
-
-            ?>
-                <?php
-                $sqlclientes = "SELECT * from tblUserClients WHERE idClient = :idClient";
-                $querycliente = $dbh->prepare($sqlclientes);
-                $querycliente->bindParam(':idClient', $rowviews->idUserPed, PDO::PARAM_INT);
-                $querycliente->execute();
-                $resultscliente = $querycliente->fetchAll(PDO::FETCH_OBJ);
-                if ($querycliente->rowCount() > 0) {
-                  foreach ($resultscliente as $rowcliente) {
-                    $sqlOperation = "SELECT * from tblOperations WHERE FlagOperation != '0' AND idOperation = :idOperation";
-                    $queryOperation = $dbh->prepare($sqlOperation);
-                    $queryOperation->bindParam(':idOperation', $rowcliente->CoreBusinessId, PDO::PARAM_INT);
-                    $queryOperation->execute();
-                    $resultsOperation = $queryOperation->fetchAll(PDO::FETCH_OBJ);
-                    if ($queryOperation->rowCount() > 0) {
-                      foreach ($resultsOperation as $rowOperation) { ?>
-
-                        <li class="recommended-user icone-net" style="margin-bottom: 20px;">
-                          <form method="POST" enctype="multipart/form-data" class="w-100 h-100 d-flex">
-                            <input class="form-control bordainput" value="<?php echo $rowviews->id; ?>" autocomplete="off" name="idconectar" type="hidden">
-                            <input class="form-control bordainput" value="<?php echo $rowviews->idUserPed; ?>" autocomplete="off" name="idperfilpedido" type="hidden">
-                            <div class="col-2 justify-content-center m-0 p-0">
-                              <a href="viewProfile.php?profile=<?php echo $rowcliente->idClient; ?>">
-                                <img src="<?php if ($rowOperation->PersonalUserPicturePath != "Avatar.png" && $rowOperation->PersonalUserPicturePath != "") {
-                                            echo "../" . $rowOperation->PersonalUserPicturePath;
-                                          } else {
-                                            echo "../../assets/img/Avatar.png";
-                                          } ?>" alt="user" alt="An unknown user."></a>
-                            </div>
-                            <div class="col-7 p-0">
-                              <p class="mb-0 network-username-text"><b><a href="viewProfile.php?profile=<?php echo $rowcliente->idClient; ?>"><?php echo $rowcliente->FirstName; ?><b> </a></p>
-                              <p class="network-operation-text"><a href="viewProfile.php?profile=<?php echo $rowcliente->idClient; ?>"><?php echo $rowOperation->NmOperation; ?></a></p>
-                              <p class="network-timeago-text"><?php
-                                                              $postDateTime = new DateTime($rowviews->datapedido);
-
-                                                              // Obtenha o objeto DateTime da data e hora atual
-                                                              $currentTime = new DateTime();
-
-                                                              // Calcula a diferença entre a data e hora atual e a da postagem
-                                                              $timeDiff = $postDateTime->diff($currentTime);
-
-                                                              // Formata o tempo decorrido com base nas unidades (ano, mês, dia, hora, minuto, segundo)
-                                                              if ($timeDiff->y > 0) {
-                                                                $timeAgo = $timeDiff->y . " ano(s) atrás";
-                                                              } elseif ($timeDiff->m > 0) {
-                                                                $timeAgo = $timeDiff->m . " mês(es) atrás";
-                                                              } elseif ($timeDiff->d > 0) {
-                                                                $timeAgo = $timeDiff->d . " dia(s) atrás";
-                                                              } elseif ($timeDiff->h > 0) {
-                                                                $timeAgo = $timeDiff->h . " hora(s) atrás";
-                                                              } elseif ($timeDiff->i > 0) {
-                                                                $timeAgo = $timeDiff->i . " minuto(s) atrás";
-                                                              } else {
-                                                                $timeAgo = "Alguns segundos atrás";
-                                                              }
-
-                                                              echo $timeAgo; ?></p>
-                            </div>
-                            <div class="col-2 justify-content-center">
-                              <button type="submit" name="conectar" value="conectar" class="btn btn-outline-primary ms-1 m-1"><i class="bi bi-person-check-fill icon-btn-card"></i>&nbsp;Connect</button>
-                            </div>
-                          </form>
-                        </li>
-                        <hr>
-                <?php }
-                    }
-                  }
-                } ?>
-            <?php }
-            } ?>
-          </ul>
-        </div>
-        <div class="modal-footer">
-        </div>
-      </div>
-    </div>
-  </div>
 
   <?php include_once("widget/editarperfil.php"); ?>
 
-  <?php include_once("widget/produto.php"); ?>
 
 
 

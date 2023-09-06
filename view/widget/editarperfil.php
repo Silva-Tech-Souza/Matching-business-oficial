@@ -1,3 +1,6 @@
+<?
+header("Access-Control-Allow-Origin: *");
+?>
 <div id="add_perfil" class="modal custom-modal fade mt-1" role="dialog">
     <div class="modal-dialog modal-dialog-centered modal-lg">
         <div class="modal-content">
@@ -61,17 +64,19 @@
                                 <select class="form-control bordainput" onchange="showbusines(this.value)" name="business">
 
                                     <?php
-                                    $sql = "SELECT * from tblOperations ";
-                                    $query = $dbh->prepare($sql);
-                                    $query->execute();
-                                    $results = $query->fetchAll(PDO::FETCH_OBJ);
-                                    if ($query->rowCount() > 0) {
-                                        foreach ($results as $row) { ?>
+/*
+
+                                    include_once('../../model/classes/tblOperations.php');
+                                    $operations = new Operations();
+                                    $resultsoperation = $operations->consulta("");
+
+                                    if ($operations != null) {
+                                        foreach ($resultsoperation as $row) { ?>
                                             <option <?php if ($row->NmOperation ==  $NmBusiness) {
                                                         echo "selected";
                                                     } ?> value="<?php echo $row->idOperation; ?>"><?php echo $row->NmOperation; ?></option>
                                     <?php     }
-                                    }
+                                    }*/
                                     ?>
                                 </select>
                             </div>
@@ -82,17 +87,19 @@
                                     <label class="txtinput">Business:</label>
                                     <select onchange="showbusines2(this.value)" class="form-control bordainput" id="coreBusiness" name="coreBusiness">
                                         <?php
-                                        $sqlcorbusiness = "SELECT * from tblBusiness WHERE FlagOperation = '0' AND FlagOperation != 'D'";
-                                        $querycorbusiness = $dbh->prepare($sqlcorbusiness);
-                                        $querycorbusiness->execute();
-                                        $resultscorbusiness = $querycorbusiness->fetchAll(PDO::FETCH_OBJ);
-                                        if ($querycorbusiness->rowCount() > 0) {
-                                            foreach ($resultscorbusiness as $rowcor) { ?>
+                                      /*  include_once('../../model/classes/tblBusiness.php');
+                                        $bussiness = new Business();
+
+                                        $resultsbusiness = $bussiness->consulta("WHERE FlagOperation = '0' AND FlagOperation != 'D'");
+
+
+                                        if ($resultsbusiness != null) {
+                                            foreach ($resultsbusiness as $rowcor) { ?>
                                                 <option <?php if ($rowcor->NmBusiness ==  $NmBusinesscor) {
                                                             echo "selected";
                                                         } ?> value="<?php echo $rowcor->idBusiness; ?>"><?php echo $rowcor->NmBusiness; ?></option>
                                         <?php }
-                                        }
+                                        }*/
                                         ?>
                                     </select>
                                 </div>
@@ -102,16 +109,18 @@
                                 <select name="satellite" class="form-control bordainput">
 
                                     <?php
-                                    $sqlcorbusiness3 = "SELECT * from tblbusinesscategory WHERE idBusinessCategory = :idBusinessCategory";
-                                    $querycorbusiness3 = $dbh->prepare($sqlcorbusiness3);
-                                    $querycorbusiness3->bindParam(':idBusinessCategory', $idoperation, PDO::PARAM_INT);
-                                    $querycorbusiness3->execute();
-                                    $resultscorbusiness3 = $querycorbusiness3->fetchAll(PDO::FETCH_OBJ);
-                                    if ($querycorbusiness3->rowCount() > 0) {
-                                        foreach ($resultscorbusiness3 as $rowcor2) { ?>
+/*
+                                    include_once('../../model/classes/tblBusiness.php');
+                                    $bussinesscategory = new BusinessCategory;
+                                    $bussinesscategory->setidBusinessCategory($idoperation);
+                                    $resultsbussinesscategory = $bussinesscategory->consulta("WHERE idBusinessCategory = :idBusinessCategory");
+
+                                   
+                                    if ($resultsbussinesscategory != null) {
+                                        foreach ($resultsbussinesscategory as $rowcor2) { ?>
                                             <option value="<?php echo $rowcor2->idBusinessCategory; ?>"><?php echo $rowcor2->NmBusinessCategory; ?></option>
                                     <?php }
-                                    }
+                                    }*/
                                     ?>
                                 </select>
                             </div>

@@ -68,7 +68,7 @@ if ($resultsCountry != null) {
 
     <title>Matching Business</title>
     <link rel="stylesheet" href="assets/css/geral.css">
-   
+
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-4bw+/aepP/YC94hEpVNVgiZdgIC5+VKNBQNGCHeKRQN+PtmoHDEXuppvnDJzQIu9" crossorigin="anonymous">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
 
@@ -199,7 +199,7 @@ if ($resultsCountry != null) {
             <div class="row telacheia margemmnavbar">
 
                 <!-- Esquerda -->
-                <div class="col-3 d-none d-md-block justify-content-start ">
+                <div class="col-3 d-none d-md-block justify-content-start position-fixed overflow-auto scrollable-column">
                     <div class="card rounded-4 shadow">
                         <div class="card-body p-0 m-0">
                             <div class="col-12 mh-25">
@@ -250,8 +250,8 @@ if ($resultsCountry != null) {
                             </div>
                         </div>
                     </div>
-                    <div class="card rounded-4 shadow  treeviewmin panddingardtreeview">
-                        <div class="card-body p-0 m-0">
+                    <div class="card rounded-4 shadow  treeviewmin panddingardtreeview" style="margin-bottom: 100px !important;">
+                        <div class="card-body p-0"  >
                             <div class="col-12 mh-25">
                                 <h2>Matching Business Online</h2>
                                 <hr>
@@ -313,6 +313,8 @@ if ($resultsCountry != null) {
                         </div>
                     </div>
                 </div>
+
+                <div class="col-3"></div>
 
                 <!-- Meio -->
                 <div class="col-lg-6 col-12 justify-content-center">
@@ -406,8 +408,8 @@ if ($resultsCountry != null) {
                                                         <div class="col-12">
                                                             <h5 class="mb-0"><a class="text-decoration-none color-branco" href="#">&nbsp;&nbsp;<?php echo $rowProdutos->ProductName; ?></a></h5>
                                                         </div>
-                                                        <div class="col-12">
-                                                            <p class="cortardescricao color-cinza-b desc-produto fonte-principal">&nbsp;&nbsp;<?php echo $rowProdutos->ProdcuctDescription; ?></p>
+                                                        <div class="col-12 ">
+                                                            <p class="cortardescricao color-cinza-b desc-produto fonte-principal texto-desc">&nbsp;&nbsp;<?php echo $rowProdutos->ProdcuctDescription; ?></p>
                                                         </div>
 
 
@@ -631,7 +633,7 @@ if ($resultsCountry != null) {
                                                                 <input hidden type='text' name='idpost' value='" . $rowfeed->IdFeed . "'>
     
     
-                                                                <button class='btn btn-four pl-4 pr-4 no-border p-3' onClick='showDCurtida(" . $rowfeed->IdFeed . ")'>
+                                                                <button class='btn like-comment-btn pl-4 pr-4 no-border p-3' onClick='showDCurtida(" . $rowfeed->IdFeed . ")'>
                                                                     <span class='' style='font-size: 13px;'>
                                                                         " . $numeroCurtidas . " &nbsp;&nbsp;<i class='fa-solid fa-thumbs-up'> Like</i>
                                                                     </span>
@@ -647,7 +649,7 @@ if ($resultsCountry != null) {
                                                             <input hidden type='text' name='idpost' value='" . $rowfeed->IdFeed . "'>
 
 
-                                                            <button class='btn btn-third pl-4 pr-4 no-border p-3' onClick='showCurtida(" . $rowfeed->IdFeed . ");'>
+                                                            <button class='btn like-comment-btn pl-4 pr-4 no-border p-3' onClick='showCurtida(" . $rowfeed->IdFeed . ");'>
                                                                 <span class='' style='font-size: 13px;'>
                                                                     " . $numeroCurtidas . " &nbsp;&nbsp;<i class='fa-solid fa-thumbs-up'> Like</i>
                                                                 </span>
@@ -662,9 +664,9 @@ if ($resultsCountry != null) {
 
                                                     <div class="col-6 d-flex justify-content-end">
                                                         <a id="btnCommnet" data-toggle="modal" data-target="#modalEditarProduto" data-id="<?php echo $rowfeed->IdFeed;
-                                                                                                                                            ?>" class="btn btn-third pl-4 pr-4 no-border p-3 hero-image-container2"><span class="btn-comment-post">
+                                                                                                                                            ?>" class="btn like-comment-btn pl-4 pr-4 no-border p-3 hero-image-container2"><span class="btn-comment-post">
                                                                 0 &nbsp;&nbsp; <i class="fa fa-comment">
-                                                                    Comentarios</i>
+                                                                    Comments</i>
                                                             </span></a>
 
 
@@ -681,25 +683,28 @@ if ($resultsCountry != null) {
                         </div>
                     </div>
                 </div>
-
+               
                 <!-- Direita -->
-                <div class="col-3 justify-content-end">
-                    <h2>Sponsored</h2>
+                <div class="col-3"></div>
+                <div class="col-3 justify-content-end position-fixed">
+                <div class="col-9"></div>
+                <div class="col-3">   <h2>Sponsored</h2>
 
-                    <div class="row" style=" text-align: center;">
-                        <div class="col-sm-12, p_results">
-                            <a href="#" style="
-    font-size: small;
+<div class="row" style=" text-align: center;">
+    <div class="col-sm-12, p_results">
+        <a href="#" style="
+font-size: small;
 "> Privacy Policy </a>|
-                            <a href="" style="
-    font-size: small;
+        <a href="" style="
+font-size: small;
 "> User Agreement </a>|
-                            <a href="" style="
-    font-size: small;
+        <a href="" style="
+font-size: small;
 "> Cookie Policy </a>|
-                            <a href="" style="
-    font-size: small;
-"> Copyright Policy</a>
+        <a href="" style="
+font-size: small;
+"> Copyright Policy</a></div>
+                 
                         </div>
                     </div>
 
@@ -849,7 +854,7 @@ if ($resultsCountry != null) {
         //Initialization of treeviews
 
         $('#tree1').treed();
-   
+
 
 
         window.addEventListener('scroll', function() {
@@ -871,7 +876,7 @@ if ($resultsCountry != null) {
                 // Use o ID do produto para fazer uma requisição AJAX para buscar os dados do produto no servidor
                 $.ajax({
                     type: 'GET',
-                    url: 'visualizarComent.php', // Substitua pelo caminho correto
+                    url: 'widget/visualizarComent.php', // Substitua pelo caminho correto
                     data: {
                         idFeed: idFeed
                     },

@@ -1999,3 +1999,32 @@ input {
     border-color: #14253D;
     background-color: #3D79D9;
 }
+
+.scrollable-column {
+    overflow-y: auto;
+    /* Enable vertical scrolling for the second column */
+    max-height: 100vh;
+    /* Set a maximum height for the second column */
+}
+
+.like-comment-btn {
+    color: #000000;
+}
+
+.like-comment-btn:hover {
+    color: #3D79D9;
+}
+
+.texto-desc {
+    display: block;
+    /* Fallback for non-webkit */
+    display: -webkit-box;
+    height: 2.6em;
+    /* Fallback for non-webkit, line-height * 2 */
+    line-height: 1.3em;
+    -webkit-line-clamp: 2;
+    /* if you change this, make sure to change the fallback line-height and height */
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}

@@ -149,7 +149,7 @@ if ($resultsBusinessCategory != null) {
   <!-- Header -->
   <?php include_once("widget/navbar.php"); ?><br><br><br><br><br>
   <!-- Body -->
-  <div class="col-12">
+  <div class="col-12 p-3">
     <div class="row">
       <!-- Card Perfil -->
       <div class="col-4 p-3">
@@ -343,12 +343,96 @@ if ($resultsBusinessCategory != null) {
             </div>
           </div>
         </div>
-        <div class="card card-body mt-3 h-75">
+        <div class="card card-body mt-3" style="height: 69%;">
           <div class="col-12">
             <p class="mb-0" style="font-size:medium;"><b>Description</b></p>
           </div>
           <div class="col-12">
             <p class="text-muted"><?php echo $descricao; ?></p>
+          </div>
+        </div>
+      </div>
+      <!-- Body -->
+      <div class="col-4 p-3">
+        <div class="card card-body ">
+          <div class="row">
+            <div class="col-2 d-flex justify-content-start">
+              <img src="assets/img/Avatar.png" alt="user" class="nav-profile-img" onerror="this.onerror=null; this.src='assets/img/Avatar.png'">
+
+            </div>
+            <div class="col-6 d-flex justify-content-start d-flex align-items-center">
+              <p class="mb-0 text-center align-middle" style="font-size:larger"><b>Funcionario 1</b></p>
+
+            </div>
+            <div class="col-4 d-flex justify-content-end d-flex align-items-center">
+            <input class="insertpost btn btn-primary pl-4 pr-4 no-border p-3 post-btn-confirm" type="submit" name="post" value="+ Add">
+
+            </input>
+            </div>
+          </div>
+          <hr>
+          <div class="row">
+            <div class="col-2 d-flex justify-content-start">
+              <img src="assets/img/Avatar.png" alt="user" class="nav-profile-img" onerror="this.onerror=null; this.src='assets/img/Avatar.png'">
+
+            </div>
+            <div class="col-6 d-flex justify-content-start d-flex align-items-center">
+              <p class="mb-0 text-center align-middle" style="font-size:larger"><b>Funcionario 2</b></p>
+
+            </div>
+            <div class="col-4 d-flex justify-content-end d-flex align-items-center">
+            <input class="insertpost btn btn-primary pl-4 pr-4 no-border p-3 post-btn-confirm" type="submit" name="post" value="+ Add">
+
+            </input>
+            </div>
+          </div>
+          <hr>
+          <div class="row">
+            <div class="col-2 d-flex justify-content-start">
+              <img src="assets/img/Avatar.png" alt="user" class="nav-profile-img" onerror="this.onerror=null; this.src='assets/img/Avatar.png'">
+
+            </div>
+            <div class="col-6 d-flex justify-content-start d-flex align-items-center">
+              <p class="mb-0 text-center align-middle" style="font-size:larger"><b>Funcionario 3</b></p>
+
+            </div>
+            <div class="col-4 d-flex justify-content-end d-flex align-items-center">
+            <input class="insertpost btn btn-primary pl-4 pr-4 no-border p-3 post-btn-confirm" type="submit" name="post" value="+ Add">
+
+            </input>
+            </div>
+          </div>
+          <hr>
+          <div class="row">
+            <div class="col-2 d-flex justify-content-start">
+              <img src="assets/img/Avatar.png" alt="user" class="nav-profile-img" onerror="this.onerror=null; this.src='assets/img/Avatar.png'">
+
+            </div>
+            <div class="col-6 d-flex justify-content-start d-flex align-items-center">
+              <p class="mb-0 text-center align-middle" style="font-size:larger"><b>Funcionario 4</b></p>
+
+            </div>
+            <div class="col-4 d-flex justify-content-end d-flex align-items-center">
+            <input class="insertpost btn btn-primary pl-4 pr-4 no-border p-3 post-btn-confirm" type="submit" name="post" value="+ Add">
+
+            </input>
+            </div>
+          </div>
+          <hr>
+          <div class="row">
+            <div class="col-2 d-flex justify-content-start">
+              <img src="assets/img/Avatar.png" alt="user" class="nav-profile-img" onerror="this.onerror=null; this.src='assets/img/Avatar.png'">
+
+            </div>
+            <div class="col-6 d-flex justify-content-start d-flex align-items-center">
+              <p class="mb-0 text-center align-middle" style="font-size:larger"><b>Funcionario 5</b></p>
+
+            </div>
+            <div class="col-4 d-flex justify-content-end d-flex align-items-center">
+            <input class="insertpost btn btn-primary pl-4 pr-4 no-border p-3 post-btn-confirm" type="submit" name="post" value="+ Add">
+
+            </input>
+            </div>
           </div>
         </div>
       </div>

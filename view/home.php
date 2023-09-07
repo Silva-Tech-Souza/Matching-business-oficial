@@ -686,24 +686,24 @@ if ($resultsCountry != null) {
                
                 <!-- Direita -->
                 <div class="col-3"></div>
-                <div class="col-3 justify-content-end position-fixed">
-                <div class="col-9"></div>
-                <div class="col-3">   <h2>Sponsored</h2>
+                <div class="col-12 justify-content-start position-fixed d-none d-md-block">
+                
+                <div class="col-3 mr-0">   <h2>Sponsored</h2>
 
-<div class="row" style=" text-align: center;">
-    <div class="col-sm-12, p_results">
-        <a href="#" style="
-font-size: small;
-"> Privacy Policy </a>|
-        <a href="" style="
-font-size: small;
-"> User Agreement </a>|
-        <a href="" style="
-font-size: small;
-"> Cookie Policy </a>|
-        <a href="" style="
-font-size: small;
-"> Copyright Policy</a></div>
+                    <div class="row" style=" text-align: center;">
+                        <div class="col-sm-12, p_results">
+                            <a href="#" style="
+                    font-size: small;
+                    "> Privacy Policy </a>|
+                            <a href="" style="
+                    font-size: small;
+                    "> User Agreement </a>|
+                            <a href="" style="
+                    font-size: small;
+                    "> Cookie Policy </a>|
+                            <a href="" style="
+                    font-size: small;
+                    "> Copyright Policy</a></div>
                  
                         </div>
                     </div>

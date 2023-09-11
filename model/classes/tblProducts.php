@@ -94,8 +94,6 @@ class Products{
 
     public function consulta($paramsExtra){
 
-        
-
         //$sql = "SELECT * from tblUserClients WHERE idClient = :idClient ";
         $sql = "SELECT * from tblProducts ".$paramsExtra;
         $query = $this->dbh->prepare($sql);
@@ -126,9 +124,9 @@ class Products{
         }
 
         $query->execute();
-        $results = $this->dbh->lastInsertId();
+        $results = $query->fetchAll(PDO::FETCH_OBJ);
 
-        return $results;
+        if ($query->rowCount() > 0) {return $results;} else {return null;}
 
     }
 

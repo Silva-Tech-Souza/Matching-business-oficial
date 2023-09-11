@@ -2,20 +2,21 @@
 session_start();
 error_reporting(0);
 date_default_timezone_set('America/Sao_Paulo');
-include('../../../conexao/conexao.php');
-$idbusines = $_GET["q"];
-$sqloperacao = "SELECT * from tblOperations WHERE idOperation = :idOperation";
-$queryoperacao = $dbh->prepare($sqloperacao);
-$queryoperacao->bindParam(':idOperation', $idbusines, PDO::PARAM_INT);
-$queryoperacao->execute();
-$resultsoperacao = $queryoperacao->fetchAll(PDO::FETCH_OBJ);
-if ($queryoperacao->rowCount() > 0) {
-  foreach ($resultsoperacao as $rowoperacao) {
-    $_SESSION["FlagOperation"] = $FlagOperation = $rowoperacao->FlagOperation;
-  }
-}
 
-if ($FlagOperation  != "D") {
+
+$idbusines = $_GET["q"];
+include_once('../../model/classes/tblOperations.php');
+$tblOperations1 = new Operations();
+$tblOperations1->setidOperation($idbusines);
+$resultstblOperations = $tblOperations1->consulta("WHERE idOperation = :idOperation");
+
+if ($tblOperations1 != null) {
+  foreach ($resultstblOperations as $rowoperation) {
+    $_SESSION["FlagOperation"] = $FlagOperation = $rowoperation->FlagOperation;
+  }
+} ?>
+<input type="hidden" name="flagtipo" value="<?php echo  $_SESSION["FlagOperation"]; ?>">
+<?php if ($FlagOperation  != "D") {
 
   if ($_SESSION["tipoflag"] == "B" && $FlagOperation  == "B") { ?>
     <div class="row">
@@ -28,17 +29,18 @@ if ($FlagOperation  != "D") {
     </div>
     <div class="col-sm-12">
       <div class="form-floating">
-        <select name="business[]" class=" form-select categmulti border-dark inputtamanho" multiple id="floatingSelectGrid" aria-label="Floating label select example">
+        <select name="business[]" class=" form-select categmulti border-dark inputtamanho" multiple='multiple' id="floatingSelectGrid" aria-label="Floating label select example">
           <option>Select</option>
           <?php
-          $sqlpaises = "SELECT * FROM tblBusiness  WHERE FlagOperation = '0'";
-          $querypaises = $dbh->prepare($sqlpaises);
-          $querypaises->execute();
-          $resulpaises = $querypaises->fetchAll(PDO::FETCH_OBJ);
-          if ($querypaises->rowCount() > 0) {
-            foreach ($resulpaises as $rowpaises) { ?>
-              <option value="<?php echo $rowpaises->idBusiness; ?>"><?php echo $rowpaises->NmBusiness; ?></option>
+          include_once('../../model/classes/tblBusiness.php');
+          $tblBusiness = new Business();
+          $resultstblBusiness = $tblBusiness->consulta("WHERE FlagOperation = '0'");
+          if ($tblBusiness != null) {
+            if (is_array($resultstblBusiness) || is_object($resultstblBusiness)) {
+              foreach ($resultstblBusiness as $rowBusiness) { ?>
+                <option value="<?php echo $rowBusiness->idBusiness; ?>"><?php echo $rowBusiness->NmBusiness; ?></option>
           <?php  }
+            }
           }
           ?>
         </select>
@@ -60,14 +62,15 @@ if ($FlagOperation  != "D") {
         <select name="business" onchange="showcategoria(this.value)" class="form-select border-dark inputtamanho" id="floatingSelectGrid" aria-label="Floating label select example">
           <option>Select</option>
           <?php
-          $sqlpaises = "SELECT * FROM tblBusiness  WHERE FlagOperation = '0'";
-          $querypaises = $dbh->prepare($sqlpaises);
-          $querypaises->execute();
-          $resulpaises = $querypaises->fetchAll(PDO::FETCH_OBJ);
-          if ($querypaises->rowCount() > 0) {
-            foreach ($resulpaises as $rowpaises) { ?>
-              <option value="<?php echo $rowpaises->idBusiness; ?>"><?php echo $rowpaises->NmBusiness; ?></option>
+          include_once('../../model/classes/tblBusiness.php');
+          $tblBusiness = new Business();
+          $resultstblBusiness = $tblBusiness->consulta("WHERE FlagOperation = '0'");
+          if ($tblBusiness != null) {
+            if (is_array($resultstblBusiness) || is_object($resultstblBusiness)) {
+              foreach ($resultstblBusiness as $rowBusiness) {  ?>
+                <option value="<?php echo $rowBusiness->idBusiness; ?>"><?php echo $rowBusiness->NmBusiness; ?></option>
           <?php  }
+            }
           }
           ?>
         </select>

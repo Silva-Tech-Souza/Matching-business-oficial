@@ -22,7 +22,19 @@ class UserClients{
     protected $WhatsAppNumber = null;
     protected $descricao = null;
     protected $taxid = null;
+    protected $AnoFundacao = null;
+    protected $NumEmpregados = null;
+    protected $NumVendedores = null;
+    protected $NivelOperacao = null;
+    protected $DetalheRegiao = null;
+    protected $Fob_3Y = null;
+    protected $Vol_3Y = null;
+    protected $Fob_2Y = null;
+    protected $Vol_2Y = null;
+    protected $Fob_1Y = null;
+    protected $Vol_1Y = null;
     protected $dbh = null;
+
 
     function __construct()
     {
@@ -115,12 +127,55 @@ class UserClients{
     
     public function gettaxid(){return $this->taxid;}
 
+    public function setAnoFundacao($param){$this->AnoFundacao = $param;}
+    
+    public function getAnoFundacao(){return $this->AnoFundacao;}
+
+    public function setNumEmpregados($param){$this->NumEmpregados = $param;}
+    
+    public function getNumEmpregados(){return $this->NumEmpregados;}
+
+    public function setNumVendedores($param){$this->NumVendedores = $param;}
+    
+    public function getNumVendedores(){return $this->NumVendedores;}
+
+    public function setNivelOperacao($param){$this->NivelOperacao = $param;}
+    
+    public function getNivelOperacao(){return $this->NivelOperacao;}
+
+    public function setDetalheRegiao($param){$this->DetalheRegiao = $param;}
+    
+    public function getDetalheRegiao(){return $this->DetalheRegiao;}
+
+    public function setFob_3Y($param){$this->Fob_3Y = $param;}
+    
+    public function getFob_3Y(){return $this->Fob_3Y;}
+
+    public function setVol_3Y($param){$this->Vol_3Y = $param;}
+    
+    public function getVol_3Y(){return $this->Vol_3Y;}
+
+    public function setFob_2Y($param){$this->Fob_2Y = $param;}
+    
+    public function getFob_2Y(){return $this->Fob_2Y;}
+
+    public function setVol_2Y($param){$this->Vol_2Y = $param;}
+    
+    public function getVol_2Y(){return $this->Vol_2Y;}
+
+    public function setFob_1Y($param){$this->Fob_1Y = $param;}
+    
+    public function getFob_1Y(){return $this->Fob_1Y;}
+
+    public function setVol_1Y($param){$this->Vol_1Y = $param;}
+    
+    public function getVol_1Y(){return $this->Vol_1Y;}
 
     public function cadastrar(){
 
         
 
-        $sql = "INSERT INTO tblUserClients (`idClient`, `FirstName`, `MiddleName`, `LastName`, `JobTitle`, `idCountry`, `CompanyName`, `Password`, `created_at`, `CoreBusinessId`, `SatBusinessId`, `IdOperation`, `email`, `idFlagStatusCadastro`, `idPerfilUsuario`, `PersonalUserPicturePath`, `LogoPicturePath`, `WhatsAppNumber`, `descricao`, `taxid`) VALUES (`:idClient`, `:FirstName`, `:MiddleName`, `:LastName`, `:JobTitle`, `:idCountry`, `:CompanyName`, `:Password`, `:created_at`, `:CoreBusinessId`, `:SatBusinessId`, `:IdOperation`, `:email`, `:idFlagStatusCadastro`, `:idPerfilUsuario`, `:PersonalUserPicturePath`, `:LogoPicturePath`, `:WhatsAppNumber`, `:descricao`, `:taxid`)";
+        $sql = "INSERT INTO tblUserClients ( `FirstName`,  `LastName`, `JobTitle`, `idCountry`, `CompanyName`,  `email`, IdOperation, idFlagStatusCadastro, idPerfilUsuario, `WhatsAppNumber`, `taxid`, `AnoFundacao`, `NumEmpregados`, `NumVendedores`, `NivelOperacao`, `DetalheRegiao`, `Fob_3Y`, `Vol_3Y`, `Fob_2Y`, `Vol_2Y`, `Fob_1Y`, `Vol_1Y`) VALUES ( :FirstName,  :LastName, :JobTitle, :idCountry, :CompanyName, :email, '1', '2', '1', :WhatsAppNumber, :taxid, :AnoFundacao, :NumEmpregados, :NumVendedores, :NivelOperacao, :DetalheRegiao, :Fob_3Y, :Vol_3Y, :Fob_2Y, :Vol_2Y, :Fob_1Y, :Vol_1Y)";
         $query = $this->dbh->prepare($sql);
         
         if($this->idClient != null){
@@ -147,9 +202,7 @@ class UserClients{
         if($this->Password != null){
             $query->bindParam(':Password', $this->Password, PDO::PARAM_STR);
         }
-        if($this->created_at != null){
-            $query->bindParam(':created_at', $this->created_at, PDO::PARAM_STR);
-        }
+       
         if($this->CoreBusinessId != null){
             $query->bindParam(':CoreBusinessId', $this->CoreBusinessId, PDO::PARAM_INT);
         }
@@ -334,6 +387,79 @@ class UserClients{
         $query->execute();
         return $query;
 
+    }
+
+    public function quantidade($paramsExtra){
+        
+        //$sql = "SELECT * from tblUserClients WHERE idClient = :idClient ";
+        $sql = "SELECT * from tblUserClients ".$paramsExtra;
+        $query = $this->dbh->prepare($sql);
+        
+        if($this->idClient != null){
+            $query->bindParam(':idClient', $this->idClient, PDO::PARAM_INT);
+        }
+        if($this->FirstName != null){
+            $query->bindParam(':FirstName', $this->FirstName, PDO::PARAM_STR);
+        }
+        if($this->MiddleName != null){
+            $query->bindParam(':MiddleName', $this->MiddleName, PDO::PARAM_STR);
+        }
+        if($this->LastName != null){
+            $query->bindParam(':LastName', $this->LastName, PDO::PARAM_STR);
+        }
+        if($this->JobTitle != null){
+            $query->bindParam(':JobTitle', $this->JobTitle, PDO::PARAM_STR);
+        }
+        if($this->idCountry != null){
+            $query->bindParam(':idCountry', $this->idCountry, PDO::PARAM_INT);
+        }
+        if($this->CompanyName != null){
+            $query->bindParam(':CompanyName', $this->CompanyName, PDO::PARAM_STR);
+        }
+        if($this->Password != null){
+            $query->bindParam(':Password', $this->Password, PDO::PARAM_STR);
+        }
+        if($this->created_at != null){
+            $query->bindParam(':created_at', $this->created_at, PDO::PARAM_STR);
+        }
+        if($this->CoreBusinessId != null){
+            $query->bindParam(':CoreBusinessId', $this->CoreBusinessId, PDO::PARAM_INT);
+        }
+        if($this->SatBusinessId != null){
+            $query->bindParam(':SatBusinessId', $this->SatBusinessId, PDO::PARAM_INT);
+        }
+        if($this->IdOperation != null){
+            $query->bindParam(':IdOperation', $this->IdOperation, PDO::PARAM_INT);
+        }
+        if($this->email != null){
+            $query->bindParam(':email', $this->email, PDO::PARAM_STR);
+        }
+        if($this->idFlagStatusCadastro != null){
+            $query->bindParam(':idFlagStatusCadastro', $this->idFlagStatusCadastro, PDO::PARAM_INT);
+        }
+        if($this->idPerfilUsuario != null){
+            $query->bindParam(':idPerfilUsuario', $this->idPerfilUsuario, PDO::PARAM_INT);
+        }
+        if($this->PersonalUserPicturePath != null){
+            $query->bindParam(':PersonalUserPicturePath', $this->PersonalUserPicturePath, PDO::PARAM_STR);
+        }
+        if($this->LogoPicturePath != null){
+            $query->bindParam(':LogoPicturePath', $this->LogoPicturePath, PDO::PARAM_STR);
+        }
+        if($this->WhatsAppNumber != null){
+            $query->bindParam(':WhatsAppNumber', $this->WhatsAppNumber, PDO::PARAM_STR);
+        }
+        if($this->descricao != null){
+            $query->bindParam(':descricao', $this->descricao, PDO::PARAM_STR);
+        }
+        if($this->taxid != null){
+            $query->bindParam(':taxid', $this->taxid, PDO::PARAM_STR);
+        }
+
+        $query->execute();
+        $results = $query->fetchAll(PDO::FETCH_OBJ);
+
+        if ($query->rowCount() > 0) {return $query->rowCount();} else {return 0;}
     }
 
     public function deletar($paramsExtra){

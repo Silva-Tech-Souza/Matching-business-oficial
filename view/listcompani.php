@@ -2,20 +2,25 @@
 session_start();
 error_reporting(0);
 date_default_timezone_set('America/Sao_Paulo');
-include('../../conexao/conexao.php');
-
 if ($_SESSION["id"] < 0 || $_SESSION["id"] == "") {
-  header("Location: index.php");
+  header("Location: login.php");
 }
-
 $iduser = $_SESSION["id"];
+$busines = $_GET["busines"];
+$operation = $_GET["operation"];
+$text = $_GET["text"];
+
 $_SESSION["n"] = 5;
-$sql = "SELECT * from tblUserClients WHERE idClient = :idClient";
-$query = $dbh->prepare($sql);
-$query->bindParam(':idClient', $iduser, PDO::PARAM_INT);
-$query->execute();
-$results = $query->fetchAll(PDO::FETCH_OBJ);
-if ($query->rowCount() > 0) {
+
+include_once('../model/classes/tblUserClients.php');
+
+$userClients = new UserClients();
+
+$userClients->setidClient($iduser);
+
+$results = $userClients->consulta("WHERE idClient = :idClient");
+
+if ($results != null) {
   foreach ($results as $row) {
     $username =  $row->FirstName . " " . $row->LastName;
     $FirstName = $row->FirstName;
@@ -39,512 +44,749 @@ if ($query->rowCount() > 0) {
   <meta charset="UTF-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="assets/css/geral.css">
+
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-4bw+/aepP/YC94hEpVNVgiZdgIC5+VKNBQNGCHeKRQN+PtmoHDEXuppvnDJzQIu9" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+
   <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
   <script src="https://kit.fontawesome.com/f51201541f.js" crossorigin="anonymous"></script>
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/autosize.js/4.0.2/autosize.min.js"></script>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
   <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
-
-
-  <link rel="stylesheet" href="../../assets/css/bootstrap/back.css">
-
-  <link rel="stylesheet" href="../../assets/css/bootstrap/bootstrap-datetimepicker.min.css">
-  <link rel="stylesheet" href="../../assets/css/bootstrap/bootstrap.min.css">
-  <link rel="stylesheet" href="../../assets/css/bootstrap/dataTables.bootstrap4.min.css">
-  <link rel="stylesheet" href="../../assets/css/bootstrap/font-awesome.min.css">
-
-
-  <link rel="stylesheet" href="../../assets/css/feed.css">
-  <link rel="stylesheet" href="../../assets/css/bootstrap/style.css">
-  <link rel="stylesheet" href="../../assets/css/bootstrap/line-awesome.min.css">
-
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.5.0/font/bootstrap-icons.css">
-
-  <link rel="stylesheet" href="../../assets/css/profile.css">
-  <link href="https://www.jqueryscript.net/css/jquerysctipttop.css" rel="stylesheet" type="text/css">
-  <link rel="stylesheet" type="text/css" href="https://bootswatch.com/superhero/bootstrap.min.css">
-  <script src="https://code.jquery.com/jquery-1.12.4.min.js"></script>
-  <link rel="stylesheet" type="text/css" href="../../assets/css/jquery.dropdown.css">
-  <script src="../../assets/js/jquery.dropdown.js"></script>
-  <script type="text/javascript" src="../../assets/js/mock.js"></script>
+  <link rel="stylesheet" href="assets/css/feed.css">
+  <link rel="stylesheet" href="assets/css/navbar.css">
+  <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick.css" />
+  <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick-theme.css" />
+  <script type="text/javascript" src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/autosize.js/4.0.2/autosize.min.js"></script>
+  <link rel="stylesheet" href="assets/css/owl/owl.carousel.min.css">
+  <link rel="stylesheet" href="assets/css/owl/owl.theme.default.min.css">
   <title>Searches Profile</title>
   <style>
-    .sidebar-inner.slimscroll {
-      max-width: 300px;
-      /* Largura máxima da div para mostrar a barra de rolagem */
-      overflow-x: auto;
-      /* Permite rolagem horizontal quando o conteúdo excede a largura máxima */
+    /*-----------------
+	9. Sidebar
+-----------------------*/
+
+    .sidebar {
+      background-color: #34444c;
+      border-right: 1px solid transparent;
+      bottom: 0;
+      left: 0;
+      margin-top: 0;
+      position: fixed;
+      top: 60px;
+      transition: all 0.2s ease-in-out 0s;
+      width: 290px;
+      z-index: 1001;
+    }
+
+    .sidebar-inner {
+      height: 100%;
+      transition: all 0.2s ease-in-out 0s;
+    }
+
+    .sidebar-menu {
+      padding: 10px 0;
     }
 
     .sidebar-menu ul {
-      padding: 0;
+      list-style-type: none;
       margin: 0;
-      list-style: none;
+      padding: 0;
+      position: relative;
     }
 
-    .sidebar .sidebar-menu>ul>li>a span {
-      font-size: small;
-      white-space: revert;
-      /* Força a quebra de linha dentro dos elementos <li> */
+    .sidebar-menu li a:hover {
+      color: #fff;
     }
 
-    /* Hide all steps by default: */
-    .tab {
-      display: none;
+    .sidebar-menu li.active a {
+      color: #fff;
+      background-color: rgba(0, 0, 0, 0.2);
     }
 
-    #prevBtn {
-      background-color: #bbbbbb;
-    }
-
-    /* Make circles that indicate the steps of the form: */
-    .step {
-      height: 15px;
-      width: 15px;
-      margin: 0 2px;
-      background-color: #bbbbbb;
-      border: none;
-      border-radius: 50%;
-      display: inline-block;
-      opacity: 0.5;
-    }
-
-    .step.active {
+    .menu-title {
+      color: #ebecf1;
+      display: flex;
       opacity: 1;
+      padding: 5px 15px;
+      white-space: nowrap;
     }
 
-    /* Mark the steps that are finished and valid: */
-    .step.finish {
-      background-color: #04AA6D;
+
+    .mobile-user-menu {
+      color: #fff;
+      display: none;
+      float: right;
+
+      height: 60px;
+      line-height: 60px;
+      padding: 0 20px;
+      position: absolute;
+      right: 0;
+      text-align: right;
+      top: 0;
+      width: 60px;
+      z-index: 10;
+    }
+
+    .mobile-user-menu>a {
+      color: #fff;
+      padding: 0;
+    }
+
+    .mobile-user-menu a:hover {
+      color: #fff;
+    }
+
+    .profile-rightbar {
+      display: none !important;
+      color: #782580;
+
+      margin-left: 15px;
+    }
+
+    .mobile_btn {
+      display: none;
+      float: left;
+    }
+
+
+    .sidebar-menu .menu-arrow {
+      -webkit-transition: -webkit-transform 0.15s;
+      -o-transition: -o-transform 0.15s;
+      transition: transform .15s;
+      position: absolute;
+      right: 15px;
+      display: inline-block;
+
+      text-rendering: auto;
+      line-height: 40px;
+      font-size: 18px;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+      -webkit-transform: translate(0, 0);
+      -ms-transform: translate(0, 0);
+      -o-transform: translate(0, 0);
+      transform: translate(0, 0);
+      line-height: 18px;
+      top: 11px;
+
+    }
+
+    .sidebar-menu .menu-arrow:before {
+      content: "\f105";
+    }
+
+    .sidebar-menu li a.subdrop .menu-arrow {
+      -ms-transform: rotate(90deg);
+      -webkit-transform: rotate(90deg);
+      -o-transform: rotate(90deg);
+      transform: rotate(90deg);
+    }
+
+    .noti-dot:before {
+      content: '';
+      width: 5px;
+      height: 5px;
+      border: 5px solid #782580;
+      -webkit-border-radius: 30px;
+      -moz-border-radius: 30px;
+      border-radius: 30px;
+      background-color: #782580;
+      z-index: 10;
+      position: absolute;
+      right: 37px;
+      top: 15px;
+    }
+
+    .noti-dot:after {
+      content: '';
+      border: 4px solid #782580;
+      background: transparent;
+      -webkit-border-radius: 60px;
+      -moz-border-radius: 60px;
+      border-radius: 60px;
+      height: 24px;
+      width: 24px;
+      -webkit-animation: pulse 3s ease-out;
+      -moz-animation: pulse 3s ease-out;
+      animation: pulse 3s ease-out;
+      -webkit-animation-iteration-count: infinite;
+      -moz-animation-iteration-count: infinite;
+      animation-iteration-count: infinite;
+      position: absolute;
+      top: 8px;
+      right: 30px;
+      z-index: 1;
+      opacity: 0;
+    }
+
+    .sidebar-menu ul ul a .menu-arrow {
+      top: 6px;
+    }
+
+    .sidebar-menu a {
+
+      transition: unset;
+      -moz-transition: unset;
+      -o-transition: unset;
+      -ms-transition: unset;
+      -webkit-transition: unset;
+    }
+
+    .page-wrapper {
+      left: 0;
+
+      margin-left: 290px;
+      padding-top: 60px;
+      position: relative;
+      transition: all 0.2s ease-in-out;
+    }
+
+    .page-wrapper>.content {
+      padding: 30px;
+    }
+
+    .page-header {
+      margin-bottom: 1.875rem;
+    }
+
+    .page-header .breadcrumb {
+      background-color: transparent;
+      color: #6c757d;
+      font-size: 1rem;
+      font-weight: 500;
+      margin-bottom: 0;
+      padding: 0;
+    }
+
+    .page-header .breadcrumb a {
+      color: #333;
+    }
+
+    @media only screen and (max-width: 767.98px) {
+      .expanded {
+        width: 0 !important;
+        /* Defina a largura expandida da sidebar */
+        display: none;
+        transition: width 0.3s;
+      }
+    }
+
+    @media only screen and (max-width: 767.98px) {
+      .sidebar {
+        background-color: #34444c;
+        border-right: 1px solid transparent;
+        bottom: 0;
+        left: 0;
+        margin-top: 0;
+        position: fixed;
+        top: 115px;
+        transition: all 0.2s ease-in-out 0s;
+        width: 290px;
+        z-index: 1001;
+      }
+
+      .logo img {
+        height: 4.5rem;
+        width: 4.5rem;
+        border-radius: 1rem;
+        margin-right: 1rem;
+        display: block;
+      }
+
+      .page-wrapper {
+        margin-left: 0 !important;
+        height: 100%;
+        padding-top: 125px;
+      }
+
+      .page-wrapper>.content {
+        padding-left: 5px;
+        padding-right: 5px;
+        padding-top: 10px;
+        height: -webkit-fill-available;
+      }
+
+      .celularcard {
+        width: 270px;
+      }
+
+      .owl-item {
+        width: 270px !important;
+      }
+    }
+
+    .cortardescricao {
+      display: -webkit-box;
+      max-height: 2.4em !important;
+      /* Duas linhas com margem para a linha de corte */
+      line-height: 1.2em !important;
+      /* Altura da linha do texto */
+      overflow: hidden !important;
+      text-overflow: ellipsis !important;
+      /* Adiciona o "..." no final do texto cortado */
+      -webkit-line-clamp: 2 !important;
+      /* Suporte a navegadores WebKit, como o Chrome */
+      -webkit-box-orient: vertical !important;
+    }
+
+    .pdescricaosp {
+      overflow: hidden !important;
+      text-overflow: ellipsis !important;
+      font-size: small;
+      -webkit-line-clamp: 5 !important;
+      -webkit-box-orient: vertical !important;
+      line-height: 1.2em !important;
+      display: -webkit-box;
+      max-height: 8.4em !important;
     }
   </style>
 </head>
 
 <body class="funcolinhas">
-<script>
-        function showbusines(str) {
 
-            if (str == "") {
-                document.getElementById("refHint").innerHTML = "";
-                return;
-            }
-            var xmlhttp = new XMLHttpRequest();
-            xmlhttp.onreadystatechange = function() {
-                if (this.readyState == 4 && this.status == 200) {
-                    document.getElementById("refHint").innerHTML = this.responseText;
-                }
-            }
-            xmlhttp.open("GET", "modal/seach1.php?q=" + str, true);
-            xmlhttp.send();
-        }
-
-        function showbusines2(str) {
-
-            if (str == "") {
-                document.getElementById("refHint2").innerHTML = "";
-                return;
-            }
-            var xmlhttp = new XMLHttpRequest();
-            xmlhttp.onreadystatechange = function() {
-                if (this.readyState == 4 && this.status == 200) {
-                    document.getElementById("refHint2").innerHTML = this.responseText;
-                    applyCustomStyles(); 
-                }
-            }
-            xmlhttp.open("GET", "modal/seach2.php?q=" + str, true);
-            xmlhttp.send();
-        }
-        function applyCustomStyles() {
-  var selectElement = document.getElementById("mul-2");
-  selectElement.style.width = '200px'; // Or any other desired width
-}
-    </script>
-  <nav id="navbar" class="bg-light-alt container-fluid position-fixed" style="z-index: 9999999; padding-top: 10px;">
-    <div class="card d-flex justify-content-center shadow-none" style="background-color: #00000000; border: 1px; margin-bottom: 0px !important;">
-      <div class=" row d-flex justify-content-center">
-        <div class="col-3 d-flex justify-content-center">
-          <div class="d-flex align-items-center" style="margin: 0px;">
-            <a href="home/index.php" class="logo"><img src="<?php echo "../../assets/img/logo.png"; ?>" alt="logo"></a>
-            <span class="mobile-only" style="color: #fff; font-size:large;">Matching <span style="color: #0098e4;">Business</span>
-              Online</span>
-          </div>
-        </div>
-        <div class="col-6" style="padding: 0px !important">
-          <div class="d-flex card card-body" style="margin-bottom: 0px !important; border-radius:20px; max-height: 42px;">
-            <div class="">
-
-              <i class="fas fa-search"></i>
-              <input style="width: auto; height: auto;" type="text" id="search-input" list="search-list" placeholder="What are you looking for?" onfocus="showSearchIdeas()" onblur="hideSearchIdeas()">
-
-              <datalist id="search-list">
-                <?php
-                $sqlOperation = "SELECT * from tblOperations WHERE FlagOperation != '0' LIMIT 8";
-                $queryOperation = $dbh->prepare($sqlOperation);
-                $queryOperation->execute();
-                $resultsOperation = $queryOperation->fetchAll(PDO::FETCH_OBJ);
-                if ($queryOperation->rowCount() > 0) {
-                  foreach ($resultsOperation as $rowOperation) { ?>
-                    <option value="<?php echo $rowOperation->NmOperation; ?>">
-                  <?php }
-                } ?>
-              </datalist>
-            </div>
-          </div>
-        </div>
-
-        <div class="col-3" style="padding: 0px !important">
-          <div class="d-flex align-items-center">
-
-            <div class="navbarcenter ">
-              <ul>
-                <li><a href="chatPage.php"><i class="bi bi-chat-dots-fill" style="font-size: 14px;"></i><span style="font-size: 14px;">&nbsp;Messaging</span></a></li>
-                <li><a href="#" onclick="toggleNotifyMenu()"><i class="bi bi-bell-fill"></i><span style="font-size: 14px;">&nbsp;Notifications</span><?php
-                                                                                                                                                      $sqlNotifbolinha = "SELECT * from tblsearchprofile_results WHERE idClienteEncontrado = :idClienteEncontrado ORDER BY datahora DESC";
-                                                                                                                                                      $queryNotifbolinha = $dbh->prepare($sqlNotifbolinha);
-                                                                                                                                                      $queryNotifbolinha->bindParam(':idClienteEncontrado', $iduser, PDO::PARAM_INT);
-                                                                                                                                                      $queryNotifbolinha->execute();
-                                                                                                                                                      $queryNotifbolinha->fetchAll(PDO::FETCH_OBJ);
-                                                                                                                                                      if ($queryNotifbolinha->rowCount() != 0) {
-                                                                                                                                                      ?>
-                      <span class="badge rounded-pill badge-notification bg-danger">
-
-                        <?php echo $queryNotifbolinha->rowCount();  ?>
-                      </span>
-                    <?php   } ?></a></li>
-                <li><img src=" <?php if ($imgperfil != "Avatar.png" && $imgperfil != "") {
-                                  echo  $imgperfil;
-                                } else {
-                                  echo "../../assets/img/Avatar.png";
-                                } ?>" alt="user" class="nav-profile-img" onclick="toggleMenu();"></li>
-              </ul>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-
-
-    <!-- Notify Menu -->
-    <div class="profile-menu-wrap empty-menu" id="notifyMenu" style="border-top-left-radius: 0px;">
-      <div class="notify-menu">
-        <div class="empty-box" style="display: none;">
-          <img src="../../assets/img/empty.svg">
-          <span>There's nothing here for now. </span>
-        </div>
-        <?php
-        $sqlNotif = "SELECT * from tblsearchprofile_results WHERE idClienteEncontrado = :idClienteEncontrado ORDER BY datahora DESC";
-        $queryNotif = $dbh->prepare($sqlNotif);
-        $queryNotif->bindParam(':idClienteEncontrado', $iduser, PDO::PARAM_INT);
-        $queryNotif->execute();
-        $resultsNotif = $queryNotif->fetchAll(PDO::FETCH_OBJ);
-        if ($queryNotif->rowCount() > 0) {
-          foreach ($resultsNotif as $rownotif) {
-            $idCliente = $rownotif->idUsuario;
-            $sqlusernotif = "SELECT * from tblUserClients WHERE idClient = :idClient";
-            $queryusernotif = $dbh->prepare($sqlusernotif);
-            $queryusernotif->bindParam(':idClient', $idCliente, PDO::PARAM_INT);
-            $queryusernotif->execute();
-            $resultsusernotif = $queryusernotif->fetchAll(PDO::FETCH_OBJ);
-            if ($queryusernotif->rowCount() > 0) {
-              foreach ($resultsusernotif as $rowusernotif) {
-                $usernamepost = $rowusernotif->FirstName . " " . $rowusernotif->LastName;
-                $idpostoperation = $rowusernotif->IdOperation;
-                $imgpostuser = $rowusernotif->PersonalUserPicturePath;
-              }
-            }
-
-            $idTipoNotif = $rownotif->idTipoNotif;
-            if ($idTipoNotif == 5) {
-              $textNotif = "<p  class='d-inline' style='color: white; font-size: 11px;'>" . $usernamepost . " </p><p class='d-inline' style='color: #f2f2f2;'></p> <p class='d-inline' style='color: #7dbaf0;'>liked</p><p class='d-inline' style='color: #f2f2f2;'> your post !</p><br>";
-            } else if ($idTipoNotif == 2) {
-              $textNotif = "<p  class='d-inline' style='color: white; font-size: 11px;'>" . $usernamepost . " </p><p class='d-inline' style='color: #f2f2f2;'></p> <p class='d-inline' style='color: #7dbaf0;'>viewed </p><p class='d-inline' style='color: #f2f2f2;'>  your profile!</p><br>";
-            } else if ($idTipoNotif == 4) {
-              $textNotif = "<p  class='d-inline' style='color: white; font-size: 11px;'>" . $usernamepost . " </p><p class='d-inline' style='color: #f2f2f2;'></p> <p class='d-inline' style='color: #7dbaf0;'>invited  </p><p class='d-inline' style='color: #f2f2f2;'>  you to be part of his network!</p><br>";
-            } else  if ($idTipoNotif == 6) {
-              $textNotif = "<p  class='d-inline' style='color: white; font-size: 11px;'>" . $usernamepost . " </p><p class='d-inline' style='color: #f2f2f2;'></p> <p class='d-inline' style='color: #7dbaf0;'>accepted </p><p class='d-inline' style='color: #f2f2f2;'> your connection!</p><br>";
-            }
-
-            $postDateTime = new DateTime($rownotif->datahora);
-            // Obtenha o objeto DateTime da data e hora atual
-            $currentTime = new DateTime();
-            // Calcula a diferença entre a data e hora atual e a da postagem
-            $timeDiff = $postDateTime->diff($currentTime);
-            // Formata o tempo decorrido com base nas unidades (ano, mês, dia, hora, minuto, segundo)
-            if ($timeDiff->y > 0) {
-              $timeAgoN = $timeDiff->y . " ano(s) atrás";
-            } elseif ($timeDiff->m > 0) {
-              $timeAgoN = $timeDiff->m . " mês(es) atrás";
-            } elseif ($timeDiff->d > 0) {
-              $timeAgoN = $timeDiff->d . " dia(s) atrás";
-            } elseif ($timeDiff->h > 0) {
-              $timeAgoN = $timeDiff->h . " hora(s) atrás";
-            } elseif ($timeDiff->i > 0) {
-              $timeAgoN = $timeDiff->i . " minuto(s) atrás";
-            } else {
-              $timeAgoN = "Alguns segundos atrás";
-            }
-        ?>
-            <a href="#" class="notification">
-              <div class="row justify-content-center">
-                <div class="col-2 justify-content-center">
-                  <img src="<?php if ($imgpostuser != "Avatar.png" && $imgpostuser != "") {
-                              echo  $imgpostuser;
-                            } else {
-                              echo  "../../assets/img/Avatar.png";
-                            } ?>" alt="user" class="nav-profile-img">
-                </div>
-                <div class="col-8 justify-itens-center">
-                  <span><?php echo  $textNotif; ?> </span><span id="notify-time" style="color: grey !important;">
-                    <?php echo $timeAgoN; ?>
-                  </span>
-                </div>
-                <div class="col-2 d-flex justify-content-center">
-                  <button style="color: black !important;" class="delete-btn" onclick="deleteNotification(event)">
-                    <i class="fa-solid fa-trash" style="color: #cb1a1a;"></i></button>
-                </div>
-              </div>
-            </a>
-            <hr style="background-color: #ffffff66;">
-        <?php }
-        } ?>
-      </div>
-    </div>
-
-
-
-
-
-
-
-
-    <!-- --------------------------------profile-drop-down-menu---------------------------- -->
-    <div class="profile-menu-wrap" id="profileMenu" style="background-color: #002d4b !important; border-bottom-right-radius: 10px; border-bottom-left-radius: 10px;">
-      <div class="profile-menu" style="background-color: #002d4b !important;">
-
-        <a href="profile.php" class="profile-menu-link expand-zoom-menu">
-          <i class="bi bi-person-lines-fill fa-2x" style="color: white;"></i>
-          <p style="color: #ffffff; margin-bottom: 0px !important; text-decoration: none;">&nbsp;&nbsp;&nbsp;&nbsp;My Profile</p>
-          <i class="bi bi-caret-right-fill" style="color: white;"></i>
-        </a>
-
-
-        <a href="searchPage.php  " class="profile-menu-link expand-zoom-menu">
-          <i class="bi bi bi-search fa-2x" style="color: white;"></i>
-          <p style="color: #ffffff; margin-bottom: 0px !important; text-decoration: none;">&nbsp;&nbsp;&nbsp;&nbsp;My Search</p>
-          <i class="bi bi-caret-right-fill" style="color: white;"></i>
-        </a>
-
-        <a href="#" class="profile-menu-link expand-zoom-menu">
-          <i class="bi bi bi-gear-fill fa-2x" style="color: white;"></i>
-          <p style="color: #ffffff; margin-bottom: 0px !important; text-decoration: none;">&nbsp;&nbsp;&nbsp;&nbsp;Settings & Privacy</p>
-          <i class="bi bi-caret-right-fill" style="color: white;"></i>
-        </a>
-
-        <a href="#" class="profile-menu-link expand-zoom-menu">
-          <i class="bi bi-gem fa-2x" style="color: white;"></i>
-          <p style="color: #ffffff; margin-bottom: 0px !important; text-decoration: none;">&nbsp;&nbsp;&nbsp;&nbsp;Try Premium</p>
-          <i class="bi bi-caret-right-fill" style="color: white;"></i>
-        </a>
-
-        <a href="../../backend/logout.php" class="profile-menu-link expand-zoom-menu-logout ">
-          <i class="bi bi-box-arrow-left fa-2x" style="color: #ff6363;"></i>
-          <p style="margin-bottom: 0px !important; text-decoration: none; color: #ff6363;">&nbsp;&nbsp;&nbsp;&nbsp;Logout</p>
-          <i class="bi bi-caret-right-fill" style="color: #ff6363;"></i>
-        </a>
-      </div>
-    </div>
-
-  </nav>
-  <br><br><br><br><br>
   <div class="main-wrapper">
-    <div class="sidebar" id="sidebar" style=" background: #002d4b;">
-      <div class="sidebar-inner slimscroll">
+    <?php include_once("widget/navbar.php"); ?>
+    <div class="sidebar " id="sidebar" style="background: #002d4b;">
+      <div class="sidebar-inner slimscroll ">
         <div id="sidebar-menu" class="sidebar-menu">
-          <ul>
-            <?php
-            $sqlmenush = "SELECT * from tblBusiness";
-            $querymenush = $dbh->prepare($sqlmenush);
-            $querymenush->execute();
-            $resultmenush = $querymenush->fetchAll(PDO::FETCH_OBJ);
-            if ($querymenush->rowCount() > 0) {
-              foreach ($resultmenush as $rowusmenush) {
-                $teste = str_replace('/', '/ ', $rowusmenush->NmBusiness);
-            ?>
-                <li>
-                  <a style="font-size: small;" href=""><?php
-                                                        $sql = "SELECT * from tblUserClients WHERE SatBusinessId = :SatBusinessId";
-                                                        $query = $dbh->prepare($sql);
-                                                        $query->bindParam(':SatBusinessId', $rowusmenush->idBusiness, PDO::PARAM_INT);
-                                                        $query->execute();
-                                                        echo       $query->rowCount()   ?> <span> <?php echo $teste; ?></span> </a>
-                </li>
-                <hr>
-            <?php }
-            } ?>
-          </ul>
+          <div class="card rounded-4 shadow  treeviewmin panddingardtreeview" style="min-height: 100% !important;height: 100% !important;max-height: 100%  !important; margin-top: 0;">
+            <div class="card-body p-0 m-0">
+
+              <div class="row p-2 ml-0">
+                <ul id="tree1">
+                  <?php
+                  include_once('../model/classes/tblOperations.php');
+                  $operations = new Operations();
+                  $resultsOperation = $operations->consulta("WHERE FlagOperation != '0'");
+                  if ($resultsOperation != null) {
+                    foreach ($resultsOperation as $rowOperation) {
+                  ?>
+                      <li>
+
+                        <a href="listcompani.php?operation=<?php echo $rowOperation->idOperation; ?>"><?php if ($rowOperation->FlagOperation != "D") {
+                                                                                                        echo "<i class='fa-solid fa-add indicator ' ></i>";
+                                                                                                      } ?>
+                          <?php echo trim($rowOperation->NmOperation); ?>
+                        </a>
+                        <div style="text-align: end; width: 24px;float: right;position: initial;">
+                          <?php $numerouser1 = new UserClients();
+                          $numerouser1->setCoreBusinessId($rowOperation->idOperation);
+                          echo $numerouser1->quantidade(" WHERE CoreBusinessId = :CoreBusinessId"); ?>
+                        </div>
+                        <?php if ($rowOperation->FlagOperation != "D") { ?>
+                          <ul>
+                            <?php
+                            include_once('../model/classes/tblBusiness.php');
+                            $business = new Business();
+                            $resultsbusiness = $business->consulta("WHERE FlagOperation = '0' ORDER BY NmBusiness ASC");
+                            if ($business != null) {
+                              foreach ($resultsbusiness as $rowbusiness) {
+                            ?>
+                                <li><a class="sizewidgh" href="listcompani.php?busines=<?php echo $rowbusiness->idBusiness; ?>&operation=<?php echo $rowOperation->idOperation; ?>"><?php
+                                                                                                                                                                                    echo trim($rowbusiness->NmBusiness); ?> <div style="text-align: end; width: 24px;float: right;position: initial;">
+                                      <?php $numerouser2 = new UserClients();
+                                      $numerouser2->setCoreBusinessId($rowOperation->idOperation);
+                                      $numerouser2->setSatBusinessId($rowbusiness->idBusiness);
+                                      echo $numerouser2->quantidade(" WHERE CoreBusinessId = :CoreBusinessId AND SatBusinessId = :SatBusinessId"); ?>
+                                    </div></a>
+
+
+                                </li>
+                            <?php }
+                            } ?>
+                          </ul>
+                        <?php } ?>
+                      </li>
+
+                      <hr>
+                  <?php }
+                  } ?>
+                </ul>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
     </div>
-    <div class="page-wrapper" style="
-    margin-top: 0px;
 
-    padding-top: 5px;
-">
+    <div class="page-wrapper">
       <div class="content container-fluid">
         <div class="row">
-          <div class=" col-xl-9">
+          <div class=" col-xl-12">
 
-          </div>
-          <div class="col-xl-3" style=" padding: 0;">
-            <div class="card cardbg mb-4 shadow">
-              <div class="card-body">
-                <h1 class="modal-title txtnomeperfil">Create Search Profile:</h1>
-                <form id="regForm" method="POST" enctype="multipart/form-data">
-                  <div class="row">
-                    <!-- One "tab" for each step in the form: -->
-                    <div class="tab" style="margin-top: 21px;">
-                      <div class="col-sm-12">
-                        <div class="form-group">
-                          <label class="txtinput" style="font-size: small;">Operation:</label>
-                          <select class="form-control bordainput" onchange="showbusines(this.value)" name="corbusiness">
+            <section>
+              <?php if ($operation != null && $busines == null && $text == null) {
+                $numerousercont = new UserClients();
+                $numerousercont->setCoreBusinessId($operation);
+                $contoperationnotresults = $numerousercont->quantidade(" WHERE CoreBusinessId = :CoreBusinessId");
+                if ($contoperationnotresults == 0) {
+                  echo "<h4>no results found</h4>";
+                } else {
 
-                            <?php
-                            $sql = "SELECT * from tblOperations ";
-                            $query = $dbh->prepare($sql);
-                            $query->execute();
-                            $results = $query->fetchAll(PDO::FETCH_OBJ);
-                            if ($query->rowCount() > 0) {
-                              foreach ($results as $row) { ?>
-                                <option <?php if ($row->NmOperation ==  $NmBusiness) {
-                                          echo "selected";
-                                        } ?> value="<?php echo $row->idOperation; ?>"><?php echo $row->NmOperation; ?></option>
-                            <?php     }
-                            }
-                            ?>
-                          </select>
-                        </div>
+
+              ?>
+
+                  <div class="carousel-filmes">
+                    <h2 id="filme" class="titulo2"><?php
+
+
+                                                    $operationsnome = new Operations();
+                                                    $operationsnome->setidOperation($operation);
+                                                    $resultsOperationome = $operationsnome->consulta("WHERE  idOperation = :idOperation");
+                                                    if ($resultsOperationome != null) {
+                                                      foreach ($resultsOperationome as $rowOperationome) {
+                                                        echo $rowOperationome->NmOperation;
+                                                      }
+                                                    }
+                                                    ?> - <?php
+                                                          echo  $contoperationnotresults; ?>
+
+
+                    </h2><br>
+
+                      <div class=" owl-carousel owl-thema ">
+                        <?php
+
+                        $Operationselect = new UserClients();
+                        $Operationselect->setCoreBusinessId($operation);
+                        $resultsOperationselect = $Operationselect->consulta(" WHERE CoreBusinessId = :CoreBusinessId");
+                        if ($resultsOperationselect != null) {
+                          foreach ($resultsOperationselect as $rowOperationselect) {  ?>
+                            <div class="item celularcard">
+                              <div class="card rounded-4 shadow celularcard">
+                                <div class="card-body p-0 m-0">
+                                  <div class="col-12 mh-25">
+                                    <img class="mh-25 rounded-top-3" src="https://images2.alphacoders.com/131/1317606.jpeg" alt="Descrição da Imagem" style="max-height: 100px; width: 100%;">
+                                  </div>
+                                  <div class="row p-0 ml-0">
+                                    <div class="col-5 d-flex justify-content-start p-0 m-0 " style="height: 0px;">
+                                      <img src=" <?php if ($rowOperationselect->PersonalUserPicturePath != "Avatar.png" && $rowOperationselect->PersonalUserPicturePath != "") {
+                                                    echo "" . $rowOperationselect->PersonalUserPicturePath;
+                                                  } else {
+                                                    echo "assets/img/Avatar.png";
+                                                  } ?>" alt="user" class="border-2 mini-profile-img " onclick="toggleMenu()">
+                                    </div>
+                                    <div class="col-6 p-0 m-0">
+                                      <h3 class="fonte-titulo cortardescricao"><?php echo  $rowOperationselect->FirstName . " " . $rowOperationselect->LastName; ?></h3>
+                                      <h6 class="fonte-principal cortardescricao"><?php echo  $rowOperationselect->JobTitle . ' at ' . $rowOperationselect->CompanyName ?></h6>
+                                    </div>
+                                  </div>
+                                  <div class="col-12 m-0 p-0">
+                                    <hr class="m-0">
+                                  </div>
+                                  <div class="row mt-3 pr-2">
+                                    <div class="col-9 m-0 p-0">
+
+                                      <h5 class="fonte-principal">&nbsp;&nbsp;&nbsp;&nbsp;<i class="fa-solid fa-globe icon-notif-zoom mini-profile-icon"></i>&nbsp;&nbsp;<?php include_once('../model/classes/tblCountry.php');
+
+                                                                                                                                                                          $country = new Country();
+
+                                                                                                                                                                          $country->setidCountry($rowOperationselect->idCountry);
+
+                                                                                                                                                                          $resultsCountry = $country->consulta("WHERE idCountry = :idCountry ");
+
+                                                                                                                                                                          if ($resultsCountry != null) {
+                                                                                                                                                                            foreach ($resultsCountry as $rowCountry) {
+                                                                                                                                                                              echo $rowCountry->NmCountry;
+                                                                                                                                                                            }
+                                                                                                                                                                          }
+
+                                                                                                                                                                          ?> </h5>
+                                    </div>
+
+                                  </div>
+                                  <div class="row mt-3 pr-2">
+                                    <p class="pdescricaosp"><?php
+
+                                                            echo $rowOperationselect->descricao;
+                                                            ?></p>
+                                  </div>
+
+                                </div>
+                              </div>
+                            </div>
+                        <?php }
+                        } ?>
                       </div>
-                    </div>
-                    <div class="col-sm-12" id="refHint"></div>
-                    <div class="col-sm-12" id="refHint2"></div>
-                      
-                    
-                    <div class="tab" style="margin-top: 21px;">
-                      <div class="col-sm-12">
-                        <div class="form-group ">
-                          <label class="txtinput" style="font-size: small;">Country:</label>
-                          <div class="dropdown-mul-2" style="max-width: 261px;    min-width: 230px;">
-                            <select name="" class="form-control bordainput select" id="mul-2" multiple >
-                              <?php
-                              $sqlpaises = "SELECT * FROM tblCountry";
-                              $querypaises = $dbh->prepare($sqlpaises);
-                              $querypaises->execute();
-                              $resulpaises = $querypaises->fetchAll(PDO::FETCH_OBJ);
-                              if ($querypaises->rowCount() > 0) {
-                                foreach ($resulpaises as $rowpaises) { ?>
-                                  <option <?php if($rowpaises->idCountry==384){echo "selected";} ?> value="<?php echo $rowpaises->idCountry; ?>"><?php echo $rowpaises->NmCountry; ?></option>
-                              <?php  }
-                              }
-                              ?>
-                            </select>
+                  </div>
+
+                <?php }
+              }
+              if ($operation != null && $busines != null && $text == null) { ?>
+
+                <div class="carousel-filmes">
+                  <h2 id="filme" class="titulo2"><?php
+                                                  $operationsnome = new Operations();
+                                                  $operationsnome->setidOperation($operation);
+                                                  $resultsOperationome = $operationsnome->consulta("WHERE  idOperation = :idOperation");
+                                                  if ($resultsOperationome != null) {
+                                                    foreach ($resultsOperationome as $rowOperationome) {
+                                                      echo $rowOperationome->NmOperation;
+                                                    }
+                                                  }
+                                                  ?> - <?php $numerousercont = new UserClients();
+                                                        $numerousercont->setCoreBusinessId($operation);
+                                                        echo $numerousercont->quantidade(" WHERE CoreBusinessId = :CoreBusinessId"); ?></h2>
+                  <div class=" owl-carousel owl-thema ">
+                    <?php
+
+                    $Operationselect = new UserClients();
+                    $Operationselect->setCoreBusinessId($operation);
+                    $resultsOperationselect = $Operationselect->consulta(" WHERE CoreBusinessId = :CoreBusinessId");
+                    if ($resultsOperationselect != null) {
+                      foreach ($resultsOperationselect as $rowOperationselect) {  ?>
+                        <div class="item celularcard">
+                          <div class="card rounded-4 shadow celularcard">
+                            <div class="card-body p-0 m-0">
+                              <div class="col-12 mh-25">
+                                <img class="mh-25 rounded-top-3" src="https://images2.alphacoders.com/131/1317606.jpeg" alt="Descrição da Imagem" style="max-height: 100px; width: 100%;">
+                              </div>
+                              <div class="row p-0 ml-0">
+                                <div class="col-5 d-flex justify-content-start p-0 m-0 " style="height: 0px;">
+                                  <img src=" <?php if ($rowOperationselect->PersonalUserPicturePath != "Avatar.png" && $rowOperationselect->PersonalUserPicturePath != "") {
+                                                echo "" . $rowOperationselect->PersonalUserPicturePath;
+                                              } else {
+                                                echo "assets/img/Avatar.png";
+                                              } ?>" alt="user" class="border-2 mini-profile-img " onclick="toggleMenu()">
+                                </div>
+                                <div class="col-6 p-0 m-0">
+                                  <h3 class="fonte-titulo cortardescricao"><?php echo  $rowOperationselect->FirstName . " " . $rowOperationselect->LastName; ?></h3>
+                                  <h6 class="fonte-principal cortardescricao"><?php echo  $rowOperationselect->JobTitle . ' at ' . $rowOperationselect->CompanyName ?></h6>
+                                </div>
+                              </div>
+                              <div class="col-12 m-0 p-0">
+                                <hr class="m-0">
+                              </div>
+                              <div class="row mt-3 pr-2">
+                                <div class="col-9 m-0 p-0">
+
+                                  <h5 class="fonte-principal">&nbsp;&nbsp;&nbsp;&nbsp;<i class="fa-solid fa-globe icon-notif-zoom mini-profile-icon"></i>&nbsp;&nbsp;<?php include_once('../model/classes/tblCountry.php');
+
+                                                                                                                                                                      $country = new Country();
+
+                                                                                                                                                                      $country->setidCountry($rowOperationselect->idCountry);
+
+                                                                                                                                                                      $resultsCountry = $country->consulta("WHERE idCountry = :idCountry ");
+
+                                                                                                                                                                      if ($resultsCountry != null) {
+                                                                                                                                                                        foreach ($resultsCountry as $rowCountry) {
+                                                                                                                                                                          echo $rowCountry->NmCountry;
+                                                                                                                                                                        }
+                                                                                                                                                                      }
+
+                                                                                                                                                                      ?> </h5>
+                                </div>
+
+                              </div>
+
+
+                            </div>
                           </div>
                         </div>
-                      </div>
-                    </div>
-                  
-                    
-                    <div class="tab" style="margin-top: 21px;">
-                      <div class="col-sm-12">
-                        <div class="form-group ">
-                          <label class="txtinput" style="font-size: small;">Search ID:</label>
-                          <input type="text" name="idseach"  class="form-control bordainput" id="idseach"  required>
-                        </div>
-                      </div>
-                    </div>
-                    <div class="col-sm-8">
-                      <div class="form-group">
-                        <button type="button" id="prevBtn" onclick="nextPrev(-1)" class="btn btn-primary " class="btn btn-primary  submit-btn" style="border: 0px !important;
-    font-size: small;
-    min-width: auto;padding: 4px 14px;
-">Previous</button>
-                      </div>
-                    </div>
-                    <div class="col-sm-4">
-                      <div class="form-group" style="
-    text-align: end;
-">
-                        <button type="button" id="nextBtn" onclick="nextPrev(1)" class="btn btn-primary  submit-btn" style="border: 0px !important;
-    font-size: small;
-    min-width: auto;padding: 4px 14px;
-">Next</button>
-                      </div>
-
-
-
-                    </div>
-                    <!-- Circles which indicates the steps of the form: -->
-                    <div class="col-sm-12">
-                      <div style="text-align:center;margin-top:40px;">
-                        <span class="step"></span>
-                        <span class="step"></span>
-                        <span class="step"></span>
-                        <span class="step"></span>
-                      </div>
-                    </div>
+                    <?php }
+                    } ?>
                   </div>
-                </form>
-              </div>
-            </div>
+                </div> <br>
+
+                <?php
+                include_once('../model/classes/tblBusinessCategory.php');
+                $tblBusinessCategory = new BusinessCategory();
+                $tblBusinessCategory->setidBusiness($busines);
+                $resultstblBusinessCategory = $tblBusinessCategory->consulta(" WHERE idBusiness = :idBusiness");
+                if ($tblBusinessCategory != null) {
+
+                  foreach ($resultstblBusinessCategory as $rowBusiness) {
+                    $numerousercont = new UserClients();
+                    $numerousercont->setCoreBusinessId($operation);
+                    $numerousercont->setIdOperation($rowBusiness->idBusinessCategory);
+                    $contcategativos =      $numerousercont->quantidade(" WHERE IdOperation = :IdOperation AND CoreBusinessId = :CoreBusinessId");
+                    if ($contcategativos > 0) {
+
+
+                ?>
+                      <div class="carousel-filmes">
+                        <h2 id="filme" class="titulo2"><?php
+
+                                                        echo  $rowBusiness->NmBusinessCategory;
+
+                                                        ?> - <?php $numerousercont2 = new UserClients();
+                                                              $numerousercont2->setCoreBusinessId($operation);
+                                                              $numerousercont2->setIdOperation($rowBusiness->idBusinessCategory);
+                                                              echo $numerousercont2->quantidade(" WHERE IdOperation = :IdOperation AND CoreBusinessId = :CoreBusinessId"); ?></h2>
+                        <div class=" owl-carousel owl-thema ">
+                          <?php
+
+                          $Operationselect3 = new UserClients();
+                          $Operationselect3->setCoreBusinessId($operation);
+                          $Operationselect3->setSatBusinessId($busines);
+                          $Operationselect3->setIdOperation($rowBusiness->idBusinessCategory);
+                          $resultsOperationselect3 = $Operationselect3->consulta(" WHERE CoreBusinessId = :CoreBusinessId AND SatBusinessId = :SatBusinessId AND IdOperation = :IdOperation");
+                          if ($resultsOperationselect3 != null) {
+                            foreach ($resultsOperationselect3 as $rowOperationselect) {  ?>
+                              <div class="item celularcard">
+                                <div class="card rounded-4 shadow celularcard">
+                                  <div class="card-body p-0 m-0">
+                                    <div class="col-12 mh-25">
+                                      <img class="mh-25 rounded-top-3" src="https://images2.alphacoders.com/131/1317606.jpeg" alt="Descrição da Imagem" style="max-height: 100px; width: 100%;">
+                                    </div>
+                                    <div class="row p-0 ml-0">
+                                      <div class="col-5 d-flex justify-content-start p-0 m-0 " style="height: 0px;">
+                                        <img src=" <?php if ($rowOperationselect->PersonalUserPicturePath != "Avatar.png" && $rowOperationselect->PersonalUserPicturePath != "") {
+                                                      echo "" . $rowOperationselect->PersonalUserPicturePath;
+                                                    } else {
+                                                      echo "assets/img/Avatar.png";
+                                                    } ?>" alt="user" class="border-2 mini-profile-img " onclick="toggleMenu()">
+                                      </div>
+                                      <div class="col-6 p-0 m-0">
+                                        <h3 class="fonte-titulo cortardescricao"><?php echo  $rowOperationselect->FirstName . " " . $rowOperationselect->LastName; ?></h3>
+                                        <h6 class="fonte-principal cortardescricao"><?php echo  $rowOperationselect->JobTitle . ' at ' . $rowOperationselect->CompanyName ?></h6>
+                                      </div>
+                                    </div>
+                                    <div class="col-12 m-0 p-0">
+                                      <hr class="m-0">
+                                    </div>
+                                    <div class="row mt-3 pr-2">
+                                      <div class="col-9 m-0 p-0">
+
+                                        <h5 class="fonte-principal">&nbsp;&nbsp;&nbsp;&nbsp;<i class="fa-solid fa-globe icon-notif-zoom mini-profile-icon"></i>&nbsp;&nbsp;<?php include_once('../model/classes/tblCountry.php');
+
+                                                                                                                                                                            $country1 = new Country();
+
+                                                                                                                                                                            $country1->setidCountry($rowOperationselect->idCountry);
+
+                                                                                                                                                                            $resultsCountry1 = $country1->consulta("WHERE idCountry = :idCountry ");
+
+                                                                                                                                                                            if ($resultsCountry1 != null) {
+                                                                                                                                                                              foreach ($resultsCountry1 as $rowCountry) {
+                                                                                                                                                                                echo $rowCountry->NmCountry;
+                                                                                                                                                                              }
+                                                                                                                                                                            }
+
+                                                                                                                                                                            ?> </h5>
+                                      </div>
+
+                                    </div>
+
+
+                                  </div>
+                                </div>
+                              </div>
+                          <?php }
+                          } ?>
+                        </div>
+                      </div><br>
+
+
+
+              <?php  }
+                  }
+                }
+              }
+              if ($operation == null && $busines == null && $text != null) {
+              }
+              ?>
+
+
+
+            </section>
           </div>
+
         </div>
       </div>
     </div>
   </div>
-  </div>
 
 
 
 
-  <!-- Select2 JS -->
+
+  <script src="assets/js/owl/owl.carousel.min.js"></script>
+  <script src="assets/js/owl/index.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.bundle.min.js" integrity="sha384-HwwvtgBNo3bZJJLYd8oVXjrBZt8cqVSpeBNS5n7C8IVInixGAoxmnlMuBnhbgrkm" crossorigin="anonymous"></script>
   <script>
-    var Random = Mock.Random;
+    $.fn.extend({
+      treed: function(o) {
 
-    $('.dropdown-mul-2').dropdown({
+        var openedClass = 'glyphicon-minus-sign';
+        var closedClass = 'glyphicon-plus-sign';
 
-      searchable: false
+
+        //initialize each of the top levels
+        var tree = $(this);
+        tree.addClass("tree");
+        tree.find('li').has("ul").each(function() {
+          var branch = $(this); //li with children ul
+
+          branch.addClass('branch');
+          branch.on('click', function(e) {
+            if (this == e.target) {
+
+              $(this).children().children().toggle();
+            }
+          })
+          branch.children().children().toggle();
+        });
+        //fire event from the dynamically added icon
+        tree.find('.branch .indicator').each(function() {
+          $(this).on('click', function() {
+            $(this).closest('li').click();
+          });
+        });
+        //fire event to open branch if the li contains an anchor instead of text
+        tree.find('.branch>a').each(function() {
+          $(this).on('click', function(e) {
+            $(this).closest('li').click();
+            e.preventDefault();
+          });
+        });
+        //fire event to open branch if the li contains a button instead of text
+        tree.find('.branch>button').each(function() {
+          $(this).on('click', function(e) {
+            $(this).closest('li').click();
+            e.preventDefault();
+          });
+        });
+      }
     });
 
-  
-  </script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.5.0/js/bootstrap.bundle.min.js"></script>
-  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/jQuery-slimScroll/1.3.8/jquery.slimscroll.min.js"></script>
-  <script>
-    let profileMenu = document.getElementById("profileMenu");
+    //Initialization of treeviews
 
-    function toggleMenu() {
-      profileMenu.classList.toggle("open-menu");
-    }
-  </script>
+    $('#tree1').treed();
 
-  <script>
-    // JavaScript / jQuery
-    // JavaScript / jQuery
+
+
+    window.addEventListener('scroll', function() {
+      var navbar = document.getElementById('navbar');
+      if (window.pageYOffset > 0) {
+        navbar.classList.add('colored');
+        navbar.classList.remove('transparent');
+      } else {
+        navbar.classList.remove('colored');
+        navbar.classList.add('transparent');
+      }
+    });
     $(document).ready(function() {
       // Ao clicar em um link de produto
-      $('.hero-image-container').click(function() {
+      $('.hero-image-container2').click(function() {
         // Obtenha o ID do produto associado ao link clicado
-        var idProduto = $(this).data('id');
-        console.log(idProduto);
+        var idFeed = $(this).data('id');
+        console.log(idFeed);
         // Use o ID do produto para fazer uma requisição AJAX para buscar os dados do produto no servidor
         $.ajax({
           type: 'GET',
-          url: 'modal/getproduto.php', // Substitua pelo caminho correto
+          url: 'visualizarComent.php', // Substitua pelo caminho correto
           data: {
-            idProduto: idProduto
+            idFeed: idFeed
           },
           success: function(data) {
             // Preencha o conteúdo do modal com as informações do produto
@@ -567,6 +809,23 @@ if ($query->rowCount() > 0) {
       });
     });
 
+    document.querySelector('.collapse-chat').addEventListener('click', function() {
+      this.classList.toggle('open');
+    });
+
+
+
+    document.getElementById('comentbtn').addEventListener('click', function(e) {
+      e.preventDefault(); // Impede o comportamento padrão do link
+      var viewsElement = document.getElementById('modalEditarProduto');
+      if (viewsElement.classList.contains('d-none')) {
+        viewsElement.classList.remove('d-none');
+        viewsElement.classList.add('show');
+      } else {
+        viewsElement.classList.add('d-none');
+      }
+    });
+
     function likeColor(element) {
       var likeIcon = element.previousElementSibling;
       likeIcon.classList.add("red-like"); // Adiciona a classe CSS "red-like" ao ícone de like
@@ -576,6 +835,7 @@ if ($query->rowCount() > 0) {
     $(document).ready(function() {
       function readURL(input) {
         if (input.files && input.files[0]) {
+          console.log("teste");
           var reader = new FileReader();
           reader.onload = function(e) {
             if (input.id === 'file-input') {
@@ -603,24 +863,11 @@ if ($query->rowCount() > 0) {
         readURL(this);
       });
     });
-    document.querySelector('.collapse-chat').addEventListener('click', function() {
-      this.classList.toggle('open');
-    });
 
 
 
 
 
-    window.addEventListener('scroll', function() {
-      var navbar = document.getElementById('navbar');
-      if (window.pageYOffset > 0) {
-        navbar.classList.add('colored');
-        navbar.classList.remove('transparent');
-      } else {
-        navbar.classList.remove('colored');
-        navbar.classList.add('transparent');
-      }
-    });
 
     /* Set the width of the sidebar to 250px (show it) */
     function openNav() {
@@ -633,10 +880,7 @@ if ($query->rowCount() > 0) {
     }
 
 
-    function toggleNotifyMenu() {
-      const notifyMenu = document.getElementById('notifyMenu')
-      notifyMenu.classList.toggle("open-menu");
-    }
+
 
     document.addEventListener('DOMContentLoaded', function() {
       var dropdownToggle = document.querySelector('.notify-dropdown-toggle');
@@ -679,6 +923,21 @@ if ($query->rowCount() > 0) {
     // Carousel Script
 
 
+    populateSlider();
+    populateSlider();
+
+    // delete the initial movie in the html
+    const initialMovie = document.getElementById("movie0");
+    initialMovie.remove();
+
+    // Update the indicators that show which page we're currently on
+    function updateIndicators(index) {
+      indicators.forEach((indicator) => {
+        indicator.classList.remove("active");
+      });
+      let newActiveIndicator = indicators[index];
+      newActiveIndicator.classList.add("active");
+    }
 
     // Scroll Left button
     btnLeft.addEventListener("click", (e) => {
@@ -767,20 +1026,18 @@ if ($query->rowCount() > 0) {
 
     // Adiciona o evento de scroll para chamar a função
     window.addEventListener('scroll', adicionarFundoComScroll);
-    // Adiciona o evento de scroll para chamar a função
-    window.addEventListener('scroll', adicionarFundoComScroll);
 
-    function atualizarFeed() {
+    /*function atualizarFeed() {
 
-      var xmlhttp = new XMLHttpRequest();
-      xmlhttp.onreadystatechange = function() {
-        if (this.readyState == 4 && this.status == 200) {
-          document.getElementById("divFeedUpdate").innerHTML = this.responseText;
+        var xmlhttp = new XMLHttpRequest();
+        xmlhttp.onreadystatechange = function() {
+            if (this.readyState == 4 && this.status == 200) {
+                document.getElementById("divFeedUpdate").innerHTML = this.responseText;
+            }
         }
-      }
-      xmlhttp.open("GET", "atualizarFeed.php", true);
-      xmlhttp.send();
-    }
+        xmlhttp.open("GET", "atualizarFeed.php", true);
+        xmlhttp.send();
+    }*/
 
     $(document).ready(function() {
       // Detecta o evento de rolagem
@@ -788,135 +1045,9 @@ if ($query->rowCount() > 0) {
         // Verifica se chegou ao final da página
         if ($(window).scrollTop() + $(window).height() >= $(document).height()) {
           // Chama a função quando o usuário chegar ao final da página
-          atualizarFeed();
+          // atualizarFeed();
         }
       });
-    });
-  </script>
-  <script>
-    var currentTab = 0; // Current tab is set to be the first tab (0)
-    showTab(currentTab); // Display the current tab
-
-    function showTab(n) {
-      // This function will display the specified tab of the form...
-      var x = document.getElementsByClassName("tab");
-      x[n].style.display = "block";
-      //... and fix the Previous/Next buttons:
-      if (n == 0) {
-        document.getElementById("prevBtn").style.display = "none";
-      } else {
-        document.getElementById("prevBtn").style.display = "inline";
-      }
-      if (n == (x.length - 1)) {
-        document.getElementById("nextBtn").innerHTML = "Submit";
-      } else {
-        document.getElementById("nextBtn").innerHTML = "Next";
-      }
-      //... and run a function that will display the correct step indicator:
-      fixStepIndicator(n)
-    }
-
-    function nextPrev(n) {
-      // This function will figure out which tab to display
-      var x = document.getElementsByClassName("tab");
-      // Exit the function if any field in the current tab is invalid:
-      if (n == 1 && !validateForm()) return false;
-      // Hide the current tab:
-      x[currentTab].style.display = "none";
-      // Increase or decrease the current tab by 1:
-      currentTab = currentTab + n;
-      // if you have reached the end of the form...
-      if (currentTab >= x.length) {
-        // ... the form gets submitted:
-        document.getElementById("regForm").submit();
-        return false;
-      }
-      // Otherwise, display the correct tab:
-      showTab(currentTab);
-    }
-
-    function validateForm() {
-      // This function deals with validation of the form fields
-      var x, y, i, valid = true;
-      x = document.getElementsByClassName("tab");
-      y = x[currentTab].getElementsByTagName("input");
-      // A loop that checks every input field in the current tab:
-      for (i = 0; i < y.length; i++) {
-        // If a field is empty...
-        if (y[i].value == "") {
-          // add an "invalid" class to the field:
-          y[i].className += " invalid";
-          // and set the current valid status to false
-          valid = false;
-        }
-      }
-      // If the valid status is true, mark the step as finished and valid:
-      if (valid) {
-        document.getElementsByClassName("step")[currentTab].className += " finish";
-      }
-      return valid; // return the valid status
-    }
-
-    function fixStepIndicator(n) {
-      // This function removes the "active" class of all steps...
-      var i, x = document.getElementsByClassName("step");
-      for (i = 0; i < x.length; i++) {
-        x[i].className = x[i].className.replace(" active", "");
-      }
-      //... and adds the "active" class on the current step:
-      x[n].className += " active";
-    }
-  </script>
-  <script>
-    var Random = Mock.Random;
-    var json1 = Mock.mock({
-      "data|10-50": [{
-        name: function() {
-          return Random.name(true)
-        },
-        "id|+1": 1,
-        "disabled|1-2": true,
-        groupName: 'Group Name',
-        "groupId|1-4": 1,
-        "selected": false
-      }]
-    });
-
-    $('.dropdown-mul-1').dropdown({
-      data: json1.data,
-      limitCount: 40,
-      multipleMode: 'label',
-      choice: function() {
-        // console.log(arguments,this);
-      }
-    });
-
-    var json2 = Mock.mock({
-      "data|10000-10000": [{
-        name: function() {
-          return Random.name(true)
-        },
-        "id|+1": 1,
-        "disabled": false,
-        groupName: 'Group Name',
-        "groupId|1-4": 1,
-        "selected": false
-      }]
-    });
-
-    $('.dropdown-mul-2').dropdown({
-      limitCount: 5,
-      searchable: false
-    });
-
-    $('.dropdown-sin-1').dropdown({
-      readOnly: true,
-      input: '<input type="text" maxLength="20" placeholder="Search">'
-    });
-
-    $('.dropdown-sin-2').dropdown({
-      data: json2.data,
-      input: '<input type="text" maxLength="20" placeholder="Search">'
     });
   </script>
 </body>

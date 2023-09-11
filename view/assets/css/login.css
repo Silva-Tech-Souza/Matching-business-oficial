@@ -150,7 +150,7 @@ body {
 }
 
 .login-page {
-    height: 100vh;
+    height: auto;
     width: 100%;
 }
 
@@ -159,7 +159,6 @@ body {
     display: flex;
     align-items: center;
     justify-content: space-between;
-    padding: 12rem;
 }
 
 .login-page-container>div>img {
@@ -172,14 +171,16 @@ body {
 }
 
 .login-page-container form input {
-    width: 20rem;
+    width: -webkit-fill-available;
     height: 3rem;
     font-size: 1.5rem;
 }
 
 .login-page-container form fieldset {
     border: 1px solid #ffffff;
-    padding: 2rem;
+    padding: 3rem;
+    width: 300px;
+    text-align: center;
     border-radius: 1rem;
 }
 
@@ -191,7 +192,6 @@ body {
     color: #ffffff;
     font-size: 1.5rem;
     padding: 0.5rem;
-    margin-left: 5.5rem;
     border-radius: 0.5rem;
     transition: all 200ms ease-in-out;
 }
@@ -242,17 +242,15 @@ body {
         flex-direction: column;
         align-items: center;
         justify-content: space-between;
-        padding: 12rem;
     }
     .login-page-container .login-btn {
         border: none;
         width: 10rem;
         height: 4rem;
-        background-color: #6d9ed5;
+        background-color: #256dbf;
         color: #ffffff;
         font-size: 1.5rem;
         padding: 0.5rem;
-        margin-left: 5rem;
         border-radius: 0.5rem;
         transition: all 200ms ease-in-out;
     }
@@ -398,4 +396,72 @@ body {
 .errologintxt {
     text-align: center;
     color: red;
+}
+
+.hero {
+    background-color: #001a2c;
+    background-image: url("../img/fundo2.png");
+    background-size: cover;
+    background-position: center;
+}
+
+.titulologin {
+    font-size: 50px;
+}
+
+@media (max-width: 767px) {
+    .titulologin {
+        font-size: 25px;
+    }
+}
+
+.desclogin {
+    font-size: 15px;
+}
+
+.loginfooter {
+    bottom: 0;
+    left: 0;
+    right: 0;
+    position: unset;
+}
+
+.inputlogin {
+    padding: 4px;
+    border-radius: 5px;
+}
+
+.inputtamanho {
+    height: 3rem;
+}
+
+.labelcadastro {
+    font-size: initial;
+}
+
+.cardcadastro {
+    border: 1px solid white;
+    border-radius: 10px;
+    padding: 13px;
+    max-width: 400px !important;
+}
+
+.icone-btn-mobile {
+    font-size: 15px;
+}
+
+.btn-mobile {
+    width: 40px;
+}
+
+.password-container {
+    position: relative;
+}
+
+.password-container .input-group-text {
+    position: absolute;
+    right: 10px;
+    top: 50%;
+    transform: translateY(-50%);
+    cursor: pointer;
 }

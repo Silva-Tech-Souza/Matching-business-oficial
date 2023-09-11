@@ -1,0 +1,181 @@
+<?php
+session_start();
+error_reporting(0);
+date_default_timezone_set('America/Sao_Paulo');
+
+
+$idPost = $_GET['idFeed'];
+$iduser = $_SESSION["id"];
+include_once('../../model/classes/tbPostComent.php');
+
+if ($_GET["texto"] != "") {
+    $idFeed = $_GET["idFeed"];
+    $texto = $_GET["texto"];
+
+    $tbPostComent = new PostComent();
+    $tbPostComent->setidpost($idFeed);
+    $tbPostComent->setiduser($iduser);
+    $tbPostComent->settexto($texto);
+    $tbPostComent->cadastrar();
+}
+
+
+?>
+
+
+
+
+
+<div class="col-12" style="min-height: 400px; max-height: 400px; overflow-y: auto;">
+
+    <?php
+    $tbPostComent1 = new PostComent();
+    $tbPostComent1->setidpost($idPost);
+    $resultstbPostComent = $tbPostComent1->consulta(" WHERE idpost = :idpost ORDER BY datahora DESC");
+
+    if ($resultstbPostComent != null) {
+        foreach ($resultstbPostComent as $rowfeed) {
+
+
+            $postDateTimeC = new DateTime($rowfeed->datahora);
+
+            // Obtenha o objeto DateTime da data e hora atual
+            $currentTimeC = new DateTime();
+
+            // Calcula a diferença entre a data e hora atual e a da postagem
+            $timeDiffC = $postDateTimeC->diff($currentTimeC);
+
+            // Formata o tempo decorrido com base nas unidades (ano, mês, dia, hora, minuto, segundo)
+            if ($timeDiffC->y > 0) {
+                $timeAgoC = $timeDiffC->y . " year(s) ago";
+            } elseif ($timeDiffC->m > 0) {
+                $timeAgoC = $timeDiffC->m . " month(s) ago";
+            } elseif ($timeDiffC->d > 0) {
+                $timeAgoC = $timeDiffC->d . " day(s) ago";
+            } elseif ($timeDiffC->h > 0) {
+                $timeAgoC = $timeDiffC->h . " hour(s) ago";
+            } elseif ($timeDiffC->i > 0) {
+                $timeAgoC = $timeDiffC->i . " minute(s) ago";
+            } else {
+                $timeAgoC = "A few seconds ago";
+            }
+            include_once('../../model/classes/tblUserClients.php');
+            $userClients2 = new UserClients();
+
+            $userClients2->setidClient($rowfeed->iduser);
+
+            $results = $userClients2->consulta("WHERE idClient = :idClient");
+
+            if ($results != null) {
+                foreach ($results as $rowuserpost) {
+                    $usernamepost = $rowuserpost->FirstName . " " . $rowuserpost->LastName;
+                    $idpostoperation = $rowuserpost->CoreBusinessId;
+                    $imgpostuser = $rowuserpost->PersonalUserPicturePath;
+                }
+            }
+
+    ?>
+            <div class="row" style="
+    margin-left: 0;
+    margin-right: 0;
+">
+                <div class="col-1 d-flex flex-column justify-content-center align-items-center" style="height: auto;">
+                    <img src="<?php if ($imgpostuser != "Avatar.png" && $imgpostuser != "") {
+                                    echo "" . $imgpostuser;
+                                } else {
+                                    echo "assets/img/Avatar.png";
+                                } ?>" alt="user" class="nav-profile-img ">
+                </div>
+                <div class="col-11  ">
+                    <div class="row align-content-center shadow" style="margin: 3px !important; overflow-y: auto; max-height: 400px;  padding: 15px;">
+                        <input class="form-control bordainput" value="" autocomplete="off" name="idproduto" type="hidden">
+
+                        <div class="col-12 d-flex flex-column justify-content-start align-items-start" style="height: auto;">
+                        <a href="viewProfile.php?profile=<?php echo $rowfeed->iduser; ?>" class="minimenuoption"><h4><?php echo $usernamepost; ?></h4></a>
+                            <?php
+                            include_once('../../model/classes/tblOperations.php');
+                            $operations = new Operations();
+                            $operations->setidOperation($idpostoperation);
+                            $resultsoperation = $operations->consulta("WHERE FlagOperation != '0' AND idOperation = :idOperation");
+                            if ($resultsoperation != null) {
+                                foreach ($resultsoperation as $rowoperation) {
+                                    echo $rowoperation->NmOperation;
+                                }
+                            }
+                            ?><br><hr>
+                        </div>
+                        <div class="col-12" style="overflow-wrap: break-word;font-size: small;">
+                            <?php echo $rowfeed->texto; ?>
+                        </div>
+                        <div class="col-12 justify-content-end align-items-end" style="
+    text-align: end;
+    justify-content: end !important;
+    align-items: end !important;
+    display: block;
+">
+                            <?php echo $timeAgoC; ?>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+    <?php }
+    } ?>
+
+
+</div>
+
+
+<div class="row align-content-center " style="margin: 3px !important;background: #dddddd;">
+    <div class="card-body shadow d-flex flex-column rounded-4 ">
+        <form action="../controller/homeController.php" method="POST" enctype="multipart/form-data">
+            <div class="row" style="margin: 2px;padding: 8px;">
+                <div class="col-md-10">
+                    <textarea name="txtcom" class="form-control input-new-post" rows="1" placeholder="Write a post..." id="textareaC" maxlength="500" style="
+    background: #dddddd;
+"></textarea>
+                </div>
+                <div class="col-md-2 ">
+                    <div class="row justify-content-end mt-auto">
+                        <input class="insertpost btn btn-primary pl-4 pr-4 no-border p-3 post-btn-confirm btnpostado" type="button" name="postcomment" value="Post">
+                    </div>
+                </div>
+            </div>
+
+        </form>
+    </div>
+</div>
+
+
+<script>
+    $(document).ready(function() {
+        // Ao clicar em um link de produto
+        $('.btnpostado').click(function() {
+            // Obtenha o ID do produto associado ao link clicado
+            var textArea = document.getElementById("textareaC");
+            console.log(" <?php echo $idPost; ?>");
+            // Obtém o texto dentro do textarea usando a propriedade "value"
+            var texto = textArea.value;
+            // Use o ID do produto para fazer uma requisição AJAX para buscar os dados do produto no servidor
+            $.ajax({
+                type: 'GET',
+                url: 'widget/visualizarComent.php', // Substitua pelo caminho correto
+                data: {
+                    idFeed: <?php echo $idPost; ?>,
+                    texto: texto
+                },
+                success: function(data) {
+                    // Preencha o conteúdo do modal com as informações do produto
+                    $('#modalEditarProduto .modal-content').html(data);
+                },
+                error: function() {
+                    alert('Ocorreu um erro ao carregar os dados do comentrios.');
+                }
+            });
+
+
+        });;
+
+
+    });
+</script>

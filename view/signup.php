@@ -16,20 +16,20 @@ if ($_SESSION['sessao'] > 0) {
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link rel="stylesheet" href="assets/css/geral.css">
-    <link rel="stylesheet" href="assets/css/login.css">
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-4bw+/aepP/YC94hEpVNVgiZdgIC5+VKNBQNGCHeKRQN+PtmoHDEXuppvnDJzQIu9" crossorigin="anonymous">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    <script src="https://kit.fontawesome.com/f51201541f.js" crossorigin="anonymous"></script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/autosize.js/4.0.2/autosize.min.js"></script>
+  <link rel="stylesheet" href="assets/css/login.css">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-4bw+/aepP/YC94hEpVNVgiZdgIC5+VKNBQNGCHeKRQN+PtmoHDEXuppvnDJzQIu9" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  <script src="https://kit.fontawesome.com/f51201541f.js" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/autosize.js/4.0.2/autosize.min.js"></script>
 
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
-    <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
-     <title>Matching Business</title>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+  <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+  <title>Matching Business</title>
   <style>
     .modal-body {
       display: flex;
@@ -70,90 +70,126 @@ if ($_SESSION['sessao'] > 0) {
   </style>
 </head>
 
-<body class=" dark-bg">
+<body class="hero">
+  <div class="container m-auto">
+    <div class="col-12">
+      <div class="row">
+        <div class="col-lg-8 col-12">
+          <div class="mt-5">
+            <h1 class="color-branco titulologin" style="font-size: 40px;">Welcome to <span style="color:#0057e4;">Matching Business Online.</span></h1>
+            <p class="color-branco desclogin d-none d-md-block">Dear user,<br>
 
-  <div class="signup-page section container">
+              Your account is linked to a Legal Entity (PJ). Each PJ account can have up to 5 users. This restriction aims to ensure security and proper control of the company's activities. <br>
 
-    <div class="signup-page-container">
-      <div class="globe-container">
-        <h2>You are one step away from <br> <span style="color:#0057e4;">connecting</span> with the world!</h2>
-        <div class="globe">
-          <img src="assets/img/undraw_sign_up_n6im.svg">
+              The difference between verified and unverified accounts is simple: verified accounts submit the required documentation to prove their legitimacy, gaining benefits such as increased trust, access to advanced features, and priority support. Unverified accounts have some limitations and may not have full access to all features. <br>
+
+              To make the most of our platform, we recommend verifying your PJ account and enjoying all available benefits.<br>
+
+              If you have any questions, our support team is ready to assist.<br>
+
+              Best regards.</p>
+          </div>
         </div>
-      </div>
-      <div class="signup-form">
-        <form method="POST" enctype="multipart/form-data">
-          <fieldset class="alinhartxtinicio">
-            <label for="company-name">Company name </label><br><br>
-            <input type="text" name="nomeEmpresa" id="nomeEmpresa" placeholder="ex: Devloper" required><br>
-            <label for="taxid">TAX ID </label><br><br>
-            <input type="text" name="taxid" id="taxid" placeholder="ex: Devloper"><br>
-            <label for="job-tittle">Job tittle</label><br><br>
-            <input type="text" name="cargo" id="cargo" placeholder="ex: Devloper" required><br>
-            <div style="display: flex; gap: 10px;">
-              <div style="display: flex; flex-direction: column; width: 50%;">
-                <label for="first-name">Name</label>
-                <input class="inputauto" type="text" name="nome" id="nome" placeholder="type here..." required>
-              </div>
-              <div style="display: flex; flex-direction: column; width: 50%;">
-                <label for="last-name">LastName</label>
-                <input class="inputauto" type="text" name="sobrenome" id="sobrenome" placeholder="type here..." required>
-              </div>
-            </div>
-            <label for="email-address">Email address</label><br><br>
-            <input type="email" name="email" id="email" placeholder="ex: email@email.com" required><br>
 
+        <div class="col-lg-4 col-12 ">
+          <div class="cardcadastro">
+          <form  action="../controller/signupController.php" method="POST" enctype="multipart/form-data">
+              <div class="row">
 
-            <div style="gap: 10px;">
+                <div class="col-sm-12">
+                  <div class="form-group" style="text-align: start;">
+                    <label class="color-branco labelcadastro" for="company-name">Company name </label>
+                    <input type="text" name="nomeEmpresa" class="form-control inputtamanho" id="nomeEmpresa" placeholder="ex: Devloper" required><br>
+                  </div>
+                </div>
 
-              <label for="phone">Phone Number </label><br><br>
-              <input class="inputauto" type="tel" name="whatsapp" maxlength="20" value="" id="whatsapp" placeholder="Country code - Region code - Number" required><br><br>
-              <div>
-                <label for="country-select" class="form-label">Country</label>
-                <select class="form-select selectfontsize" id="country-select" name="country">
-                  <option value="">Select a country</option>
-                  <?php
-                  include_once('../model/classes/tblCountry.php');
+                <div class="col-sm-12">
+                  <div class="form-group" style="text-align: start;">
+                    <label class="color-branco labelcadastro" for="taxid">TAX ID </label>
+                    <input type="text" class="form-control inputtamanho" name="taxid" id="taxid" placeholder="ex: Devloper"><br>
+                  </div>
+                </div>
 
-                  $tblCountry = new Country();
+                <div class="col-sm-12">
+                  <div class="form-group" style="text-align: start;">
+                    <label class="color-branco labelcadastro" for="job-tittle">Job tittle</label>
+                    <input type="text" class="form-control inputtamanho" name="cargo" id="cargo" placeholder="ex: Devloper" required><br>
+                  </div>
+                </div>
 
-                  $resultstblCountry = $tblCountry->consulta("ORDER BY NmCountry ASC");
+                <div class="col-sm-6">
+                  <div class="form-group" style="text-align: start;">
+                    <label class="color-branco labelcadastro" for="first-name">Name</label>
+                    <input class="inputauto form-control inputtamanho" type="text" name="nome" id="nome" placeholder="type here..." required>
+                  </div>
+                </div>
 
-                  if ($tblCountry != null) {
-                    if (is_array($resultstblCountry) || is_object($resultstblCountry)){
-                    foreach ($resultstblCountry as $rowpaises) { ?>
-                      <option value="<?php echo $rowpaises->idCountry; ?>"><?php echo $rowpaises->NmCountry; ?></option>
-                  <?php  }
-                  } }
-                  ?>
-                </select>
-              </div>
-            </div><br>
-            <p class="errologintxt"><?php echo $_SESSION['signuperro']; ?></p>
-            <div class="alinharbtningupcenter"><input type="submit" value="Nex" class="login-btn" name="signupsubmit"></div>
-            <a href="index.php" style="display: flex; flex-direction: column; text-align: center; margin-top: 1rem; margin-left: 1rem; 
+                <div class="col-sm-6">
+                  <div class="form-group" style="text-align: start;">
+                    <label class="color-branco labelcadastro" for="last-name">LastName</label>
+                    <input class="inputauto form-control inputtamanho" type="text" name="sobrenome" id="sobrenome" placeholder="type here..." required><br>
+                  </div>
+                </div>
+
+                <div class="col-sm-12">
+                  <div class="form-group" style="text-align: start;">
+                    <label class="color-branco labelcadastro" for="email-address">Email address</label>
+                    <input type="email" class=" form-control inputtamanho inputtamanho" name="email" id="email" placeholder="ex: email@email.com" required><br>
+                  </div>
+                </div>
+                <div class="col-sm-12">
+                  <div class="form-group" style="text-align: start;">
+                  <label class="color-branco labelcadastro"  for="phone">Phone Number </label>
+                  <input class="inputauto form-control inputtamanho" type="tel" name="whatsapp" maxlength="20" value="" id="whatsapp" placeholder="Country code - Region code - Number" required><br>
+                  </div>
+                </div>
+
+                <div class="col-sm-12">
+                  <div class="form-group" style="text-align: start;">
+                  <label  class="color-branco labelcadastro"  for="country-select" class="form-label">Country</label>
+                  <select class="inputtamanho form-select selectfontsize" id="country-select" name="country">
+                      <option value="">Select a country</option>
+                      <?php
+                      include_once('../model/classes/tblCountry.php');
+
+                      $tblCountry = new Country();
+
+                      $resultstblCountry = $tblCountry->consulta("ORDER BY NmCountry ASC");
+
+                      if ($tblCountry != null) {
+                        if (is_array($resultstblCountry) || is_object($resultstblCountry)) {
+                          foreach ($resultstblCountry as $rowpaises) { ?>
+                            <option value="<?php echo $rowpaises->idCountry; ?>"><?php echo $rowpaises->NmCountry; ?></option>
+                      <?php  }
+                        }
+                      }
+                      ?>
+                    </select>
+                  </div>
+                </div>
+               
+                <p class="errologintxt"><?php echo $_SESSION['signuperro']; ?></p>
+                <div class="col-sm-12">
+                  <div class="form-group" style="text-align: center;">
+                  <button type="submit" class="btn btn-primary login-btn inputtamanho" value="cadastro" name="signupsubmit">Signup</button>
+                  </div>
+                </div>
+               
+
+                <a href="login.php" style="display: flex; flex-direction: column; text-align: center; margin-top: 1rem; margin-left: 1rem; 
                             font-size: 1.5rem; text-decoration: none; ">(Go back to homepage instead)</a>
-          </fieldset>
-        </form>
+              </div>
+            </form>
+          </div>
+            
+        
+        </div>
       </div>
     </div>
   </div>
 
   <!-- rights section footer -->
-  <footer class="bg-dark text-center text-white">
-    <!-- Grid container -->
-    <div class="container p-4 pb-0">
-      <!-- Section: Social media -->
-      <section class="mb-4">
-        <!-- Facebook -->
-        <a class="btn btn-outline-light btn-floating m-1" href="https://web.facebook.com/latambd" target="_blank" role="button"><i class="fab fa-facebook-f"></i></a>
-
-        <!-- Linkedin -->
-        <a class="btn btn-outline-light btn-floating m-1" target="_blank" href="https://www.linkedin.com/company/labd-latin-america-business-development/" role="button"><i class="fab fa-linkedin-in"></i></a>
-      </section>
-      <!-- Section: Social media -->
-    </div>
-    <!-- Grid container -->
+  <footer class="bg-dark text-center text-white loginfooter">
 
     <!-- Copyright -->
     <div class="text-center p-3" style="background-color: rgba(0, 0, 0, 0.2);">

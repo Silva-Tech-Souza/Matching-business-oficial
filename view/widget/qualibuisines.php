@@ -1,38 +1,44 @@
 <?php 
 session_start();
 error_reporting(0);
+header("Access-Control-Allow-Origin: *");
 date_default_timezone_set('America/Sao_Paulo');
-include('../../../conexao/conexao.php');
 
 $idbusines = $_GET["q"];
-$sqloperacao = "SELECT * from tblOperations WHERE idOperation = :idOperation";
-$queryoperacao = $dbh->prepare($sqloperacao);
-$queryoperacao->bindParam(':idOperation', $idbusines, PDO::PARAM_INT);
-$queryoperacao->execute();
-$resultsoperacao = $queryoperacao->fetchAll(PDO::FETCH_OBJ);
-if ($queryoperacao->rowCount() > 0) {
-    foreach ($resultsoperacao as $rowoperacao) { 
-        $FlagOperation = $rowoperacao->FlagOperation;
-            }
+
+include_once('../../model/classes/tblOperations.php');
+
+$tblOperations1 = new Operations();
+$tblOperations1->setidOperation($idbusines);
+$resultstblOperations = $tblOperations1->consulta("WHERE idOperation = :idOperation");
+
+if ($tblOperations1 != null) {
+    if (is_array($resultstblOperations) || is_object($resultstblOperations)) {
+        foreach ($resultstblOperations as $rowoperation) {
+        $FlagOperation = $rowoperation->FlagOperation;
+            }}
 }
 if($FlagOperation  != "D"){
 
 
 ?>
 
-<label>Core Business: </label>
-        <select  class="form-control bordainput"   onchange="showbusines2(this.value)" id="coreBusiness" name="coreBusiness">
+<label class="color-branco labelcadastro">Core Business: </label>
+        <select  class="form-control bordainput inputtamanho"   onchange="showbusines2(this.value)" id="coreBusiness" name="coreBusiness">
             <option value="0">Select</option>
             <?php 
-                $sqlcorbusiness = "SELECT * from tblBusiness WHERE FlagOperation = '0'";
-                $querycorbusiness = $dbh->prepare($sqlcorbusiness);
-                $querycorbusiness->execute();
-                $resultscorbusiness = $querycorbusiness->fetchAll(PDO::FETCH_OBJ);
-                if ($querycorbusiness->rowCount() > 0) {
-                    foreach ($resultscorbusiness as $rowcor) { ?>
+            
+                include_once('../../model/classes/tblBusiness.php');
+                $tblBusiness = new Business();
+                $resultstblBusiness = $tblBusiness->consulta("WHERE FlagOperation = '0'");
+               
+               
+                if ($tblBusiness != null) {
+                    if (is_array($resultstblBusiness) || is_object($resultstblBusiness)) {
+                        foreach ($resultstblBusiness as $rowcor) { ?>
                         <option value="<?php echo $rowcor->idBusiness;?>"><?php echo $rowcor->NmBusiness;?></option>
                     <?php }
-                }
+                }}
             ?>
-        </select> 
+        </select><br> 
         <?php  } ?>

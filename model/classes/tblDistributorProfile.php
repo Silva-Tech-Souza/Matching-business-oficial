@@ -84,12 +84,10 @@ class DistributorProfile{
 
         
 
-        $sql = "INSERT INTO tblDistributorProfile (idDistributorProfile,idClient,AnoFundacao,NumEmpregados,NumVendedores,NivelOperacao,DetalheRegiao,Fob_3Y,Vol_3Y,Fob_2Y,Vol_2Y,Fob_1Y,Vol_1Y) VALUES (:idDistributorProfile,:idClient,:AnoFundacao,:NumEmpregados,:NumVendedores,:NivelOperacao,:DetalheRegiao,:Fob_3Y,:Vol_3Y,:Fob_2Y,:Vol_2Y,:Fob_1Y,:Vol_1Y)";
+        $sql = "INSERT INTO tblDistributorProfile (idClient, AnoFundacao, NumEmpregados, NumVendedores, NivelOperacao, Fob_3Y, Vol_3Y, Fob_2Y, Vol_2Y, Fob_1Y, Vol_1Y) VALUES (:idClient, :AnoFundacao, :NumEmpregados, :NumVendedores, :NivelOperacao, :Fob_3Y, :Vol_3Y, :Fob_2Y, :Vol_2Y, :Fob_1Y, :Vol_1Y)";
         $query = $this->dbh->prepare($sql);
         
-        if($this->idDistributorProfile != null){
-            $query->bindParam(':idDistributorProfile', $this->idDistributorProfile, PDO::PARAM_INT);
-        }
+       
         if($this->idClient != null){
             $query->bindParam(':idClient', $this->idClient, PDO::PARAM_INT);
         }

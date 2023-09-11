@@ -40,15 +40,12 @@
                         $_SESSION['lName'] = $rowlogin->LastName;
                     }
                 
-                    header("Location: qualificacao.php");
+                    header("Location: ../view/qualificacao.php");
                 }
                 else{
                     $errosenha= "Not allowed to change password";
                 }
-            
             }
-            
-        
             }else{
                 $errosenha= "The passwords are different";
                 
@@ -56,4 +53,3 @@
 
         $_POST["create"] ="";
     }
-?>

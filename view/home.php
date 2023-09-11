@@ -1,6 +1,6 @@
 <?php
 session_start();
-//error_reporting(0);
+error_reporting(0);
 date_default_timezone_set('America/Sao_Paulo');
 if ($_SESSION["id"] < 0 || $_SESSION["id"] == "") {
     header("Location: login.php");
@@ -48,7 +48,7 @@ $country = new Country();
 
 $country->setidCountry($idcountry);
 
-$resultsCountry = $country->consulta("WHERE idCountry = :idCountry");
+$resultsCountry = $country->consulta("WHERE idCountry = :idCountry ");
 
 if ($resultsCountry != null) {
     foreach ($resultsCountry as $rowCountry) {
@@ -83,6 +83,12 @@ if ($resultsCountry != null) {
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
     <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
     <link rel="stylesheet" href="assets/css/feed.css">
+    <link rel="stylesheet" href="assets/css/navbar.css">
+    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick.css" />
+    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick-theme.css" />
+    <script type="text/javascript" src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/autosize.js/4.0.2/autosize.min.js"></script>
     <script>
         function showCurtida(iddiv) {
             if (iddiv == "") {
@@ -95,7 +101,7 @@ if ($resultsCountry != null) {
                     document.getElementById("div-" + iddiv).innerHTML = this.responseText;
                 }
             }
-            xmlhttp.open("GET", "atualizarcurtida.php?id=" + iddiv, true);
+            xmlhttp.open("GET", "widget/atualizarcurtida.php?id=" + iddiv, true);
             xmlhttp.send();
         }
 
@@ -110,7 +116,7 @@ if ($resultsCountry != null) {
                     document.getElementById("div-" + iddiv).innerHTML = this.responseText;
                 }
             }
-            xmlhttp.open("GET", "atualizardescurtida.php?id=" + iddiv, true);
+            xmlhttp.open("GET", "widget/atualizardescurtida.php?id=" + iddiv, true);
             xmlhttp.send();
         }
     </script>
@@ -128,9 +134,315 @@ if ($resultsCountry != null) {
             xmlhttp.send();
         }, 5000);
     </script>
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            var rowProduct = document.querySelector(".rowProduct");
+            var rowProductInner = rowProduct.innerHTML;
+            var scrollPosition = 0;
+            var isMouseOver = false;
+            var startX, startScrollPosition;
+
+            // Clone o conteúdo da lista para criar o loop contínuo
+            rowProduct.innerHTML += rowProductInner;
+
+            function autoScroll() {
+                if (!isMouseOver) {
+                    scrollPosition += 4;
+                    if (scrollPosition >= rowProduct.scrollWidth / 2) {
+                        scrollPosition = 0;
+                    }
+                    rowProduct.scrollLeft = scrollPosition;
+                }
+            }
+
+            function handleMouseDown(event) {
+                isMouseOver = true;
+                startX = event.clientX;
+                startScrollPosition = rowProduct.scrollLeft;
+            }
+
+            function handleMouseMove(event) {
+                if (isMouseOver) {
+                    var deltaX = startX - event.clientX;
+                    rowProduct.scrollLeft = startScrollPosition + deltaX;
+                }
+            }
+
+            function handleMouseUp() {
+                isMouseOver = false;
+            }
+
+            rowProduct.addEventListener("mousedown", handleMouseDown);
+            rowProduct.addEventListener("mousemove", handleMouseMove);
+            rowProduct.addEventListener("mouseup", handleMouseUp);
+            rowProduct.addEventListener("mouseleave", handleMouseUp);
+
+            setInterval(autoScroll, 50);
+        });
+    </script>
+    <script>
+        $(document).ready(function() {
+            function readURL(input) {
+                if (input.files && input.files[0]) {
+                    var reader = new FileReader();
+                    reader.onload = function(e) {
+                        if (input.files[0].type.startsWith('image')) {
+                            $('#preview-image').attr('src', e.target.result).show();
+                            $('#preview-video').hide();
+                        } else if (input.files[0].type.startsWith('video')) {
+                            $('#preview-video').attr('src', e.target.result).show();
+                            $('#preview-image').hide();
+                        }
+                    };
+                    reader.readAsDataURL(input.files[0]);
+                } else {
+                    $('#preview-image').attr('src', '').hide();
+                    $('#preview-video').attr('src', '').hide();
+                }
+            }
+
+            $('#file-input').on('change', function() {
+                readURL(this);
+            });
+            $('#video-input').on('change', function() {
+                readURL(this);
+            });
+
+        });
+    </script>
+    <style>
+        /*-----------------
+       9. Sidebar
+   -----------------------*/
+
+        .sidebar {
+            background-color: #34444c;
+            border-right: 1px solid transparent;
+            bottom: 0;
+            left: 0;
+            margin-top: 0;
+            position: fixed;
+            top: 60px;
+            transition: all 0.2s ease-in-out 0s;
+            width: 290px;
+            z-index: 1001;
+        }
+
+        .sidebar-inner {
+            height: 100%;
+            transition: all 0.2s ease-in-out 0s;
+        }
+
+        .sidebar-menu {
+            padding: 10px 0;
+        }
+
+        .sidebar-menu ul {
+            list-style-type: none;
+            margin: 0;
+            padding: 0;
+            position: relative;
+        }
+
+        .sidebar-menu li a:hover {
+            color: #fff;
+        }
+
+        .sidebar-menu li.active a {
+            color: #fff;
+            background-color: rgba(0, 0, 0, 0.2);
+        }
+
+        .menu-title {
+            color: #ebecf1;
+            display: flex;
+            opacity: 1;
+            padding: 5px 15px;
+            white-space: nowrap;
+        }
 
 
+        .mobile-user-menu {
+            color: #fff;
+            display: none;
+            float: right;
 
+            height: 60px;
+            line-height: 60px;
+            padding: 0 20px;
+            position: absolute;
+            right: 0;
+            text-align: right;
+            top: 0;
+            width: 60px;
+            z-index: 10;
+        }
+
+        .mobile-user-menu>a {
+            color: #fff;
+            padding: 0;
+        }
+
+        .mobile-user-menu a:hover {
+            color: #fff;
+        }
+
+        .profile-rightbar {
+            display: none !important;
+            color: #782580;
+
+            margin-left: 15px;
+        }
+
+        .mobile_btn {
+            display: none;
+            float: left;
+        }
+
+
+        .sidebar-menu .menu-arrow {
+            -webkit-transition: -webkit-transform 0.15s;
+            -o-transition: -o-transform 0.15s;
+            transition: transform .15s;
+            position: absolute;
+            right: 15px;
+            display: inline-block;
+
+            text-rendering: auto;
+            line-height: 40px;
+            font-size: 18px;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+            -webkit-transform: translate(0, 0);
+            -ms-transform: translate(0, 0);
+            -o-transform: translate(0, 0);
+            transform: translate(0, 0);
+            line-height: 18px;
+            top: 11px;
+
+        }
+
+        .sidebar-menu .menu-arrow:before {
+            content: "\f105";
+        }
+
+        .sidebar-menu li a.subdrop .menu-arrow {
+            -ms-transform: rotate(90deg);
+            -webkit-transform: rotate(90deg);
+            -o-transform: rotate(90deg);
+            transform: rotate(90deg);
+        }
+
+        .noti-dot:before {
+            content: '';
+            width: 5px;
+            height: 5px;
+            border: 5px solid #782580;
+            -webkit-border-radius: 30px;
+            -moz-border-radius: 30px;
+            border-radius: 30px;
+            background-color: #782580;
+            z-index: 10;
+            position: absolute;
+            right: 37px;
+            top: 15px;
+        }
+
+        .noti-dot:after {
+            content: '';
+            border: 4px solid #782580;
+            background: transparent;
+            -webkit-border-radius: 60px;
+            -moz-border-radius: 60px;
+            border-radius: 60px;
+            height: 24px;
+            width: 24px;
+            -webkit-animation: pulse 3s ease-out;
+            -moz-animation: pulse 3s ease-out;
+            animation: pulse 3s ease-out;
+            -webkit-animation-iteration-count: infinite;
+            -moz-animation-iteration-count: infinite;
+            animation-iteration-count: infinite;
+            position: absolute;
+            top: 8px;
+            right: 30px;
+            z-index: 1;
+            opacity: 0;
+        }
+
+        .sidebar-menu ul ul a .menu-arrow {
+            top: 6px;
+        }
+
+        .sidebar-menu a {
+
+            transition: unset;
+            -moz-transition: unset;
+            -o-transition: unset;
+            -ms-transition: unset;
+            -webkit-transition: unset;
+        }
+
+        .page-wrapper {
+            left: 0;
+            margin-left: 290px;
+            padding-top: 60px;
+            position: relative;
+            transition: all 0.2s ease-in-out;
+        }
+
+        .page-wrapper>.content {
+            padding: 30px;
+        }
+
+        .page-header {
+            margin-bottom: 1.875rem;
+        }
+
+        .page-header .breadcrumb {
+            background-color: transparent;
+            color: #6c757d;
+            font-size: 1rem;
+            font-weight: 500;
+            margin-bottom: 0;
+            padding: 0;
+        }
+
+        .page-header .breadcrumb a {
+            color: #333;
+        }
+
+
+        .expanded {
+            width: 0 !important;
+            /* Defina a largura expandida da sidebar */
+            display: none;
+            transition: width 0.3s;
+        }
+
+        @media only screen and (max-width: 767.98px) {
+            .sidebar {
+                background-color: #34444c;
+                border-right: 1px solid transparent;
+                bottom: 0;
+                left: 0;
+                margin-top: 0;
+                position: fixed;
+                top: 115px;
+                transition: all 0.2s ease-in-out 0s;
+                width: 290px;
+                z-index: 1001;
+            }
+
+            .logo img {
+                height: 4.5rem;
+                width: 4.5rem;
+                border-radius: 1rem;
+                margin-right: 1rem;
+                display: block;
+            }
+        }
+    </style>
 </head>
 
 <body class="funcolinhas">
@@ -139,16 +451,77 @@ if ($resultsCountry != null) {
 
     <!-- Header -->
     <?php include_once("widget/navbar.php"); ?>
+    <div class="sidebar expanded " id="sidebar" style="background: #002d4b;">
+        <div class="sidebar-inner slimscroll ">
+            <div id="sidebar-menu" class="sidebar-menu">
+                <div class="card rounded-4 shadow  treeviewmin panddingardtreeview" style="min-height: 100% !important;height: 100% !important;max-height: 100%  !important; margin-top: 0;">
+                    <div class="card-body p-0 m-0">
 
+                        <div class="row p-2 ml-0">
+                            <ul id="tree2">
+                                <?php
+                                include_once('../model/classes/tblOperations.php');
+                                $operations1 = new Operations();
+                                $resultsOperation1 = $operations1->consulta("WHERE FlagOperation != '0'");
+                                if ($resultsOperation1 != null) {
+                                    foreach ($resultsOperation1 as $rowOperation) {
+                                ?>
+                                        <li>
+
+                                            <a href="listcompani.php?operation=<?php echo $rowOperation->idOperation; ?>"><?php if ($rowOperation->FlagOperation != "D") {
+                                                                                                                                echo "<i class='fa-solid fa-add indicator ' ></i>";
+                                                                                                                            } ?>
+                                                <?php echo trim($rowOperation->NmOperation); ?>
+                                            </a>
+                                            <div style="text-align: end; width: 24px;float: right;position: initial;">
+                                                <?php $numerouser22 = new UserClients();
+                                                $numerouser22->setCoreBusinessId($rowOperation->idOperation);
+                                                echo $numerouser22->quantidade(" WHERE CoreBusinessId = :CoreBusinessId"); ?>
+                                            </div>
+                                            <?php if ($rowOperation->FlagOperation != "D") { ?>
+                                                <ul>
+                                                    <?php
+                                                    include_once('../model/classes/tblBusiness.php');
+                                                    $business1 = new Business();
+                                                    $resultsbusiness1 = $business1->consulta("WHERE FlagOperation = '0' ORDER BY NmBusiness ASC");
+                                                    if ($resultsbusiness1 != null) {
+                                                        foreach ($resultsbusiness1 as $rowbusiness) {
+                                                    ?>
+                                                            <li><a class="sizewidgh" href="listcompani.php?busines=<?php echo $rowbusiness->idBusiness; ?>&operation=<?php echo $rowOperation->idOperation; ?>"><?php
+                                                                                                                                                                                                                echo trim($rowbusiness->NmBusiness); ?> <div style="text-align: end; width: 24px;float: right;position: initial;">
+                                                                        <?php $numerouser3 = new UserClients();
+                                                                        $numerouser3->setCoreBusinessId($rowOperation->idOperation);
+                                                                        $numerouser3->setSatBusinessId($rowbusiness->idBusiness);
+                                                                        echo $numerouser3->quantidade(" WHERE CoreBusinessId = :CoreBusinessId AND SatBusinessId = :SatBusinessId"); ?>
+                                                                    </div></a>
+
+
+                                                            </li>
+                                                    <?php }
+                                                    } ?>
+                                                </ul>
+                                            <?php } ?>
+                                        </li>
+
+                                        <hr>
+                                <?php }
+                                } ?>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 
     <!-- -----------------------------------Navbar Close-------------------------------- -->
-    <br><br><br><br><br>
+
     <div class="telacheia">
         <div class="col-md-12 p-2 m-0">
-            <div class="row telacheia">
+            <div class="row telacheia margemmnavbar">
 
                 <!-- Esquerda -->
-                <div class="col-3  justify-content-start ">
+                <div class="col-3 d-none d-md-block justify-content-start position-fixed overflow-auto scrollable-column">
                     <div class="card rounded-4 shadow">
                         <div class="card-body p-0 m-0">
                             <div class="col-12 mh-25">
@@ -176,7 +549,19 @@ if ($resultsCountry != null) {
                                     <h5 class="fonte-principal">&nbsp;&nbsp;&nbsp;&nbsp;<i class="fa-solid fa-eye icon-notif-zoom mini-profile-icon"></i>&nbsp;&nbsp;Views</h5>
                                 </div>
                                 <div class="col-3 m-0 p-0">
-                                    <h5 class="fonte-principal text-left">0</h5>
+                                    <h5 class="fonte-principal text-left"><?php
+                                                                            include_once('../model/classes/tblViews.php');
+                                                                            $views = new Views();
+                                                                            $views->setidView($iduser);
+                                                                            $resultviews = $views->consulta(" WHERE idView = :idView ");
+                                                                            $numView = 0;
+                                                                            if ($resultviews != null) {
+                                                                                foreach ($resultviews as $resultviewsUnid) {
+                                                                                    $numView += 1;
+                                                                                }
+                                                                            }
+                                                                            echo $numView;
+                                                                            ?></h5>
                                 </div>
                             </div>
                             <div class="row pr-2">
@@ -185,13 +570,26 @@ if ($resultsCountry != null) {
                                     <h5 class="fonte-principal">&nbsp;&nbsp;&nbsp;&nbsp;<i class="fa-solid fa-users icon-notif-zoom mini-profile-icon"></i>&nbsp;&nbsp;Want to Connect</h5>
                                 </div>
                                 <div class="col-3 m-0 p-0">
-                                    <h5 class="fonte-principal text-left">0</h5>
+                                    <h5 class="fonte-principal text-left"><?php include_once('../model/classes/tblConect.php');
+                                                                            $conect = new Conect();
+                                                                            $conect->setidUserReceb($iduser);
+                                                                            $resultConect = $conect->consulta("WHERE idUserReceb = :idUserReceb AND status = '0'");
+                                                                            $numView = 0;
+                                                                            if ($resultConect != null) {
+                                                                                foreach ($resultConect as $resultConectUnid) {
+                                                                                    $numView += 1;
+                                                                                }
+                                                                            }
+                                                                            echo $numView;
+                                                                            ?></h5>
                                 </div>
                             </div>
                             <div class="row pr-2  mb-2">
                                 <div class="col-9 m-0 p-0 mr-2">
 
-                                    <h5 class="fonte-principal">&nbsp;&nbsp;&nbsp;&nbsp;<i class="fa-solid fa-address-card icon-notif-zoom mini-profile-icon"></i>&nbsp;&nbsp;Searches Profiles</h5>
+                                    <a href="listcompani.php?text=mysp" class="minimenuoption">
+                                        <h5 class="fonte-principal">&nbsp;&nbsp;&nbsp;&nbsp;<i class="fa-solid fa-address-card icon-notif-zoom mini-profile-icon"></i>&nbsp;&nbsp;Searches Profiles</h5>
+                                    </a>
                                 </div>
                                 <div class="col-3 m-0 p-0">
                                     <h5 class="fonte-principal text-left">0</h5>
@@ -199,10 +597,12 @@ if ($resultsCountry != null) {
                             </div>
                         </div>
                     </div>
-                    <div class="card rounded-4 shadow  treeviewmin panddingardtreeview">
-                        <div class="card-body p-0 m-0">
+                    <div class="card rounded-4 shadow  treeviewmin panddingardtreeview" style="margin-bottom: 100px !important;">
+                        <div class="card-body p-0">
                             <div class="col-12 mh-25">
-                                <h2>Matching Business Online</h2>
+                                <h3>Matching Business Online <div style="text-align: end; width: 24px;float: right;position: initial;    color: #62b1ff;"><?php $numerouser2 = new UserClients();
+                                                                                                                                                            echo $numerouser2->quantidade(""); ?></div>
+                                </h3>
                                 <hr>
                             </div>
                             <div class="row p-2 ml-0">
@@ -215,11 +615,18 @@ if ($resultsCountry != null) {
                                     if ($resultsOperation != null) {
                                         foreach ($resultsOperation as $rowOperation) {
                                     ?>
-                                            <li><a href="searchPage.php?operation=<?php echo $rowOperation->idOperation; ?>"><?php
-                                                                                                                            if ($rowOperation->FlagOperation != "D") {
-                                                                                                                                echo "<i class='fa-solid fa-add indicator ' ></i>";
-                                                                                                                            } ?>
-                                                    <?php echo trim($rowOperation->NmOperation);  ?></a>
+                                            <li>
+
+                                                <a href="listcompani.php?operation=<?php echo $rowOperation->idOperation; ?>"><?php if ($rowOperation->FlagOperation != "D") {
+                                                                                                                                    echo "<i class='fa-solid fa-add indicator ' ></i>";
+                                                                                                                                } ?>
+                                                    <?php echo trim($rowOperation->NmOperation); ?>
+                                                </a>
+                                                <div style="text-align: end; width: 24px;float: right;position: initial;">
+                                                    <?php $numerouser1 = new UserClients();
+                                                    $numerouser1->setCoreBusinessId($rowOperation->idOperation);
+                                                    echo $numerouser1->quantidade(" WHERE CoreBusinessId = :CoreBusinessId"); ?>
+                                                </div>
                                                 <?php if ($rowOperation->FlagOperation != "D") { ?>
                                                     <ul>
                                                         <?php
@@ -229,24 +636,15 @@ if ($resultsCountry != null) {
                                                         if ($business != null) {
                                                             foreach ($resultsbusiness as $rowbusiness) {
                                                         ?>
-                                                                <li><a class="sizewidgh" href="searchPage.php?busines=<?php echo $rowbusiness->idBusiness; ?>"><?php echo "<i class='fa-solid fa-add indicator ' ></i>";
-                                                                                                                                                                echo trim($rowbusiness->NmBusiness); ?>
-                                                                        <ul>
-                                                                            <?php
-                                                                            include_once('../model/classes/tblBusinessCategory.php');
-                                                                            $BusinessCategory = new BusinessCategory();
-                                                                            $resultsBusinessCategory = $BusinessCategory->consulta("WHERE idBusiness = $rowbusiness->idBusiness ORDER BY NmBusinessCategory ASC");
-                                                                            if ($BusinessCategory != null) {
-                                                                                foreach ($resultsBusinessCategory as $rowresultsBusinessCategory) {
-                                                                            ?><li><a class="sizewidghsub" href="searchPage.php?categoria=<?php echo $rowresultsBusinessCategory->idBusinessCategory; ?>"><?php echo trim($rowresultsBusinessCategory->NmBusinessCategory); ?></a>
-
-                                                                                    </li><?php
-                                                                                        }
-                                                                                    }
-                                                                                            ?>
+                                                                <li><a class="sizewidgh" href="listcompani.php?busines=<?php echo $rowbusiness->idBusiness; ?>&operation=<?php echo $rowOperation->idOperation; ?>"><?php
+                                                                                                                                                                                                                    echo trim($rowbusiness->NmBusiness); ?> <div style="text-align: end; width: 24px;float: right;position: initial;">
+                                                                            <?php $numerouser2 = new UserClients();
+                                                                            $numerouser2->setCoreBusinessId($rowOperation->idOperation);
+                                                                            $numerouser2->setSatBusinessId($rowbusiness->idBusiness);
+                                                                            echo $numerouser2->quantidade(" WHERE CoreBusinessId = :CoreBusinessId AND SatBusinessId = :SatBusinessId"); ?>
+                                                                        </div></a>
 
 
-                                                                        </ul>
                                                                 </li>
                                                         <?php }
                                                         } ?>
@@ -263,90 +661,74 @@ if ($resultsCountry != null) {
                     </div>
                 </div>
 
+                <div class="col-3"></div>
+
                 <!-- Meio -->
-                <div class="col-6 justify-content-center">
+                <div class="col-lg-6 col-12 justify-content-center">
                     <div class="col-md-12  justify-content-center">
                         <div class="col-md-12">
                             <div class="card shadow rounded-4 ">
                                 <div class="card-body shadow d-flex flex-column rounded-4 ">
-                                    <div class="col-md-12">
-                                        <form method="POST" enctype="multipart/form-data">
-                                            <textarea name="txtpos" class="form-control " rows="1" placeholder="Write a post..." id="myTextarea" maxlength="500"></textarea>
-                                    </div>
-                                    <br>
-                                    <div class="col-md-12 d-flex justify-content-center">
-                                        <img id="preview-image" src="" alt="" class="d-flex post-imgvideo-style">
-                                        <video id="preview-video" src="" class="post-imgvideo-style" controls></video>
-                                    </div>
-                                    <div class="col-md-12 ">
-                                        <div class="row justify-content-end mt-auto">
-
-                                            <label class=" insertpost btn btn-second mr-2 btn-lg" for="file-input"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-images" viewBox="0 0 16 16">
-  <path d="M4.502 9a1.5 1.5 0 1 0 0-3 1.5 1.5 0 0 0 0 3z"/>
-  <path d="M14.002 13a2 2 0 0 1-2 2h-10a2 2 0 0 1-2-2V5A2 2 0 0 1 2 3a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2v8a2 2 0 0 1-1.998 2zM14 2H4a1 1 0 0 0-1 1h9.002a2 2 0 0 1 2 2v7A1 1 0 0 0 15 11V3a1 1 0 0 0-1-1zM2.002 4a1 1 0 0 0-1 1v8l2.646-2.354a.5.5 0 0 1 .63-.062l2.66 1.773 3.71-3.71a.5.5 0 0 1 .577-.094l1.777 1.947V5a1 1 0 0 0-1-1h-10z"/>
-</svg></label>
-                                            <input id="file-input" accept="image/*" type="file" name="postphoto" class="d-none">
-
-                                            <label class="insertpost btn btn-second mr-2 btn-lg" for="video-input"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-camera-video" viewBox="0 0 16 16">
-  <path fill-rule="evenodd" d="M0 5a2 2 0 0 1 2-2h7.5a2 2 0 0 1 1.983 1.738l3.11-1.382A1 1 0 0 1 16 4.269v7.462a1 1 0 0 1-1.406.913l-3.111-1.382A2 2 0 0 1 9.5 13H2a2 2 0 0 1-2-2V5zm11.5 5.175 3.5 1.556V4.269l-3.5 1.556v4.35zM2 4a1 1 0 0 0-1 1v6a1 1 0 0 0 1 1h7.5a1 1 0 0 0 1-1V5a1 1 0 0 0-1-1H2z"/>
-</svg></label>
-                                            <input id="video-input" accept="video/*" type="file" name="postvideo" class="d-none">
-
-
-
-                                            <input class="insertpost btn btn-primary pl-4 pr-4 no-border p-3 post-btn-confirm" type="submit" name="post" value="Post">
-
-                                            </input>
-
+                                    <form action="../controller/homeController.php" method="POST" enctype="multipart/form-data">
+                                        <div class="col-md-12">
+                                            <textarea name="txtpos" class="form-control input-new-post" rows="1" placeholder="Write a post..." id="myTextarea" maxlength="500"></textarea>
                                         </div>
-                                    </div>
+                                        <br>
+                                        <div class="col-md-12 d-flex justify-content-center">
+                                            <img id="preview-image" src="" alt="" class="d-flex post-imgvideo-style">
+                                            <video id="preview-video" src="" class="post-imgvideo-style" controls></video>
+                                        </div>
+                                        <div class="col-md-12 ">
+                                            <div class="row justify-content-end mt-auto">
+                                                <label class=" insertpost btn btn-second mr-2 btn-lg" for="file-input"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-images" viewBox="0 0 16 16">
+                                                        <path d="M4.502 9a1.5 1.5 0 1 0 0-3 1.5 1.5 0 0 0 0 3z" />
+                                                        <path d="M14.002 13a2 2 0 0 1-2 2h-10a2 2 0 0 1-2-2V5A2 2 0 0 1 2 3a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2v8a2 2 0 0 1-1.998 2zM14 2H4a1 1 0 0 0-1 1h9.002a2 2 0 0 1 2 2v7A1 1 0 0 0 15 11V3a1 1 0 0 0-1-1zM2.002 4a1 1 0 0 0-1 1v8l2.646-2.354a.5.5 0 0 1 .63-.062l2.66 1.773 3.71-3.71a.5.5 0 0 1 .577-.094l1.777 1.947V5a1 1 0 0 0-1-1h-10z" />
+                                                    </svg></label>
+                                                <input id="file-input" accept="image/*" type="file" name="postphoto" class="d-none">
+
+                                                <label class="insertpost btn btn-second mr-2 btn-lg" for="video-input"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-camera-video" viewBox="0 0 16 16">
+                                                        <path fill-rule="evenodd" d="M0 5a2 2 0 0 1 2-2h7.5a2 2 0 0 1 1.983 1.738l3.11-1.382A1 1 0 0 1 16 4.269v7.462a1 1 0 0 1-1.406.913l-3.111-1.382A2 2 0 0 1 9.5 13H2a2 2 0 0 1-2-2V5zm11.5 5.175 3.5 1.556V4.269l-3.5 1.556v4.35zM2 4a1 1 0 0 0-1 1v6a1 1 0 0 0 1 1h7.5a1 1 0 0 0 1-1V5a1 1 0 0 0-1-1H2z" />
+                                                    </svg></label>
+                                                <input id="video-input" accept="video/*" type="file" name="postvideo" class="d-none">
+                                                <input class="insertpost btn btn-primary pl-4 pr-4 no-border p-3 post-btn-confirm" type="submit" name="post" value="Post">
+                                                </input>
+                                            </div>
+                                        </div>
+                                    </form>
                                 </div>
                             </div>
-                            <div class="card shadow card-post-style ">
-                                <div class="rowProduct overflow-auto">
+                            <div class="card shadow rounded-4 card-post-style  mt-4 produtos-feed-scrollbar">
+                                <h3 class="texto-titulo">&nbsp;&nbsp;Produtos em Destaque</h3>
+                                <div class="rowProduct overflow-auto produtos-feed-scrollbar row-produto-card-pro">
                                     <?php
-                                    //$sqlProdutos = "SELECT * from tblProducts ORDER BY idProduct ASC ";
-                                    //$queryProdutos = $dbh->prepare($sqlProdutos);
-                                    //$queryProdutos->execute();
-                                    //$resultsProdutos = $queryProdutos->fetchAll(PDO::FETCH_OBJ);
                                     include_once('../model/classes/tblProducts.php');
                                     $products = new Products();
                                     $resultsProdutos = $products->consulta("ORDER BY idProduct ASC");
                                     if ($resultsProdutos != null) {
                                         if (is_array($resultsProdutos) || is_object($resultsProdutos)) {
-                                            foreach ($resultsProdutos as $rowProdutos) {
-                                    ?>
-                                                <div class="mb-4">
-                                                    <div class="card-container">
-                                                        <a href="../viewProfile.php?profile=<?php echo $rowProdutos->idClient; ?>" data-toggle="modal" data-target="#modalEditarProduto" data-toggle="modal" data-target="#add_produto" data-id="<?php echo $rowProdutos->idProduct; ?>" class="hero-image-container">
-                                                            <img class="hero-image produtos-img" src="<?php
-                                                                                                        //$sqlProdutos = "SELECT * from tblProductPictures WHERE idProduct = :idProduct ";
-                                                                                                        //$queryProdutos1 = $dbh->prepare($sqlProdutos);
-                                                                                                        //$queryProdutos1->bindParam(':idProduct', $rowProdutos->idProduct, PDO::PARAM_INT);
-                                                                                                        //$queryProdutos1->execute();
-                                                                                                        //$resultsProdutos1 = $queryProdutos1->fetchAll(PDO::FETCH_OBJ);
+                                            foreach ($resultsProdutos as $rowProdutos) { ?>
+                                                <div class="card-produto-uni">
+                                                    <div class="card-container bcolor-azul-escuro rounded-4">
+                                                        <div class="col-12">
+                                                            <a href="viewProfile.php?profile=<?php echo $rowProdutos->idClient; ?>" class="hero-image-container">
+                                                                <img class="hero-image produtos-img rounded-4" style=" user-drag: none;" src="<?php
+                                                                                                                                                include_once('../model/classes/tblProductPictures.php');
+                                                                                                                                                $productsPictures = new ProductPictures();
+                                                                                                                                                $productsPictures->setidProduct($rowProdutos->idProduct);
+                                                                                                                                                $resultsProdutos1 = $productsPictures->consulta("WHERE idProduct = :idProduct");
+                                                                                                                                                echo "https://images.unsplash.com/photo-1507608158173-1dcec673a2e5?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1470&q=80";
+                                                                                                                                                ?>" alt="Spinning glass cube" />
+                                                            </a>
+                                                        </div>
+                                                        <div class="col-12" style="padding: 6px;">
+                                                            <div class="col-12">
+                                                                <h5 class="mb-0"><a class="text-decoration-none color-branco" href="viewProfile.php?profile=<?php echo $rowProdutos->idClient; ?>"><?php echo $rowProdutos->ProductName; ?></a></h5>
+                                                            </div>
+                                                            <div class="col-12 ">
+                                                                <p class="cortardescricao color-cinza-b desc-produto fonte-principal "><?php echo $rowProdutos->ProdcuctDescription; ?></p>
+                                                            </div>
+                                                        </div>
 
-                                                                                                        include_once('../model/classes/tblProductPictures.php');
-
-                                                                                                        $productsPictures = new ProductPictures();
-
-                                                                                                        $productsPictures->setidProduct($rowProdutos->idProduct);
-
-                                                                                                        $resultsProdutos1 = $productsPictures->consulta("WHERE idProduct = :idProduct");
-
-                                                                                                        if ($resultsProdutos1 != null) {
-                                                                                                            foreach ($resultsProdutos1 as $rowProdutos1) {
-                                                                                                                echo "../../../" . $rowProdutos1->tblProductPicturePath;
-                                                                                                            }
-                                                                                                        } else {
-                                                                                                            echo "https://images.unsplash.com/photo-1507608158173-1dcec673a2e5?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1470&q=80";
-                                                                                                        }
-                                                                                                        ?>" alt="Spinning glass cube" />
-                                                        </a>
-                                                        <main class="main-content mt-0 w-100">
-                                                            <h1 class="mb-0"><a class="cortardescricao cor-branco text-produto" href="#"><?php echo $rowProdutos->ProductName; ?></a></h1>
-                                                            <p class="cortardescricao color-cinza desc-produto"><?php echo $rowProdutos->ProdcuctDescription; ?></p>
-                                                        </main>
                                                     </div>
                                                 </div>
                                     <?php }
@@ -354,6 +736,7 @@ if ($resultsCountry != null) {
                                     } ?>
                                 </div>
                             </div>
+
                             <div id="divFeedUpdate">
                                 <?php
 
@@ -366,7 +749,7 @@ if ($resultsCountry != null) {
 
                                 $feeds = new Feeds();
 
-                                $resultsfeed = $feeds->consulta("ORDER BY Published_at DESC LIMIT 5");
+                                $resultsfeed = $feeds->consulta("ORDER BY Published_at DESC LIMIT 8");
 
                                 if ($resultsfeed != null) {
                                     foreach ($resultsfeed as $rowfeed) {
@@ -381,19 +764,18 @@ if ($resultsCountry != null) {
 
                                         // Formata o tempo decorrido com base nas unidades (ano, mês, dia, hora, minuto, segundo)
                                         if ($timeDiff->y > 0) {
-                                            $timeAgo = $timeDiff->y . " ano(s) atrás";
+                                            $timeAgo = $timeDiff->y . " year(s) ago";
                                         } elseif ($timeDiff->m > 0) {
-                                            $timeAgo = $timeDiff->m . " mês(es) atrás";
+                                            $timeAgo = $timeDiff->m . " month(s) ago";
                                         } elseif ($timeDiff->d > 0) {
-                                            $timeAgo = $timeDiff->d . " dia(s) atrás";
+                                            $timeAgo = $timeDiff->d . " day(s) ago";
                                         } elseif ($timeDiff->h > 0) {
-                                            $timeAgo = $timeDiff->h . " hora(s) atrás";
+                                            $timeAgo = $timeDiff->h . " hour(s) ago";
                                         } elseif ($timeDiff->i > 0) {
-                                            $timeAgo = $timeDiff->i . " minuto(s) atrás";
+                                            $timeAgo = $timeDiff->i . " minute(s) ago";
                                         } else {
-                                            $timeAgo = "Alguns segundos atrás";
+                                            $timeAgo = "A few seconds ago";
                                         }
-
                                         //$sqluserpost = "SELECT * from tblUserClients WHERE idClient = :idClient";
                                         //$queryuserpost = $dbh->prepare($sqluserpost);
                                         //$queryuserpost->bindParam(':idClient', $rowfeed->IdClient, PDO::PARAM_INT);
@@ -416,65 +798,70 @@ if ($resultsCountry != null) {
                                             }
                                         }
                                 ?>
-                                        <div class="card shadow p-0 bcolor rounded-4">
+                                        <div class="card shadow p-0 bcolor rounded-4 mt-4 mb-4">
                                             <div class="card-body shadow d-flex flex-column rounded-4 color-cinza">
 
                                                 <div class=" row align-content-center">
-                                                    <div class="col-1">
-                                                        <img src="<?php if ($imgpostuser != "Avatar.png" && $imgpostuser != "") {
-                                                                        echo  $imgpostuser;
-                                                                    } else {
-                                                                        echo "/assets/img/Avatar.png";
-                                                                    } ?>" alt="user" class="nav-profile-img ">
+                                                    <div class="row">
+                                                        <div class="col-1">
+                                                            <img src="<?php if ($imgpostuser != "Avatar.png" && $imgpostuser != "" && file_exists("" . $imgpostuser)) {
+                                                                            echo "" . $imgpostuser;
+                                                                        } else {
+                                                                            echo "assets/img/Avatar.png";
+                                                                        } ?>" alt="user" class="nav-profile-img  " onerror="this.onerror=null; this.src='/assets/img/Avatar.png'">
 
-                                                    </div>
-                                                    <div class="col-8 p-2">
-                                                        <a href="../viewProfile.php?profile=<?php echo $rowfeed->IdClient; ?>" class="color-preto">
-                                                            <h3 class="fonte-titulo">
-                                                                <?php
-                                                                echo $usernamepost;
-                                                                ?>
-                                                            </h3>
-                                                        </a>
-                                                        <?php
+                                                        </div>
+                                                        <div class="col-8 p-2 color-preto" style="padding-left: 26px !important;">
+                                                            <a href="viewProfile.php?profile=<?php echo $rowfeed->IdClient; ?>" class="color-preto text-decoration-none">
+                                                                <h3 class="fonte-titulo text-decoration-none">
+                                                                    <?php
+                                                                    echo $usernamepost;
+                                                                    ?>
+                                                                </h3>
+                                                            </a>
+                                                            <?php
 
-                                                        //$sqlOperationpost = "SELECT * from tblOperations WHERE FlagOperation != '0' AND idOperation = :idOperation";
-                                                        //$queryOperationpost = $dbh->prepare($sqlOperationpost);
-                                                        //$queryOperationpost->bindParam(':idOperation', $idpostoperation, PDO::PARAM_INT);
-                                                        //$queryOperationpost->execute();
-                                                        //$resultsOperationpost = $queryOperationpost->fetchAll(PDO::FETCH_OBJ);
+                                                            //$sqlOperationpost = "SELECT * from tblOperations WHERE FlagOperation != '0' AND idOperation = :idOperation";
+                                                            //$queryOperationpost = $dbh->prepare($sqlOperationpost);
+                                                            //$queryOperationpost->bindParam(':idOperation', $idpostoperation, PDO::PARAM_INT);
+                                                            //$queryOperationpost->execute();
+                                                            //$resultsOperationpost = $queryOperationpost->fetchAll(PDO::FETCH_OBJ);
 
-                                                        include_once("../model/classes/tblOperations.php");
+                                                            include_once("../model/classes/tblOperations.php");
 
-                                                        $operations = new Operations();
+                                                            $operations = new Operations();
 
-                                                        $operations->setidOperation($idpostoperation);
-                                                        $operations->setFlagOperation('0');
+                                                            $operations->setidOperation($idpostoperation);
+                                                            $operations->setFlagOperation('0');
 
-                                                        $resultsOperationpost = $operations->consulta("WHERE FlagOperation != :FlagOperation AND idOperation = :idOperation");
+                                                            $resultsOperationpost = $operations->consulta("WHERE FlagOperation != :FlagOperation AND idOperation = :idOperation");
 
-                                                        if ($resultsOperationpost != null) {
-                                                            foreach ($resultsOperationpost as $rowOperationpost) {
-                                                                echo $rowOperationpost->NmOperation;
+                                                            if ($resultsOperationpost != null) {
+                                                                foreach ($resultsOperationpost as $rowOperationpost) {
+                                                                    echo $rowOperationpost->NmOperation;
+                                                                }
                                                             }
-                                                        }
-                                                        ?><br>
+                                                            ?><br>
 
+                                                        </div>
+                                                        <div class="col-3 d-flex text-right color-preto justify-content-end">
+
+                                                            <?php echo $timeAgo; ?>
+
+                                                        </div>
                                                     </div>
-                                                    <div class="col-3 text-right">
 
-                                                        <?php echo $timeAgo; ?>
 
-                                                    </div>
+
                                                 </div>
-                                                <div class="col-12">
+                                                <div class="col-12" style="padding: inherit;">
 
                                                     <?php
                                                     $numeroCaracteres = strlen($rowfeed->Text);
                                                     if ($numeroCaracteres > 200) {
                                                         echo "
                                                         <div id='textoEx" . $rowfeed->IdFeed . "' style='height: 8em; overflow: hidden;'>
-                                                            <h3 class='fonte-principal'>
+                                                            <h3 class='fonte-principal color-preto'>
                                                                 <br>
                                                                 " . $rowfeed->Text . "
                                                             </h3>
@@ -483,7 +870,7 @@ if ($resultsCountry != null) {
                                                     } else {
                                                         echo "
                                                         <div id='textoEx" . $rowfeed->IdFeed . "' style='height: 4em; overflow: hidden;'>
-                                                            <h3>
+                                                            <h3 class='fonte-principal color-preto'>
                                                                 <br>
                                                                 " . $rowfeed->Text . "
                                                             </h3>
@@ -496,19 +883,16 @@ if ($resultsCountry != null) {
 
                                                 </div>
 
-                                                <div class="row col-12 align-content-center">
+                                                <div class="row col-12 align-content-center justify-content-center">
                                                     <?php if ($rowfeed->Image != "") { ?>
                                                         <img class="img-feed-styleset" src="<?php echo $rowfeed->Image; ?>" alt="" width="100%">
                                                     <?php } else if ($rowfeed->Video != "") { ?>
-
-
-
                                                         <video class="img-feed-styleset" src="<?php echo $rowfeed->Video; ?>" controls alt="" width="50%"></video>
                                                     <?php } ?>
                                                 </div>
                                                 <br>
 
-                                                <hr>
+                                                <hr class="color-preto">
 
                                                 <div class="row">
 
@@ -556,15 +940,15 @@ if ($resultsCountry != null) {
 
 
 
-                                                        echo "<div class='col-md-7' style='width: max-content;' id='div-" . $rowfeed->IdFeed . "'>
+                                                        echo "<div class='col-6 fonte-principal'  id='div-" . $rowfeed->IdFeed . "'>
 
                                                            
                                                                 <input hidden type='text' name='idpost' value='" . $rowfeed->IdFeed . "'>
     
     
-                                                                <button class='btn btn-four pl-4 pr-4 no-border p-3' onClick='showDCurtida(" . $rowfeed->IdFeed . ")'>
+                                                                <button class='btn like-comment-btn pl-4 pr-4 no-border p-3' onClick='showDCurtida(" . $rowfeed->IdFeed . ")'>
                                                                     <span class='' style='font-size: 13px;'>
-                                                                        " . $numeroCurtidas . " &nbsp;&nbsp;<i class='bi bi-hand-thumbs-up-fill'> Like</i>
+                                                                        " . $numeroCurtidas . " &nbsp;&nbsp;<i class='fa-solid fa-thumbs-up'> Like</i>
                                                                     </span>
                                                                 </button>
                                                             
@@ -572,15 +956,15 @@ if ($resultsCountry != null) {
                                                         </div>";
                                                     } else {
 
-                                                        echo "<div class='col-md-7' style='width:  max-content;' id='div-" . $rowfeed->IdFeed . "'>
+                                                        echo "<div class='col-6 fonte-principal' id='div-" . $rowfeed->IdFeed . "'>
 
                                                        
                                                             <input hidden type='text' name='idpost' value='" . $rowfeed->IdFeed . "'>
 
 
-                                                            <button class='btn btn-third pl-4 pr-4 no-border p-3' onClick='showCurtida(" . $rowfeed->IdFeed . ");'>
+                                                            <button class='btn like-comment-btn pl-4 pr-4 no-border p-3' onClick='showCurtida(" . $rowfeed->IdFeed . ");'>
                                                                 <span class='' style='font-size: 13px;'>
-                                                                    " . $numeroCurtidas . " &nbsp;&nbsp;<i class='bi bi-hand-thumbs-up-fill'> Like</i>
+                                                                    " . $numeroCurtidas . " &nbsp;&nbsp;<i class='fa-solid fa-thumbs-up'> Like</i>
                                                                 </span>
                                                             </button>
                                                        
@@ -591,11 +975,16 @@ if ($resultsCountry != null) {
 
 
 
-                                                    <div class="col-md-5 d-flex justify-content-end w-100">
+                                                    <div class="col-6 d-flex justify-content-end">
                                                         <a id="btnCommnet" data-toggle="modal" data-target="#modalEditarProduto" data-id="<?php echo $rowfeed->IdFeed;
-                                                                                                                                            ?>" class="btn btn-third pl-4 pr-4 no-border p-3 hero-image-container2"><span class="btn-comment-post">
-                                                                0 &nbsp;&nbsp; <i class="bi bi-chat-square-text">
-                                                                    Comentarios</i>
+                                                                                                                                            ?>" class="btn like-comment-btn pl-4 pr-4 no-border p-3 hero-image-container2"><span class="btn-comment-post">
+                                                                <?php
+                                                                include_once('../model/classes/tbPostComent.php');
+                                                                $tbPostComentcont2 = new PostComent();
+                                                                $tbPostComentcont2->setidpost($rowfeed->IdFeed);
+                                                                echo  $tbPostComentcont2->quantidade(" WHERE idpost = :idpost");
+                                                                ?> &nbsp;&nbsp; <i class="fa fa-comment">
+                                                                    Comments</i>
                                                             </span></a>
 
 
@@ -614,10 +1003,34 @@ if ($resultsCountry != null) {
                 </div>
 
                 <!-- Direita -->
-                <div class="col-3 justify-content-end">
+                <div class="col-3">
+                    <div class="col-3 justify-content-end position-fixed">
 
+                        <div class="col-12  d-none d-md-block">
+                            <h2>Sponsored</h2>
 
+                            <div class="row" style=" text-align: center;">
+                                <div class="col-sm-12, p_results">
+                                    <a href="#" style="
+font-size: small;
+"> Privacy Policy </a>|
+                                    <a href="" style="
+font-size: small;
+"> User Agreement </a>|
+                                    <a href="" style="
+font-size: small;
+"> Cookie Policy </a>|
+                                    <a href="" style="
+font-size: small;
+"> Copyright Policy</a>
+                                </div>
+
+                            </div>
+                        </div>
+
+                    </div>
                 </div>
+
 
             </div>
         </div>
@@ -714,7 +1127,6 @@ if ($resultsCountry != null) {
         </div>
     </div>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.bundle.min.js" integrity="sha384-HwwvtgBNo3bZJJLYd8oVXjrBZt8cqVSpeBNS5n7C8IVInixGAoxmnlMuBnhbgrkm" crossorigin="anonymous"></script>
-
     <script>
         $.fn.extend({
             treed: function(o) {
@@ -764,23 +1176,8 @@ if ($resultsCountry != null) {
         //Initialization of treeviews
 
         $('#tree1').treed();
-        let profileMenu = document.getElementById("profileMenu");
 
-
-        function toggleMenu() {
-            profileMenu.classList.toggle("open-menu");
-        }
-
-        let networkMenu = document.getElementById("networkMenu");
-
-        function toggleMenuNetwork() {
-            profileMenu.classList.toggle("open-menu");
-        }
-
-        function toggleNotifyMenu() {
-            const notifyMenu = document.getElementById('notifyMenu')
-            notifyMenu.classList.toggle("open-menu");
-        }
+        $('#tree2').treed();
 
         window.addEventListener('scroll', function() {
             var navbar = document.getElementById('navbar');
@@ -801,7 +1198,7 @@ if ($resultsCountry != null) {
                 // Use o ID do produto para fazer uma requisição AJAX para buscar os dados do produto no servidor
                 $.ajax({
                     type: 'GET',
-                    url: 'visualizarComent.php', // Substitua pelo caminho correto
+                    url: 'widget/visualizarComent.php', // Substitua pelo caminho correto
                     data: {
                         idFeed: idFeed
                     },
@@ -849,36 +1246,6 @@ if ($resultsCountry != null) {
         }
 
 
-        $(document).ready(function() {
-            function readURL(input) {
-                if (input.files && input.files[0]) {
-                    var reader = new FileReader();
-                    reader.onload = function(e) {
-                        if (input.id === 'file-input') {
-                            $('#preview-image').attr('src', e.target.result).show();
-                            $('#preview-video').hide();
-                        } else if (input.id === 'video-input') {
-                            $('#preview-video').attr('src', e.target.result).show();
-                            $('#preview-image').hide();
-                        }
-                    };
-                    reader.readAsDataURL(input.files[0]);
-                } else {
-                    var img = input.value;
-                    $('#preview-image').attr('src', '').hide();
-                    $('#preview-video').attr('src', '').hide();
-                }
-            }
-
-            // Event listeners para os inputs de imagem e vídeo
-            $('#file-input').on('change', function() {
-                readURL(this);
-            });
-
-            $('#video-input').on('change', function() {
-                readURL(this);
-            });
-        });
 
 
 
@@ -1043,7 +1410,7 @@ if ($resultsCountry != null) {
         // Adiciona o evento de scroll para chamar a função
         window.addEventListener('scroll', adicionarFundoComScroll);
 
-        function atualizarFeed() {
+        /*function atualizarFeed() {
 
             var xmlhttp = new XMLHttpRequest();
             xmlhttp.onreadystatechange = function() {
@@ -1053,7 +1420,7 @@ if ($resultsCountry != null) {
             }
             xmlhttp.open("GET", "atualizarFeed.php", true);
             xmlhttp.send();
-        }
+        }*/
 
         $(document).ready(function() {
             // Detecta o evento de rolagem
@@ -1061,17 +1428,11 @@ if ($resultsCountry != null) {
                 // Verifica se chegou ao final da página
                 if ($(window).scrollTop() + $(window).height() >= $(document).height()) {
                     // Chama a função quando o usuário chegar ao final da página
-                    atualizarFeed();
+                    // atualizarFeed();
                 }
             });
         });
     </script>
-
-
-
-
-
-
 </body>
 
 </html>

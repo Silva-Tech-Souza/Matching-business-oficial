@@ -58,7 +58,7 @@ class RangeValues{
 
 
         $query->execute();
-        return $query;
+        return $this->dbh->lastInsertId();
 
     }
 

@@ -50,7 +50,7 @@ class ProductPictures{
 
 
         $query->execute();
-        return $query;
+        return $this->dbh->lastInsertId();
 
     }
 

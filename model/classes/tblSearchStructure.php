@@ -92,7 +92,7 @@ class SearchStructure{
 
 
         $query->execute();
-        return $query;
+        return $this->dbh->lastInsertId();
 
     }
 

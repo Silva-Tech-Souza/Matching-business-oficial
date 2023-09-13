@@ -42,7 +42,7 @@ class ResponseId{
 
 
         $query->execute();
-        return $query;
+        return $this->dbh->lastInsertId();
 
     }
 

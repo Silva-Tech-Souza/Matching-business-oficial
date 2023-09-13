@@ -64,7 +64,7 @@ class ClientChatId{
         }
 
         $query->execute();
-        return $query;
+        return $this->dbh->lastInsertId();
 
     }
 

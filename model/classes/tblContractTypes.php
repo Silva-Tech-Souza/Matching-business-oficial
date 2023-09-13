@@ -49,7 +49,7 @@ class ContractTypes{
 
 
         $query->execute();
-        return $query;
+        return $this->dbh->lastInsertId();
 
     }
 

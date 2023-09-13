@@ -37,7 +37,7 @@ class SearchEspecificationTag{
 
     public function cadastrar(){
 
-        $sql = "INSERT INTO tblSearchEspecificationTag (idSearch, idTagKeys, Keys) VALUES (:idSearchEspecificationTag, :idSearch, :idTagKeys, :Keys)";
+        $sql = "INSERT INTO tblSearchEspecificationTag (idSearch, idTagKeys, `Keys`) VALUES ( :idSearch, :idTagKeys, :Keys)";
         $query = $this->dbh->prepare($sql);
 
         if($this->idSearch != null){
@@ -51,7 +51,7 @@ class SearchEspecificationTag{
         }
 
         $query->execute();
-        return $query;
+        return $this->dbh->lastInsertId();
 
     }
 

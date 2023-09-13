@@ -88,7 +88,7 @@ class SearchProfile_Results{
 
         
         $query->execute();
-        return $query;
+        return $this->dbh->lastInsertId();
 
     }
 

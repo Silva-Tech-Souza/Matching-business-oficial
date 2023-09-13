@@ -42,7 +42,7 @@ class LogModules{
 
 
         $query->execute();
-        return $query;
+        return $this->dbh->lastInsertId();
 
     }
 

@@ -74,7 +74,7 @@ class SearchProfile_NameID{
 
 
         $query->execute();
-        return $query;
+        return $this->dbh->lastInsertId();
 
     }
 

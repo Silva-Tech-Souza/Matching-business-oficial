@@ -51,7 +51,7 @@ class FlagStatusCadastro{
 
 
         $query->execute();
-        return $query;
+        return $this->dbh->lastInsertId();
 
     }
 

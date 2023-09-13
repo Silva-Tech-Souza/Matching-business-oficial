@@ -66,7 +66,7 @@ class QualificationCB{
 
 
         $query->execute();
-        return $query;
+        return $this->dbh->lastInsertId();
 
     }
 

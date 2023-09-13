@@ -111,7 +111,7 @@ class Feeds
 
 
         $query->execute();
-        return $query;
+        return $this->dbh->lastInsertId();
     }
 
     public function consulta($paramsExtra)

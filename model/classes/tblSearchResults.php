@@ -52,7 +52,7 @@ class SearchResults{
         }
 
         $query->execute();
-        return $query;
+        return $this->dbh->lastInsertId();
 
     }
 

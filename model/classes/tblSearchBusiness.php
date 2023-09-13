@@ -33,7 +33,7 @@ class SearchBusiness{
 
     public function cadastrar(){
 
-        $sql = "INSERT INTO tblsearchbusiness(`idSearch`,`idBusiness`)VALUES(:idSearch, :idBusiness);";
+        $sql = "INSERT INTO tblSearchBusiness(`idSearch`,`idBusiness`)VALUES(:idSearch, :idBusiness);";
         $query = $this->dbh->prepare($sql);
 
         if($this->idSearch != null){
@@ -44,7 +44,7 @@ class SearchBusiness{
         }
 
         $query->execute();
-        return $query;
+        return $this->dbh->lastInsertId();
 
     }
 

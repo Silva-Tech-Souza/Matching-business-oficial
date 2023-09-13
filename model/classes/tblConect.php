@@ -64,7 +64,7 @@ class Conect{
         }
 
         $query->execute();
-        return $query;
+        return $this->dbh->lastInsertId();
 
     }
 

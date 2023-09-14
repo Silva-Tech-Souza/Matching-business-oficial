@@ -80,7 +80,7 @@ if ($_SESSION["FlagOperation"] == "A" || $_SESSION["FlagOperation"] == "C") {
                     <?php  }
                     } ?>
                 </select>
-                <label for="floatingSelectGrid">N° of sellers:</label>
+                <label for="floatingSelectGrid">Financial data:</label>
             </div>
         </div>
         <div class="col-sm-12">

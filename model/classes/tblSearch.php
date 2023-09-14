@@ -43,7 +43,7 @@ class Search{
 
     public function cadastrar(){
 
-        $sql = "INSERT INTO tblSearch (coreBussinessID, idClient, Nome, Estado) VALUES (:coreBussinessID, :idClient, :Nome, :Estado)";
+        $sql = "INSERT INTO tblSearch (coreBussinessID, idClient, Nome, Estado) VALUES (:coreBussinessID,:idClient, :Nome, :Estado)";
         $query = $this->dbh->prepare($sql);
 
 
@@ -61,7 +61,6 @@ class Search{
         }
 
         $query->execute();
-       
         return $this->dbh->lastInsertId();
 
     }

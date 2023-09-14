@@ -592,7 +592,18 @@ if ($resultsCountry != null) {
                                     </a>
                                 </div>
                                 <div class="col-3 m-0 p-0">
-                                    <h5 class="fonte-principal text-left">0</h5>
+                                    <h5 class="fonte-principal text-left"><?php include_once('../model/classes/tblSearch.php');
+                                                                           $Search = new Search();
+                                                                           $Search->setidClient($iduser);
+                                                                           $resultSearch = $Search->consulta("WHERE idClient = :idClient");
+                                                                           $numSearch = 0;
+                                                                           if ($resultSearch != null) {
+                                                                               foreach ($resultSearch as $resultConectUnidSearch) {
+                                                                                   $numSearch += 1;
+                                                                               }
+                                                                           }
+                                                                           echo $numSearch;
+                                                                            ?></h5>
                                 </div>
                             </div>
                         </div>

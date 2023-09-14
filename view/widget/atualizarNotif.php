@@ -100,7 +100,7 @@ $iduser = $_SESSION["id"];
                 <input type="hidden" id="url" name="url" value="<?php echo $rownotif->url; ?>">
                 <a class="notification notif-zoom">
 
-                    <div class="row justify-content-start">
+                    <div class="row justify-content-start" href="<?php echo $rownotif->url;?>">
                         <div class="col-2 ">
                             <img src="<?php
                                         if ($imgpostuser != "Avatar.png" && $imgpostuser != "") {

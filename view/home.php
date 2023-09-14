@@ -450,7 +450,7 @@ if ($resultsCountry != null) {
 
 
     <!-- Header -->
-    <?php include_once("widget/navbar.php"); ?>
+    <?php include_once("widget/navbar.php"); ?> 
     <div class="sidebar expanded " id="sidebar" style="background: #002d4b;">
         <div class="sidebar-inner slimscroll ">
             <div id="sidebar-menu" class="sidebar-menu">

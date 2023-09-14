@@ -58,7 +58,7 @@ class SearchProfile_Results{
 
     public function cadastrar(){
 
-        $sql = "INSERT INTO tblsearchprofile_results (idUsuario,idClienteEncontrado,idTipoNotif,postId,url) VALUES (:idUsuario,:idClienteEncontrado,:idTipoNotif,:postId,:url)";
+        $sql = "INSERT INTO tblsearchprofile_results (idUsuario,idClienteEncontrado,idTipoNotif,postId,url,estadoNotif) VALUES (:idUsuario,:idClienteEncontrado,:idTipoNotif,:postId,:url,:estadoNotif)";
         $query = $this->dbh->prepare($sql);
         
        

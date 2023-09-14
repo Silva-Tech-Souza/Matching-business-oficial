@@ -2,12 +2,9 @@
 session_start();
 error_reporting(0);
 date_default_timezone_set('America/Sao_Paulo');
-
-if ($_SESSION['sessao'] > 0) {
-  header('location:profile.php');
+if ($_SESSION["id"] > 0 &&  $_SESSION["id"] != "") {
+    header("Location: home.php");
 }
-
-
 ?>
 <!DOCTYPE html>
 <html lang="en">

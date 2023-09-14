@@ -83,6 +83,22 @@
     border-radius: 15px;
     padding: 1rem;
     max-height: 300px;
+    margin: 0 !important;
+}
+
+.texto-desc {
+    display: block;
+    width: auto;
+    /* Fallback for non-webkit */
+    display: -webkit-box;
+    height: 2.6em;
+    /* Fallback for non-webkit, line-height * 2 */
+    line-height: 1.3em;
+    -webkit-line-clamp: 2;
+    /* if you change this, make sure to change the fallback line-height and height */
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    text-overflow: ellipsis;
 }
 
 div.flex-row {
@@ -395,4 +411,10 @@ div.attribution {
     border-radius: 50%;
     object-fit: cover;
     overflow: hidden;
+}
+
+.close {
+    width: 25px;
+    height: 25px;
+    background-color: #EAEAEA;
 }

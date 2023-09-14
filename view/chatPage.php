@@ -59,7 +59,7 @@ if ($resultsoperation != null) {
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-4bw+/aepP/YC94hEpVNVgiZdgIC5+VKNBQNGCHeKRQN+PtmoHDEXuppvnDJzQIu9" crossorigin="anonymous">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
- 
+  <link rel="stylesheet" href="assets/css/geral.css">
   <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
   <script src="https://kit.fontawesome.com/f51201541f.js" crossorigin="anonymous"></script>
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
@@ -72,18 +72,17 @@ if ($resultsoperation != null) {
   <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
   <link rel='stylesheet' href='https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.0.3/css/font-awesome.css'> <link rel="stylesheet" href="../../assets/css/chatPage.css">
   <title>Messaging</title>
-  <link rel="stylesheet" href="assets/css/geral.css">
   <link rel="stylesheet" href="assets/css/feed.css">
-  <link rel="stylesheet" href="assets/css/navbar.css">
+  <link rel="stylesheet" href="assets/css/chatPage.css">
+    <link rel="stylesheet" href="assets/css/navbar.css">
 </head>
 
 <body class="funcolinhas">
-<?php include_once("widget/navbar.php"); ?><br>
-  <br><br><br>
+<?php include_once("widget/navbar.php"); ?>
 
   <!-- char-area -->
-  <section class="message-area">
-    <div class="container telatodacahat">
+  <section class="message-area" >
+    <div class="container telatodacahat margemmnavbar" >
       <div class="row" style=" width: -webkit-fill-available; height: -webkit-fill-available;">
         <div class="col-12" style="width: inherit;">
           <div class="chat-area">
@@ -114,65 +113,46 @@ if ($resultsoperation != null) {
                         <div class="tab-pane fade show active" id="Open" role="tabpanel" aria-labelledby="Open-tab">
                           <!-- chat-list -->
                           <div class="chat-list">
-                            <?php
-include_once('../model/classes/tblConect.php');
-$conect = new Conect();
-$resultsconect->setidUserPed($iduser);
-$resultsconect->setidUserReceb($iduser);
-$resultsconect = $conect->consulta("WHERE idUserPed = :id AND status = 1 OR idUserReceb = :id AND status = 1");
-
-if ($resultsconect != null) {
-  foreach ($resultsconect as $row) {
-
-                         
-                                if ($row->idUserPed == $iduser) {
-                                  $iduserChat = $row->idUserReceb;
-                                } else {
-                                  $iduserChat = $row->idUserPed;
-                                }
-
-                                $userClients = new UserClients();
-
-                                $userClients->setidClient($iduserChat);
+                          
+                                <?php 
                                 
-                                $results = $userClients->consulta("WHERE idClient = :idClient");
-                                
-                                if ($results != null) {
-                                  foreach ($results as $rowuserpost) {
-                                    $usernamepost = $rowuserpost->CompanyName;
-                                    $idpostoperation = $rowuserpost->CoreBusinessId;
-                                    $imgpostuser = $rowuserpost->PersonalUserPicturePath;
+                                include_once('../model/classes/tblConect.php');
+                                $conects = new Conect();
+                                $conects->setidUserPed($iduser);
+                                $conects->setidUserReceb($iduser);
+                                $resultsConect = $conects->consulta("WHERE idUserPed = :idUserPed OR idUserReceb = :idUserReceb AND status = '1' ");
+
+                                if($resultsConect != null){
+
+                                foreach($resultsConect as $row){
+                                  if($row->idUserPed != $iduser){
+                                    $idconectado = $row->idUserPed;
+                                  }else{
+                                    $idconectado = $row->idUserReceb;
                                   }
-                                }
-                            ?>
+                                  include_once('../model/classes/tblUserClients.php');
+
+                                  $userClients = new UserClients();
+                                  
+                                  $userClients->setidClient($idconectado);
+                                  
+                                  $resultsUserClients = $userClients->consulta("WHERE idClient = :idClient");
+
+                                  if($resultsUserClients != null){
+                                    foreach($resultsUserClients as $rowCon){
+                                ?>
                                 <a href="#" class="d-flex align-items-center">
                                   <div class="flex-shrink-0">
-                                    <img class="imgavatar" src="<?php if ($imgpostuser != "Avatar.png" && $imgpostuser != "") {
-                                echo "" . $imgpostuser;
-                              } else {
-                                echo "../../../assets/img/Avatar.png";
-                              } ?>" alt="user img">
+                                    <img class="imgavatar" src="assets/img/Avatar.png" alt="user img">
                                     <span class="active"></span>
                                   </div>
                                   <div class="flex-grow-1 ms-3">
-                                    <h3><?php echo $usernamepost; ?></h3>
-                                    <p><?php $sqlOperationpost = "SELECT * from tblOperations WHERE FlagOperation != '0' AND idOperation = :idOperation";
-                                        $queryOperationpost = $dbh->prepare($sqlOperationpost);
-                                        $queryOperationpost->bindParam(':idOperation', $idpostoperation, PDO::PARAM_INT);
-                                        $queryOperationpost->execute();
-                                        $resultsOperationpost = $queryOperationpost->fetchAll(PDO::FETCH_OBJ);
-
-
-                                        if ($resultsOperationpost != null) {
-                                          foreach ($resultsOperationpost as $rowOperationpost) {
-                                            echo $rowOperationpost->NmOperation;
-                                          }
-                                        } ?></p>
+                                    <h3><?php echo $rowCon->FirstName . " " . $rowCon->LastName;?></h3>
+                                    <p></p>
                                   </div>
                                 </a>
 
-                            <?php  }
-                            } ?>
+                           <?php }}}}?>
 
                           </div>
                           <!-- chat-list -->
@@ -181,64 +161,47 @@ if ($resultsconect != null) {
 
                           <!-- chat-list -->
                           <div class="chat-list">
-                          <?php
-                            $sql = "SELECT * from tblconect WHERE idUserPed = :id AND status = 1 OR idUserReceb = :id AND status = 1";
-                            $query = $dbh->prepare($sql);
-                            $query->bindParam(':id', $iduser, PDO::PARAM_INT);
-                            $query->execute();
-                            $results = $query->fetchAll(PDO::FETCH_OBJ);
-
-                            if ($results != null) {
-
-                              foreach ($results as $row) {
-                                if ($row->idUserPed == $iduser) {
-                                  $iduserChat = $row->idUserReceb;
-                                } else {
-                                  $iduserChat = $row->idUserPed;
-                                }
-                                $userClients = new UserClients();
-
-                                $userClients->setidClient($iduserChat);
+                          <?php 
                                 
-                                $results = $userClients->consulta("WHERE idClient = :idClient");
-                                
-                                if ($results != null) {
-                                  foreach ($results as $rowuserpost) {
-                               
-                                    $usernamepost = $rowuserpost->CompanyName;
-                                    $idpostoperation = $rowuserpost->CoreBusinessId;
-                                    $imgpostuser = $rowuserpost->PersonalUserPicturePath;
+                                include_once('../model/classes/tblConect.php');
+                                $conects = new Conect();
+                                $conects->setidUserPed($iduser);
+                                $conects->setidUserReceb($iduser);
+                                $resultsConect = $conects->consulta("WHERE idUserPed = :idUserPed OR idUserReceb = :idUserReceb AND status = '1' ");
+
+                                if($resultsConect != null){
+
+                                foreach($resultsConect as $row){
+                                  if($row->idUserPed != $iduser){
+                                    $idconectado = $row->idUserPed;
+                                  }else{
+                                    $idconectado = $row->idUserReceb;
                                   }
-                                }
-                            ?>
+                                  include_once('../model/classes/tblUserClients.php');
+
+                                  $userClients = new UserClients();
+                                  
+                                  $userClients->setidClient($idconectado);
+                                  
+                                  $resultsUserClients = $userClients->consulta("WHERE idClient = :idClient");
+
+                                  if($resultsUserClients != null){
+                                    foreach($resultsUserClients as $rowCon){
+                                ?>
                                 <a href="#" class="d-flex align-items-center">
                                   <div class="flex-shrink-0">
-                                    <img class="imgavatar" src="<?php if ($imgpostuser != "Avatar.png" && $imgpostuser != "") {
-                                echo "" . $imgpostuser;
-                              } else {
-                                echo "../../../assets/img/Avatar.png";
-                              } ?>" alt="user img">
+                                    <img class="imgavatar" src="assets/img/Avatar.png" alt="user img">
                                     <span class="active"></span>
                                   </div>
                                   <div class="flex-grow-1 ms-3">
-                                    <h3><?php echo $usernamepost; ?></h3>
-                                    <p><?php $sqlOperationpost = "SELECT * from tblOperations WHERE FlagOperation != '0' AND idOperation = :idOperation";
-                                        $queryOperationpost = $dbh->prepare($sqlOperationpost);
-                                        $queryOperationpost->bindParam(':idOperation', $idpostoperation, PDO::PARAM_INT);
-                                        $queryOperationpost->execute();
-                                        $resultsOperationpost = $queryOperationpost->fetchAll(PDO::FETCH_OBJ);
-
-
-                                        if ($resultsOperationpost != null) {
-                                          foreach ($resultsOperationpost as $rowOperationpost) {
-                                            echo $NmOperation= $rowOperationpost->NmOperation;
-                                          }
-                                        } ?></p>
+                                    <h3><?php echo $rowCon->FirstName . " " . $rowCon->LastName;?></h3>
+                                    <p></p>
                                   </div>
                                 </a>
 
-                            <?php  }
-                            } ?>
+                           <?php }}}}?>
+
+                          
                           </div>
                           <!-- chat-list -->
                         </div>
@@ -257,7 +220,7 @@ if ($resultsconect != null) {
             <!-- chatbox -->
             <div class="chatbox">
               <div class="modal-dialog-scrollable" style="min-height: -webkit-fill-available;">
-                <div class="modal-content">
+                <div class="modal-content modal-content-display">
                   <div class="msg-head">
                     <div class="row">
                       <div class="col-8">
@@ -295,7 +258,7 @@ if ($resultsconect != null) {
                   </div>
 
 
-                  <div class="modal-body">
+                  <div class="modal-body modal-body-height">
                     <div class="msg-body">
                       <ul>
                         <li class="sender">

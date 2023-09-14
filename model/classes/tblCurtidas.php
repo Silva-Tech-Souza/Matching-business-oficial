@@ -44,12 +44,10 @@ class Curtidas{
 
         
 
-        $sql = "INSERT INTO tbcurtidas (id,idpost,idusuario,data,hora) VALUES (:id, :idpost,:idusuario,:data,:hora)";
+        $sql = "INSERT INTO tbcurtidas (idpost,idusuario,data,hora) VALUES ( :idpost,:idusuario,:data,:hora)";
         $query = $this->dbh->prepare($sql);
         
-        if($this->id != null){
-            $query->bindParam(':id', $this->id, PDO::PARAM_INT);
-        }
+       
         if($this->idpost != null){
             $query->bindParam(':idpost', $this->idpost, PDO::PARAM_INT);
         }
@@ -64,7 +62,7 @@ class Curtidas{
         }
 
         $query->execute();
-        return $this->dbh->lastInsertId();
+        return $query;
 
     }
 

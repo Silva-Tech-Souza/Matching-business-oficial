@@ -131,7 +131,7 @@ class Match_BD{
 
 
         $query->execute();
-        return $this->dbh->lastInsertId();
+        return $query;
 
     }
 

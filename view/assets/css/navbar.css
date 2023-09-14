@@ -332,3 +332,13 @@
         width: 35px;
     }
 }
+
+@media only screen and (max-width: 767.98px) {
+    .logo img {
+        height: 4.5rem;
+        width: 4.5rem;
+        border-radius: 1rem;
+        margin-right: 1rem;
+        display: block;
+    }
+}

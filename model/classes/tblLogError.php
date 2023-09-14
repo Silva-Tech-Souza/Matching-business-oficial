@@ -74,7 +74,7 @@ class LogError{
         }
 
         $query->execute();
-        return $this->dbh->lastInsertId();
+        return $query;
 
     }
 

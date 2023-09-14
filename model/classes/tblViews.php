@@ -39,7 +39,7 @@ class Views{
 
         
 
-        $sql = "INSERT INTO tblviews (id,idUser,idView,datacriacao) VALUES (id,idUser,idView,:datacriacao)";
+        $sql = "INSERT INTO tblviews (idUser,idView,datacriacao) VALUES (:idUser,:idView,:datacriacao)";
         $query = $this->dbh->prepare($sql);
         
         if($this->id != null){
@@ -57,7 +57,7 @@ class Views{
 
 
         $query->execute();
-        return $this->dbh->lastInsertId();
+        return $query;
 
     }
 

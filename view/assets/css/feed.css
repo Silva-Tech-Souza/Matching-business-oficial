@@ -1718,10 +1718,14 @@ input {
 }
 
 .img-feed-styleset {
-    max-width: fit-content;
     display: block;
     margin-left: auto;
+    max-height: 445px;
+    max-width: 445px;
     margin-right: auto;
+    text-align: center;
+    align-items: center;
+    justify-content: center;
 }
 
 .btn-comment-post {
@@ -1770,7 +1774,7 @@ input {
 }
 
 .mini-profile-img {
-    width: 85px;
+    width: 85px !important;
     height: 85px;
     border-radius: 50%;
     display: block;
@@ -1916,29 +1920,17 @@ input {
     margin-right: 2px;
 }
 
-.margemmnavbar {
-    margin-top: 140px;
-}
-
-@media (min-width: 767px) {
-    .margemmnavbar {
-        margin-top: 75px;
-    }
-}
-
 @keyframes scroll-produtos {
     0% {
         transform: translateX(0);
     }
     100% {
         transform: translateX(-100%);
-        /* Mova todo o conteúdo para a esquerda */
     }
 }
 
 .scroll-animation-produtos {
     animation: scroll-produtos 15s linear infinite;
-    /* Velocidade e duração da animação */
 }
 
 .produtos-feed-scrollbar::-webkit-scrollbar {
@@ -1998,4 +1990,55 @@ input {
     color: #14253D;
     border-color: #14253D;
     background-color: #3D79D9;
+}
+
+.scrollable-column {
+    overflow-y: auto;
+    /* Enable vertical scrolling for the second column */
+    max-height: 100vh;
+    /* Set a maximum height for the second column */
+}
+
+.like-comment-btn {
+    color: #000000;
+}
+
+.like-comment-btn:hover {
+    color: #3D79D9;
+}
+
+.texto-desc {
+    display: block;
+    /* Fallback for non-webkit */
+    display: -webkit-box;
+    height: 2.6em;
+    /* Fallback for non-webkit, line-height * 2 */
+    line-height: 1.3em;
+    -webkit-line-clamp: 2;
+    /* if you change this, make sure to change the fallback line-height and height */
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.cortardescricao {
+    display: -webkit-box;
+    max-height: 2.4em !important;
+    /* Duas linhas com margem para a linha de corte */
+    line-height: 1.2em !important;
+    /* Altura da linha do texto */
+    overflow: hidden !important;
+    text-overflow: ellipsis !important;
+    /* Adiciona o "..." no final do texto cortado */
+    -webkit-line-clamp: 2 !important;
+    /* Suporte a navegadores WebKit, como o Chrome */
+    -webkit-box-orient: vertical !important;
+}
+
+.minimenuoption {
+    color: black !important;
+}
+
+.minimenuoption:hover {
+    color: #0445ae !important;
 }

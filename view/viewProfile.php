@@ -1,6 +1,6 @@
 <?php
 session_start();
-error_reporting(0);
+//error_reporting(0);
 date_default_timezone_set('America/Sao_Paulo');
 
 if ($_SESSION["id"] < 0 || $_SESSION["id"] == "") {
@@ -11,23 +11,56 @@ $iduser = $_GET["profile"];
 
 $geral = $_SESSION["id"];
 
-$sqlgeral = "SELECT * from tblUserClients WHERE idClient = :idClient";
-$querygeral = $dbh->prepare($sqlgeral);
-$querygeral->bindParam(':idClient', $geral, PDO::PARAM_INT);
-$querygeral->execute();
-$resultsgeral = $querygeral->fetchAll(PDO::FETCH_OBJ);
-if ($querygeral->rowCount() > 0) {
+//$sqlgeral = "SELECT * from tblUserClients WHERE idClient = :idClient";
+//$querygeral = $dbh->prepare($sqlgeral);
+//$querygeral->bindParam(':idClient', $geral, PDO::PARAM_INT);
+//$querygeral->execute();
+//$resultsgeral = $querygeral->fetchAll(PDO::FETCH_OBJ);
+//if ($querygeral->rowCount() > 0) {
+//  foreach ($resultsgeral as $rowgeral) {
+//    $imgperfilgeral = $rowgeral->PersonalUserPicturePath;
+//  }
+//}
+include_once('../model/classes/tblUserClients.php');
+
+$UserClient = new UserClients();
+$UserClient->setidClient($geral);
+$resultsgeral = $UserClient->consulta("WHERE idClient = :idClient");
+
+if ($resultsgeral != null) {
   foreach ($resultsgeral as $rowgeral) {
     $imgperfilgeral = $rowgeral->PersonalUserPicturePath;
   }
 }
+
 $_SESSION["n"] = 5;
-$sql = "SELECT * from tblUserClients WHERE idClient = :idClient";
-$query = $dbh->prepare($sql);
-$query->bindParam(':idClient', $iduser, PDO::PARAM_INT);
-$query->execute();
-$results = $query->fetchAll(PDO::FETCH_OBJ);
-if ($query->rowCount() > 0) {
+//$sql = "SELECT * from tblUserClients WHERE idClient = :idClient";
+//$query = $dbh->prepare($sql);
+//$query->bindParam(':idClient', $iduser, PDO::PARAM_INT);
+//$query->execute();
+//$results = $query->fetchAll(PDO::FETCH_OBJ);
+//if ($query->rowCount() > 0) {
+//  foreach ($results as $row) {
+//    $username =  $row->FirstName . " " . $row->LastName;
+//    $FirstName = $row->FirstName;
+//    $LastName = $row->LastName;
+//    $jobtitle = $row->JobTitle;
+//    $idcountry = $row->idCountry;
+//    $idoperation = $row->IdOperation;
+//    $corebusiness = $row->CoreBusinessId;
+//    $satBusinessId =  $row->SatBusinessId;
+//    $companyname = $row->CompanyName;
+//    $imgperfil = $row->PersonalUserPicturePath;
+//    $imgcapa = $row->LogoPicturePath;
+//    $descricao =  $row->descricao;
+//  }
+//}
+
+$UserClient = new UserClients();
+$UserClient->setidClient($iduser);
+$results = $UserClient->consulta("WHERE idClient = :idClient");
+
+if ($results != null) {
   foreach ($results as $row) {
     $username =  $row->FirstName . " " . $row->LastName;
     $FirstName = $row->FirstName;
@@ -44,83 +77,177 @@ if ($query->rowCount() > 0) {
   }
 }
 
-$sqlCountry = "SELECT * from tblCountry WHERE idCountry = :idCountry";
-$queryCountry = $dbh->prepare($sqlCountry);
-$queryCountry->bindParam(':idCountry', $idcountry, PDO::PARAM_INT);
-$queryCountry->execute();
-$resultsCountry = $queryCountry->fetchAll(PDO::FETCH_OBJ);
-if ($queryCountry->rowCount() > 0) {
+
+//$sqlCountry = "SELECT * from tblCountry WHERE idCountry = :idCountry";
+//$queryCountry = $dbh->prepare($sqlCountry);
+//$queryCountry->bindParam(':idCountry', $idcountry, PDO::PARAM_INT);
+//$queryCountry->execute();
+//$resultsCountry = $queryCountry->fetchAll(PDO::FETCH_OBJ);
+//if ($queryCountry->rowCount() > 0) {
+//  foreach ($resultsCountry as $rowCountry) {
+//    $pais =  $rowCountry->NmCountry;
+//  }
+//}
+
+include_once('../model/classes/tblCountry.php');
+
+$Country = new Country();
+$Country->setidCountry($idcountry);
+$resultsCountry = $Country->consulta("WHERE idCountry = :idCountry");
+
+if ($resultsCountry != null) {
   foreach ($resultsCountry as $rowCountry) {
     $pais =  $rowCountry->NmCountry;
   }
 }
 
-$sqlbusiness = "SELECT * from tblOperations WHERE idOperation = :idOperation";
-$querybusiness = $dbh->prepare($sqlbusiness);
-$querybusiness->bindParam(':idOperation', $corebusiness, PDO::PARAM_INT);
-$querybusiness->execute();
-$resultsbusiness = $querybusiness->fetchAll(PDO::FETCH_OBJ);
-if ($querybusiness->rowCount() > 0) {
+//$sqlbusiness = "SELECT * from tblOperations WHERE idOperation = :idOperation";
+//$querybusiness = $dbh->prepare($sqlbusiness);
+//$querybusiness->bindParam(':idOperation', $corebusiness, PDO::PARAM_INT);
+//$querybusiness->execute();
+//$resultsbusiness = $querybusiness->fetchAll(PDO::FETCH_OBJ);
+//if ($querybusiness->rowCount() > 0) {
+//  foreach ($resultsbusiness as $rowbusiness) {
+//    $NmBusiness =  $rowbusiness->NmOperation;
+//  }
+//}
+
+include_once('../model/classes/tblOperations.php');
+
+$Operations = new Operations();
+$Operations->setidOperation($corebusiness);
+$resultsbusiness = $Operations->consulta("WHERE idOperation = :idOperation");
+
+if ($resultsbusiness != null) {
   foreach ($resultsbusiness as $rowbusiness) {
     $NmBusiness =  $rowbusiness->NmOperation;
   }
 }
 
-$sqlbusinesscor = "SELECT * from tblBusiness WHERE idBusiness = :idBusiness";
-$querybusinesscor = $dbh->prepare($sqlbusinesscor);
-$querybusinesscor->bindParam(':idBusiness', $satBusinessId, PDO::PARAM_INT);
-$querybusinesscor->execute();
-$resultsbusinesscor = $querybusinesscor->fetchAll(PDO::FETCH_OBJ);
-if ($querybusinesscor->rowCount() > 0) {
+
+//$sqlbusinesscor = "SELECT * from tblBusiness WHERE idBusiness = :idBusiness";
+//$querybusinesscor = $dbh->prepare($sqlbusinesscor);
+//$querybusinesscor->bindParam(':idBusiness', $satBusinessId, PDO::PARAM_INT);
+//$querybusinesscor->execute();
+//$resultsbusinesscor = $querybusinesscor->fetchAll(PDO::FETCH_OBJ);
+//if ($querybusinesscor->rowCount() > 0) {
+ // foreach ($resultsbusinesscor as $rowbusinesscor) {
+//    $NmBusinesscor =  $rowbusinesscor->NmBusiness;
+//  }
+//}
+
+include_once('../model/classes/tblBusiness.php');
+
+$Business = new Business();
+$Business->setidBusiness($satBusinessId);
+$resultsbusinesscor = $Business->consulta("WHERE idBusiness = :idBusiness");
+
+if ($resultsbusinesscor != null) {
   foreach ($resultsbusinesscor as $rowbusinesscor) {
-    $NmBusinesscor =  $rowbusinesscor->NmBusiness;
+      $NmBusinesscor =  $rowbusinesscor->NmBusiness;
   }
 }
 
+//$sqlbusinesscateg = "SELECT * from tblBusinessCategory WHERE idBusinessCategory = :idBusinessCategory";
+//$querybusinesscateg = $dbh->prepare($sqlbusinesscateg);
+//$querybusinesscateg->bindParam(':idBusinessCategory', $idoperation, PDO::PARAM_INT);
+//$querybusinesscateg->execute();
+//$resultsbusinesscateg = $querybusinesscateg->fetchAll(PDO::FETCH_OBJ);
+//if ($querybusinesscateg->rowCount() > 0) {
+//  foreach ($resultsbusinesscateg as $rowbusinesscateg) {
+//    $NmBusinessCategory =  $rowbusinesscateg->NmBusinessCategory;
+//    $idbusinesscateg = $rowbusinesscateg->idBusiness;
+//  }
+//}
 
-$sqlbusinesscateg = "SELECT * from tblBusinessCategory WHERE idBusinessCategory = :idBusinessCategory";
-$querybusinesscateg = $dbh->prepare($sqlbusinesscateg);
-$querybusinesscateg->bindParam(':idBusinessCategory', $idoperation, PDO::PARAM_INT);
-$querybusinesscateg->execute();
-$resultsbusinesscateg = $querybusinesscateg->fetchAll(PDO::FETCH_OBJ);
-if ($querybusinesscateg->rowCount() > 0) {
+include_once('../model/classes/tblBusinessCategory.php');
+
+$BusinessCategory = new BusinessCategory();
+$BusinessCategory->setidBusinessCategory($idoperation);
+$resultsbusinesscateg = $BusinessCategory->consulta("WHERE idBusinessCategory = :idBusinessCategory");
+
+if ($resultsbusinesscateg != null) {
   foreach ($resultsbusinesscateg as $rowbusinesscateg) {
     $NmBusinessCategory =  $rowbusinesscateg->NmBusinessCategory;
     $idbusinesscateg = $rowbusinesscateg->idBusiness;
   }
 }
 
+//$sqlView = "SELECT * FROM tblviews WHERE idUser = :idUser AND idView = :idView AND  DATE(datacriacao) = CURDATE()";
+//$queryView = $dbh->prepare($sqlView);
+//$queryView->bindParam(':idUser', $geral, PDO::PARAM_INT);
+//$queryView->bindParam(':idView', $iduser, PDO::PARAM_INT);
+//$queryView->execute();
+//$resultView = $queryView->fetchAll(PDO::FETCH_OBJ);
 
-$sqlView = "SELECT * FROM tblviews WHERE idUser = :idUser AND idView = :idView AND  DATE(datacriacao) = CURDATE()";
-$queryView = $dbh->prepare($sqlView);
-$queryView->bindParam(':idUser', $geral, PDO::PARAM_INT);
-$queryView->bindParam(':idView', $iduser, PDO::PARAM_INT);
-$queryView->execute();
-$resultView = $queryView->fetchAll(PDO::FETCH_OBJ);
-if ($queryView->rowCount() > 0) {
-} else {
-  $sqlViewinsert = "INSERT INTO tblviews(idUser, idView) VALUES (:idUser, :idView)";
-  $queryViewinsert = $dbh->prepare($sqlViewinsert);
-  $queryViewinsert->bindParam(':idUser', $geral, PDO::PARAM_INT);
-  $queryViewinsert->bindParam(':idView', $iduser, PDO::PARAM_INT);
-  $queryViewinsert->execute();
+include_once('../model/classes/tblViews.php');
 
-  $sqlinsertpost = "INSERT INTO tblsearchprofile_results (idUsuario, idClienteEncontrado, idTipoNotif) VALUES (:idUsuario, :idClienteEncontrado, '2')";
-  $queryinsertpost = $dbh->prepare($sqlinsertpost);
-  $queryinsertpost->bindParam(':idUsuario', $geral, PDO::PARAM_INT);
-  $queryinsertpost->bindParam(':idClienteEncontrado', $iduser, PDO::PARAM_INT);
-  $queryinsertpost->execute();
+$Views = new Views();
+$Views->setidUser($geral);
+$Views->setidView($iduser);
+$resultView = $Views->consulta("WHERE idUser = :idUser AND idView = :idView AND  DATE(datacriacao) = CURDATE()");
+
+if ($resultView == null) {
+
+  //$sqlViewinsert = "INSERT INTO tblviews(idUser, idView) VALUES (:idUser, :idView)";
+  //$queryViewinsert = $dbh->prepare($sqlViewinsert);
+  //$queryViewinsert->bindParam(':idUser', $geral, PDO::PARAM_INT);
+  //$queryViewinsert->bindParam(':idView', $iduser, PDO::PARAM_INT);
+  //$queryViewinsert->execute();
+
+  include_once('../model/classes/tblViews.php');
+
+  $Views = new Views();
+  $Views->setidUser($geral);
+  $Views->setidView($iduser);
+  $Views->setdatacriacao(date("Y/m/d"));
+
+  $Views->cadastrar();
+
+  //$sqlinsertpost = "INSERT INTO tblsearchprofile_results (idUsuario, idClienteEncontrado, idTipoNotif) VALUES (:idUsuario, :idClienteEncontrado, '2')";
+  //$queryinsertpost = $dbh->prepare($sqlinsertpost);
+  //$queryinsertpost->bindParam(':idUsuario', $geral, PDO::PARAM_INT);
+  //$queryinsertpost->bindParam(':idClienteEncontrado', $iduser, PDO::PARAM_INT);
+  //$queryinsertpost->execute();
+
+  include_once('../model/classes/tblSearchProfile_Results.php');
+
+  $searchprofile_results = new SearchProfile_Results();
+
+  $searchprofile_results->setidUsuario($geral);
+  $searchprofile_results->setidClienteEncontrado($iduser);
+  $searchprofile_results->setidTipoNotif(2);
+
+  $searchprofile_results->cadastrar();
+
 }
 
 
 
-$sqlconect = "SELECT * FROM tblconect WHERE idUserPed = :idUserPed AND idUserReceb = :idUserReceb ";
-$queryconect = $dbh->prepare($sqlconect);
-$queryconect->bindParam(':idUserPed', $geral, PDO::PARAM_INT);
-$queryconect->bindParam(':idUserReceb', $iduser, PDO::PARAM_INT);
-$queryconect->execute();
-$respoconect = $queryconect->fetchAll(PDO::FETCH_OBJ);
-if ($queryconect->rowCount() > 0) {
+//$sqlconect = "SELECT * FROM tblconect WHERE idUserPed = :idUserPed AND idUserReceb = :idUserReceb ";
+//$queryconect = $dbh->prepare($sqlconect);
+//$queryconect->bindParam(':idUserPed', $geral, PDO::PARAM_INT);
+//$queryconect->bindParam(':idUserReceb', $iduser, PDO::PARAM_INT);
+//$queryconect->execute();
+//$respoconect = $queryconect->fetchAll(PDO::FETCH_OBJ);
+//if ($queryconect->rowCount() > 0) {
+//  foreach ($respoconect as $rowconnect) {
+//    $temconexao = $rowconnect->status;
+//  }
+//} else {
+//  $temconexao = "";
+//}
+
+include_once('../model/classes/tblConect.php');
+
+$connect = new Conect();
+
+$connect->setidUserPed($geral);
+$connect->setidUserReceb($iduser);
+
+$respoconect = $connect->consulta("WHERE idUserPed = :idUserPed AND idUserReceb = :idUserReceb");
+
+if ($respoconect != null) {
   foreach ($respoconect as $rowconnect) {
     $temconexao = $rowconnect->status;
   }
@@ -131,17 +258,38 @@ if ($queryconect->rowCount() > 0) {
 
 
 if ($_POST["conectar"] != "") {
-  $sqlconect = "INSERT INTO tblconect (idUserPed, idUserReceb, status) VALUES (:idUserPed, :idUserReceb, '0')";
-  $queryconect = $dbh->prepare($sqlconect);
-  $queryconect->bindParam(':idUserPed', $geral, PDO::PARAM_INT);
-  $queryconect->bindParam(':idUserReceb', $iduser, PDO::PARAM_INT);
-  $queryconect->execute();
+  //$sqlconect = "INSERT INTO tblconect (idUserPed, idUserReceb, status) VALUES (:idUserPed, :idUserReceb, '0')";
+  //$queryconect = $dbh->prepare($sqlconect);
+  //$queryconect->bindParam(':idUserPed', $geral, PDO::PARAM_INT);
+  //$queryconect->bindParam(':idUserReceb', $iduser, PDO::PARAM_INT);
+  //$queryconect->execute();
 
-  $sqlinsertpost = "INSERT INTO tblsearchprofile_results (idUsuario, idClienteEncontrado, idTipoNotif) VALUES (:idUsuario, :idClienteEncontrado, '4')";
-  $queryinsertpost = $dbh->prepare($sqlinsertpost);
-  $queryinsertpost->bindParam(':idUsuario', $geral, PDO::PARAM_INT);
-  $queryinsertpost->bindParam(':idClienteEncontrado', $iduser, PDO::PARAM_INT);
-  $queryinsertpost->execute();
+  include_once('../model/classes/tblConect.php');
+
+  $connect = new Conect();
+
+  $connect->setidUserPed($geral);
+  $connect->setidUserReceb($iduser);
+  $connect->setstatus(0);
+
+  $connect->cadastrar();
+
+  //$sqlinsertpost = "INSERT INTO tblsearchprofile_results (idUsuario, idClienteEncontrado, idTipoNotif) VALUES (:idUsuario, :idClienteEncontrado, '4')";
+  //$queryinsertpost = $dbh->prepare($sqlinsertpost);
+  //$queryinsertpost->bindParam(':idUsuario', $geral, PDO::PARAM_INT);
+  //$queryinsertpost->bindParam(':idClienteEncontrado', $iduser, PDO::PARAM_INT);
+  //$queryinsertpost->execute();
+
+  include_once('../model/classes/tblSearchProfile_Results.php');
+
+  $searchprofile_results = new SearchProfile_Results();
+
+  $searchprofile_results->setidUsuario($geral);
+  $searchprofile_results->setidClienteEncontrado($iduser);
+  $searchprofile_results->setidTipoNotif(4);
+
+  $searchprofile_results->cadastrar();
+
   header("Location: viewProfile.php?profile=$geral");
 }
 
@@ -150,10 +298,18 @@ if ($_POST["desconectar"] != "") {
   $idperfilpedido = $_POST["idperfilpedido"];
 
 
-  $sqlconectdelet = "DELETE FROM tblconect WHERE  id = :id";
-  $queryconectdelet = $dbh->prepare($sqlconectdelet);
-  $queryconectdelet->bindParam(':id', $idconect, PDO::PARAM_INT);
-  $queryconectdelet->execute();
+  //$sqlconectdelet = "DELETE FROM tblconect WHERE  id = :id";
+  //$queryconectdelet = $dbh->prepare($sqlconectdelet);
+  //$queryconectdelet->bindParam(':id', $idconect, PDO::PARAM_INT);
+  //$queryconectdelet->execute();
+
+  include_once('../model/classes/tblConect.php');
+
+  $connect = new Conect();
+
+  $connect->setid($idconect);
+  $connect->deletar("WHERE  id = :id");
+
   header("Location: viewProfile.php?profile=$geral");
 }
 ?>
@@ -287,24 +443,40 @@ if ($_POST["desconectar"] != "") {
               <div class="row rowProduct overflow-auto">
 
                 <?php
-                $sqlProdutos = "SELECT * from tblProducts WHERE idClient = :idClient  ORDER BY idProduct ASC limit 8";
-                $queryProdutos = $dbh->prepare($sqlProdutos);
-                $queryProdutos->bindParam(':idClient', $iduser, PDO::PARAM_INT);
-                $queryProdutos->execute();
-                $resultsProdutos = $queryProdutos->fetchAll(PDO::FETCH_OBJ);
-                if ($queryProdutos->rowCount() > 0) {
+                //$sqlProdutos = "SELECT * from tblProducts WHERE idClient = :idClient  ORDER BY idProduct ASC limit 8";
+                //$queryProdutos = $dbh->prepare($sqlProdutos);
+                //$queryProdutos->bindParam(':idClient', $iduser, PDO::PARAM_INT);
+                //$queryProdutos->execute();
+                //$resultsProdutos = $queryProdutos->fetchAll(PDO::FETCH_OBJ);
+
+                include_once('../model/classes/tblProducts.php');
+
+                $products = new Products();
+                $products->setidClient($iduser);
+
+                $resultsProdutos = $products->consulta("WHERE idClient = :idClient  ORDER BY idProduct ASC limit 8");
+
+                if ($resultsProdutos != null) {
                   foreach ($resultsProdutos as $rowProdutos) {
                 ?>
                     <div class="mb-4 ml-1">
                       <div class="card-container">
                         <a data-toggle="modal" data-id="<?php echo $rowProdutos->idProduct; ?>" class="hero-image-container">
                           <img class="hero-image produto-img" src="<?php // data-target="#modalEditarProduto" data-toggle="modal" data-target="#add_produto"
-                                                                    $sqlProdutos = "SELECT * from tblProductPictures WHERE idProduct = :idProduct ";
-                                                                    $queryProdutos1 = $dbh->prepare($sqlProdutos);
-                                                                    $queryProdutos1->bindParam(':idProduct', $rowProdutos->idProduct, PDO::PARAM_INT);
-                                                                    $queryProdutos1->execute();
-                                                                    $resultsProdutos1 = $queryProdutos1->fetchAll(PDO::FETCH_OBJ);
-                                                                    if ($queryProdutos1->rowCount() > 0) {
+                                                                    //$sqlProdutos = "SELECT * from tblProductPictures WHERE idProduct = :idProduct ";
+                                                                    //$queryProdutos1 = $dbh->prepare($sqlProdutos);
+                                                                    //$queryProdutos1->bindParam(':idProduct', $rowProdutos->idProduct, PDO::PARAM_INT);
+                                                                    //$queryProdutos1->execute();
+                                                                    //$resultsProdutos1 = $queryProdutos1->fetchAll(PDO::FETCH_OBJ);
+
+                                                                    include_once('../model/classes/tblProductPictures.php');
+
+                                                                    $productspictures =  new ProductPictures();
+                                                                    $productspictures->setidProduct($rowProdutos->idProduct);
+
+                                                                    $resultsProdutos1 = $productspictures->consulta("WHERE idProduct = :idProduct");
+
+                                                                    if ($queryProdutos1 != null) {
                                                                       foreach ($resultsProdutos1 as $rowProdutos1) {
                                                                         echo "../../" . $rowProdutos1->tblProductPicturePath;
                                                                       }

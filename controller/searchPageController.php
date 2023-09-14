@@ -302,4 +302,4 @@ if($_POST["flagtipo"] == "A"){
 
 }
 
-//header("Location: ../view/listcompani.php");
+header("Location: ../view/listcompani.php");

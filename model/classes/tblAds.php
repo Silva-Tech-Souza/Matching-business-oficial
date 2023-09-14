@@ -98,7 +98,7 @@ class Ads{
 
         $query->execute();
 
-        return $this->dbh->lastInsertId();
+        return $query;
 
     }
 

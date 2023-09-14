@@ -44,28 +44,24 @@ class PostComent{
 
         
 
-        $sql = "INSERT INTO tbpostcoment (id,idpost,texto,datahora,iduser) VALUES (:id,:idpost,:texto,:datahora,:iduser)";
+        $sql = "INSERT INTO tbpostcoment (idpost,texto,iduser) VALUES (:idpost,:texto,:iduser)";
         $query = $this->dbh->prepare($sql);
         
-        if($this->id != null){
-            $query->bindParam(':id', $this->id, PDO::PARAM_INT);
-        }
+      
         if($this->idpost != null){
             $query->bindParam(':idpost', $this->idpost, PDO::PARAM_INT);
         }
         if($this->texto != null){
             $query->bindParam(':texto', $this->texto, PDO::PARAM_STR);
         }
-        if($this->datahora != null){
-            $query->bindParam(':datahora', $this->datahora, PDO::PARAM_STR);
-        }
+      
         if($this->iduser != null){
             $query->bindParam(':iduser', $this->iduser, PDO::PARAM_INT);
         }
 
 
         $query->execute();
-        return $this->dbh->lastInsertId();
+        return $query;
 
     }
 
@@ -99,7 +95,36 @@ class PostComent{
         if ($query->rowCount() > 0) {return $results;} else {return null;}
 
     }
+    public function quantidade($paramsExtra){
 
+        
+
+        //$sql = "SELECT * from tblUserClients WHERE idClient = :idClient ";
+        $sql = "SELECT * from tbpostcoment ".$paramsExtra;
+        $query = $this->dbh->prepare($sql);
+        
+        if($this->id != null){
+            $query->bindParam(':id', $this->id, PDO::PARAM_INT);
+        }
+        if($this->idpost != null){
+            $query->bindParam(':idpost', $this->idpost, PDO::PARAM_INT);
+        }
+        if($this->texto != null){
+            $query->bindParam(':texto', $this->texto, PDO::PARAM_STR);
+        }
+        if($this->datahora != null){
+            $query->bindParam(':datahora', $this->datahora, PDO::PARAM_STR);
+        }
+        if($this->iduser != null){
+            $query->bindParam(':iduser', $this->iduser, PDO::PARAM_INT);
+        }
+
+        $query->execute();
+        $results = $query->fetchAll(PDO::FETCH_OBJ);
+
+        if ($query->rowCount() > 0) {return $query->rowCount();} else {return 0;}
+
+    }
     public function atualizar($paramsExtra){
 
         

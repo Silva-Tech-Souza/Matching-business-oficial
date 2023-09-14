@@ -1,6 +1,6 @@
 <?php
 
-class UserClients{
+class UserClients{ 
     
     protected $idClient = null;
     protected $FirstName = null;
@@ -34,6 +34,7 @@ class UserClients{
     protected $Fob_1Y = null;
     protected $Vol_1Y = null;
     protected $dbh = null;
+
 
     function __construct()
     {
@@ -170,8 +171,9 @@ class UserClients{
     
     public function getVol_1Y(){return $this->Vol_1Y;}
 
-
     public function cadastrar(){
+
+        
 
         $sql = "INSERT INTO tblUserClients ( `FirstName`,  `LastName`, `JobTitle`, `idCountry`, `CompanyName`,  `email`, IdOperation, idFlagStatusCadastro, idPerfilUsuario, `WhatsAppNumber`, `taxid`, `AnoFundacao`, `NumEmpregados`, `NumVendedores`, `NivelOperacao`, `DetalheRegiao`, `Fob_3Y`, `Vol_3Y`, `Fob_2Y`, `Vol_2Y`, `Fob_1Y`, `Vol_1Y`) VALUES ( :FirstName,  :LastName, :JobTitle, :idCountry, :CompanyName, :email, '1', '2', '1', :WhatsAppNumber, :taxid, :AnoFundacao, :NumEmpregados, :NumVendedores, :NivelOperacao, :DetalheRegiao, :Fob_3Y, :Vol_3Y, :Fob_2Y, :Vol_2Y, :Fob_1Y, :Vol_1Y)";
         $query = $this->dbh->prepare($sql);
@@ -250,19 +252,19 @@ class UserClients{
             $query->bindParam(':DetalheRegiao', $this->DetalheRegiao, PDO::PARAM_STR);
         }
         if($this->Fob_3Y != null){
-            $query->bindParam(':Fob_3Y', $this->Fob_3Y, PDO::PARAM_INT);
+            $query->bindParam(':Fob_3Y', $this->Fob_3Y, PDO::PARAM_STR);
         }
         if($this->Vol_3Y != null){
             $query->bindParam(':Vol_3Y', $this->Vol_3Y, PDO::PARAM_INT);
         }
         if($this->Fob_2Y != null){
-            $query->bindParam(':Fob_2Y', $this->Fob_2Y, PDO::PARAM_INT);
+            $query->bindParam(':Fob_2Y', $this->Fob_2Y, PDO::PARAM_STR);
         }
         if($this->Vol_2Y != null){
             $query->bindParam(':Vol_2Y', $this->Vol_2Y, PDO::PARAM_INT);
         }
         if($this->Fob_1Y != null){
-            $query->bindParam(':Fob_1Y', $this->Fob_1Y, PDO::PARAM_INT);
+            $query->bindParam(':Fob_1Y', $this->Fob_1Y, PDO::PARAM_STR);
         }
         if($this->Vol_1Y != null){
             $query->bindParam(':Vol_1Y', $this->Vol_1Y, PDO::PARAM_INT);
@@ -270,7 +272,7 @@ class UserClients{
 
 
         $query->execute();
-        return $this->dbh->lastInsertId();
+        return $query;
 
     }
 
@@ -373,7 +375,6 @@ class UserClients{
         if($this->Vol_1Y != null){
             $query->bindParam(':Vol_1Y', $this->Vol_1Y, PDO::PARAM_INT);
         }
-
         $query->execute();
         $results = $query->fetchAll(PDO::FETCH_OBJ);
 
@@ -385,6 +386,111 @@ class UserClients{
 
         //UPDATE tblAction SET IdAction = ':idAction', Description = ':description' WHERE CustomerID = 1;
         $sql = "UPDATE tblUserClients SET ".$paramsExtra;
+        $query = $this->dbh->prepare($sql);
+        
+        if($this->idClient != null){
+            $query->bindParam(':idClient', $this->idClient, PDO::PARAM_INT);
+        }
+        if($this->FirstName != null){
+            $query->bindParam(':FirstName', $this->FirstName, PDO::PARAM_STR);
+        }
+        if($this->MiddleName != null){
+            $query->bindParam(':MiddleName', $this->MiddleName, PDO::PARAM_STR);
+        }
+        if($this->LastName != null){
+            $query->bindParam(':LastName', $this->LastName, PDO::PARAM_STR);
+        }
+        if($this->JobTitle != null){
+            $query->bindParam(':JobTitle', $this->JobTitle, PDO::PARAM_STR);
+        }
+        if($this->idCountry != null){
+            $query->bindParam(':idCountry', $this->idCountry, PDO::PARAM_INT);
+        }
+        if($this->CompanyName != null){
+            $query->bindParam(':CompanyName', $this->CompanyName, PDO::PARAM_STR);
+        }
+        if($this->Password != null){
+            $query->bindParam(':Password', $this->Password, PDO::PARAM_STR);
+        }
+        if($this->created_at != null){
+            $query->bindParam(':created_at', $this->created_at, PDO::PARAM_STR);
+        }
+        if($this->CoreBusinessId != null){
+            $query->bindParam(':CoreBusinessId', $this->CoreBusinessId, PDO::PARAM_INT);
+        }
+        if($this->SatBusinessId != null){
+            $query->bindParam(':SatBusinessId', $this->SatBusinessId, PDO::PARAM_INT);
+        }
+        if($this->IdOperation != null){
+            $query->bindParam(':IdOperation', $this->IdOperation, PDO::PARAM_INT);
+        }
+        if($this->email != null){
+            $query->bindParam(':email', $this->email, PDO::PARAM_STR);
+        }
+        if($this->idFlagStatusCadastro != null){
+            $query->bindParam(':idFlagStatusCadastro', $this->idFlagStatusCadastro, PDO::PARAM_INT);
+        }
+        if($this->idPerfilUsuario != null){
+            $query->bindParam(':idPerfilUsuario', $this->idPerfilUsuario, PDO::PARAM_INT);
+        }
+        if($this->PersonalUserPicturePath != null){
+            $query->bindParam(':PersonalUserPicturePath', $this->PersonalUserPicturePath, PDO::PARAM_STR);
+        }
+        if($this->LogoPicturePath != null){
+            $query->bindParam(':LogoPicturePath', $this->LogoPicturePath, PDO::PARAM_STR);
+        }
+        if($this->WhatsAppNumber != null){
+            $query->bindParam(':WhatsAppNumber', $this->WhatsAppNumber, PDO::PARAM_STR);
+        }
+        if($this->descricao != null){
+            $query->bindParam(':descricao', $this->descricao, PDO::PARAM_STR);
+        }
+        if($this->taxid != null){
+            $query->bindParam(':taxid', $this->taxid, PDO::PARAM_STR);
+        }
+        if($this->AnoFundacao != null){
+            $query->bindParam(':AnoFundacao', $this->AnoFundacao, PDO::PARAM_STR);
+        }
+        if($this->NumEmpregados != null){
+            $query->bindParam(':NumEmpregados', $this->NumEmpregados, PDO::PARAM_STR);
+        }
+        if($this->NumVendedores != null){
+            $query->bindParam(':NumVendedores', $this->NumVendedores, PDO::PARAM_STR);
+        }
+        if($this->NivelOperacao != null){
+            $query->bindParam(':NivelOperacao', $this->NivelOperacao, PDO::PARAM_STR);
+        }
+        if($this->DetalheRegiao != null){
+            $query->bindParam(':DetalheRegiao', $this->DetalheRegiao, PDO::PARAM_STR);
+        }
+        if($this->Fob_3Y != null){
+            $query->bindParam(':Fob_3Y', $this->Fob_3Y, PDO::PARAM_STR);
+        }
+        if($this->Vol_3Y != null){
+            $query->bindParam(':Vol_3Y', $this->Vol_3Y, PDO::PARAM_INT);
+        }
+        if($this->Fob_2Y != null){
+            $query->bindParam(':Fob_2Y', $this->Fob_2Y, PDO::PARAM_STR);
+        }
+        if($this->Vol_2Y != null){
+            $query->bindParam(':Vol_2Y', $this->Vol_2Y, PDO::PARAM_INT);
+        }
+        if($this->Fob_1Y != null){
+            $query->bindParam(':Fob_1Y', $this->Fob_1Y, PDO::PARAM_STR);
+        }
+        if($this->Vol_1Y != null){
+            $query->bindParam(':Vol_1Y', $this->Vol_1Y, PDO::PARAM_INT);
+        }
+
+        $query->execute();
+        return $query;
+
+    }
+
+    public function quantidade($paramsExtra){
+        
+        //$sql = "SELECT * from tblUserClients WHERE idClient = :idClient ";
+        $sql = "SELECT * from tblUserClients ".$paramsExtra;
         $query = $this->dbh->prepare($sql);
         
         if($this->idClient != null){
@@ -482,11 +588,14 @@ class UserClients{
         }
 
         $query->execute();
-        return $query;
+        $results = $query->fetchAll(PDO::FETCH_OBJ);
 
+        if ($query->rowCount() > 0) {return $query->rowCount();} else {return 0;}
     }
 
     public function deletar($paramsExtra){
+
+        
 
         //DELETE FROM tblAction WHERE IdAction=':idAction';
         $sql = "DELETE FROM tblUserClients ".$paramsExtra;

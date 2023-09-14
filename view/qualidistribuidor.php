@@ -66,11 +66,11 @@ date_default_timezone_set('America/Sao_Paulo');
                                         <label for="floatingSelectGrid" style=" font-size: larger;">N° of employees:</label>
                                     </div>
                                 </div>
-                                <div class="col-sm-12">
+                              <!--  <div class="col-sm-12">
                                     <div class="form-floating mb-3">
                                         <select style="font-size: small;height: 4rem !important;" required name="rangeValues" class=" form-select  border-dark inputtamanho" id="floatingSelectGrid" aria-label="Floating label select example">
                                             <?php
-                                            include_once('../model/classes/tblRangeValues.php');
+                                          /*  include_once('../model/classes/tblRangeValues.php');
                                             $tblRangeValues = new RangeValues();
                                             $resultstblRangeValues = $tblRangeValues->consulta("");
                                             if ($resultstblRangeValues != null) {
@@ -78,11 +78,11 @@ date_default_timezone_set('America/Sao_Paulo');
                                             ?>
                                                     <option value="<?php echo $rowsallers->idlRangeValue; ?>"><?php echo $rowsallers->DescricaoRangeValue; ?></option>
                                             <?php  }
-                                            } ?>
+                                            }*/ ?>
                                         </select>
                                         <label for="floatingSelectGrid" style=" font-size: larger;">N° of sellers:</label>
                                     </div>
-                                </div>
+                                </div>-->
                                 <div class="col-sm-12">
                                     <div class="form-floating mb-3">
                                         <input style="font-size: small;height: 4rem !important;" required type="date" id="yearInput" name="year" min="1900" max="2024" class="form-control inputstyle border-dark inputtamanho">

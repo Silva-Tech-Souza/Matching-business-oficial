@@ -184,7 +184,8 @@ if ($resultsoperation != null) {
                     <h2 id="heading">Create Search Profiles</h2>
                     <p>Create searches to find the right match</p>
                     <form id="msform" action="../controller/searchPageController.php" method="POST" enctype="multipart/form-data">
-                        <!-- progressbar -->
+                    <input required type="hidden" name="idClient"  value="<?php echo $iduser;?>" >
+                    <!-- progressbar -->
                         <ul id="progressbar">
                             <li class="active" id="account"><strong>Operation</strong></li>
                             <li id="specification"><strong>Specification</strong></li>
@@ -320,7 +321,6 @@ if ($resultsoperation != null) {
                                         <a href="searchPage.php" class="btn action-button  fontsizelager" style="float: left">Creates New</a>
                                     </div>
                                     <div class="col-6 text-center">
-                                    <input type="hidden" value="<?php echo $iduser ?>" name="idClient">
                                     <input   type="submit" name="next"  class="btn action-button  fontsizelager" value="Results" /> 
                                    
                                     </div>

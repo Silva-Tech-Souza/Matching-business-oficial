@@ -65,7 +65,7 @@ class UserPerfil{
 
 
         $query->execute();
-        return $this->dbh->lastInsertId();
+        return $query;
 
     }
 

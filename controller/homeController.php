@@ -15,9 +15,6 @@ if ($_POST["post"] != "") {
     $caminho = "";
     $caminho2 = "";
 
-    // Adicionar a variável $iduser com o ID do usuário
-    // Substitua pelo ID do usuário, obtido de onde você armazena essa informação
-
     if ($postphoto != "" && $postphoto != 0) {
 
         if (file_exists("../view/assets/img/feed/$iduser")) {
@@ -38,8 +35,8 @@ if ($_POST["post"] != "") {
                 // Tipo de arquivo não suportado
             } else {
                 // Diretório para salvar a imagem compactada
-                $target_directory = "../view/assets/img/feed/$iduser/";
-
+                $target_directory = "assets/img/feed/$iduser/";
+                $target_directory2 = "../view/assets/img/feed/$iduser/";
                 // Nome do arquivo de destino
                 $datapostimg = str_replace(":", "", $datapost);
                 $datapostimg = str_replace(" ", "", $datapostimg);
@@ -54,7 +51,7 @@ if ($_POST["post"] != "") {
                 $resized_image = imagescale($image, $width, $height);
 
                 // Salvar a imagem compactada
-                imagejpeg($resized_image, $target_directory . $nomeArquivoMaisTipo, 25);
+                imagejpeg($resized_image, $target_directory2 . $nomeArquivoMaisTipo, 25);
 
                 // Liberar a memória
                 imagedestroy($image);
@@ -68,10 +65,6 @@ if ($_POST["post"] != "") {
             $userfile = $postphoto['name'];
             $file_temp = $postphoto['tmp_name'];
 
-            // Restante do código permanece igual para compactar e salvar a imagem
-            // ... (mesmo código de compactação e salvamento da imagem)
-
-            // Obtendo o tipo da imagem
             $file_type = $userfile;
             $file_type_length = strlen($file_type) - 3;
             $file_type = substr($file_type, $file_type_length);
@@ -84,8 +77,8 @@ if ($_POST["post"] != "") {
                 // Tipo de arquivo não suportado
             } else {
                 // Diretório para salvar a imagem compactada
-                $target_directory = "../view/assets/img/feed/$iduser/";
-
+                $target_directory = "assets/img/feed/$iduser/";
+                $target_directory2 = "../view/assets/img/feed/$iduser/";
                 // Nome do arquivo de destino
                 $datapostimg = str_replace(":", "", $datapost);
                 $datapostimg = str_replace(" ", "", $datapostimg);
@@ -100,60 +93,55 @@ if ($_POST["post"] != "") {
                 $resized_image = imagescale($image, $width, $height);
 
                 // Salvar a imagem compactada
-                imagejpeg($resized_image, $target_directory . $nomeArquivoMaisTipo, 25);
+                imagejpeg($resized_image, $target_directory2 . $nomeArquivoMaisTipo, 25);
 
                 // Liberar a memória
                 imagedestroy($image);
                 imagedestroy($resized_image);
-
                 $caminho = $target_directory . $nomeArquivoMaisTipo;
             }
         }
     }
 
-    if ($postvideoconf != "") {
-        
-        if (file_exists("../view/assets/img/feed/$iduser")) {
-            mkdir("../view/assets/img/feed/$iduser", 0755);
+    if (!empty($_FILES['postvideo']['name'])) {
+        $iduser = $_SESSION['id']; // Certifique-se de ter uma sessão iniciada com o ID do usuário
+    
+        $target_directory = "../view/assets/img/feed/$iduser/";
+        $target_directory2 = "assets/img/feed/$iduser/";
+        if (!is_dir($target_directory)) {
+            mkdir($target_directory, 0755, true); // Cria o diretório recursivamente se não existir
         }
+    
         $videoFile = $_FILES['postvideo']['tmp_name'];
         $videoFileName = $_FILES['postvideo']['name'];
-
-
-
-        $datapostimg = str_replace(":", "", $datapost);
-        $datapostimg = str_replace(" ", "", $datapostimg);
-        $nomeArquivoMaisTipo = "Post_VIDEO_" . $iduser . "_" . $datapostimg . ".mp4";
-
-
-        $target_directory = "../view/assets/img/feed/$iduser/";
-        $caminho2 = $target_directory . $nomeArquivoMaisTipo;
+    
+        // Limpa o formato da data para ser usado no nome do arquivo
+        $datapostimg = str_replace([" ", ":"], "", $datapost);
+    
+        // Define o nome do arquivo
+        $nomeArquivoMaisTipo = "Post_VIDEO_{$iduser}_{$datapostimg}.mp4";
+    
         $videoFilePath = $target_directory . $nomeArquivoMaisTipo;
-
-        //$comando = "ffmpeg -i \"$videoFile\" -c:v libx264 -crf 23 -r 30 -vf \"scale=640:480\" -t 60 \"$nomeArquivoMaisTipo\"";
-        //exec($comando);
-        move_uploaded_file($videoFile, $videoFilePath);
-        echo "Upload do vídeo realizado com sucesso.";
+        $videoFilePath2 = $target_directory2 . $nomeArquivoMaisTipo;
+        $caminho2 =$videoFilePath2;
+        if (move_uploaded_file($videoFile, $videoFilePath)) {
+          
+        } else {
+           
+        }
     } else {
         $caminho2 ="";
-        // Nenhum arquivo de vídeo foi enviado
-        echo "Erro ao fazer o upload do vídeo.";
+        
     }
-
-   
+    $_POST["post"] = "";
+ 
     $feeds = new Feeds();
     $feeds->setidClient($iduser);
     $feeds->setTitle($txtpos);
     $feeds->setText($txtpos);
     $feeds->setImage($caminho);
     $feeds->setVideo($caminho2);
-
     $feeds->cadastrar();
-    $_POST["post"] = "";
-        $txtpos = "";
-        header("Location: ../view/home.php");
-    
-
-  
+      
+    header("Location: ../view/home.php");
 }
-?>

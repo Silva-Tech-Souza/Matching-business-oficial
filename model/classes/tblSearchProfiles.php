@@ -10,17 +10,7 @@ class SearchProfiles{
     protected $Concatenator = null;
     protected $FlagDeleted = null;
 
-    protected $dbh = null;
 
-    function __construct()
-    {
-        
-        include_once('conexao.php');
-        $conexao = new Conexao();
-        $conexao->abrirConexao();
-        $this->dbh = $conexao->getConexao();
-
-    }
 
     public function setSearchProfilesId($param){$this->SearchProfilesId = $param;}
 
@@ -82,7 +72,7 @@ class SearchProfiles{
 
 
         $query->execute();
-        return $this->dbh->lastInsertId();
+        return $query;
 
     }
 

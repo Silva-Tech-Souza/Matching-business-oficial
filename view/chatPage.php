@@ -1,6 +1,6 @@
 <?php
 session_start();
-error_reporting(0);
+//error_reporting(0);
 date_default_timezone_set('America/Sao_Paulo');
 if ($_SESSION["id"] < 0 || $_SESSION["id"] == "") {
   header("Location: login.php");
@@ -8,6 +8,15 @@ if ($_SESSION["id"] < 0 || $_SESSION["id"] == "") {
 $iduser = $_SESSION["id"];
 
 $_SESSION["n"] = 5;
+
+if(isset($_GET["idClientConversa"])){
+
+  $idClientConversa = $_GET["idClientConversa"];
+
+}
+
+
+
 
 //$sql = "SELECT * from tblUserClients WHERE idClient = :idClient";
 //$query = $dbh->prepare($sql);
@@ -141,7 +150,7 @@ if ($resultsoperation != null) {
                                   if($resultsUserClients != null){
                                     foreach($resultsUserClients as $rowCon){
                                 ?>
-                                <a href="#" class="d-flex align-items-center">
+                                <a href="chatPage.php?idClientConversa=<?php echo $rowCon->idClient; ?>" class="d-flex align-items-center">
                                   <div class="flex-shrink-0">
                                     <img class="imgavatar" src="assets/img/Avatar.png" alt="user img">
                                     <span class="active"></span>
@@ -188,7 +197,7 @@ if ($resultsoperation != null) {
                                   if($resultsUserClients != null){
                                     foreach($resultsUserClients as $rowCon){
                                 ?>
-                                <a href="#" class="d-flex align-items-center">
+                                <a href="chatPage.php?idClientConversa=<?php echo $rowCon->idClient; ?>" class="d-flex align-items-center">
                                   <div class="flex-shrink-0">
                                     <img class="imgavatar" src="assets/img/Avatar.png" alt="user img">
                                     <span class="active"></span>
@@ -215,8 +224,11 @@ if ($resultsoperation != null) {
             </div>
             <!-- chatlist -->
 
+          <?php
 
+            if(isset($_GET["idClientConversa"])){
 
+          ?>
             <!-- chatbox -->
             <div class="chatbox">
               <div class="modal-dialog-scrollable" style="min-height: -webkit-fill-available;">
@@ -235,7 +247,7 @@ if ($resultsoperation != null) {
                           </div>
                           <div class="flex-grow-1 ms-3">
                             <h3><?php echo $usernamepost;?></h3>
-                            <p><?php echo $NmOperation;?></p>
+                            <p><?php //echo $NmOperation;?></p>
                           </div>
                         </div>
                       </div>
@@ -261,25 +273,89 @@ if ($resultsoperation != null) {
                   <div class="modal-body modal-body-height">
                     <div class="msg-body">
                       <ul>
-                        <li class="sender">
-                          <p> oi? </p>
-                          <span class="time">10:06 am</span>
-                        </li>
-                        
-                        <li class="repaly">
-                          <p>oii!</p>
-                          <span class="time">10:20 am</span>
-                        </li>
+
+                      <?php
+
+                        include_once('../model/classes/tblChat.php');
+
+                        $Message_Results = new Chat();
+
+                        $Message_Results->setidClient($iduser);
+                        $Message_Results->setidClientEnviado($idClientConversa);
+
+                        $mensagens = $Message_Results->consulta('WHERE (idClientEnviado = :idClient AND idClient = :idClientEnviado) OR (idClientEnviado = :idClientEnviado AND idClient = :idClient) ORDER BY `tblChat`.`Date` ASC');
+
+                        if($mensagens != null){
+
+                          foreach($mensagens as $mensagenUnid){
+
+                            if($mensagenUnid->idClient == $iduser){
+
+                              echo '
+                              <li class="repaly">
+                                <p>'.$mensagenUnid->Text.'</p>
+                                <span class="time">'.$mensagenUnid->Date.'</span>
+                              </li>
+                              ';
+
+                            }else{
+
+                              echo'
+                              <li class="sender">
+                                <p>'.$mensagenUnid->Text.'</p>
+                                <span class="time">'.$mensagenUnid->Date.'</span>
+                              </li>
+                              ';
+
+                            }
+
+                          }
+
+                        }
+
+                        /*
+                        if($mensagensRecebidas != null && $mensagensEnviadas != null){
+
+                          foreach($mensagensRecebidas as $mensagensRecebidasUnid){
+
+                            foreach($mensagensEnviadas as $mensagensEnviadasUnid){
+
+                              $dataEnviada
+
+                            }
+
+                          }
+
+                        }else if($mensagensRecebidas != null){
+
+
+
+                        }else if($mensagensEnviadas != null){
+
+
+
+                        }else{
+
+
+
+                        }*/
+
+                      ?>
                       </ul>
                     </div>
                   </div>
 
 
                   <div class="send-box">
-                    <form action="">
-                      <input type="text" class="form-control" aria-label="message…" placeholder="Write message…">
+                    <form action="../controller/chatPageController.php" method="POST">
+                      <input required type="text" class="form-control" aria-label="message…" placeholder="Write message…" name="Texto">
 
-                      <button type="button"><i class="fa fa-paper-plane" aria-hidden="true"></i> Send</button>
+                      <input type="hidden" value="<?php echo $iduser; ?>" name="iduser">
+                      <input type="hidden" value="<?php echo $idClientConversa;?>" name="idClientConversa">
+
+                      <input type="hidden" value="cadastrar" name="acao">
+
+                      <button type="submit" ><i class="fa fa-paper-plane" aria-hidden="true"></i> Send</button>
                     </form>
 
 
@@ -290,6 +366,14 @@ if ($resultsoperation != null) {
             </div>
           </div>
           <!-- chatbox -->
+
+          <?php }else{ ?>
+
+
+            Sem Chat
+
+
+          <?php } ?>
 
 
         </div>

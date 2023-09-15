@@ -1,6 +1,6 @@
 <?php
 session_start();
-//error_reporting(0);
+error_reporting(0);
 date_default_timezone_set('America/Sao_Paulo');
 
 if ($_SESSION["id"] < 0 || $_SESSION["id"] == "") {
@@ -131,7 +131,7 @@ if ($resultsbusiness != null) {
 //$querybusinesscor->execute();
 //$resultsbusinesscor = $querybusinesscor->fetchAll(PDO::FETCH_OBJ);
 //if ($querybusinesscor->rowCount() > 0) {
- // foreach ($resultsbusinesscor as $rowbusinesscor) {
+// foreach ($resultsbusinesscor as $rowbusinesscor) {
 //    $NmBusinesscor =  $rowbusinesscor->NmBusiness;
 //  }
 //}
@@ -144,7 +144,7 @@ $resultsbusinesscor = $Business->consulta("WHERE idBusiness = :idBusiness");
 
 if ($resultsbusinesscor != null) {
   foreach ($resultsbusinesscor as $rowbusinesscor) {
-      $NmBusinesscor =  $rowbusinesscor->NmBusiness;
+    $NmBusinesscor =  $rowbusinesscor->NmBusiness;
   }
 }
 
@@ -219,7 +219,6 @@ if ($resultView == null) {
   $searchprofile_results->setidTipoNotif(2);
 
   $searchprofile_results->cadastrar();
-
 }
 
 
@@ -321,14 +320,28 @@ if ($_POST["desconectar"] != "") {
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Perfil</title>
+  <link rel="stylesheet" href="assets/css/geral.css">
+
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-4bw+/aepP/YC94hEpVNVgiZdgIC5+VKNBQNGCHeKRQN+PtmoHDEXuppvnDJzQIu9" crossorigin="anonymous">
-  <link rel="stylesheet" href="../../assets/css/geral.css">
-  <link rel="stylesheet" href="../../assets/css/profile.css">
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.5.0/font/bootstrap-icons.css">
-  <link rel="stylesheet" href="../../assets/css/bootstrap/font-awesome.min.css">
-  <link rel="stylesheet" href="../../assets/css/feed.css">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.5.0/font/bootstrap-icons.css">
+
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  <script src="https://kit.fontawesome.com/f51201541f.js" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/autosize.js/4.0.2/autosize.min.js"></script>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+  <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+  <link rel="stylesheet" href="assets/css/feed.css">
+  <link rel="stylesheet" href="assets/css/navbar.css">
+  <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick.css" />
+  <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick-theme.css" />
+  <script type="text/javascript" src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/autosize.js/4.0.2/autosize.min.js"></script>
 
 </head>
 
@@ -366,149 +379,146 @@ if ($_POST["desconectar"] != "") {
       xmlhttp.send();
     }
   </script>
-  <div class="col-md-12 d-flex justify-content-center margemcelulr">
-    <div class="col-md-12">
-      <div class="row">
-        <div class="col-lg-4 scrollable-column">
-          <div class="card mb-4 cardbg">
-            <div class="card-body text-center  cardbg shadow">
-              <img src="<?php if ($imgperfil != "Avatar.png" && $imgperfil != "") {
-                          echo $imgperfil;
-                        } else {
-                          echo "/assets/img/Avatar.png";
-                        } ?>" alt="avatar" class="rounded-circle img-fluid img-viewprofile-card">
-              <h5 class="my-3 txtnomeperfil"><?php echo $username; ?></h5>
-              <p class="text-muted mb-1 txttipoperfil"> <?php echo $jobtitle . " at " . $companyname; ?></p>
-              <p class="text-muted mb-4 txttipoperfil"><?php echo $pais; ?></p>
-              <div class="d-flex justify-content-center mb-2">
-                <form method="POST" action="../controller/viewProfileController.php" enctype="multipart/form-data">
-                  <?php if ($temconexao == 1) { ?>
-                    <button type="submit" name="desconectar" value="desconectar" class="btn btn-outline-danger ms-1 m-1"><i class="bi bi-person-x-fill icon-btn-card"></i>&nbsp;Disconnect</button>
-                  <?php   } else 
+  <?php include_once("widget/navbar.php"); ?>
+  <div class="telacheia">
+    <div class="col-md-12 p-2 m-0">
+      <div class="col-md-12 d-flex justify-content-center  ">
+        <div class="row telacheia margemmnavbar">
+            <div class="col-lg-4 scrollable-column">
+              <div class="card mb-4 cardbg">
+                <div class="card-body text-center  cardbg shadow">
+                  <img src="<?php if ($imgperfil != "Avatar.png" && $imgperfil != "") {
+                              echo $imgperfil;
+                            } else {
+                              echo "/assets/img/Avatar.png";
+                            } ?>" alt="avatar" class="rounded-circle img-fluid img-viewprofile-card">
+                  <h5 class="my-3 txtnomeperfil"><?php echo $username; ?></h5>
+                  <p class="text-muted mb-1 txttipoperfil"> <?php echo $jobtitle . " at " . $companyname; ?></p>
+                  <p class="text-muted mb-4 txttipoperfil"><?php echo $pais; ?></p>
+                  <div class="d-flex justify-content-center mb-2">
+                    <form method="POST" action="../controller/viewProfileController.php" enctype="multipart/form-data">
+                      <?php if ($temconexao == 1) { ?>
+                        <button type="submit" name="desconectar" value="desconectar" class="btn btn-outline-danger ms-1 m-1"><i class="bi bi-person-x-fill icon-btn-card"></i>&nbsp;Disconnect</button>
+                      <?php   } else 
                   if ($temconexao == 0) { ?>
-                    <button type="submit" name="desconectar" value="desconectar" class="btn btn-outline-warning ms-1 m-1"><i class="bi bi-person-x-fill icon-btn-card"></i>&nbsp;Pending</button>
-                  <?php   } else { ?>
-                    <button type="submit" name="conectar" value="conectar" class="btn btn-outline-primary ms-1 m-1"><i class="bi bi-person-plus-fill icon-btn-card"></i>&nbsp;Connect</button>
-                  <?php   } ?>
-                  <a href="chatPage.php" class="btn btn-outline-primary ms-1 m-1"><i class="bi bi-chat-dots-fill icon-btn-card"></i>&nbsp;Message</a>
-                </form>
-              </div>
-            </div>
-          </div>
-
-
-
-
-          <div class="card mb-4 cardbg ">
-            <div class="card-body p-0 cardbg shadow">
-              <ul class="list-group cardbg list-group-flush rounded-3 txtopertion">
-                <li class="list-group-item cardbg d-flex justify-content-between align-items-center p-3">
-                  <p class="mb-0"><b>Core Business:</b></p>
-                  <p class="mb-0"> <?php echo $NmBusiness; ?></p>
-                </li>
-                <?php if ($corebusiness == "1" || $corebusiness == "2" || $corebusiness == "3" || $corebusiness == "4" || $corebusiness == "5") {
-                ?>
-                  <li class="list-group-item d-flex cardbg justify-content-between align-items-center p-3">
-                    <p class="mb-0"><b>Business:</b></p>
-                    <p class="mb-0"> <?php echo $NmBusinesscor; ?></p>
-                  </li>
-                  <li class="list-group-item d-flex cardbg justify-content-between align-items-center p-3">
-                    <p class="mb-0"><b>Business Category:</b></p>
-                    <p class="mb-0"> <?php echo $NmBusinessCategory; ?></p>
-                  </li>
-                <?php }  ?>
-              </ul>
-            </div>
-          </div>
-
-          <div class="card mb-4 cardbg mb-lg-0">
-            <div class="card-body cardbg cardbg shadow">
-              <h3 class="text-muted valoresinsi "><b>Description:</b></h3>
-              <p class="text-muted mb-4 txttipoperfil"><?php echo $descricao; ?></p>
-            </div>
-          </div>
-        </div>
-        <div class="col-lg-8  scrollable-column ">
-          <div class="card cardbg mb-4">
-            <div class="card-body">
-              <div class="row">
-                <div class="col-sm-11">
-                  <h2 class="text-muted valoresinsi"><b>Products</b></h2>
-                </div>
-                <div class="col-sm-1">
-
+                        <button type="submit" name="desconectar" value="desconectar" class="btn btn-outline-warning ms-1 m-1"><i class="bi bi-person-x-fill icon-btn-card"></i>&nbsp;Pending</button>
+                      <?php   } else { ?>
+                        <button type="submit" name="conectar" value="conectar" class="btn btn-outline-primary ms-1 m-1"><i class="bi bi-person-plus-fill icon-btn-card"></i>&nbsp;Connect</button>
+                      <?php   } ?>
+                      <a href="chatPage.php" class="btn btn-outline-primary ms-1 m-1"><i class="bi bi-chat-dots-fill icon-btn-card"></i>&nbsp;Message</a>
+                    </form>
+                  </div>
                 </div>
               </div>
-              <hr class="m-1">
-              <div class="row rowProduct overflow-auto">
 
-                <?php
-                //$sqlProdutos = "SELECT * from tblProducts WHERE idClient = :idClient  ORDER BY idProduct ASC limit 8";
-                //$queryProdutos = $dbh->prepare($sqlProdutos);
-                //$queryProdutos->bindParam(':idClient', $iduser, PDO::PARAM_INT);
-                //$queryProdutos->execute();
-                //$resultsProdutos = $queryProdutos->fetchAll(PDO::FETCH_OBJ);
 
-                include_once('../model/classes/tblProducts.php');
 
-                $products = new Products();
-                $products->setidClient($iduser);
 
-                $resultsProdutos = $products->consulta("WHERE idClient = :idClient  ORDER BY idProduct ASC limit 8");
+              <div class="card mb-4 cardbg ">
+                <div class="card-body p-0 cardbg shadow">
+                  <ul class="list-group cardbg list-group-flush rounded-3 txtopertion">
+                    <li class="list-group-item cardbg d-flex justify-content-between align-items-center p-3">
+                      <p class="mb-0"><b>Core Business:</b></p>
+                      <p class="mb-0"> <?php echo $NmBusiness; ?></p>
+                    </li>
+                    <?php if ($corebusiness == "1" || $corebusiness == "2" || $corebusiness == "3" || $corebusiness == "4" || $corebusiness == "5") {
+                    ?>
+                      <li class="list-group-item d-flex cardbg justify-content-between align-items-center p-3">
+                        <p class="mb-0"><b>Business:</b></p>
+                        <p class="mb-0"> <?php echo $NmBusinesscor; ?></p>
+                      </li>
+                      <li class="list-group-item d-flex cardbg justify-content-between align-items-center p-3">
+                        <p class="mb-0"><b>Business Category:</b></p>
+                        <p class="mb-0"> <?php echo $NmBusinessCategory; ?></p>
+                      </li>
+                    <?php }  ?>
+                  </ul>
+                </div>
+              </div>
 
-                if ($resultsProdutos != null) {
-                  foreach ($resultsProdutos as $rowProdutos) {
-                ?>
-                    <div class="mb-4 ml-1">
-                      <div class="card-container">
-                        <a data-toggle="modal" data-id="<?php echo $rowProdutos->idProduct; ?>" class="hero-image-container">
-                          <img class="hero-image produto-img" src="<?php // data-target="#modalEditarProduto" data-toggle="modal" data-target="#add_produto"
-                                                                    //$sqlProdutos = "SELECT * from tblProductPictures WHERE idProduct = :idProduct ";
-                                                                    //$queryProdutos1 = $dbh->prepare($sqlProdutos);
-                                                                    //$queryProdutos1->bindParam(':idProduct', $rowProdutos->idProduct, PDO::PARAM_INT);
-                                                                    //$queryProdutos1->execute();
-                                                                    //$resultsProdutos1 = $queryProdutos1->fetchAll(PDO::FETCH_OBJ);
-
-                                                                    include_once('../model/classes/tblProductPictures.php');
-
-                                                                    $productspictures =  new ProductPictures();
-                                                                    $productspictures->setidProduct($rowProdutos->idProduct);
-
-                                                                    $resultsProdutos1 = $productspictures->consulta("WHERE idProduct = :idProduct");
-
-                                                                    if ($queryProdutos1 != null) {
-                                                                      foreach ($resultsProdutos1 as $rowProdutos1) {
-                                                                        echo "../../" . $rowProdutos1->tblProductPicturePath;
-                                                                      }
-                                                                    } else {
-                                                                      echo "https://images.unsplash.com/photo-1507608158173-1dcec673a2e5?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1470&q=80";
-                                                                    }
-                                                                    ?>" alt="Spinning glass cube" />
-                        </a>
-                        <main class="main-content mt-0 w-auto">
-                          <h1 class="mb-0"><a class="cortardescricao color-branco" href="#"><?php echo $rowProdutos->ProductName; ?></a></h1>
-                          <p class="cortardescricao color-cinza produto-desc-text"><?php echo $rowProdutos->ProdcuctDescription; ?></p>
-                        </main>
-                      </div>
+              <div class="card mb-4 cardbg mb-lg-0">
+                <div class="card-body cardbg cardbg shadow">
+                  <h3 class="text-muted valoresinsi "><b>Description:</b></h3>
+                  <p class="text-muted mb-4 txttipoperfil"><?php echo $descricao; ?></p>
+                </div>
+              </div>
+            </div>
+            <div class="col-lg-8  scrollable-column ">
+              <div class="card cardbg mb-4">
+                <div class="card-body">
+                  <div class="row">
+                    <div class="col-sm-11">
+                      <h2 class="text-muted valoresinsi"><b>Products</b></h2>
                     </div>
+                    <div class="col-sm-1">
 
-                <?php }
-                } ?>
+                    </div>
+                  </div>
+                  <hr class="m-1">
+                  <div class="row rowProduct overflow-auto">
+
+                    <?php
+                    //$sqlProdutos = "SELECT * from tblProducts WHERE idClient = :idClient  ORDER BY idProduct ASC limit 8";
+                    //$queryProdutos = $dbh->prepare($sqlProdutos);
+                    //$queryProdutos->bindParam(':idClient', $iduser, PDO::PARAM_INT);
+                    //$queryProdutos->execute();
+                    //$resultsProdutos = $queryProdutos->fetchAll(PDO::FETCH_OBJ);
+
+                    include_once('../model/classes/tblProducts.php');
+
+                    $products = new Products();
+                    $products->setidClient($iduser);
+
+                    $resultsProdutos = $products->consulta("WHERE idClient = :idClient  ORDER BY idProduct ASC limit 8");
+
+                    if ($resultsProdutos != null) {
+                      foreach ($resultsProdutos as $rowProdutos) {
+                    ?>
+                        <div class="mb-4 ml-1">
+                          <div class="card-container">
+                            <a data-toggle="modal" data-id="<?php echo $rowProdutos->idProduct; ?>" class="hero-image-container">
+                              <img class="hero-image produto-img" src="<?php // data-target="#modalEditarProduto" data-toggle="modal" data-target="#add_produto"
+                                                                        //$sqlProdutos = "SELECT * from tblProductPictures WHERE idProduct = :idProduct ";
+                                                                        //$queryProdutos1 = $dbh->prepare($sqlProdutos);
+                                                                        //$queryProdutos1->bindParam(':idProduct', $rowProdutos->idProduct, PDO::PARAM_INT);
+                                                                        //$queryProdutos1->execute();
+                                                                        //$resultsProdutos1 = $queryProdutos1->fetchAll(PDO::FETCH_OBJ);
+
+                                                                        include_once('../model/classes/tblProductPictures.php');
+
+                                                                        $productspictures =  new ProductPictures();
+                                                                        $productspictures->setidProduct($rowProdutos->idProduct);
+
+                                                                        $resultsProdutos1 = $productspictures->consulta("WHERE idProduct = :idProduct");
+
+                                                                        if ($queryProdutos1 != null) {
+                                                                          foreach ($resultsProdutos1 as $rowProdutos1) {
+                                                                            echo "../../" . $rowProdutos1->tblProductPicturePath;
+                                                                          }
+                                                                        } else {
+                                                                          echo "https://images.unsplash.com/photo-1507608158173-1dcec673a2e5?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1470&q=80";
+                                                                        }
+                                                                        ?>" alt="Spinning glass cube" />
+                            </a>
+                            <main class="main-content mt-0 w-auto">
+                              <h1 class="mb-0"><a class="cortardescricao color-branco" href="#"><?php echo $rowProdutos->ProductName; ?></a></h1>
+                              <p class="cortardescricao color-cinza produto-desc-text"><?php echo $rowProdutos->ProdcuctDescription; ?></p>
+                            </main>
+                          </div>
+                        </div>
+
+                    <?php }
+                    } ?>
+                  </div>
+                </div>
+
               </div>
+
             </div>
-
           </div>
-
         </div>
       </div>
     </div>
-  </div>
-
-
-
-
-
-
 
   <script src="../../assets/js/jquery-3.2.1.min.js"></script>
   <script src="../../assets/js/popper.min.js"></script>
@@ -717,13 +727,9 @@ if ($_POST["desconectar"] != "") {
       updateIndicators(activeIndex);
     });
   </script>
-
   <script>
     autosize(document.getElementById('myTextarea'));
   </script>
-
-
-
   <script>
     var limiteAtual = 3; // O limite inicial é de 3 linhas
     var alturaOriginal; // Variável para armazenar a altura original da div
@@ -747,7 +753,6 @@ if ($_POST["desconectar"] != "") {
       return false;
     }
   </script>
-
   <script>
     // Função para adicionar a classe de fundo quando o scroll ocorre
     function adicionarFundoComScroll() {

@@ -2,10 +2,10 @@
 
 class Chat{
     protected $idChat = null;
-    protected $Text = null;
-    protected $Date = null;
-    protected $idClient = null;
-    protected $idClientEnviado = null;
+    protected $clientChatId = null;
+    protected $chatText = null;
+    protected $chatTextDate = null;
+    protected $idClients = null;
     protected $dbh = null;
 
     function __construct()
@@ -23,39 +23,44 @@ class Chat{
 
     public function getidChat(){return $this->idChat;}
 
-    public function setText($param){$this->Text = $param;}
+    public function setClientChatId($param){$this->clientChatId = $param;}
     
-    public function getText(){return $this->Text;}
+    public function getClientChatId(){return $this->clientChatId;}
 
-    public function setDate($param){$this->Date = $param;}
+    public function setChatText($param){$this->chatText = $param;}
     
-    public function getDate(){return $this->Date;}
+    public function getChatText(){return $this->chatText;}
 
-    public function setidClient($param){$this->idClient = $param;}
+    public function setChatTextDate($param){$this->chatTextDate = $param;}
     
-    public function getidClient(){return $this->idClient;}
+    public function getChatTextDate(){return $this->chatTextDate;}
 
-    public function setidClientEnviado($param){$this->idClientEnviado = $param;}
+    public function setidClients($param){$this->idClients = $param;}
     
-    public function getidClientEnviado(){return $this->idClientEnviado;}
-
+    public function getidClients(){return $this->idClients;}
 
 
     public function cadastrar(){
 
         
 
-        $sql = "INSERT INTO `tblChat` (`Text`,idClient,idClientEnviado) VALUES (:Text,:idClient,:idClientEnviado)";
+        $sql = "INSERT INTO tblChat (idChat,ClientChatId,ChatText,ChatTextDate,idClients) VALUES (:idChat,:clientChatId,:chatText,:chatTextDate,:idClients)";
         $query = $this->dbh->prepare($sql);
         
-        if($this->Text != null){
-            $query->bindParam(':Text', $this->Text, PDO::PARAM_STR);
+        if($this->idChat != null){
+            $query->bindParam(':idChat', $this->idChat, PDO::PARAM_INT);
         }
-        if($this->idClient != null){
-            $query->bindParam(':idClient', $this->idClient, PDO::PARAM_INT);
+        if($this->clientChatId != null){
+            $query->bindParam(':clientChatId', $this->clientChatId, PDO::PARAM_INT);
         }
-        if($this->idClientEnviado != null){
-            $query->bindParam(':idClientEnviado', $this->idClientEnviado, PDO::PARAM_INT);
+        if($this->chatText != null){
+            $query->bindParam(':chatText', $this->chatText, PDO::PARAM_STR);
+        }
+        if($this->chatTextDate != null){
+            $query->bindParam(':chatTextDate', $this->chatTextDate, PDO::PARAM_STR);
+        }
+        if($this->idClients != null){
+            $query->bindParam(':idClients', $this->idClients, PDO::PARAM_STR);
         }
 
         $query->execute();
@@ -74,17 +79,17 @@ class Chat{
         if($this->idChat != null){
             $query->bindParam(':idChat', $this->idChat, PDO::PARAM_INT);
         }
-        if($this->Text != null){
-            $query->bindParam(':Text', $this->Text, PDO::PARAM_STR);
+        if($this->clientChatId != null){
+            $query->bindParam(':clientChatId', $this->clientChatId, PDO::PARAM_STR);
         }
-        if($this->idClient != null){
-            $query->bindParam(':idClient', $this->idClient, PDO::PARAM_INT);
+        if($this->chatText != null){
+            $query->bindParam(':chatText', $this->chatText, PDO::PARAM_STR);
         }
-        if($this->idClientEnviado != null){
-            $query->bindParam(':idClientEnviado', $this->idClientEnviado, PDO::PARAM_INT);
+        if($this->chatTextDate != null){
+            $query->bindParam(':chatTextDate', $this->chatTextDate, PDO::PARAM_INT);
         }
-        if($this->Date != null){
-            $query->bindParam(':Date', $this->Date, PDO::PARAM_STR);
+        if($this->idClients != null){
+            $query->bindParam(':idClients', $this->idClients, PDO::PARAM_INT);
         }
 
         $query->execute();
@@ -105,17 +110,17 @@ class Chat{
         if($this->idChat != null){
             $query->bindParam(':idChat', $this->idChat, PDO::PARAM_INT);
         }
-        if($this->Text != null){
-            $query->bindParam(':Text', $this->Text, PDO::PARAM_STR);
+        if($this->clientChatId != null){
+            $query->bindParam(':clientChatId', $this->clientChatId, PDO::PARAM_STR);
         }
-        if($this->idClient != null){
-            $query->bindParam(':idClient', $this->idClient, PDO::PARAM_INT);
+        if($this->chatText != null){
+            $query->bindParam(':chatText', $this->chatText, PDO::PARAM_STR);
         }
-        if($this->idClientEnviado != null){
-            $query->bindParam(':idClientEnviado', $this->idClientEnviado, PDO::PARAM_INT);
+        if($this->chatTextDate != null){
+            $query->bindParam(':chatTextDate', $this->chatTextDate, PDO::PARAM_INT);
         }
-        if($this->Date != null){
-            $query->bindParam(':Date', $this->Date, PDO::PARAM_STR);
+        if($this->idClients != null){
+            $query->bindParam(':idClients', $this->idClients, PDO::PARAM_INT);
         }
 
         $query->execute();
@@ -134,17 +139,17 @@ class Chat{
         if($this->idChat != null){
             $query->bindParam(':idChat', $this->idChat, PDO::PARAM_INT);
         }
-        if($this->Text != null){
-            $query->bindParam(':Text', $this->Text, PDO::PARAM_STR);
+        if($this->clientChatId != null){
+            $query->bindParam(':clientChatId', $this->clientChatId, PDO::PARAM_STR);
         }
-        if($this->idClient != null){
-            $query->bindParam(':idClient', $this->idClient, PDO::PARAM_INT);
+        if($this->chatText != null){
+            $query->bindParam(':chatText', $this->chatText, PDO::PARAM_STR);
         }
-        if($this->idClientEnviado != null){
-            $query->bindParam(':idClientEnviado', $this->idClientEnviado, PDO::PARAM_INT);
+        if($this->chatTextDate != null){
+            $query->bindParam(':chatTextDate', $this->chatTextDate, PDO::PARAM_INT);
         }
-        if($this->Date != null){
-            $query->bindParam(':Date', $this->Date, PDO::PARAM_STR);
+        if($this->idClients != null){
+            $query->bindParam(':idClients', $this->idClients, PDO::PARAM_INT);
         }
 
         $query->execute();

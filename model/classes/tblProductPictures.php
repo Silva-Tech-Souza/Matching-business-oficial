@@ -35,12 +35,9 @@ class ProductPictures{
 
         
 
-        $sql = "INSERT INTO tblProductPictures (idProductPicture,idProduct,tblProductPicturePath) VALUES (:idProductPicture,:idProduct,:tblProductPicturePath)";
+        $sql = "INSERT INTO tblProductPictures (idProduct,tblProductPicturePath) VALUES (:idProduct,:tblProductPicturePath)";
         $query = $this->dbh->prepare($sql);
         
-        if($this->idProductPicture != null){
-            $query->bindParam(':idProductPicture', $this->idProductPicture, PDO::PARAM_INT);
-        }
         if($this->idProduct != null){
             $query->bindParam(':idProduct', $this->idProduct, PDO::PARAM_INT);
         }

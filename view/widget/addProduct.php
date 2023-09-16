@@ -1,4 +1,4 @@
-<div class="modal" id="myProductModal">
+<div class="modal" id="myProductModalAdd">
     <div class="modal-dialog modal-lg modal-style-addproduct">
         <div class=" modal-content">
             <div class="modal-header">

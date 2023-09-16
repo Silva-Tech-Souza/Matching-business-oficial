@@ -1,9 +1,137 @@
 <?php
 
-if ($_POST["add_orcamento"] != "") {
-  $arquivoUser = $_FILES['user-image'];
+session_start();
+$iduser = $iduser = $_SESSION["id"];
+
+
+if (isset($_POST["AdicionarProdutos"])) {
+  $POSTnomeproduto = $_POST["nomeproduto"];
+  $POSTdescricao = $_POST["descricao"];
+  $POSTspecification = $_POST["specification"];
+
+  include_once('../model/classes/tblUserClients.php');
+
+  $userClients = new UserClients();
+
+  $userClients->setidClient($iduser);
+
+  $resultsClient = $userClients->consulta("WHERE idClient = :idClient");
+
+  foreach($resultsClient as $resultsClientUnid){
+
+    $corebusiness = $resultsClientUnid->CoreBusinessId;
+    $satBusinessId = $resultsClientUnid->SatBusinessId;
+
+  }
+
+  //$sqlprodutos = "INSERT INTO tblProducts(idClient, idBusinessCategory, ProductName, ProdcuctDescription, ProdcuctEspecification, flagExcluido, Category) VALUES (:idClient, :idBusinessCategory, :ProductName, :ProdcuctDescription, :ProdcuctEspecification, '0', :Category)";
+  //$queryprodutos = $dbh->prepare($sqlprodutos);
+  //$queryprodutos->bindParam(':idClient', $iduser, PDO::PARAM_INT);
+  //$queryprodutos->bindParam(':idBusinessCategory', $corebusiness, PDO::PARAM_INT);
+  //$queryprodutos->bindParam(':ProductName', $POSTnomeproduto, PDO::PARAM_STR);
+  //$queryprodutos->bindParam(':ProdcuctDescription', $POSTdescricao, PDO::PARAM_STR);
+  //$queryprodutos->bindParam(':ProdcuctEspecification', $POSTspecification, PDO::PARAM_STR);
+  //$queryprodutos->bindParam(':Category', $satBusinessId, PDO::PARAM_INT);
+  //$queryprodutos->execute();
+
+  include_once('../model/classes/tblProducts.php');
+  $Produtos = new Products();
+
+  $Produtos->setidClient($iduser);
+  $Produtos->setidBusinessCategory($corebusiness);
+  $Produtos->setProductName($POSTnomeproduto);
+  $Produtos->setProdcuctDescription($POSTdescricao);
+  $Produtos->setProdcuctEspecification($POSTspecification);
+  $Produtos->setCategory($satBusinessId);
+  $Produtos->setflagExcluido('0');
+
+  $lastInsertedId = $Produtos->cadastrar();  
+
+
+  $arquivoUser = $_FILES['user-produto'];
   if ($arquivoUser != "" && $arquivoUser != 0) {
-    if (file_exists("assets/img/$iduser")) {
+    if (file_exists("../view/assets/img/$iduser")) {
+      $userfile = $arquivoUser['name'];
+      $file_temp = $arquivoUser['tmp_name'];
+
+      $file_type = $userfile;
+      $file_type_length = strlen($file_type) - 3;
+      $file_type = substr($file_type, $file_type_length);
+
+      $file_type = strtolower($file_type);
+      if ($file_type == 'peg') {
+        $file_type = 'jpeg';
+      }
+      if ($file_type != 'peg' and $file_type != 'jpg' and $file_type != 'gif' and $file_type != 'png') {
+      } else {
+        $nomeArquivoMaisTipo = "Produto_" . $lastInsertedId . "_" . $iduser . "." . $file_type;
+        if (move_uploaded_file($file_temp, "../view/assets/img/$iduser/" . $nomeArquivoMaisTipo)) {
+          $caminho = "assets/img/$iduser/$nomeArquivoMaisTipo";
+
+          include_once('../model/classes/tblProductPictures.php');
+
+          $ProductPictures = new ProductPictures();
+
+          $ProductPictures->settblProductPicturePath($caminho);
+          $ProductPictures->setidProduct($lastInsertedId);
+
+          $ProductPictures->cadastrar();
+          
+          //$sqlupimg = "INSERT INTO tblProductPictures(idProduct, tblProductPicturePath) VALUES (:idProduct, :tblProductPicturePath)";
+          //$queryupimg = $dbh->prepare($sqlupimg);
+          //$queryupimg->bindParam(':tblProductPicturePath', $caminho, PDO::PARAM_STR);
+          //$queryupimg->bindParam(':idProduct', $lastInsertedId, PDO::PARAM_INT);
+          //$queryupimg->execute();
+          
+        }
+      }
+    } else {
+      mkdir("../view/assets/img/$iduser", 0755);
+      $userfile = $arquivoUser['name'];
+      $file_temp = $arquivoUser['tmp_name'];
+
+      $file_type = $userfile;
+      $file_type_length = strlen($file_type) - 3;
+      $file_type = substr($file_type, $file_type_length);
+
+      $file_type = strtolower($file_type);
+
+      if ($file_type == 'peg') {
+        $file_type = 'jpeg';
+      }
+      if ($file_type != 'peg' and $file_type != 'jpg' and $file_type != 'gif' and $file_type != 'png') {
+      } else {
+        $nomeArquivoMaisTipo = "Produto_" . $lastInsertedId . "_" . $iduser . "." . $file_type;
+        if (move_uploaded_file($file_temp, "../view/assets/img/$iduser/" . $nomeArquivoMaisTipo)) {
+          $caminho = "assets/img/$iduser/$nomeArquivoMaisTipo";
+
+          include_once('../model/classes/tblProductPictures.php');
+
+          $ProductPictures = new ProductPictures();
+
+          $ProductPictures->settblProductPicturePath($caminho);
+          $ProductPictures->setidProduct($lastInsertedId);
+
+          $ProductPictures->cadastrar();
+
+          //$sqlupimg = "INSERT INTO tblProductPictures(idProduct, tblProductPicturePath) VALUES (:idProduct, :tblProductPicturePath)";
+          //$queryupimg = $dbh->prepare($sqlupimg);
+          //$queryupimg->bindParam(':tblProductPicturePath', $caminho, PDO::PARAM_STR);
+          //$queryupimg->bindParam(':idProduct', $lastInsertedId, PDO::PARAM_INT);
+          //$queryupimg->execute();
+        }
+      }
+    }
+  }
+  $_POST["AdicionarProdutos"] = "";
+  header("Location: ../view/profile.php");
+}
+
+if (isset($_POST["add_orcamento"] )) {
+  $arquivoUser = $_FILES['user-image'];
+  $arquivoCompany = $_FILES['banner-image'];
+  if ($arquivoUser != "" && $arquivoUser != 0) {
+    if (file_exists("../view/assets/img/$iduser")) {
       $userfile = $arquivoUser['name'];
       $file_temp = $arquivoUser['tmp_name'];
 
@@ -18,7 +146,7 @@ if ($_POST["add_orcamento"] != "") {
       if ($file_type != 'peg' and $file_type != 'jpg' and $file_type != 'gif' and $file_type != 'png') {
       } else {
         $nomeArquivoMaisTipo = "PersonalUser_$iduser." . $file_type;
-        if (move_uploaded_file($file_temp, "assets/img/$iduser/" . $nomeArquivoMaisTipo)) {
+        if (move_uploaded_file($file_temp, "../view/assets/img/$iduser/" . $nomeArquivoMaisTipo)) {
           $caminho = "assets/img/$iduser/$nomeArquivoMaisTipo";
 
           include_once('../model/classes/tblUserClients.php');
@@ -37,7 +165,7 @@ if ($_POST["add_orcamento"] != "") {
         }
       }
     } else {
-      mkdir("assets/img/$iduser", 0755);
+      mkdir("../view/assets/img/$iduser", 0755);
       $userfile = $arquivoUser['name'];
       $file_temp = $arquivoUser['tmp_name'];
 
@@ -53,7 +181,7 @@ if ($_POST["add_orcamento"] != "") {
       if ($file_type != 'peg' and $file_type != 'jpg' and $file_type != 'gif' and $file_type != 'png') {
       } else {
         $nomeArquivoMaisTipo = "PersonalUser_$iduser." . $file_type;
-        if (move_uploaded_file($file_temp, "assets/img/$iduser/" . $nomeArquivoMaisTipo)) {
+        if (move_uploaded_file($file_temp, "../view/assets/img/$iduser/" . $nomeArquivoMaisTipo)) {
           $caminho = "assets/img/$iduser/$nomeArquivoMaisTipo";
 
           include_once('../model/classes/tblUserClients.php');
@@ -73,6 +201,83 @@ if ($_POST["add_orcamento"] != "") {
       }
     }
   }
+
+  if ($arquivoCompany != "" && $arquivoCompany != 0) {
+    if (file_exists("../view/assets/img/$iduser")) {
+      $userfile = $arquivoCompany['name'];
+      $file_temp = $arquivoCompany['tmp_name'];
+
+      $file_type = $userfile;
+      $file_type_length = strlen($file_type) - 3;
+      $file_type = substr($file_type, $file_type_length);
+
+      $file_type = strtolower($file_type);
+
+      if ($file_type == 'peg') {
+        $file_type = 'jpeg';
+      }
+      if ($file_type != 'peg' and $file_type != 'jpg' and $file_type != 'gif' and $file_type != 'png') {
+      } else {
+        $nomeArquivoMaisTipo = "LogoPicture_$iduser." . $file_type;
+        if (move_uploaded_file($file_temp, "../view/assets/img/$iduser/" . $nomeArquivoMaisTipo)) {
+          $caminho = "assets/img/$iduser/$nomeArquivoMaisTipo";
+
+          //$sqlupimg = "UPDATE tblUserClients SET LogoPicturePath = :LogoPicturePath WHERE idClient = :idClient";
+          //$queryupimg = $dbh->prepare($sqlupimg);
+          //$queryupimg->bindParam(':LogoPicturePath', $caminho, PDO::PARAM_STR);
+          //$queryupimg->bindParam(':idClient', $iduser, PDO::PARAM_INT);
+          //$queryupimg->execute();          
+
+          include_once('../model/classes/tblUserClients.php');
+
+          $userClients = new UserClients();
+
+          $userClients->setLogoPicturePath($caminho);
+          $userClients->setidClient($iduser);
+
+          $userClients->atualizar("LogoPicturePath = :LogoPicturePath WHERE idClient = :idClient");
+        }
+      }
+    } else {
+      mkdir("../view/assets/img/$iduser", 0755);
+      $userfile = $arquivoCompany['name'];
+      $file_temp = $arquivoCompany['tmp_name'];
+
+      $file_type = $userfile;
+      $file_type_length = strlen($file_type) - 3;
+      $file_type = substr($file_type, $file_type_length);
+
+      $file_type = strtolower($file_type);
+
+
+      if ($file_type == 'peg') {
+        $file_type = 'jpeg';
+      }
+      if ($file_type != 'peg' and $file_type != 'jpg' and $file_type != 'gif' and $file_type != 'png') {
+      } else {
+        $nomeArquivoMaisTipo = "LogoPicture_$iduser." . $file_type;
+        if (move_uploaded_file($file_temp, "../view/assets/img/$iduser/" . $nomeArquivoMaisTipo)) {
+          $caminho = "assets/img/$iduser/$nomeArquivoMaisTipo";
+
+          include_once('../model/classes/tblUserClients.php');
+
+          $userClients = new UserClients();
+
+          $userClients->setLogoPicturePath($caminho);
+          $userClients->setidClient($iduser);
+
+          $userClients->atualizar("LogoPicturePath = :LogoPicturePath WHERE idClient = :idClient");
+
+          //$sqlupimg = "UPDATE tblUserClients SET LogoPicturePath = :LogoPicturePath WHERE idClient = :idClient";
+          //$queryupimg = $dbh->prepare($sqlupimg);
+          //$queryupimg->bindParam(':LogoPicturePath', $caminho, PDO::PARAM_STR);
+          //$queryupimg->bindParam(':idClient', $iduser, PDO::PARAM_INT);
+          //$queryupimg->execute();
+        }
+      }
+    }
+  }
+
   $_POST["add_orcamento"] = "";
   $POSTFirstName = $_POST["nome"];
   $POSTLastName = $_POST["lastname"];
@@ -97,24 +302,24 @@ if ($_POST["add_orcamento"] != "") {
   if($resulbusinesop != null){
     foreach ($resulbusinesop as $rowlbssop) {
       $idoperationbs = $rowlbssop->idBusiness;
+
+      if ($BusinessIdpost == "") {
+
+        $BusinessIdpost = $CoreBusinessIdpost;
+
+        if ($idoperationbs == 0) {
+          $BusinessIdpost = $_POST["coreBusiness"];
+        } else {
+          $BusinessIdpost = $idoperationbs;
+        }
+
+      }
+
     }
   }
 
-  if ($idoperationbs == 0) {
-    $BusinessIdpost = $_POST["coreBusiness"];
-  } else {
-    $BusinessIdpost = $idoperationbs;
-  }
-
-
-
   $BusinessCategIdpost = $_POST["satellite"];
-  if ($BusinessIdpost == "") {
-    $BusinessIdpost = $CoreBusinessIdpost;
-  }
-  if ($BusinessIdpost == "") {
-    $BusinessIdpost = $CoreBusinessIdpost;
-  }
+  $BusinessIdpost = $_POST["coreBusiness"];
 
   include_once('../model/classes/tblUserClients.php');
 
@@ -144,407 +349,313 @@ if ($_POST["add_orcamento"] != "") {
   //$queryeditperfil->bindParam(':IdOperation', $BusinessCategIdpost, PDO::PARAM_INT);
   //$queryeditperfil->execute();
   //$queryeditperfil->fetchAll(PDO::FETCH_OBJ);
-  header("Location: profile.php");
-} 
-  if ($_POST["add_produtos"] != "") {
-    $_POST["add_produtos"] != "";
-    $POSTnomeproduto = $_POST["nomeproduto"];
-    $POSTcoreBusiness = $_POST["coreBusiness"];
-    $POSToperation = $_POST["operation"];
-    $POSTdescricao = $_POST["descricao"];
-    $POSTspecification = $_POST["specification"];
+  header("Location: ../view/profile.php");
+}
   
-    //$sqlprodutos = "INSERT INTO tblProducts(idClient, idBusinessCategory, ProductName, ProdcuctDescription, ProdcuctEspecification, flagExcluido, Category) VALUES (:idClient, :idBusinessCategory, :ProductName, :ProdcuctDescription, :ProdcuctEspecification, '0', :Category)";
-    //$queryprodutos = $dbh->prepare($sqlprodutos);
-    //$queryprodutos->bindParam(':idClient', $iduser, PDO::PARAM_INT);
-    //$queryprodutos->bindParam(':idBusinessCategory', $corebusiness, PDO::PARAM_INT);
-    //$queryprodutos->bindParam(':ProductName', $POSTnomeproduto, PDO::PARAM_STR);
-    //$queryprodutos->bindParam(':ProdcuctDescription', $POSTdescricao, PDO::PARAM_STR);
-    //$queryprodutos->bindParam(':ProdcuctEspecification', $POSTspecification, PDO::PARAM_STR);
-    //$queryprodutos->bindParam(':Category', $satBusinessId, PDO::PARAM_INT);
-    //$queryprodutos->execute();
+if (isset($_POST["salvar"] )) {
 
-    include_once('../model/classes/tblProducts.php');
-    $Produtos = new Products();
+  $arquivoUser = $_FILES['user-image'];
+  $arquivoCompany = $_FILES['banner-image'];
 
-    $Produtos->setidClient($iduser);
-    $Produtos->setidBusinessCategory($corebusiness);
-    $Produtos->setProductName($POSTnomeproduto);
-    $Produtos->setProdcuctDescription($POSTdescricao);
-    $Produtos->setProdcuctEspecification($POSTspecification);
-    $Produtos->setCategory($satBusinessId);
-    $Produtos->setflagExcluido('0');
+  if ($arquivoUser != "" && $arquivoUser != 0) {
+    if (file_exists("../view/assets/img/$iduser")) {
+      $userfile = $arquivoUser['name'];
+      $file_temp = $arquivoUser['tmp_name'];
 
-    $lastInsertedId = $Produtos->cadastrar(); 
-  
-  
-    $arquivoUser = $_FILES['user-produto'];
-    if ($arquivoUser != "" && $arquivoUser != 0) {
-      if (file_exists("assets/img/$iduser")) {
-        $userfile = $arquivoUser['name'];
-        $file_temp = $arquivoUser['tmp_name'];
-  
-        $file_type = $userfile;
-        $file_type_length = strlen($file_type) - 3;
-        $file_type = substr($file_type, $file_type_length);
-  
-        $file_type = strtolower($file_type);
-        if ($file_type == 'peg') {
-          $file_type = 'jpeg';
-        }
-        if ($file_type != 'peg' and $file_type != 'jpg' and $file_type != 'gif' and $file_type != 'png') {
-        } else {
-          $nomeArquivoMaisTipo = "Produto_" . $lastInsertedId . "_" . $iduser . "." . $file_type;
-          if (move_uploaded_file($file_temp, "assets/img/$iduser/" . $nomeArquivoMaisTipo)) {
-            $caminho = "assets/img/$iduser/$nomeArquivoMaisTipo";
+      $file_type = $userfile;
+      $file_type_length = strlen($file_type) - 3;
+      $file_type = substr($file_type, $file_type_length);
 
-            include_once('../model/classes/tblProductPictures.php');
-
-            $ProductPictures = new ProductPictures();
-
-            $ProductPictures->settblProductPicturePath($caminho);
-            $ProductPictures->setidProduct($lastInsertedId);
-
-            $ProductPictures->cadastrar();
-            
-            //$sqlupimg = "INSERT INTO tblProductPictures(idProduct, tblProductPicturePath) VALUES (:idProduct, :tblProductPicturePath)";
-            //$queryupimg = $dbh->prepare($sqlupimg);
-            //$queryupimg->bindParam(':tblProductPicturePath', $caminho, PDO::PARAM_STR);
-            //$queryupimg->bindParam(':idProduct', $lastInsertedId, PDO::PARAM_INT);
-            //$queryupimg->execute();
-            
-          }
-        }
+      $file_type = strtolower($file_type);
+      if ($file_type == 'peg') {
+        $file_type = 'jpeg';
+      }
+      if ($file_type != 'peg' && $file_type != 'jpg' && $file_type != 'gif' && $file_type != 'png') {
       } else {
-        mkdir("assets/img/$iduser", 0755);
-        $userfile = $arquivoUser['name'];
-        $file_temp = $arquivoUser['tmp_name'];
-  
-        $file_type = $userfile;
-        $file_type_length = strlen($file_type) - 3;
-        $file_type = substr($file_type, $file_type_length);
-  
-        $file_type = strtolower($file_type);
-  
-        if ($file_type == 'peg') {
-          $file_type = 'jpeg';
+        $nomeArquivoMaisTipo = "PersonalUser_$iduser." . $file_type;
+        if (move_uploaded_file($file_temp, "assets/img/$iduser/" . $nomeArquivoMaisTipo)) {
+          $caminho = "assets/img/$iduser/$nomeArquivoMaisTipo";
+
+          include_once('../model/classes/tblUserClients.php');
+
+          $userClients = new UserClients();
+
+          $userClients->setPersonalUserPicturePath($caminho);
+          $userClients->setidClient($iduser);
+
+          $userClients->atualizar("PersonalUserPicturePath = :PersonalUserPicturePath WHERE idClient = :idClient");
+
+          //$sqlupimg = "UPDATE tblUserClients SET PersonalUserPicturePath = :PersonalUserPicturePath WHERE idClient = :idClient";
+          //$queryupimg = $dbh->prepare($sqlupimg);
+          //$queryupimg->bindParam(':PersonalUserPicturePath', $caminho, PDO::PARAM_STR);
+          //$queryupimg->bindParam(':idClient', $iduser, PDO::PARAM_INT);
+          //$queryupimg->execute();
+
         }
-        if ($file_type != 'peg' and $file_type != 'jpg' and $file_type != 'gif' and $file_type != 'png') {
-        } else {
-          $nomeArquivoMaisTipo = "Produto_" . $lastInsertedId . "_" . $iduser . "." . $file_type;
-          if (move_uploaded_file($file_temp, "assets/img/$iduser/" . $nomeArquivoMaisTipo)) {
-            $caminho = "assets/img/$iduser/$nomeArquivoMaisTipo";
+      }
+    } else {
+      mkdir("../view/assets/img/$iduser", 0755);
+      $userfile = $arquivoUser['name'];
+      $file_temp = $arquivoUser['tmp_name'];
 
-            include_once('../model/classes/tblProductPictures.php');
+      $file_type = $userfile;
+      $file_type_length = strlen($file_type) - 3;
+      $file_type = substr($file_type, $file_type_length);
 
-            $ProductPictures = new ProductPictures();
+      $file_type = strtolower($file_type);
 
-            $ProductPictures->settblProductPicturePath($caminho);
-            $ProductPictures->setidProduct($lastInsertedId);
+      if ($file_type == 'peg') {
+        $file_type = 'jpeg';
+      }
+      if ($file_type != 'peg' and $file_type != 'jpg' and $file_type != 'gif' and $file_type != 'png') {
+      } else {
+        $nomeArquivoMaisTipo = "PersonalUser_$iduser." . $file_type;
+        if (move_uploaded_file($file_temp, "../view/assets/img/$iduser/" . $nomeArquivoMaisTipo)) {
+          $caminho = "assets/img/$iduser/$nomeArquivoMaisTipo";
+          //$sqlupimg = "UPDATE tblUserClients SET PersonalUserPicturePath = :PersonalUserPicturePath WHERE idClient = :idClient";
+          //$queryupimg = $dbh->prepare($sqlupimg);
+          //$queryupimg->bindParam(':PersonalUserPicturePath', $caminho, PDO::PARAM_STR);
+          //$queryupimg->bindParam(':idClient', $iduser, PDO::PARAM_INT);
+          //$queryupimg->execute();
+        
+          include_once('../model/classes/tblUserClients.php');
 
-            $ProductPictures->cadastrar();
+          $userClients = new UserClients();
 
-            //$sqlupimg = "INSERT INTO tblProductPictures(idProduct, tblProductPicturePath) VALUES (:idProduct, :tblProductPicturePath)";
-            //$queryupimg = $dbh->prepare($sqlupimg);
-            //$queryupimg->bindParam(':tblProductPicturePath', $caminho, PDO::PARAM_STR);
-            //$queryupimg->bindParam(':idProduct', $lastInsertedId, PDO::PARAM_INT);
-            //$queryupimg->execute();
-          }
+          $userClients->setPersonalUserPicturePath($caminho);
+          $userClients->setidClient($iduser);
+
+          $userClients->atualizar("PersonalUserPicturePath = :PersonalUserPicturePath WHERE idClient = :idClient");
+
         }
       }
     }
-    header("Location: profile.php");
   }
-  
-  if ($_POST["salvar"] != "") {
-  
-    $arquivoUser = $_FILES['user-image'];
-    $arquivoCompany = $_FILES['cover-image'];
-  
-    if ($arquivoUser != "" && $arquivoUser != 0) {
-      if (file_exists("assets/img/$iduser")) {
-        $userfile = $arquivoUser['name'];
-        $file_temp = $arquivoUser['tmp_name'];
-  
-        $file_type = $userfile;
-        $file_type_length = strlen($file_type) - 3;
-        $file_type = substr($file_type, $file_type_length);
-  
-        $file_type = strtolower($file_type);
-        if ($file_type == 'peg') {
-          $file_type = 'jpeg';
-        }
-        if ($file_type != 'peg' and $file_type != 'jpg' and $file_type != 'gif' and $file_type != 'png') {
-        } else {
-          $nomeArquivoMaisTipo = "PersonalUser_$iduser." . $file_type;
-          if (move_uploaded_file($file_temp, "assets/img/$iduser/" . $nomeArquivoMaisTipo)) {
-            $caminho = "assets/img/$iduser/$nomeArquivoMaisTipo";
+  if ($arquivoCompany != "" && $arquivoCompany != 0) {
+    if (file_exists("../view/assets/img/$iduser")) {
+      $userfile = $arquivoCompany['name'];
+      $file_temp = $arquivoCompany['tmp_name'];
 
-            include_once('../model/classes/tblUserClients.php');
+      $file_type = $userfile;
+      $file_type_length = strlen($file_type) - 3;
+      $file_type = substr($file_type, $file_type_length);
 
-            $userClients = new UserClients();
+      $file_type = strtolower($file_type);
 
-            $userClients->setPersonalUserPicturePath($caminho);
-            $userClients->setidClient($iduser);
-
-            $userClients->atualizar("PersonalUserPicturePath = :PersonalUserPicturePath WHERE idClient = :idClient");
-
-            //$sqlupimg = "UPDATE tblUserClients SET PersonalUserPicturePath = :PersonalUserPicturePath WHERE idClient = :idClient";
-            //$queryupimg = $dbh->prepare($sqlupimg);
-            //$queryupimg->bindParam(':PersonalUserPicturePath', $caminho, PDO::PARAM_STR);
-            //$queryupimg->bindParam(':idClient', $iduser, PDO::PARAM_INT);
-            //$queryupimg->execute();
-
-          }
-        }
+      if ($file_type == 'peg') {
+        $file_type = 'jpeg';
+      }
+      if ($file_type != 'peg' and $file_type != 'jpg' and $file_type != 'gif' and $file_type != 'png') {
       } else {
-        mkdir("assets/img/$iduser", 0755);
-        $userfile = $arquivoUser['name'];
-        $file_temp = $arquivoUser['tmp_name'];
-  
-        $file_type = $userfile;
-        $file_type_length = strlen($file_type) - 3;
-        $file_type = substr($file_type, $file_type_length);
-  
-        $file_type = strtolower($file_type);
-  
-        if ($file_type == 'peg') {
-          $file_type = 'jpeg';
+        $nomeArquivoMaisTipo = "LogoPicture_$iduser." . $file_type;
+        if (move_uploaded_file($file_temp, "../view/assets/img/$iduser/" . $nomeArquivoMaisTipo)) {
+          $caminho = "assets/img/$iduser/$nomeArquivoMaisTipo";
+
+          //$sqlupimg = "UPDATE tblUserClients SET LogoPicturePath = :LogoPicturePath WHERE idClient = :idClient";
+          //$queryupimg = $dbh->prepare($sqlupimg);
+          //$queryupimg->bindParam(':LogoPicturePath', $caminho, PDO::PARAM_STR);
+          //$queryupimg->bindParam(':idClient', $iduser, PDO::PARAM_INT);
+          //$queryupimg->execute();          
+
+          include_once('../model/classes/tblUserClients.php');
+
+          $userClients = new UserClients();
+
+          $userClients->setLogoPicturePath($caminho);
+          $userClients->setidClient($iduser);
+
+          $userClients->atualizar("LogoPicturePath = :LogoPicturePath WHERE idClient = :idClient");
         }
-        if ($file_type != 'peg' and $file_type != 'jpg' and $file_type != 'gif' and $file_type != 'png') {
-        } else {
-          $nomeArquivoMaisTipo = "PersonalUser_$iduser." . $file_type;
-          if (move_uploaded_file($file_temp, "assets/img/$iduser/" . $nomeArquivoMaisTipo)) {
-            //$caminho = "assets/img/$iduser/$nomeArquivoMaisTipo";
-            //$sqlupimg = "UPDATE tblUserClients SET PersonalUserPicturePath = :PersonalUserPicturePath WHERE idClient = :idClient";
-            //$queryupimg = $dbh->prepare($sqlupimg);
-            //$queryupimg->bindParam(':PersonalUserPicturePath', $caminho, PDO::PARAM_STR);
-            //$queryupimg->bindParam(':idClient', $iduser, PDO::PARAM_INT);
-            //$queryupimg->execute();
-          
-            include_once('../model/classes/tblUserClients.php');
+      }
+    } else {
+      mkdir("../view/assets/img/$iduser", 0755);
+      $userfile = $arquivoCompany['name'];
+      $file_temp = $arquivoCompany['tmp_name'];
 
-            $userClients = new UserClients();
+      $file_type = $userfile;
+      $file_type_length = strlen($file_type) - 3;
+      $file_type = substr($file_type, $file_type_length);
 
-            $userClients->setPersonalUserPicturePath($caminho);
-            $userClients->setidClient($iduser);
+      $file_type = strtolower($file_type);
 
-            $userClients->atualizar("PersonalUserPicturePath = :PersonalUserPicturePath WHERE idClient = :idClient");
 
-          }
+      if ($file_type == 'peg') {
+        $file_type = 'jpeg';
+      }
+      if ($file_type != 'peg' and $file_type != 'jpg' and $file_type != 'gif' and $file_type != 'png') {
+      } else {
+        $nomeArquivoMaisTipo = "LogoPicture_$iduser." . $file_type;
+        if (move_uploaded_file($file_temp, "../view/assets/img/$iduser/" . $nomeArquivoMaisTipo)) {
+          $caminho = "assets/img/$iduser/$nomeArquivoMaisTipo";
+
+          include_once('../model/classes/tblUserClients.php');
+
+          $userClients = new UserClients();
+
+          $userClients->setLogoPicturePath($caminho);
+          $userClients->setidClient($iduser);
+
+          $userClients->atualizar("LogoPicturePath = :LogoPicturePath WHERE idClient = :idClient");
+
+          //$sqlupimg = "UPDATE tblUserClients SET LogoPicturePath = :LogoPicturePath WHERE idClient = :idClient";
+          //$queryupimg = $dbh->prepare($sqlupimg);
+          //$queryupimg->bindParam(':LogoPicturePath', $caminho, PDO::PARAM_STR);
+          //$queryupimg->bindParam(':idClient', $iduser, PDO::PARAM_INT);
+          //$queryupimg->execute();
         }
       }
     }
-    if ($arquivoCompany != "" && $arquivoCompany != 0) {
-      if (file_exists("assets/img/$iduser")) {
-        $userfile = $arquivoCompany['name'];
-        $file_temp = $arquivoCompany['tmp_name'];
+  }
+  $_POST["salvar"] = "";
+  header("Location: ../view/profile.php");
+}
   
+if (isset($_POST["deleteproduto"] )) {
+  $idproduto = $_POST["idproduto"];
+  $_POST["deleteproduto"] = "";
+
+  include_once('../model/classes/tblProducts.php');
+
+  $Product = new Products();
+
+  $Product->setidProduct($idproduto);
+
+  $Product->deletar('WHERE idProduct = :idProduct');
+
+  //$sqldelete = "DELETE FROM tblProducts WHERE idProduct = :idProduct";
+  //$querydelete = $dbh->prepare($sqldelete);
+  //$querydelete->bindParam(':idProduct', $idproduto, PDO::PARAM_INT);
+  //$querydelete->execute();
+  header("Location: ../view/profile.php");
+}
   
-        $file_type = $userfile;
-        $file_type_length = strlen($file_type) - 3;
-        $file_type = substr($file_type, $file_type_length);
-  
-        $file_type = strtolower($file_type);
-  
-        if ($file_type == 'peg') {
-          $file_type = 'jpeg';
-        }
-        if ($file_type != 'peg' and $file_type != 'jpg' and $file_type != 'gif' and $file_type != 'png') {
-        } else {
-          $nomeArquivoMaisTipo = "LogoPicture_$iduser." . $file_type;
-          if (move_uploaded_file($file_temp, "assets/img/$iduser/" . $nomeArquivoMaisTipo)) {
-            $caminho = "assets/img/$iduser/$nomeArquivoMaisTipo";
+if (isset($_POST["updateproduto"])) {
 
-            //$sqlupimg = "UPDATE tblUserClients SET LogoPicturePath = :LogoPicturePath WHERE idClient = :idClient";
-            //$queryupimg = $dbh->prepare($sqlupimg);
-            //$queryupimg->bindParam(':LogoPicturePath', $caminho, PDO::PARAM_STR);
-            //$queryupimg->bindParam(':idClient', $iduser, PDO::PARAM_INT);
-            //$queryupimg->execute();          
+  include_once('../model/classes/tblUserClients.php');
 
-            include_once('../model/classes/tblUserClients.php');
+  $userClients = new UserClients();
 
-            $userClients = new UserClients();
+  $userClients->setidClient($iduser);
 
-            $userClients->setLogoPicturePath($caminho);
-            $userClients->setidClient($iduser);
+  $resultsClient = $userClients->consulta("WHERE idClient = :idClient");
 
-            $userClients->atualizar("LogoPicturePath = :LogoPicturePath WHERE idClient = :idClient");
-          }
-        }
+  foreach($resultsClient as $resultsClientUnid){
+
+    $corebusiness = $resultsClientUnid->CoreBusinessId;
+    $satBusinessId = $resultsClientUnid->SatBusinessId;
+
+  }
+
+  $idproduto = $_POST["idproduto"];
+  $nomeproduto = $_POST["nomeproduto"];
+  $descricao = $_POST["descricao"];
+  $specification = $_POST["specification"];
+
+  $_POST["updateproduto"] = "";
+  //$sqlprodutos = "UPDATE tblproducts SET idBusinessCategory = :idBusinessCategory, ProductName= :ProductName,ProdcuctDescription = :ProdcuctDescription,ProdcuctEspecification=:ProdcuctEspecification,Category = :Category WHERE idProduct = :idProduct ";
+  //$queryprodutos = $dbh->prepare($sqlprodutos);
+  //$queryprodutos->bindParam(':idProduct', $idproduto, PDO::PARAM_INT);
+  //$queryprodutos->bindParam(':idBusinessCategory', $satBusinessId, PDO::PARAM_INT);
+  //$queryprodutos->bindParam(':ProductName', $nomeproduto, PDO::PARAM_STR);
+  //$queryprodutos->bindParam(':ProdcuctDescription', $descricao, PDO::PARAM_STR);
+  //$queryprodutos->bindParam(':ProdcuctEspecification', $specification, PDO::PARAM_STR);
+  //$queryprodutos->bindParam(':Category', $CoreBusinessIdpost, PDO::PARAM_INT);
+  //$queryprodutos->execute();
+
+  include_once('../model/classes/tblProducts.php');
+
+  $Product = new Products();
+
+  $Product->setidProduct($idproduto);
+  $Product->setidBusinessCategory($satBusinessId);
+  $Product->setProductName($nomeproduto);
+  $Product->setProdcuctDescription($descricao);
+  $Product->setProdcuctEspecification($specification);
+  $Product->setCategory($corebusiness);
+
+  $Product->atualizar("idBusinessCategory = :idBusinessCategory, ProductName= :ProductName,ProdcuctDescription = :ProdcuctDescription,ProdcuctEspecification=:ProdcuctEspecification,Category = :Category WHERE idProduct = :idProduct ");
+
+  $lastInsertedId = $idproduto;
+  $arquivoUser = $_FILES['imgproduto'];
+  if ($arquivoUser != "" && $arquivoUser != 0) {
+    if (file_exists("../view/assets/img/$iduser")) {
+      $userfile = $arquivoUser['name'];
+      $file_temp = $arquivoUser['tmp_name'];
+
+      $file_type = $userfile;
+      $file_type_length = strlen($file_type) - 3;
+      $file_type = substr($file_type, $file_type_length);
+
+      $file_type = strtolower($file_type);
+      if ($file_type == 'peg') {
+        $file_type = 'jpeg';
+      }
+      if ($file_type != 'peg' and $file_type != 'jpg' and $file_type != 'gif' and $file_type != 'png') {
       } else {
-        mkdir("assets/img/$iduser", 0755);
-        $userfile = $arquivoCompany['name'];
-        $file_temp = $arquivoCompany['tmp_name'];
-  
-        $file_type = $userfile;
-        $file_type_length = strlen($file_type) - 3;
-        $file_type = substr($file_type, $file_type_length);
-  
-        $file_type = strtolower($file_type);
-  
-  
-        if ($file_type == 'peg') {
-          $file_type = 'jpeg';
+        $nomeArquivoMaisTipo = "Produto_" . $lastInsertedId . "_" . $iduser . "." . $file_type;
+        if (move_uploaded_file($file_temp, "../view/assets/img/$iduser/" . $nomeArquivoMaisTipo)) {
+          $caminho = "assets/img/$iduser/$nomeArquivoMaisTipo";
+
+          include_once('../model/classes/tblProductPictures.php');
+
+          $ProductPictures = new ProductPictures();
+
+          $ProductPictures->settblProductPicturePath($caminho);
+          $ProductPictures->setidProduct($lastInsertedId);
+
+          $ProductPictures->atualizar("tblProductPicturePath = :tblProductPicturePath WHERE idProduct  = :idProduct");
+
+          //$sqlupimg = "UPDATE tblProductPictures SET tblProductPicturePath = :tblProductPicturePath WHERE idProduct  = :idProduct ";
+          //$queryupimg = $dbh->prepare($sqlupimg);
+          //$queryupimg->bindParam(':tblProductPicturePath', $caminho, PDO::PARAM_STR);
+          //$queryupimg->bindParam(':idProduct', $lastInsertedId, PDO::PARAM_INT);
+          //$queryupimg->execute();
         }
-        if ($file_type != 'peg' and $file_type != 'jpg' and $file_type != 'gif' and $file_type != 'png') {
-        } else {
-          $nomeArquivoMaisTipo = "LogoPicture_$iduser." . $file_type;
-          if (move_uploaded_file($file_temp, "assets/img/$iduser/" . $nomeArquivoMaisTipo)) {
-            $caminho = "assets/img/$iduser/$nomeArquivoMaisTipo";
+      }
+      header("Location: ../view/profile.php");
+    } else {
+      mkdir("../view/assets/img/$iduser", 0755);
+      $userfile = $arquivoUser['name'];
+      $file_temp = $arquivoUser['tmp_name'];
 
-            include_once('../model/classes/tblUserClients.php');
+      $file_type = $userfile;
+      $file_type_length = strlen($file_type) - 3;
+      $file_type = substr($file_type, $file_type_length);
 
-            $userClients = new UserClients();
+      $file_type = strtolower($file_type);
 
-            $userClients->setLogoPicturePath($caminho);
-            $userClients->setidClient($iduser);
+      if ($file_type == 'peg') {
+        $file_type = 'jpeg';
+      }
+      if ($file_type != 'peg' and $file_type != 'jpg' and $file_type != 'gif' and $file_type != 'png') {
+      } else {
+        $nomeArquivoMaisTipo = "Produto_" . $lastInsertedId . "_" . $iduser . "." . $file_type;
+        if (move_uploaded_file($file_temp, "../view/assets/img/$iduser/" . $nomeArquivoMaisTipo)) {
+          $caminho = "assets/img/$iduser/$nomeArquivoMaisTipo";
+          //$sqlupimg = "UPDATE tblProductPictures SET tblProductPicturePath = :tblProductPicturePath WHERE idProduct  = :idProduct ";
+          //$queryupimg = $dbh->prepare($sqlupimg);
+          //$queryupimg->bindParam(':tblProductPicturePath', $caminho, PDO::PARAM_STR);
+          //$queryupimg->bindParam(':idProduct', $lastInsertedId, PDO::PARAM_INT);
+          //$queryupimg->execute();
 
-            $userClients->atualizar("LogoPicturePath = :LogoPicturePath WHERE idClient = :idClient");
+          include_once('../model/classes/tblProductPictures.php');
 
-            //$sqlupimg = "UPDATE tblUserClients SET LogoPicturePath = :LogoPicturePath WHERE idClient = :idClient";
-            //$queryupimg = $dbh->prepare($sqlupimg);
-            //$queryupimg->bindParam(':LogoPicturePath', $caminho, PDO::PARAM_STR);
-            //$queryupimg->bindParam(':idClient', $iduser, PDO::PARAM_INT);
-            //$queryupimg->execute();
-          }
+          $ProductPictures = new ProductPictures();
+
+          $ProductPictures->settblProductPicturePath($caminho);
+          $ProductPictures->setidProduct($lastInsertedId);
+
+          $ProductPictures->atualizar("tblProductPicturePath = :tblProductPicturePath WHERE idProduct  = :idProduct");
+
         }
       }
     }
-    $_POST["salvar"] = "";
-    header("Location: profile.php");
+    header("Location: ../view/profile.php");
   }
+  header("Location: ../view/profile.php");
+}
   
-  if ($_POST["deleteproduto"] != "") {
-    $idproduto = $_POST["idproduto"];
-    $_POST["deleteproduto"] = "";
-
-    include_once('../model/classes/tblProducts.php');
-
-    $Product = new Products();
-
-    $Product->setidProduct($idproduto);
-
-    $Product->deletar('WHERE idProduct = :idProduct');
-
-    //$sqldelete = "DELETE FROM tblProducts WHERE idProduct = :idProduct";
-    //$querydelete = $dbh->prepare($sqldelete);
-    //$querydelete->bindParam(':idProduct', $idproduto, PDO::PARAM_INT);
-    //$querydelete->execute();
-    header("Location: profile.php");
-  }
-  
-  if ($_POST["updateproduto"] != "") {
-    $idproduto = $_POST["idproduto"];
-    $nomeproduto = $_POST["nomeproduto"];
-    $descricao = $_POST["descricao"];
-    $specification = $_POST["specification"];
-  
-    $_POST["updateproduto"] = "";
-    //$sqlprodutos = "UPDATE tblproducts SET idBusinessCategory = :idBusinessCategory, ProductName= :ProductName,ProdcuctDescription = :ProdcuctDescription,ProdcuctEspecification=:ProdcuctEspecification,Category = :Category WHERE idProduct = :idProduct ";
-    //$queryprodutos = $dbh->prepare($sqlprodutos);
-    //$queryprodutos->bindParam(':idProduct', $idproduto, PDO::PARAM_INT);
-    //$queryprodutos->bindParam(':idBusinessCategory', $satBusinessId, PDO::PARAM_INT);
-    //$queryprodutos->bindParam(':ProductName', $nomeproduto, PDO::PARAM_STR);
-    //$queryprodutos->bindParam(':ProdcuctDescription', $descricao, PDO::PARAM_STR);
-    //$queryprodutos->bindParam(':ProdcuctEspecification', $specification, PDO::PARAM_STR);
-    //$queryprodutos->bindParam(':Category', $CoreBusinessIdpost, PDO::PARAM_INT);
-    //$queryprodutos->execute();
-
-    include_once('../model/classes/tblProducts.php');
-
-    $Product = new Products();
-
-    $Product->setidProduct($idproduto);
-    $Product->setidBusinessCategory($satBusinessId);
-    $Product->setProductName($nomeproduto);
-    $Product->setProdcuctDescription($descricao);
-    $Product->setProdcuctEspecification($specification);
-    $Product->setCategory($CoreBusinessIdpost);
-
-    $Product->atualizar("idBusinessCategory = :idBusinessCategory, ProductName= :ProductName,ProdcuctDescription = :ProdcuctDescription,ProdcuctEspecification=:ProdcuctEspecification,Category = :Category WHERE idProduct = :idProduct ");
-
-    $lastInsertedId = $idproduto;
-    $arquivoUser = $_FILES['imgproduto'];
-    if ($arquivoUser != "" && $arquivoUser != 0) {
-      if (file_exists("assets/img/$iduser")) {
-        $userfile = $arquivoUser['name'];
-        $file_temp = $arquivoUser['tmp_name'];
-  
-        $file_type = $userfile;
-        $file_type_length = strlen($file_type) - 3;
-        $file_type = substr($file_type, $file_type_length);
-  
-        $file_type = strtolower($file_type);
-        if ($file_type == 'peg') {
-          $file_type = 'jpeg';
-        }
-        if ($file_type != 'peg' and $file_type != 'jpg' and $file_type != 'gif' and $file_type != 'png') {
-        } else {
-          $nomeArquivoMaisTipo = "Produto_" . $lastInsertedId . "_" . $iduser . "." . $file_type;
-          if (move_uploaded_file($file_temp, "assets/img/$iduser/" . $nomeArquivoMaisTipo)) {
-            $caminho = "assets/img/$iduser/$nomeArquivoMaisTipo";
-
-            include_once('../model/classes/tblProductPictures.php');
-
-            $ProductPictures = new ProductPictures();
-
-            $ProductPictures->settblProductPicturePath($caminho);
-            $ProductPictures->setidProduct($lastInsertedId);
-
-            $ProductPictures->atualizar("tblProductPicturePath = :tblProductPicturePath WHERE idProduct  = :idProduct");
-
-            //$sqlupimg = "UPDATE tblProductPictures SET tblProductPicturePath = :tblProductPicturePath WHERE idProduct  = :idProduct ";
-            //$queryupimg = $dbh->prepare($sqlupimg);
-            //$queryupimg->bindParam(':tblProductPicturePath', $caminho, PDO::PARAM_STR);
-            //$queryupimg->bindParam(':idProduct', $lastInsertedId, PDO::PARAM_INT);
-            //$queryupimg->execute();
-          }
-        }
-        header("Location: profile.php");
-      } else {
-        mkdir("assets/img/$iduser", 0755);
-        $userfile = $arquivoUser['name'];
-        $file_temp = $arquivoUser['tmp_name'];
-  
-        $file_type = $userfile;
-        $file_type_length = strlen($file_type) - 3;
-        $file_type = substr($file_type, $file_type_length);
-  
-        $file_type = strtolower($file_type);
-  
-        if ($file_type == 'peg') {
-          $file_type = 'jpeg';
-        }
-        if ($file_type != 'peg' and $file_type != 'jpg' and $file_type != 'gif' and $file_type != 'png') {
-        } else {
-          $nomeArquivoMaisTipo = "Produto_" . $lastInsertedId . "_" . $iduser . "." . $file_type;
-          if (move_uploaded_file($file_temp, "assets/img/$iduser/" . $nomeArquivoMaisTipo)) {
-            $caminho = "assets/img/$iduser/$nomeArquivoMaisTipo";
-            //$sqlupimg = "UPDATE tblProductPictures SET tblProductPicturePath = :tblProductPicturePath WHERE idProduct  = :idProduct ";
-            //$queryupimg = $dbh->prepare($sqlupimg);
-            //$queryupimg->bindParam(':tblProductPicturePath', $caminho, PDO::PARAM_STR);
-            //$queryupimg->bindParam(':idProduct', $lastInsertedId, PDO::PARAM_INT);
-            //$queryupimg->execute();
-
-            include_once('../model/classes/tblProductPictures.php');
-
-            $ProductPictures = new ProductPictures();
-
-            $ProductPictures->settblProductPicturePath($caminho);
-            $ProductPictures->setidProduct($lastInsertedId);
-
-            $ProductPictures->atualizar("tblProductPicturePath = :tblProductPicturePath WHERE idProduct  = :idProduct");
-
-          }
-        }
-      }
-      header("Location: profile.php");
-    }
-    header("Location: profile.php");
-  }
-  
-  if ($_POST["conectar"] != "") {
+  if (isset($_POST["conectar"])) {
     $idconect = $_POST["idconectar"];
     $idperfilpedido = $_POST["idperfilpedido"];
   
@@ -579,9 +690,9 @@ if ($_POST["add_orcamento"] != "") {
 
     $tblsearchprofile_results->cadastrar();
 
-    header("Location: profile.php");
+    header("Location: ../view/profile.php");
   }
-  if ($_POST["desconectar"]) {
+  if (isset($_POST["desconectar"])) {
     $idconect = $_POST["idconectar"];
     $idperfilpedido = $_POST["idperfilpedido"];
 
@@ -597,6 +708,7 @@ if ($_POST["add_orcamento"] != "") {
     //$queryconectdelet = $dbh->prepare($sqlconectdelet);
     //$queryconectdelet->bindParam(':id', $idconect, PDO::PARAM_INT);
     //$queryconectdelet->execute();
+    header("Location: ../view/profile.php");
   }
 
 

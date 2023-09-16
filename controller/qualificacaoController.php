@@ -1,6 +1,7 @@
 <?php
 session_start();
     if ($_POST["create"] != "") {
+        
 
         $id = $_SESSION["id"];
         $idoperationbs = 0;

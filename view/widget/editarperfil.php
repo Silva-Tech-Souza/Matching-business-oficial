@@ -1,9 +1,6 @@
 <?
 header("Access-Control-Allow-Origin: *");
 ?>
-
-
-
 <div id="add_perfil" class="modal custom-modal fade mt-1" role="dialog">
     <div class="modal-dialog modal-dialog-centered modal-lg">
         <div class="modal-content">
@@ -90,7 +87,7 @@ header("Access-Control-Allow-Origin: *");
                                     $resultsoperation = $operations->consulta("");
 
                                     if ($operations != null) {
-                                        foreach ($resultsoperation as $row) { ?>
+                                        foreach ($resultsoperation as $row) {?>
                                             <option <?php if ($row->NmOperation ==  $NmBusiness) {
                                                         echo "selected";
                                                     } ?> value="<?php echo $row->idOperation; ?>"><?php echo $row->NmOperation; ?></option>

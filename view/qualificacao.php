@@ -27,7 +27,11 @@ date_default_timezone_set('America/Sao_Paulo');
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
     <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
-
+<style>
+    select{
+        font-size: small !important;
+    }
+</style>
     <link rel="stylesheet" href="assets/css/qualificacao.css">
     <title>Qualification</title>
 </head>

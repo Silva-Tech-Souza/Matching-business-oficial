@@ -362,8 +362,8 @@
 
                                                 <div class="col-2 justify-content-center m-0 p-0">
                                                     <a href="viewProfile.php?profile=<?php echo $rowcliente->idClient; ?>">
-                                                        <img src="<?php if ($rowOperation->PersonalUserPicturePath != "Avatar.png" && $rowOperation->PersonalUserPicturePath != "") {
-                                                                        echo $rowOperation->PersonalUserPicturePath;
+                                                        <img src="<?php if ($rowcliente->PersonalUserPicturePath != "Avatar.png" && $rowcliente->PersonalUserPicturePath != "") {
+                                                                        echo $rowcliente->PersonalUserPicturePath;
                                                                     } else {
                                                                         echo "assets/img/Avatar.png";
                                                                     } ?>" alt="user" alt="An unknown user."></a>
@@ -406,32 +406,32 @@
             <div class="profile-menu" style="background-color: #002d4b !important;">
 
                 <a href="profile.php" class="profile-menu-link expand-zoom-menu">
-                    <i class="bi bi-person-lines-fill fa-2x" style="color: white;"></i>
+                    <i class="fa fa-user fa-1x" style="color: white;"></i>
                     <p style="color: #ffffff; margin-bottom: 0px !important; text-decoration: none;">&nbsp;&nbsp;&nbsp;&nbsp;My Profile</p>
                     <i class="bi bi-caret-right-fill" style="color: white;"></i>
                 </a>
 
 
                 <a href="searchPage.php" class="profile-menu-link expand-zoom-menu">
-                    <i class="bi bi bi-search fa-2x" style="color: white;"></i>
+                    <i class="fa fa-search fa-1x" style="color: white;"></i>
                     <p style="color: #ffffff; margin-bottom: 0px !important; text-decoration: none;">&nbsp;&nbsp;&nbsp;&nbsp;My Search</p>
                     <i class="bi bi-caret-right-fill" style="color: white;"></i>
                 </a>
 
                 <a href="#" class="profile-menu-link expand-zoom-menu">
-                    <i class="bi bi bi-gear-fill fa-2x" style="color: white;"></i>
+                    <i class="fa fa-cog fa-1x" style="color: white;"></i>
                     <p style="color: #ffffff; margin-bottom: 0px !important; text-decoration: none;">&nbsp;&nbsp;&nbsp;&nbsp;Settings & Privacy</p>
                     <i class="bi bi-caret-right-fill" style="color: white;"></i>
                 </a>
 
                 <a href="#" class="profile-menu-link expand-zoom-menu">
-                    <i class="bi bi-gem fa-2x" style="color: white;"></i>
+                    <i class="fa fa-certificate fa-1x" style="color: white;"></i>
                     <p style="color: #ffffff; margin-bottom: 0px !important; text-decoration: none;">&nbsp;&nbsp;&nbsp;&nbsp;Try Premium</p>
                     <i class="bi bi-caret-right-fill" style="color: white;"></i>
                 </a>
 
                 <a href="../model/logout.php" class="profile-menu-link expand-zoom-menu-logout ">
-                    <i class="bi bi-box-arrow-left fa-2x" style="color: #ff6363;"></i>
+                    <i class="fa fa-sign-out fa-1x" style="color: #ff6363;"></i>
                     <p style="margin-bottom: 0px !important; text-decoration: none; color: #ff6363;">&nbsp;&nbsp;&nbsp;&nbsp;Logout</p>
                     <i class="bi bi-caret-right-fill" style="color: #ff6363;"></i>
                 </a>

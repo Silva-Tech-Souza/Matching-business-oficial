@@ -156,7 +156,7 @@ if ($resultsBusinessCategory != null) {
         <div class="col-12">
           <div class="card card-body p-0 shadow">
             <div class="col-12">
-              <img src="assets/img/wp.jpeg" alt="" style="width: 100%; height: 120px;">
+              <img src="<?php echo $imgcapa; ?>" alt="" style="width: 100%; height: 120px;">
               <img src="<?php if ($imgperfil != "Avatar.png" && $imgperfil != "") {
                           echo $imgperfil;
                         } else {
@@ -182,10 +182,21 @@ if ($resultsBusinessCategory != null) {
               <div class="card card-body shadow">
                 <div class="row">
                   <div class="col-8 d-flex justify-content-start">
-                    <p class="d-inline m-0 color-preto"><a href="#">My saved search</a></p>
+                    <p class="d-inline m-0 color-preto"><a href="listcompani.php?text=mysp" class="nav-link">My saved search</a></p>
                   </div>
                   <div class="col-4 d-flex justify-content-end align-middle">
-                    <p class="d-inline m-0"><b>0</b></p>
+                    <p class="d-inline m-0"><b><?php include_once('../model/classes/tblSearch.php');
+                                                                            $Search = new Search();
+                                                                            $Search->setidClient($iduser);
+                                                                            $resultSearch = $Search->consulta("WHERE idClient = :idClient");
+                                                                            $numSearch = 0;
+                                                                            if ($resultSearch != null) {
+                                                                                foreach ($resultSearch as $resultConectUnidSearch) {
+                                                                                    $numSearch += 1;
+                                                                                }
+                                                                            }
+                                                                            echo $numSearch;
+                                                                            ?></b></p>
                   </div>
 
 
@@ -199,7 +210,7 @@ if ($resultsBusinessCategory != null) {
               <div class="card card-body shadow">
                 <div class="row">
                   <div class="col-8 d-flex justify-content-start">
-                    <p class=d-inline m-0 color-preto"><a href="#" data-toggle="modal" data-target="#exampleModalconect" class="nav-link">Want to Connect</a></p>
+                    <p class="d-inline m-0 color-preto"><a href="#" data-toggle="modal" data-target="#exampleModalconect" class="nav-link">Want to Connect</a></p>
                   </div>
                   <div class="col-4 d-flex justify-content-end align-middle">
                     <p class="d-inline m-0"><b><?php include_once('../model/classes/tblConect.php');
@@ -382,7 +393,7 @@ if ($resultsBusinessCategory != null) {
 
                     include_once('../model/classes/tblRangeValues.php');
 
-                   
+
                     $Fob3 = $row->Fob_3Y;
                     $nVol3 = $row->Vol_3Y;
                     $tblRangeValues = new RangeValues();
@@ -616,7 +627,7 @@ if ($resultsBusinessCategory != null) {
 
                                                                     if ($resultsProductsPicture != null) {
                                                                       foreach ($resultsProductsPicture as $rowProdutos1) {
-                                                                        echo "../../" . $rowProdutos1->tblProductPicturePath;
+                                                                        echo $rowProdutos1->tblProductPicturePath;
                                                                       }
                                                                     } else {
                                                                       echo "https://images.unsplash.com/photo-1507608158173-1dcec673a2e5?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1470&q=80";

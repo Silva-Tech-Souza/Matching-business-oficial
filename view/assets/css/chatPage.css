@@ -33,7 +33,6 @@ message-area
     outline: 0;
     height: 100%;
     overflow: hidden;
-    width: 300px;
     float: left;
     padding: 15px;
 }
@@ -190,7 +189,7 @@ a.add img {
 }
 
 .msg-head {
-    padding: 15px;
+    padding: 11px;
     border-bottom: 1px solid #ccc;
 }
 
@@ -520,7 +519,16 @@ button:focus {
     display: none;
 }
 
+.tamanhochatlist {
+    max-height: 69%;
+    min-height: 69%;
+}
+
 @media (max-width: 767px) {
+    .tamanhochatlist {
+        max-height: 64%;
+        min-height: 64%;
+    }
     .chat-icon {
         display: block;
         margin-right: 5px;

@@ -8,7 +8,7 @@
                 </button>
             </div>
             <div class="modal-body">
-                <form method="POST" enctype="multipart/form-data">
+                <form method="POST" enctype="multipart/form-data" action="../controller/profileController.php">
                     <div class="row">
 
                         <div class="col-sm-12 mt-4">
@@ -89,7 +89,7 @@
                     </div>
 
                     <div class="submit-section mt-4">
-                        <button type="submit" name="add_produtos" value="Salvar" class="btn btn-primary submit-btn">Confirm</button>
+                        <button type="submit" name="AdicionarProdutos" value="Salvar" class="btn btn-primary submit-btn">Confirm</button>
                     </div>
                 </form>
             </div>

@@ -58,7 +58,7 @@ class SearchProfile_Results{
 
     public function cadastrar(){
 
-        $sql = "INSERT INTO tblsearchprofile_results (idUsuario,idClienteEncontrado,idTipoNotif,postId,url,estadoNotif) VALUES (:idUsuario,:idClienteEncontrado,:idTipoNotif,:postId,:url,:estadoNotif)";
+        $sql = "INSERT INTO tblsearchprofile_results (idUsuario, idClienteEncontrado, idTipoNotif, postId, url, estadoNotif) VALUES (:idUsuario,:idClienteEncontrado,:idTipoNotif,:postId,:url,:estadoNotif)";
         $query = $this->dbh->prepare($sql);
         
        
@@ -78,7 +78,7 @@ class SearchProfile_Results{
             $query->bindParam(':url', $this->url, PDO::PARAM_STR);
         }
         if($this->estadoNotif != null){
-            $query->bindParam(':estadoNotif', $this->estadoNotif, PDO::PARAM_STR);
+            $query->bindParam(':estadoNotif', $this->estadoNotif, PDO::PARAM_INT);
         }
 
         

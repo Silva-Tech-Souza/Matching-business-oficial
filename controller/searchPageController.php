@@ -8,27 +8,27 @@ include_once('../model/classes/tblSearchEspecificationTag.php');
 include_once('../model/classes/tblSearchSpecification.php');
 
 $corbusiness = $_POST["corbusiness"];
-echo "corbusiness: " . $corbusiness . "<br>";
+//echo "corbusiness: " . $corbusiness . "<br>";
 
 if ($_POST["flagtipo"] == "D") {
     $business = $corbusiness;
-    echo "business: " . $business;
+  //  echo "business: " . $business;
 }
 
-echo $_POST["flagtipo"];
+ $_POST["flagtipo"];
 try {
     //caso o flag do cor Business for tipo B ELENCAI DENTRO DO IF E SE FOR
     if ($_POST["flagtipo"] == "B") {
         $business = implode(", ", $_POST["business"]);
-        echo "business: " . $business . "<br>";
+      //  echo "business: " . $business . "<br>";
     } else {
         $business = $_POST["business"];
-        echo "business: " . $busines . "<br>";
+      //  echo "business: " . $busines . "<br>";
         //só existe categoria se a business não for um array
         try {
             if (!is_null($_POST["category"])) {
                 $category = implode(", ", $_POST["category"]);
-                echo  "category: " . $category  . "<br>";
+                //echo  "category: " . $category  . "<br>";
             }
         } catch (\Throwable $th) {
         }
@@ -41,25 +41,25 @@ try {
 try {
     //só existe se o flag do cor business for A OU C
     $produtostags =  $_POST["produtostags"];
-    echo "produtostags: " . $produtostags  . "<br>";
+ //   echo "produtostags: " . $produtostags  . "<br>";
 
     //só existe se o flag do cor business for D
     $servicostags =  $_POST["servicostags"];
-    echo "servicostags: " . $servicostags . "<br>";
+ //   echo "servicostags: " . $servicostags . "<br>";
 
 } catch (\Throwable $th) {
-    echo "erro na parte 2 da step";
+   // echo "erro na parte 2 da step";
 }
 
 
 try {
     //PAÍS e id name
     $country =  implode(", ", $_POST["country"]);
-    echo "country: " .  $country  . "<br>";
+   // echo "country: " .  $country  . "<br>";
     $idname =  $_POST["idname"];
-    echo "idname: " . $idname  . "<br>";
+  //  echo "idname: " . $idname  . "<br>";
 } catch (\Throwable $th) {
-    echo "erro na parte final da step";
+   // echo "erro na parte final da step";
 }
 
 $search = new Search();
@@ -125,8 +125,8 @@ if($_POST["flagtipo"] == "A"){
 
         }
 
-        echo 'Cadastro Realizado com sucesso';
-
+    //    echo 'Cadastro Realizado com sucesso';
+        header("Location: ../view/listcompani.php");
     }
     
 
@@ -186,8 +186,8 @@ if($_POST["flagtipo"] == "A"){
         $searchspecification->cadastrar();
 
 
-        echo 'Cadastro Realizado com sucesso';
-
+        //echo 'Cadastro Realizado com sucesso';
+        header("Location: ../view/listcompani.php");
     }
 
 
@@ -246,8 +246,8 @@ if($_POST["flagtipo"] == "A"){
 
         }
 
-        echo 'Cadastro Realizado com sucesso';
-
+      //  echo 'Cadastro Realizado com sucesso';
+        header("Location: ../view/listcompani.php");
     }
 
 }else if($_POST["flagtipo"] == "D"){
@@ -294,12 +294,11 @@ if($_POST["flagtipo"] == "A"){
     
         }
 
-        echo 'Cadastro Realizado com sucesso';
-
+        //echo 'Cadastro Realizado com sucesso';
+        header("Location: ../view/listcompani.php");
     }
 
 }else{
-
+   
 }
 
-header("Location: ../view/listcompani.php");

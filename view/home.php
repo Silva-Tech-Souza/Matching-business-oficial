@@ -25,7 +25,7 @@ $results = $userClients->consulta("WHERE idClient = :idClient");
 
 if ($results != null) {
     foreach ($results as $row) {
-        $username = $row->FirstName . " " . $row->LastName;
+        $username = $row->FirstName . " " . $row->LastName; 
         $jobtitle = $row->JobTitle;
         $idcountry = $row->idCountry;
         $idoperation = $row->IdOperation;
@@ -450,7 +450,7 @@ if ($resultsCountry != null) {
 
 
     <!-- Header -->
-    <?php include_once("widget/navbar.php"); ?> 
+    <?php include_once("widget/navbar.php"); ?>
     <div class="sidebar expanded " id="sidebar" style="background: #002d4b;">
         <div class="sidebar-inner slimscroll ">
             <div id="sidebar-menu" class="sidebar-menu">
@@ -525,7 +525,11 @@ if ($resultsCountry != null) {
                     <div class="card rounded-4 shadow">
                         <div class="card-body p-0 m-0">
                             <div class="col-12 mh-25">
-                                <img class="mh-25 rounded-top-3" src="https://images2.alphacoders.com/131/1317606.jpeg" alt="Descrição da Imagem" style="max-height: 100px; width: 100%;">
+                                <img class="mh-25 rounded-top-3" src="<?php if ($imgcapa != "Avatar.png" && $imgcapa != "") {
+                                                    echo "" . $imgcapa;
+                                                } else {
+                                                    echo "https://images2.alphacoders.com/131/1317606.jpeg";
+                                                } ?>" alt="Descrição da Imagem" style="max-height: 100px; width: 100%;">
                             </div>
                             <div class="row p-0 ml-0">
                                 <div class="col-5 d-flex justify-content-start p-0 m-0 " style="height: 0px;">
@@ -545,8 +549,9 @@ if ($resultsCountry != null) {
                             </div>
                             <div class="row mt-3 pr-2">
                                 <div class="col-9 m-0 p-0">
-
-                                    <h5 class="fonte-principal">&nbsp;&nbsp;&nbsp;&nbsp;<i class="fa-solid fa-eye icon-notif-zoom mini-profile-icon"></i>&nbsp;&nbsp;Views</h5>
+                                    <a href="#" data-toggle="modal" data-target="#exampleModal" class="minimenuoption">
+                                        <h5 class="fonte-principal">&nbsp;&nbsp;&nbsp;&nbsp;<i class="fa-solid fa-eye icon-notif-zoom mini-profile-icon"></i>&nbsp;&nbsp;Views</h5>
+                                    </a>
                                 </div>
                                 <div class="col-3 m-0 p-0">
                                     <h5 class="fonte-principal text-left"><?php
@@ -593,16 +598,16 @@ if ($resultsCountry != null) {
                                 </div>
                                 <div class="col-3 m-0 p-0">
                                     <h5 class="fonte-principal text-left"><?php include_once('../model/classes/tblSearch.php');
-                                                                           $Search = new Search();
-                                                                           $Search->setidClient($iduser);
-                                                                           $resultSearch = $Search->consulta("WHERE idClient = :idClient");
-                                                                           $numSearch = 0;
-                                                                           if ($resultSearch != null) {
-                                                                               foreach ($resultSearch as $resultConectUnidSearch) {
-                                                                                   $numSearch += 1;
-                                                                               }
-                                                                           }
-                                                                           echo $numSearch;
+                                                                            $Search = new Search();
+                                                                            $Search->setidClient($iduser);
+                                                                            $resultSearch = $Search->consulta("WHERE idClient = :idClient");
+                                                                            $numSearch = 0;
+                                                                            if ($resultSearch != null) {
+                                                                                foreach ($resultSearch as $resultConectUnidSearch) {
+                                                                                    $numSearch += 1;
+                                                                                }
+                                                                            }
+                                                                            echo $numSearch;
                                                                             ?></h5>
                                 </div>
                             </div>
@@ -611,8 +616,8 @@ if ($resultsCountry != null) {
                     <div class="card rounded-4 shadow  treeviewmin panddingardtreeview" style="margin-bottom: 100px !important;">
                         <div class="card-body p-0">
                             <div class="col-12 mh-25">
-                                <h3>Matching Business Online <div style="text-align: end; width: 24px;float: right;position: initial;    color: #62b1ff;"><?php $numerouser2 = new UserClients();
-                                                                                                                                                            echo $numerouser2->quantidade(""); ?></div>
+                                <h3 class="color-branco">Matching Business Online <div style="text-align: end; width: 24px;float: right;position: initial;    color: #62b1ff;"><?php $numerouser2 = new UserClients();
+                                                                                                                                                                                echo $numerouser2->quantidade(""); ?></div>
                                 </h3>
                                 <hr>
                             </div>
@@ -709,7 +714,7 @@ if ($resultsCountry != null) {
                                 </div>
                             </div>
                             <div class="card shadow rounded-4 card-post-style  mt-4 produtos-feed-scrollbar">
-                                <h3 class="texto-titulo">&nbsp;&nbsp;Produtos em Destaque</h3>
+                                <h3 class="texto-titulo">&nbsp;&nbsp;Featured Products</h3>
                                 <div class="rowProduct overflow-auto produtos-feed-scrollbar row-produto-card-pro">
                                     <?php
                                     include_once('../model/classes/tblProducts.php');
@@ -727,7 +732,13 @@ if ($resultsCountry != null) {
                                                                                                                                                 $productsPictures = new ProductPictures();
                                                                                                                                                 $productsPictures->setidProduct($rowProdutos->idProduct);
                                                                                                                                                 $resultsProdutos1 = $productsPictures->consulta("WHERE idProduct = :idProduct");
-                                                                                                                                                echo "https://images.unsplash.com/photo-1507608158173-1dcec673a2e5?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1470&q=80";
+                                                                                                                                                if ($resultsProdutos1 != null) {
+                                                                                                                                                    foreach ($resultsProdutos1 as $rowProdutos) {
+                                                                                                                                                        echo $rowProdutos->tblProductPicturePath;
+                                                                                                                                                    }
+                                                                                                                                                }else{
+                                                                                                                                                    echo "";
+                                                                                                                                                }
                                                                                                                                                 ?>" alt="Spinning glass cube" />
                                                             </a>
                                                         </div>
@@ -1037,6 +1048,10 @@ font-size: small;
                                 </div>
 
                             </div>
+                            <div class="text-center span-3 bottom-bar-style">
+                                © 2023 All Rights Reserved:
+                                <span class="text-white">LABD - Latin America Business Development</span>
+                            </div>
                         </div>
 
                     </div>
@@ -1088,43 +1103,121 @@ font-size: small;
 
 
         <!-- ------------------------main-content------------------------>
+        <div class="modal custom-modal fade" id="exampleModal" role="dialog">
+            <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLabel">Views</h5>
+                        <button type="button" class="close rounded-2 border-0" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <ul class="m-0 overflow-y p-1 ul-view">
+                            <?php
+
+                            include_once('../model/classes/tblViews.php');
+
+                            $views = new Views();
+                            $views->setidView($iduser);
+                            $resultsview = $views->consulta("WHERE idView = :idView ORDER BY datacriacao DESC");
+
+                            if ($resultsview != null) {
+                                foreach ($resultsview as $rowviews) {
+
+                            ?>
+                                    <?php
+
+                                    include_once('../model/classes/tblConect.php');
+                                    $userClients = new UserClients();
+                                    $userClients->setidClient($rowviews->idUser);
+                                    $resultsUserClients = $userClients->consulta("WHERE idClient = :idClient");
 
 
+                                    if ($resultsUserClients != null) {
+                                        foreach ($resultsUserClients as $rowcliente) {
+
+                                            include_once('../model/classes/tblOperations.php');
+                                            $operations = new Operations();
+                                            $operations->setidOperation($rowcliente->CoreBusinessId);
+                                            $resultsOperation = $operations->consulta("WHERE FlagOperation != '0' AND idOperation = :idOperation");
 
 
+                                            if ($resultsOperation != null) {
+                                                foreach ($resultsOperation as $rowOperation) {
+
+
+                                    ?>
+
+                                                    <li class="recommended-user  mb-1" style="justify-content: normal !important;">
+
+                                                        <div class="col-1 justify-content-center m-0 p-0">
+                                                            <a href="viewProfile.php?profile=<?php echo $rowcliente->idClient; ?>">
+                                                                <img src="<?php if ($rowOperation->PersonalUserPicturePath != "Avatar.png" && $rowOperation->PersonalUserPicturePath != "" && file_exists("" . $rowOperation->PersonalUserPicturePath)) {
+                                                                                echo "" . $rowOperation->PersonalUserPicturePath;
+                                                                            } else {
+                                                                                echo "assets/img/Avatar.png";
+                                                                            } ?>" alt="user" alt="An unknown user." onerror="this.onerror=null; this.src='assets/img/Avatar.png'" class="nav-profile-img"></a>
+                                                        </div>
+                                                        <div class="col-8 p-0 justify-content-start align-items-center">
+                                                            <p class="network-username-text"><a class="color-preto" href="viewProfile.php?profile=<?php echo $rowcliente->idClient; ?>"><b><?php echo $rowcliente->FirstName; ?><b> </a></p>
+                                                            <p class="network-operation-text"><a href="viewProfile.php?profile=<?php echo $rowcliente->idClient; ?>"><?php echo $rowOperation->NmOperation; ?></a></p>
+                                                            <p class="network-timeago-text"><?php
+                                                                                            $postDateTime = new DateTime($rowviews->datacriacao);
+
+                                                                                            // Obtenha o objeto DateTime da data e hora atual
+                                                                                            $currentTime = new DateTime();
+
+                                                                                            // Calcula a diferença entre a data e hora atual e a da postagem
+                                                                                            $timeDiff = $postDateTime->diff($currentTime);
+
+                                                                                            // Formata o tempo decorrido com base nas unidades (ano, mês, dia, hora, minuto, segundo)
+                                                                                            if ($timeDiff->y > 0) {
+                                                                                                $timeAgo = $timeDiff->y . " ano(s) atrás";
+                                                                                            } elseif ($timeDiff->m > 0) {
+                                                                                                $timeAgo = $timeDiff->m . " mês(es) atrás";
+                                                                                            } elseif ($timeDiff->d > 0) {
+                                                                                                $timeAgo = $timeDiff->d . " dia(s) atrás";
+                                                                                            } elseif ($timeDiff->h > 0) {
+                                                                                                $timeAgo = $timeDiff->h . " hora(s) atrás";
+                                                                                            } elseif ($timeDiff->i > 0) {
+                                                                                                $timeAgo = $timeDiff->i . " minuto(s) atrás";
+                                                                                            } else {
+                                                                                                $timeAgo = "Alguns segundos atrás";
+                                                                                            }
+
+                                                                                            echo $timeAgo; ?></p>
+                                                        </div>
+                                                        <div class="col-3 justify-content-center">
+                                                            <a href="viewProfile.php?profile=<?php echo $rowcliente->idClient; ?>">
+                                                                <i class="bi bi-eye-fill fa-2x icon-network" style="color: #0000007d !important;"></i>
+                                                            </a>
+                                                        </div>
+
+                                                    </li>
+                                                    <hr>
+                                    <?php }
+                                            }
+                                        }
+                                    } ?>
+                            <?php }
+                            } ?>
+                        </ul>
+                    </div>
+                    <div class="modal-footer">
+                    </div>
+                </div>
+            </div>
+        </div>
 
         <script src="https://kit.fontawesome.com/f51201541f.js" crossorigin="anonymous"></script>
-
-        <!-- ------------------center-sidebar------------------------- -->
-
-
-        <!-- Network chat test -->
-
 
 
 
 
     </div>
     <!-- footer -->
-    <div class="footer bg-dark text-center text-white">
-        <!-- Copyright -->
-        <a href="#"> Privacy Policy </a>|
-        <a href=""> User Agreement </a>|
-        <a href=""> Cookie Policy </a>|
-        <a href=""> Copyright Policy</a>
 
-
-        <div class="copyright-msg">
-            <img src="images/logo.png" alt="">
-            <p>LABD &#169; 2023. All right reserved</p>
-        </div>
-        <div class="text-center span-3 bottom-bar-style">
-            © 2023 All Rights Reserved:
-            <span class="text-white">LABD - Latin America Business Development</span>
-        </div>
-
-        <!-- Copyright -->
-    </div>
     <div id="modalEditarProduto" class="modal custom-modal fade show comment-modal-primary" role="dialog">
         <div class="modal-dialog modal-dialog-centered modal-lg">
             <div class="modal-content">

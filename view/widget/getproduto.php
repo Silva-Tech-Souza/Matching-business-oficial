@@ -4,15 +4,16 @@ header("Access-Control-Allow-Origin: *");
 $idProduto = $_GET['idProduto'];
 
 // Exemplo de consulta usando PDO
-$sql = "SELECT * FROM tblProducts WHERE idProduct = :idProduct";
-$query = $dbh->prepare($sql);
-$query->bindParam(':idProduct', $idProduto, PDO::PARAM_INT);
-$query->execute();
-$produto = $query->fetch(PDO::FETCH_ASSOC);
+
+include_once("../../model/classes/tblProducts.php");
+
+$products = new Products();
+$products->setidProduct($idProduto);
+$produto = $products->consulta("WHERE idProduct = :idProduct");
 
 $html ='<div class="modal-header">';
 $html .='<h5 class="modal-title txtnomeperfil">Edit Product</h5>';
-$html .='<button type="button" class="close" data-dismiss="modal" aria-label="Close">';
+$html .='<button type="button" class="close rounded-2 border-0" data-dismiss="modal" aria-label="Close">';
 $html .='<span aria-hidden="true">&times;</span>';
 $html .='</button>';
 $html .='</div>';

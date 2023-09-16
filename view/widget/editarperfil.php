@@ -1,6 +1,9 @@
 <?
 header("Access-Control-Allow-Origin: *");
 ?>
+
+
+
 <div id="add_perfil" class="modal custom-modal fade mt-1" role="dialog">
     <div class="modal-dialog modal-dialog-centered modal-lg">
         <div class="modal-content">
@@ -11,13 +14,29 @@ header("Access-Control-Allow-Origin: *");
                 </button>
             </div>
             <div class="modal-body">
-                <form method="POST" enctype="multipart/form-data">
+                <form method="POST" enctype="multipart/form-data" action="../controller/profileController.php">
                     <div class="row">
 
                         <div class="col-sm-12">
                             <div class="form-group">
                                 <label class="txtinput">Profile picture:</label>
                                 <input type="file" name="user-image" id="user-image" class="form-control file-upload-input" accept="image/*">
+                            </div>
+                        </div>
+                        <div class="col-sm-12 mt-4">
+                            <div class="form-group">
+                                <img id="preview-image" src="" alt="" class="d-flex post-imgvideo-style">
+                            </div>
+                        </div>
+                        <div class="col-sm-12 mt-4">
+                            <div class="form-group">
+                                <label class="txtinput">Banner picture:</label>
+                                <input type="file" name="banner-image" id="banner-image" class="form-control file-upload-input" accept="image/*">
+                            </div>
+                        </div>
+                        <div class="col-sm-12 mt-4">
+                            <div class="form-group">
+                                <img id="preview-image-banner" src="" alt="" class="d-flex post-imgvideo-style">
                             </div>
                         </div>
 
@@ -64,9 +83,9 @@ header("Access-Control-Allow-Origin: *");
                                 <select class="form-control bordainput" onchange="showbusines(this.value)" name="business">
 
                                     <?php
-/*
+                                    
 
-                                    include_once('../../model/classes/tblOperations.php');
+                                    include_once('../model/classes/tblOperations.php');
                                     $operations = new Operations();
                                     $resultsoperation = $operations->consulta("");
 
@@ -76,7 +95,7 @@ header("Access-Control-Allow-Origin: *");
                                                         echo "selected";
                                                     } ?> value="<?php echo $row->idOperation; ?>"><?php echo $row->NmOperation; ?></option>
                                     <?php     }
-                                    }*/
+                                    }
                                     ?>
                                 </select>
                             </div>
@@ -87,7 +106,7 @@ header("Access-Control-Allow-Origin: *");
                                     <label class="txtinput">Business:</label>
                                     <select onchange="showbusines2(this.value)" class="form-control bordainput" id="coreBusiness" name="coreBusiness">
                                         <?php
-                                      /*  include_once('../../model/classes/tblBusiness.php');
+                                        include_once('../model/classes/tblBusiness.php');
                                         $bussiness = new Business();
 
                                         $resultsbusiness = $bussiness->consulta("WHERE FlagOperation = '0' AND FlagOperation != 'D'");
@@ -99,7 +118,7 @@ header("Access-Control-Allow-Origin: *");
                                                             echo "selected";
                                                         } ?> value="<?php echo $rowcor->idBusiness; ?>"><?php echo $rowcor->NmBusiness; ?></option>
                                         <?php }
-                                        }*/
+                                        }
                                         ?>
                                     </select>
                                 </div>
@@ -109,8 +128,8 @@ header("Access-Control-Allow-Origin: *");
                                 <select name="satellite" class="form-control bordainput">
 
                                     <?php
-/*
-                                    include_once('../../model/classes/tblBusiness.php');
+                                    
+                                    include_once('../model/classes/tblBusiness.php');
                                     $bussinesscategory = new BusinessCategory;
                                     $bussinesscategory->setidBusinessCategory($idoperation);
                                     $resultsbussinesscategory = $bussinesscategory->consulta("WHERE idBusinessCategory = :idBusinessCategory");
@@ -120,7 +139,7 @@ header("Access-Control-Allow-Origin: *");
                                         foreach ($resultsbussinesscategory as $rowcor2) { ?>
                                             <option value="<?php echo $rowcor2->idBusinessCategory; ?>"><?php echo $rowcor2->NmBusinessCategory; ?></option>
                                     <?php }
-                                    }*/
+                                    }
                                     ?>
                                 </select>
                             </div>

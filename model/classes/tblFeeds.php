@@ -95,9 +95,6 @@ class Feeds
 
     public function cadastrar()
     {
-
-
-
         $sql = "INSERT INTO tblFeeds (idClient, Title, Text, Image, Video) VALUES (:idClient, :Title, :Text, :Image, :Video)";
         $query = $this->dbh->prepare($sql);
 
@@ -106,11 +103,8 @@ class Feeds
         $query->bindValue(':Text', $this->Text, PDO::PARAM_STR);
         $query->bindValue(':Image', $this->Image, PDO::PARAM_STR);
         $query->bindValue(':Video', $this->Video, PDO::PARAM_STR);
-
         $query->execute();
 
-
-        $query->execute();
         return $query;
     }
 

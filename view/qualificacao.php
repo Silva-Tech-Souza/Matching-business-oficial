@@ -1,6 +1,6 @@
 <?php
 session_start();
-error_reporting(0);
+//error_reporting(0);
 header("Access-Control-Allow-Origin: *");
 date_default_timezone_set('America/Sao_Paulo');
 
@@ -27,7 +27,11 @@ date_default_timezone_set('America/Sao_Paulo');
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
     <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
-
+<style>
+    select{
+        font-size: small !important;
+    }
+</style>
     <link rel="stylesheet" href="assets/css/qualificacao.css">
     <title>Qualification</title>
 </head>
@@ -78,7 +82,7 @@ date_default_timezone_set('America/Sao_Paulo');
                 </div>
                 <div class="col-lg-6 col-12">
                     <div class="cardcadastro">
-                        <form accept="../controller/qualificacaoController.php" method="POST" enctype="multipart/form-data">
+                        <form action="../controller/qualificacaoController.php" method="POST" enctype="multipart/form-data">
                             <div class="row">
 
                                 <div class="col-sm-12">
@@ -116,7 +120,7 @@ date_default_timezone_set('America/Sao_Paulo');
                                 </div>
                                 <div class="col-sm-12">
                                     <div class="form-group" style="text-align: center;">
-                                       <br><br> <button style="width: 118px;font-size: small;"  type="submit" class="btn btn-primary login-btn inputtamanho" value="Next" name="create">Next</button>
+                                       <br><br> <input style="width: 118px;font-size: small;"  type="submit" class="btn btn-primary login-btn inputtamanho" value="Next" name="create">
                                     </div>
                                 </div>
 

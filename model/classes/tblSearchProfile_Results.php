@@ -58,20 +58,15 @@ class SearchProfile_Results{
 
     public function cadastrar(){
 
-        $sql = "INSERT INTO tblsearchprofile_results (id,idUsuario,idClienteEncontrado,datahora,idTipoNotif,postId,url,estadoNotif) VALUES (:id,:idUsuario,:idClienteEncontrado,:datahora,:idTipoNotif,:postId,:url,:estadoNotif)";
+        $sql = "INSERT INTO tblsearchprofile_results (idUsuario, idClienteEncontrado, idTipoNotif, postId, url, estadoNotif) VALUES (:idUsuario,:idClienteEncontrado,:idTipoNotif,:postId,:url,:estadoNotif)";
         $query = $this->dbh->prepare($sql);
         
-        if($this->id != null){
-            $query->bindParam(':id', $this->id, PDO::PARAM_INT);
-        }
+       
         if($this->idUsuario != null){
             $query->bindParam(':idUsuario', $this->idUsuario, PDO::PARAM_INT);
         }
         if($this->idClienteEncontrado != null){
             $query->bindParam(':idClienteEncontrado', $this->idClienteEncontrado, PDO::PARAM_INT);
-        }
-        if($this->datahora != null){
-            $query->bindParam(':datahora', $this->datahora, PDO::PARAM_STR);
         }
         if($this->idTipoNotif != null){
             $query->bindParam(':idTipoNotif', $this->idTipoNotif, PDO::PARAM_INT);
@@ -83,7 +78,7 @@ class SearchProfile_Results{
             $query->bindParam(':url', $this->url, PDO::PARAM_STR);
         }
         if($this->estadoNotif != null){
-            $query->bindParam(':estadoNotif', $this->estadoNotif, PDO::PARAM_STR);
+            $query->bindParam(':estadoNotif', $this->estadoNotif, PDO::PARAM_INT);
         }
 
         
@@ -130,6 +125,43 @@ class SearchProfile_Results{
 
     }
 
+    public function quantidade($paramsExtra){
+
+        //$sql = "SELECT * from tblUserClients WHERE idClient = :idClient ";
+        $sql = "SELECT * from tblsearchprofile_results ".$paramsExtra;
+        $query = $this->dbh->prepare($sql);
+        
+        if($this->id != null){
+            $query->bindParam(':id', $this->id, PDO::PARAM_INT);
+        }
+        if($this->idUsuario != null){
+            $query->bindParam(':idUsuario', $this->idUsuario, PDO::PARAM_INT);
+        }
+        if($this->idClienteEncontrado != null){
+            $query->bindParam(':idClienteEncontrado', $this->idClienteEncontrado, PDO::PARAM_INT);
+        }
+        if($this->datahora != null){
+            $query->bindParam(':datahora', $this->datahora, PDO::PARAM_STR);
+        }
+        if($this->idTipoNotif != null){
+            $query->bindParam(':idTipoNotif', $this->idTipoNotif, PDO::PARAM_INT);
+        }
+        if($this->postId != null){
+            $query->bindParam(':postId', $this->postId, PDO::PARAM_INT);
+        }
+        if($this->url != null){
+            $query->bindParam(':url', $this->url, PDO::PARAM_STR);
+        }
+        if($this->estadoNotif != null){
+            $query->bindParam(':estadoNotif', $this->estadoNotif, PDO::PARAM_STR);
+        }
+
+        $query->execute();
+        $results = $query->fetchAll(PDO::FETCH_OBJ);
+
+        if ($query->rowCount() > 0) {return $query->rowCount();} else {return 0;}
+
+    }
     public function atualizar($paramsExtra){
 
         //UPDATE tblAction SET IdAction = ':idAction', Description = ':description' WHERE CustomerID = 1;

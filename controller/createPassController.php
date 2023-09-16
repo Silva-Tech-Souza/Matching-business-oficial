@@ -1,55 +1,50 @@
 <?php
+session_start();
+include('../model/classes/tblUserClients.php');
 
-    include('../model/classes/tblUserClients.php');
+if ($_POST["create"] != "") {
+    $senha = $_POST["password"];
+    $confmsenha = $_POST["password-confirm"];
+    $email = $_POST["email"];
 
-    if($_POST["create"] !=""){
-        $senha = $_POST["password"];
-        $confmsenha= $_POST["password-confirm"];
-        $email= $_POST["email"];
-        
-        $senhaCodificada = md5($senha);
-        $senhaCodificada2 = md5($confmsenha);
-        if($senhaCodificada == $senhaCodificada2 ){
-            $errosenha="";
+    $senhaCodificada = md5($senha);
+    $senhaCodificada2 = md5($confmsenha);
+    if ($senhaCodificada == $senhaCodificada2) {
+        $errosenha = "";
 
-            //$resultschekflag = retornarDadostblUserClients($email,$dbh);//
+        //$resultschekflag = retornarDadostblUserClients($email,$dbh);//
+
+        $tblUserClients = new UserClients();
+        $tblUserClients->setemail($email);
+
+        $resultschekflag = $tblUserClients->consulta("WHERE email = :email AND idFlagStatusCadastro != '1'");
+        foreach ($resultschekflag as $rowchekflag) {
+
+
+            //$resultslogin = atualizarSenha($email,$senhaCodificada,$dbh);//
 
             $tblUserClients = new UserClients();
             $tblUserClients->setemail($email);
+            $tblUserClients->setPassword($senhaCodificada);
 
-            $resultschekflag = $tblUserClients->consulta("WHERE email = :email AND idFlagStatusCadastro != '1'");
-            foreach ($resultschekflag as $rowchekflag) {
 
-                
-                //$resultslogin = atualizarSenha($email,$senhaCodificada,$dbh);//
+            $tblUserClients->atualizar("Password = :Password, idFlagStatusCadastro = '1' WHERE email = :email");
 
-                $tblUserClients = new UserClients();
-                $tblUserClients->setemail($email);
-                $tblUserClients->setPassword($senhaCodificada);
-                
 
-                $resultslogin = $tblUserClients->atualizar("Password = :Password, idFlagStatusCadastro = '1' WHERE email = :email");
 
-                if ($resultslogin != null) {
-                    foreach ($resultslogin as $rowlogin) {
-                        $_SESSION['loginerro'] = "";
-                        $_SESSION["id"] = $rowlogin->idClient;
-                        $_SESSION['emailC'] = $rowlogin->email;
-                        $_SESSION['idC'] = $rowlogin->idClient;
-                        $_SESSION['fName'] = $rowlogin->FirstName;
-                        $_SESSION['lName'] = $rowlogin->LastName;
-                    }
-                
-                    header("Location: qualificacao.php");
-                }
-                else{
-                    $errosenha= "Not allowed to change password";
-                }
-            }
-            }else{
-                $errosenha= "The passwords are different";
-                
-            }
+            $_SESSION['loginerro'] = "";
+            $_SESSION["id"] = $rowchekflag->idClient;
+            $_SESSION['emailC'] = $rowchekflag->email;
+            $_SESSION['idC'] = $rowchekflag->idClient;
+            $_SESSION['fName'] = $rowchekflag->FirstName;
+            $_SESSION['lName'] = $rowchekflag->LastName;
 
-        $_POST["create"] ="";
+
+            header("Location: ../view/qualificacao.php");
+        }
+    } else {
+        $errosenha = "The passwords are different";
     }
+
+    $_POST["create"] = "";
+}

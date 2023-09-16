@@ -132,3 +132,13 @@ body {
     width: 10px;
     /* Largura da barra de rolagem vertical */
 }
+
+.margemmnavbar {
+    margin-top: 125px !important;
+}
+
+@media (min-width: 767px) {
+    .margemmnavbar {
+        margin-top: 75px !important;
+    }
+}

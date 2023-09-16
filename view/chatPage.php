@@ -8,12 +8,13 @@ if ($_SESSION["id"] < 0 || $_SESSION["id"] == "") {
 $iduser = $_SESSION["id"];
 
 $_SESSION["n"] = 5;
+if (isset($_GET["idClientConversa"])) {
 
-//$sql = "SELECT * from tblUserClients WHERE idClient = :idClient";
-//$query = $dbh->prepare($sql);
-//$query->bindParam(':idClient', $iduser, PDO::PARAM_INT);
-//$query->execute();
-//$results = $query->fetchAll(PDO::FETCH_OBJ);
+  $idClientConversa = $_GET["idClientConversa"];
+} else {
+  $idClientConversa = 17;
+}
+
 
 include_once('../model/classes/tblUserClients.php');
 
@@ -45,8 +46,9 @@ $resultsoperation = $operations->consulta("WHERE idOperation = :idOperation");
 
 if ($resultsoperation != null) {
   foreach ($resultsoperation as $rowoperation) {
-        $_SESSION["tipoflag"] =  $rowbusiness->FlagOperation;
-    }
+    $_SESSION["tipoflag"] =  $rowbusiness->FlagOperation;
+    $NmOperation = $rowbusiness->NmOperation;
+  }
 }
 
 ?>
@@ -59,7 +61,7 @@ if ($resultsoperation != null) {
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-4bw+/aepP/YC94hEpVNVgiZdgIC5+VKNBQNGCHeKRQN+PtmoHDEXuppvnDJzQIu9" crossorigin="anonymous">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
- 
+  <link rel="stylesheet" href="assets/css/geral.css">
   <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
   <script src="https://kit.fontawesome.com/f51201541f.js" crossorigin="anonymous"></script>
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
@@ -70,39 +72,37 @@ if ($resultsoperation != null) {
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
   <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
-  <link rel='stylesheet' href='https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.0.3/css/font-awesome.css'> <link rel="stylesheet" href="../../assets/css/chatPage.css">
+  <link rel='stylesheet' href='https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.0.3/css/font-awesome.css'>
+
   <title>Messaging</title>
-  <link rel="stylesheet" href="assets/css/geral.css">
   <link rel="stylesheet" href="assets/css/feed.css">
+  <link rel="stylesheet" href="assets/css/chatPage.css">
   <link rel="stylesheet" href="assets/css/navbar.css">
 </head>
 
 <body class="funcolinhas">
-<?php include_once("widget/navbar.php"); ?><br>
-  <br><br><br>
+
+  <?php include_once("widget/navbar.php"); ?>
 
   <!-- char-area -->
   <section class="message-area">
-    <div class="container telatodacahat">
+    <div class="container telatodacahat margemmnavbar">
       <div class="row" style=" width: -webkit-fill-available; height: -webkit-fill-available;">
         <div class="col-12" style="width: inherit;">
           <div class="chat-area">
             <!-- chatlist -->
-            <div class="chatlist">
+            <div class="chatlist col-lg-3">
               <div class="modal-dialog-scrollable" style="min-height: -webkit-fill-available;">
                 <div class="modal-content">
                   <div class="chat-header">
                     <div class="msg-search">
                       <input type="text" class="form-control" id="inlineFormInputGroup" placeholder="Search" aria-label="search">
-                      
+
                     </div>
 
                     <ul class="nav nav-tabs" id="myTab" role="tablist">
                       <li class="nav-item" role="presentation">
-                        <button class="nav-link active" id="Open-tab" data-bs-toggle="tab" data-bs-target="#Open" type="button" role="tab" aria-controls="Open" aria-selected="true">Open</button>
-                      </li>
-                      <li class="nav-item" role="presentation">
-                        <button class="nav-link" id="Closed-tab" data-bs-toggle="tab" data-bs-target="#Closed" type="button" role="tab" aria-controls="Closed" aria-selected="false">Closed</button>
+                        <button class="nav-link active" id="Open-tab" data-bs-toggle="tab" data-bs-target="#Open" type="button" role="tab" aria-controls="Open" aria-selected="true">Chat</button>
                       </li>
                     </ul>
                   </div>
@@ -113,135 +113,57 @@ if ($resultsoperation != null) {
                       <div class="tab-content" id="myTabContent">
                         <div class="tab-pane fade show active" id="Open" role="tabpanel" aria-labelledby="Open-tab">
                           <!-- chat-list -->
-                          <div class="chat-list">
-                            <?php
-include_once('../model/classes/tblConect.php');
-$conect = new Conect();
-$resultsconect->setidUserPed($iduser);
-$resultsconect->setidUserReceb($iduser);
-$resultsconect = $conect->consulta("WHERE idUserPed = :id AND status = 1 OR idUserReceb = :id AND status = 1");
+                          <div class="chat-list"><?php
+                                                  include_once('../model/classes/tblConect.php');
+                                                  $conects = new Conect();
+                                                  $conects->setidUserPed($iduser);
+                                                  $conects->setidUserReceb($iduser);
+                                                  $resultsConect = $conects->consulta("WHERE (idUserPed = :idUserPed) AND status = '1' OR (idUserReceb = :idUserReceb) AND status = '1' ");
+                                                  if ($resultsConect != null) {
+                                                    foreach ($resultsConect as $row) {
+                                                      if ($row->idUserPed != $iduser) {
+                                                        $idconectado = $row->idUserPed;
+                                                      } else {
+                                                        $idconectado = $row->idUserReceb;
+                                                      }
+                                                      include_once('../model/classes/tblUserClients.php');
+                                                      $userClients = new UserClients();
+                                                      $userClients->setidClient($idconectado);
+                                                      $resultsUserClients = $userClients->consulta("WHERE idClient = :idClient");
+                                                      if ($resultsUserClients != null) {
+                                                        foreach ($resultsUserClients as $rowCon) {
+                                                  ?>
+                                    <a href="#" class="d-flex align-items-center" onclick="atualizarMensagens(<?php echo $idconectado; ?>)">
+                                      <div class="flex-shrink-0">
+                                        <img class="imgavatar" src="assets/img/Avatar.png" alt="user img">
+                                        <span class="active"></span>
+                                      </div>
+                                      <div class="flex-grow-1 ms-3">
+                                        <h3><?php echo $rowCon->FirstName . " " . $rowCon->LastName; ?></h3>
+                                        <p><?php
+                                                          include_once('../model/classes/tblOperations.php');
 
-if ($resultsconect != null) {
-  foreach ($resultsconect as $row) {
+                                                          $Operations = new Operations();
+                                                          $Operations->setidOperation($rowCon->CoreBusinessId);
+                                                          $resultsbusiness = $Operations->consulta("WHERE idOperation = :idOperation");
 
-                         
-                                if ($row->idUserPed == $iduser) {
-                                  $iduserChat = $row->idUserReceb;
-                                } else {
-                                  $iduserChat = $row->idUserPed;
-                                }
+                                                          if ($resultsbusiness != null) {
+                                                            foreach ($resultsbusiness as $rowbusiness) {
+                                                              echo  $NmBusiness =  $rowbusiness->NmOperation;
+                                                            }
+                                                          }
 
-                                $userClients = new UserClients();
-
-                                $userClients->setidClient($iduserChat);
-                                
-                                $results = $userClients->consulta("WHERE idClient = :idClient");
-                                
-                                if ($results != null) {
-                                  foreach ($results as $rowuserpost) {
-                                    $usernamepost = $rowuserpost->CompanyName;
-                                    $idpostoperation = $rowuserpost->CoreBusinessId;
-                                    $imgpostuser = $rowuserpost->PersonalUserPicturePath;
-                                  }
-                                }
-                            ?>
-                                <a href="#" class="d-flex align-items-center">
-                                  <div class="flex-shrink-0">
-                                    <img class="imgavatar" src="<?php if ($imgpostuser != "Avatar.png" && $imgpostuser != "") {
-                                echo "" . $imgpostuser;
-                              } else {
-                                echo "../../../assets/img/Avatar.png";
-                              } ?>" alt="user img">
-                                    <span class="active"></span>
-                                  </div>
-                                  <div class="flex-grow-1 ms-3">
-                                    <h3><?php echo $usernamepost; ?></h3>
-                                    <p><?php $sqlOperationpost = "SELECT * from tblOperations WHERE FlagOperation != '0' AND idOperation = :idOperation";
-                                        $queryOperationpost = $dbh->prepare($sqlOperationpost);
-                                        $queryOperationpost->bindParam(':idOperation', $idpostoperation, PDO::PARAM_INT);
-                                        $queryOperationpost->execute();
-                                        $resultsOperationpost = $queryOperationpost->fetchAll(PDO::FETCH_OBJ);
-
-
-                                        if ($resultsOperationpost != null) {
-                                          foreach ($resultsOperationpost as $rowOperationpost) {
-                                            echo $rowOperationpost->NmOperation;
-                                          }
-                                        } ?></p>
-                                  </div>
-                                </a>
-
-                            <?php  }
-                            } ?>
-
+                                            ?></p>
+                                      </div>
+                                    </a>
+                            <?php }
+                                                      }
+                                                    }
+                                                  } ?>
                           </div>
                           <!-- chat-list -->
                         </div>
-                        <div class="tab-pane fade" id="Closed" role="tabpanel" aria-labelledby="Closed-tab">
 
-                          <!-- chat-list -->
-                          <div class="chat-list">
-                          <?php
-                            $sql = "SELECT * from tblconect WHERE idUserPed = :id AND status = 1 OR idUserReceb = :id AND status = 1";
-                            $query = $dbh->prepare($sql);
-                            $query->bindParam(':id', $iduser, PDO::PARAM_INT);
-                            $query->execute();
-                            $results = $query->fetchAll(PDO::FETCH_OBJ);
-
-                            if ($results != null) {
-
-                              foreach ($results as $row) {
-                                if ($row->idUserPed == $iduser) {
-                                  $iduserChat = $row->idUserReceb;
-                                } else {
-                                  $iduserChat = $row->idUserPed;
-                                }
-                                $userClients = new UserClients();
-
-                                $userClients->setidClient($iduserChat);
-                                
-                                $results = $userClients->consulta("WHERE idClient = :idClient");
-                                
-                                if ($results != null) {
-                                  foreach ($results as $rowuserpost) {
-                               
-                                    $usernamepost = $rowuserpost->CompanyName;
-                                    $idpostoperation = $rowuserpost->CoreBusinessId;
-                                    $imgpostuser = $rowuserpost->PersonalUserPicturePath;
-                                  }
-                                }
-                            ?>
-                                <a href="#" class="d-flex align-items-center">
-                                  <div class="flex-shrink-0">
-                                    <img class="imgavatar" src="<?php if ($imgpostuser != "Avatar.png" && $imgpostuser != "") {
-                                echo "" . $imgpostuser;
-                              } else {
-                                echo "../../../assets/img/Avatar.png";
-                              } ?>" alt="user img">
-                                    <span class="active"></span>
-                                  </div>
-                                  <div class="flex-grow-1 ms-3">
-                                    <h3><?php echo $usernamepost; ?></h3>
-                                    <p><?php $sqlOperationpost = "SELECT * from tblOperations WHERE FlagOperation != '0' AND idOperation = :idOperation";
-                                        $queryOperationpost = $dbh->prepare($sqlOperationpost);
-                                        $queryOperationpost->bindParam(':idOperation', $idpostoperation, PDO::PARAM_INT);
-                                        $queryOperationpost->execute();
-                                        $resultsOperationpost = $queryOperationpost->fetchAll(PDO::FETCH_OBJ);
-
-
-                                        if ($resultsOperationpost != null) {
-                                          foreach ($resultsOperationpost as $rowOperationpost) {
-                                            echo $NmOperation= $rowOperationpost->NmOperation;
-                                          }
-                                        } ?></p>
-                                  </div>
-                                </a>
-
-                            <?php  }
-                            } ?>
-                          </div>
-                          <!-- chat-list -->
-                        </div>
                       </div>
 
                     </div>
@@ -257,70 +179,28 @@ if ($resultsconect != null) {
             <!-- chatbox -->
             <div class="chatbox">
               <div class="modal-dialog-scrollable" style="min-height: -webkit-fill-available;">
-                <div class="modal-content">
-                  <div class="msg-head">
-                    <div class="row">
-                      <div class="col-8">
-                        <div class="d-flex align-items-center">
-                          <span class="chat-icon"><img class="img-fluid" src="https://mehedihtml.com/chatbox/assets/img/arroleftt.svg" alt="image title"></span>
-                          <div class="flex-shrink-0">
-                            <img class="imgavatar" src="<?php if ($imgpostuser != "Avatar.png" && $imgpostuser != "") {
-                                echo "" . $imgpostuser;
-                              } else {
-                                echo "../../../assets/img/Avatar.png";
-                              } ?>" alt="user img">
-                          </div>
-                          <div class="flex-grow-1 ms-3">
-                            <h3><?php echo $usernamepost;?></h3>
-                            <p><?php echo $NmOperation;?></p>
-                          </div>
-                        </div>
-                      </div>
-                      <div class="col-4">
-                        <ul class="moreoption">
-                          <li class="navbar nav-item dropdown">
-                            <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false"><i class="fa fa-ellipsis-v" aria-hidden="true"></i></a>
-                            <ul class="dropdown-menu">
-                              <li><a class="dropdown-item" href="#">Action</a></li>
-                              <li><a class="dropdown-item" href="#">Another action</a></li>
-                              <li>
-                                <hr class="dropdown-divider">
-                              </li>
-                              <li><a class="dropdown-item" href="#">Something else here</a></li>
-                            </ul>
-                          </li>
-                        </ul>
-                      </div>
-                    </div>
+                <div class="modal-content modal-content-display">
+                  <div class="msg-head henderchat " id="henderchat">
+                   
                   </div>
 
 
-                  <div class="modal-body">
-                    <div class="msg-body">
-                      <ul>
-                        <li class="sender">
-                          <p> oi? </p>
-                          <span class="time">10:06 am</span>
-                        </li>
-                        
-                        <li class="repaly">
-                          <p>oii!</p>
-                          <span class="time">10:20 am</span>
-                        </li>
+                  <div class="modal-body modal-body-height">
+                    <div class="msg-body tamanhochatlist" style="padding: 11px;overflow-y: auto;">
+                      <ul id="messageList">
+
                       </ul>
                     </div>
-                  </div>
+                    <div class="col-12 col-md-12 col-lg-12 send-box" style=" bottom: 0; right: 0;background: #fff;">
+                      <form id="sendMessageForm">
+                        <input required type="text" class="form-control" aria-label="message…" placeholder="Write message…" id="txtarea" name="Texto">
+                        <input type="hidden" value="<?php echo $iduser; ?>" name="iduser">
+                        <input type="hidden" value="<?php echo $idClientConversa; ?>" name="idClientConversa">
 
-
-                  <div class="send-box">
-                    <form action="">
-                      <input type="text" class="form-control" aria-label="message…" placeholder="Write message…">
-
-                      <button type="button"><i class="fa fa-paper-plane" aria-hidden="true"></i> Send</button>
-                    </form>
-
-
-
+                        <input type="hidden" value="cadastrar" name="acao">
+                        <button type="submit" value="Send"><i class="fa fa-paper-plane" aria-hidden="true"></i> Send</button>
+                      </form>
+                    </div>
                   </div>
                 </div>
               </div>
@@ -335,21 +215,150 @@ if ($resultsconect != null) {
     </div>
   </section>
   <!-- char-area -->
- <script src="assets/js/jquery-3.2.1.min.js"></script>
+  <script src="assets/js/jquery-3.2.1.min.js"></script>
   <script src="assets/js/popper.min.js"></script>
   <script src="assets/js/bootstrap.min.js"></script>
   <!-- Select2 JS -->
   <script src="assets/js/select2.min.js"></script>
   <script src="assets/plugins/summernote/dist/summernote-bs4.min.js"></script>
   <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-   <script>
+  <script>
+    function atualizarMensagens(idconectado) {
+      var iduser = <?php echo $iduser; ?>;
+      idConversaAtiva = idconectado;
+      if (idconectado == null || idconectado == "") {
+        var idClientConversa = <?php echo $idClientConversa; ?>;
+      } else {
+        var idClientConversa = idconectado;
+
+      }
+      $.ajax({
+        url: 'widget/atualizarnamechat.php',
+        type: 'POST',
+        dataType: 'json',
+        data: {
+          idClientConversa: idClientConversa
+        },
+        success: function(data) {
+         
+          var henderchat = $('#henderchat');
+          henderchat.empty();
+          console.log(data);
+          if (data.messages) {
+            console.log("teste");
+            data.messages.forEach(function(message) {
+            henderchat.append(
+              '<div class="row">' +
+              '<div class="col-8">' +
+              '<div class="d-flex align-items-center">' +
+              '<span class="chat-icon"><img class="img-fluid" src="https://mehedihtml.com/chatbox/assets/img/arroleftt.svg" alt="image title"></span>' +
+              '<div class="flex-shrink-0">' +
+              '<img class="imgavatar" src="'+message.img+'" alt="user img">' +
+              '</div>' +
+              '<div class="flex-grow-1 ms-3">' +
+              '<h3>'+message.name+'</h3>' +
+              '<p>'+message.core+'</p>' +
+              '</div>' +
+              '</div>' +
+              '</div>' +
+              '<div class="col-4">' +
+              '<ul class="moreoption">' +
+              '<li class="navbar nav-item dropdown">' +
+              '<a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false"><i class="fa fa-ellipsis-v" aria-hidden="true"></i></a>' +
+              '<ul class="dropdown-menu">' +
+              '<li><a class="dropdown-item" href="#">Disconnect</a></li>' +
+              '<li><a class="dropdown-item" href="#">View Profile</a></li>' +
+              '</ul>' +
+              '</li>' +
+              '</ul>' +
+              '</div>' +
+              '</div>');
+            });
+          }
+        }
+      });
+
+      $.ajax({
+        url: 'widget/atualizarMensagens.php',
+        type: 'POST',
+        dataType: 'json',
+        data: {
+          iduser: iduser,
+          idClientConversa: idClientConversa
+        },
+        success: function(data) {
+          var txtarea = document.getElementById('txtarea');
+
+          var msgContainer = $('#messageList');
+      
+          msgContainer.empty(); // Limpa a lista de mensagens
+        
+          if (data.messages) {
+            
+            data.messages.forEach(function(message) {
+              var messageClass = message.type === 'repaly' ? 'repaly' : 'sender';
+              msgContainer.append('<li class="' + messageClass + '"><p>' + message.text + '</p><span class="time">' + message.date + '</span></li>');
+              txtarea.value = "";
+              scrollToBottom();
+            });
+          }
+        }
+      });
+    }
+
+    function scrollToBottom() {
+      var msgBody = document.querySelector('.msg-body');
+      msgBody.scrollTop = msgBody.scrollHeight;
+    }
+    document.addEventListener('DOMContentLoaded', function() {
+      scrollToBottom();
+    });
+    $(document).ready(function() {
+
+
+      $('#sendMessageForm').submit(function(event) {
+        event.preventDefault();
+
+        var formData = new FormData(this);
+        if (idConversaAtiva != null || idConversaAtiva != "") {
+          formData.append('idClientConversa', idConversaAtiva);
+        }
+        $.ajax({
+          url: '../controller/chatPageController.php',
+          type: 'POST',
+          dataType: 'json',
+          data: formData,
+          processData: false,
+          contentType: false,
+          success: function(data) {
+            if (data.success) {
+              if (idConversaAtiva != null || idConversaAtiva != "") {
+                atualizarMensagens(idConversaAtiva); // Atualiza as mensagens
+              } else {
+                atualizarMensagens();
+              }
+              scrollToBottom();
+
+            } else {
+              alert('Erro ao enviar mensagem. Por favor, tente novamente.');
+            }
+          }
+        });
+      });
+
+      atualizarMensagens(); // Chama a função ao carregar a página
+    });
+  </script>
+
+  <script>
     let profileMenu = document.getElementById("profileMenu");
 
     function toggleMenu() {
       profileMenu.classList.toggle("open-menu");
     }
   </script>
-    <script>
+
+  <script>
     // JavaScript / jQuery
     // JavaScript / jQuery
     $(document).ready(function() {
@@ -627,6 +636,7 @@ if ($resultsconect != null) {
 
     });
   </script>
+
 </body>
 
 </html>

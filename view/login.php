@@ -120,8 +120,6 @@ date_default_timezone_set('America/Sao_Paulo');
     </div>
     <!-- Copyright -->
   </footer>
-  <!-- end of it -->
-  <?php include_once("widget/cadastrarpop.php"); ?>
 
   <script src="assets/js/script.js"></script>
   <script src="assets/js/jquery-3.2.1.min.js"></script>

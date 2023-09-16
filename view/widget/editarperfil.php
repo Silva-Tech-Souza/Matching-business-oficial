@@ -1,9 +1,12 @@
+<?
+header("Access-Control-Allow-Origin: *");
+?>
 <div id="add_perfil" class="modal custom-modal fade mt-1" role="dialog">
     <div class="modal-dialog modal-dialog-centered modal-lg">
         <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title txtnomeperfil">Edit profile</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <button type="button" class="close rounded-2 border-0" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
@@ -19,7 +22,7 @@
                         </div>
 
 
-                        <div class="col-sm-6">
+                        <div class="col-sm-6 mt-4">
                             <div class="form-group">
                                 <label class="txtinput">Name:</label>
                                 <input class="form-control bordainput" value="<?php echo $FirstName; ?>" autocomplete="off" name="nome" type="text">
@@ -28,7 +31,7 @@
                             </div>
                         </div>
 
-                        <div class="col-sm-6">
+                        <div class="col-sm-6 mt-4">
                             <div class="form-group">
                                 <label class="txtinput">LastName:</label>
                                 <input class="form-control bordainput" required value="<?php echo $LastName; ?>" autocomplete="off" name="lastname" type="text">
@@ -37,7 +40,7 @@
                             </div>
                         </div>
 
-                        <div class="col-sm-6">
+                        <div class="col-sm-6 mt-4">
                             <div class="form-group">
                                 <label class="txtinput">Job tittle:</label>
                                 <input class="form-control bordainput" required value="<?php echo $jobtitle; ?>" autocomplete="off" name="jobtitle" type="text">
@@ -46,7 +49,7 @@
                             </div>
                         </div>
 
-                        <div class="col-sm-6">
+                        <div class="col-sm-6 mt-4">
                             <div class="form-group">
                                 <label class="txtinput">Company name:</label>
                                 <input class="form-control bordainput" required value="<?php echo $companyname; ?>" autocomplete="off" name="conpany" type="text">
@@ -54,71 +57,77 @@
                                 </datalist>
                             </div>
                         </div>
-                        <div class="col-sm-12">
+                        <div class="col-sm-12  mt-4">
                             <div class="form-group">
                                 <label class="txtinput">Core Business:</label>
 
                                 <select class="form-control bordainput" onchange="showbusines(this.value)" name="business">
 
                                     <?php
-                                    $sql = "SELECT * from tblOperations ";
-                                    $query = $dbh->prepare($sql);
-                                    $query->execute();
-                                    $results = $query->fetchAll(PDO::FETCH_OBJ);
-                                    if ($query->rowCount() > 0) {
-                                        foreach ($results as $row) { ?>
+/*
+
+                                    include_once('../../model/classes/tblOperations.php');
+                                    $operations = new Operations();
+                                    $resultsoperation = $operations->consulta("");
+
+                                    if ($operations != null) {
+                                        foreach ($resultsoperation as $row) { ?>
                                             <option <?php if ($row->NmOperation ==  $NmBusiness) {
                                                         echo "selected";
                                                     } ?> value="<?php echo $row->idOperation; ?>"><?php echo $row->NmOperation; ?></option>
                                     <?php     }
-                                    }
+                                    }*/
                                     ?>
                                 </select>
                             </div>
                         </div>
                         <?php if ($corebusiness == "1" || $corebusiness == "2" || $corebusiness == "3" || $corebusiness == "4" || $corebusiness == "5") { ?>
-                            <div class="col-sm-6" id="refHint">
+                            <div class="col-sm-6 mt-4" id="refHint">
                                 <div class="form-group">
                                     <label class="txtinput">Business:</label>
                                     <select onchange="showbusines2(this.value)" class="form-control bordainput" id="coreBusiness" name="coreBusiness">
                                         <?php
-                                        $sqlcorbusiness = "SELECT * from tblBusiness WHERE FlagOperation = '0' AND FlagOperation != 'D'";
-                                        $querycorbusiness = $dbh->prepare($sqlcorbusiness);
-                                        $querycorbusiness->execute();
-                                        $resultscorbusiness = $querycorbusiness->fetchAll(PDO::FETCH_OBJ);
-                                        if ($querycorbusiness->rowCount() > 0) {
-                                            foreach ($resultscorbusiness as $rowcor) { ?>
+                                      /*  include_once('../../model/classes/tblBusiness.php');
+                                        $bussiness = new Business();
+
+                                        $resultsbusiness = $bussiness->consulta("WHERE FlagOperation = '0' AND FlagOperation != 'D'");
+
+
+                                        if ($resultsbusiness != null) {
+                                            foreach ($resultsbusiness as $rowcor) { ?>
                                                 <option <?php if ($rowcor->NmBusiness ==  $NmBusinesscor) {
                                                             echo "selected";
                                                         } ?> value="<?php echo $rowcor->idBusiness; ?>"><?php echo $rowcor->NmBusiness; ?></option>
                                         <?php }
-                                        }
+                                        }*/
                                         ?>
                                     </select>
                                 </div>
                             </div>
-                            <div class="col" id="refHint2">
+                            <div class="col mt-4" id="refHint2">
                                 <label>Business Category:</label>
                                 <select name="satellite" class="form-control bordainput">
 
                                     <?php
-                                    $sqlcorbusiness3 = "SELECT * from tblbusinesscategory WHERE idBusinessCategory = :idBusinessCategory";
-                                    $querycorbusiness3 = $dbh->prepare($sqlcorbusiness3);
-                                    $querycorbusiness3->bindParam(':idBusinessCategory', $idoperation, PDO::PARAM_INT);
-                                    $querycorbusiness3->execute();
-                                    $resultscorbusiness3 = $querycorbusiness3->fetchAll(PDO::FETCH_OBJ);
-                                    if ($querycorbusiness3->rowCount() > 0) {
-                                        foreach ($resultscorbusiness3 as $rowcor2) { ?>
+/*
+                                    include_once('../../model/classes/tblBusiness.php');
+                                    $bussinesscategory = new BusinessCategory;
+                                    $bussinesscategory->setidBusinessCategory($idoperation);
+                                    $resultsbussinesscategory = $bussinesscategory->consulta("WHERE idBusinessCategory = :idBusinessCategory");
+
+                                   
+                                    if ($resultsbussinesscategory != null) {
+                                        foreach ($resultsbussinesscategory as $rowcor2) { ?>
                                             <option value="<?php echo $rowcor2->idBusinessCategory; ?>"><?php echo $rowcor2->NmBusinessCategory; ?></option>
                                     <?php }
-                                    }
+                                    }*/
                                     ?>
                                 </select>
                             </div>
 
 
                         <?php }  ?>
-                        <div class="col-sm-12">
+                        <div class="col-sm-12  mt-4">
                             <div class="form-group">
                                 <label class="txtinput">Description:</label>
                                 <textarea class="form-control bordainput" name="descricao" type="text"><?php echo $descricao; ?></textarea>
@@ -126,7 +135,7 @@
                         </div>
                     </div>
 
-                    <div class="submit-section">
+                    <div class="submit-section mt-4">
                         <button type="submit" name="add_orcamento" value="Salvar" class="btn btn-primary submit-btn">Confirm</button>
                     </div>
                 </form>

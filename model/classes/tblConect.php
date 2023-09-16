@@ -41,31 +41,17 @@ class Conect{
     public function getstatus(){return $this->status;}
 
     public function cadastrar(){
-
-        
-
-        $sql = "INSERT INTO tblconect (id,	idUserPed,idUserReceb,datapedido,status) VALUES (:id,:idUserPed,:idUserReceb,:datapedido,:status)";
+        $sql = "INSERT INTO tblconect (idUserPed, idUserReceb) VALUES (:idUserPed, :idUserReceb)"; 
         $query = $this->dbh->prepare($sql);
-        
-        if($this->id != null){
-            $query->bindParam(':id', $this->id, PDO::PARAM_INT);
-        }
+       
         if($this->idUserPed != null){
             $query->bindParam(':idUserPed', $this->idUserPed, PDO::PARAM_INT);
         }
         if($this->idUserReceb != null){
             $query->bindParam(':idUserReceb', $this->idUserReceb, PDO::PARAM_INT);
         }
-        if($this->datapedido != null){
-            $query->bindParam(':datapedido', $this->datapedido, PDO::PARAM_STR);
-        }
-        if($this->status != null){
-            $query->bindParam(':status', $this->status, PDO::PARAM_INT);
-        }
-
         $query->execute();
         return $query;
-
     }
 
     public function consulta($paramsExtra){

@@ -58,12 +58,9 @@ class Products{
 
         
 
-        $sql = "INSERT INTO tblProducts (idProduct,idClient,idBusinessCategory,ProductName,ProdcuctDescription,ProdcuctEspecification,flagExcluido,Category) VALUES (:idProduct,:idClient,:idBusinessCategory,:ProductName,:ProdcuctDescription,:ProdcuctEspecification,:flagExcluido,:Category)";
+        $sql = "INSERT INTO tblProducts (idClient,idBusinessCategory,ProductName,ProdcuctDescription,ProdcuctEspecification,flagExcluido,Category) VALUES (:idClient,:idBusinessCategory,:ProductName,:ProdcuctDescription,:ProdcuctEspecification,:flagExcluido,:Category)";
         $query = $this->dbh->prepare($sql);
         
-        if($this->idProduct != null){
-            $query->bindParam(':idProduct', $this->idProduct, PDO::PARAM_INT);
-        }
         if($this->idClient != null){
             $query->bindParam(':idClient', $this->idClient, PDO::PARAM_INT);
         }
@@ -88,7 +85,7 @@ class Products{
 
 
         $query->execute();
-        return $query;
+        return $this->dbh->lastInsertId();
 
     }
 

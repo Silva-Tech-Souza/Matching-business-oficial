@@ -5,7 +5,7 @@ php_value post_max_size 50M
 
 RewriteCond %{REQUEST_FILENAME} !-f
 RewriteCond %{REQUEST_FILENAME} !-d
-RewriteRule ^(.*)$ login.php?url=$1 [NC,L]
+RewriteRule ^(.*)$ index.php?url=$1 [NC,L]
 
 
 #RewriteEngine on

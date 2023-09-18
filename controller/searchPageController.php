@@ -9,7 +9,8 @@ include_once('../model/classes/tblSearchSpecification.php');
 
 $corbusiness = $_POST["corbusiness"];
 //echo "corbusiness: " . $corbusiness . "<br>";
-
+$news = $_POST["news"];
+$next = $_POST["next"];
 if ($_POST["flagtipo"] == "D") {
     $business = $corbusiness;
   //  echo "business: " . $business;
@@ -126,7 +127,15 @@ if($_POST["flagtipo"] == "A"){
         }
 
     //    echo 'Cadastro Realizado com sucesso';
-        header("Location: ../view/listcompani.php");
+    if($news == "" || $news == null){
+        header("Location: ../view/searchPage.php");
+}else{
+     if($news != "" || $news != null){
+        header("Location: ../view/searchPage.php");
+}else{
+    header("Location: ../view/listcompani.php?text=mysp");
+}
+}        
     }
     
 
@@ -187,7 +196,15 @@ if($_POST["flagtipo"] == "A"){
 
 
         //echo 'Cadastro Realizado com sucesso';
-        header("Location: ../view/listcompani.php");
+         if($news == "" || $news == null){
+        header("Location: ../view/searchPage.php");
+}else{
+  if($news != "" || $news != null){
+        header("Location: ../view/searchPage.php");
+}else{
+    header("Location: ../view/listcompani.php?text=mysp");
+}
+}
     }
 
 
@@ -247,7 +264,11 @@ if($_POST["flagtipo"] == "A"){
         }
 
       //  echo 'Cadastro Realizado com sucesso';
-        header("Location: ../view/listcompani.php");
+  if($news != "" || $news != null){
+        header("Location: ../view/searchPage.php");
+}else{
+    header("Location: ../view/listcompani.php?text=mysp");
+}
     }
 
 }else if($_POST["flagtipo"] == "D"){
@@ -295,7 +316,15 @@ if($_POST["flagtipo"] == "A"){
         }
 
         //echo 'Cadastro Realizado com sucesso';
-        header("Location: ../view/listcompani.php");
+       if($news == "" || $news == null){
+        header("Location: ../view/searchPage.php");
+}else{
+    if($news != "" || $news != null){
+        header("Location: ../view/searchPage.php");
+}else{
+    header("Location: ../view/listcompani.php?text=mysp");
+}
+}
     }
 
 }else{

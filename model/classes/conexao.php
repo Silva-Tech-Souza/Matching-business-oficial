@@ -1,8 +1,8 @@
 <?php 
-define('DB_HOST','localhost');
-define('DB_USER','root');
-define('DB_PASS','');
-define('DB_NAME','silvat81_business');
+define('DB_HOST','br626.hostgator.com.br');
+define('DB_USER','crmlab04_dbMB_Testes');
+define('DB_PASS','Latam#2020');
+define('DB_NAME','crmlab04_dbMB_Testes');
 
 /*define('DB_HOST','br628.hostgator.com.br');
 define('DB_USER','silvat81_silvatc');

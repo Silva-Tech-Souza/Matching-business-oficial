@@ -322,7 +322,7 @@
         </div>
 
         <!-- --------------------------------profile-network-down-menu---------------------------- -->
-        <div class="network-menu-wrap" id="networkMenu" style="background-color: #002d4b !important; border-bottom-right-radius: 10px; border-bottom-left-radius: 10px;">
+        <div class="network-menu-wrap" id="networkMenu" style="background-color: #002d4b !important; border-bottom-right-radius: 10px; border-bottom-left-radius: 10px;overflow-y: auto;">
             <div class="network-menu" style="background-color: #002d4b !important;">
                 <div class="non-connections">
                     <div class="non-connections-container">
@@ -430,7 +430,7 @@
                     <i class="bi bi-caret-right-fill" style="color: white;"></i>
                 </a>
 
-                <a href="../model/logout.php" class="profile-menu-link expand-zoom-menu-logout ">
+                <a href="../../model/logout.php" class="profile-menu-link expand-zoom-menu-logout ">
                     <i class="fa fa-sign-out fa-1x" style="color: #ff6363;"></i>
                     <p style="margin-bottom: 0px !important; text-decoration: none; color: #ff6363;">&nbsp;&nbsp;&nbsp;&nbsp;Logout</p>
                     <i class="bi bi-caret-right-fill" style="color: #ff6363;"></i>

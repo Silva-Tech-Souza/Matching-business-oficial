@@ -4,7 +4,7 @@ error_reporting(0);
 date_default_timezone_set('America/Sao_Paulo');
 
 if (isset($_COOKIE["remember_me"])) {
-    setcookie("remember_me",path:"/");
+    setcookie("remember_me","",time() - 3600, "/");
 }
 
 session_destroy(); 

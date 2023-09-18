@@ -25,7 +25,7 @@ $results = $userClients->consulta("WHERE idClient = :idClient");
 
 if ($results != null) {
     foreach ($results as $row) {
-        $username = $row->FirstName . " " . $row->LastName;
+        $username = $row->FirstName . " " . $row->LastName; 
         $jobtitle = $row->JobTitle;
         $idcountry = $row->idCountry;
         $idoperation = $row->IdOperation;
@@ -525,7 +525,11 @@ if ($resultsCountry != null) {
                     <div class="card rounded-4 shadow">
                         <div class="card-body p-0 m-0">
                             <div class="col-12 mh-25">
-                                <img class="mh-25 rounded-top-3" src="https://images2.alphacoders.com/131/1317606.jpeg" alt="Descrição da Imagem" style="max-height: 100px; width: 100%;">
+                                <img class="mh-25 rounded-top-3" src="<?php if ($imgcapa != "Avatar.png" && $imgcapa != "") {
+                                                    echo "" . $imgcapa;
+                                                } else {
+                                                    echo "https://images2.alphacoders.com/131/1317606.jpeg";
+                                                } ?>" alt="Descrição da Imagem" style="max-height: 100px; width: 100%;">
                             </div>
                             <div class="row p-0 ml-0">
                                 <div class="col-5 d-flex justify-content-start p-0 m-0 " style="height: 0px;">
@@ -714,23 +718,23 @@ if ($resultsCountry != null) {
                                 <div class="rowProduct overflow-auto produtos-feed-scrollbar row-produto-card-pro">
                                     <?php
                                     include_once('../model/classes/tblProducts.php');
-                                    $products = new Products();
-                                    $resultsProdutos = $products->consulta("ORDER BY idProduct ASC");
-                                    if ($resultsProdutos != null) {
-                                        if (is_array($resultsProdutos) || is_object($resultsProdutos)) {
-                                            foreach ($resultsProdutos as $rowProdutos) { ?>
+                                    $productss = new Products();
+                                    $resultsProdutoss = $productss->consulta("ORDER BY idProduct ASC");
+                                    if ($resultsProdutoss != null) {
+                                        
+                                            foreach ($resultsProdutoss as $rowProdutos) { ?>
                                                 <div class="card-produto-uni">
                                                     <div class="card-container bcolor-azul-escuro rounded-4">
                                                         <div class="col-12">
                                                             <a href="viewProfile.php?profile=<?php echo $rowProdutos->idClient; ?>" class="hero-image-container">
                                                                 <img class="hero-image produtos-img rounded-4" style=" user-drag: none;" src="<?php
-                                                                                                                                                include_once('../model/classes/tblProductPictures.php');
+                                                                                                                                                include('../model/classes/tblProductPictures.php');
                                                                                                                                                 $productsPictures = new ProductPictures();
                                                                                                                                                 $productsPictures->setidProduct($rowProdutos->idProduct);
                                                                                                                                                 $resultsProdutos1 = $productsPictures->consulta("WHERE idProduct = :idProduct");
                                                                                                                                                 if ($resultsProdutos1 != null) {
-                                                                                                                                                    foreach ($resultsProdutos1 as $rowProdutos) {
-                                                                                                                                                        echo $rowProdutos->tblProductPicturePath;
+                                                                                                                                                    foreach ($resultsProdutos1 as $rowProdutosu) {
+                                                                                                                                                        echo $rowProdutosu->tblProductPicturePath;
                                                                                                                                                     }
                                                                                                                                                 }else{
                                                                                                                                                     echo "";
@@ -750,7 +754,7 @@ if ($resultsCountry != null) {
                                                     </div>
                                                 </div>
                                     <?php }
-                                        }
+                                        
                                     } ?>
                                 </div>
                             </div>

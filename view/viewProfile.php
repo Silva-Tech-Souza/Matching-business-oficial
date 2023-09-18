@@ -7,7 +7,8 @@ if ($_SESSION["id"] < 0 || $_SESSION["id"] == "") {
   header("Location: index.php");
 }
 
-$iduser = $_GET["profile"];
+$iduser = $_SESSION["id"];
+$idusers = $_GET["profile"];
 
 $geral = $_SESSION["id"];
 
@@ -24,7 +25,7 @@ $geral = $_SESSION["id"];
 include_once('../model/classes/tblUserClients.php');
 
 $UserClient = new UserClients();
-$UserClient->setidClient($iduser);
+$UserClient->setidClient($idusers);
 $resultsgeral = $UserClient->consulta("WHERE idClient = :idClient");
 
 if ($resultsgeral != null) {
@@ -36,7 +37,7 @@ if ($resultsgeral != null) {
 $_SESSION["n"] = 5;
 //$sql = "SELECT * from tblUserClients WHERE idClient = :idClient";
 //$query = $dbh->prepare($sql);
-//$query->bindParam(':idClient', $iduser, PDO::PARAM_INT);
+//$query->bindParam(':idClient', $iduser1, PDO::PARAM_INT);
 //$query->execute();
 //$results = $query->fetchAll(PDO::FETCH_OBJ);
 //if ($query->rowCount() > 0) {
@@ -57,7 +58,7 @@ $_SESSION["n"] = 5;
 //}
 
 $UserClient = new UserClients();
-$UserClient->setidClient($iduser);
+$UserClient->setidClient($idusers);
 $results = $UserClient->consulta("WHERE idClient = :idClient");
 
 if ($results != null) {
@@ -74,12 +75,19 @@ if ($results != null) {
     $corebusiness = $row->CoreBusinessId;
     $satBusinessId =  $row->SatBusinessId;
     $companyname = $row->CompanyName;
-    $imgperfil = $row->PersonalUserPicturePath;
-    $imgcapa = $row->LogoPicturePath;
+    $imgperfils = $row->PersonalUserPicturePath;
+    $imgcapas = $row->LogoPicturePath;
     $descricao =  $row->descricao;
   }
 }
 
+$UserClientreal = new UserClients();
+$UserClientreal->setidClient($iduser);
+$resultsreal = $UserClientreal->consulta("WHERE idClient = :idClient");
+if ($resultsreal != null) {
+  foreach ($resultsreal as $row) {
+      $imgperfil = $row->PersonalUserPicturePath;
+  }}
 
 //$sqlCountry = "SELECT * from tblCountry WHERE idCountry = :idCountry";
 //$queryCountry = $dbh->prepare($sqlCountry);
@@ -187,7 +195,7 @@ include_once('../model/classes/tblViews.php');
 
 $Views = new Views();
 $Views->setidUser($geral);
-$Views->setidView($iduser);
+$Views->setidView($idusers);
 $resultView = $Views->consulta("WHERE idUser = :idUser AND idView = :idView AND  DATE(datacriacao) = CURDATE()");
 
 if ($resultView == null) {
@@ -202,7 +210,7 @@ if ($resultView == null) {
 
   $Views = new Views();
   $Views->setidUser($geral);
-  $Views->setidView($iduser);
+  $Views->setidView($idusers);
   $Views->setdatacriacao(date("Y/m/d"));
 
   $Views->cadastrar();
@@ -218,13 +226,13 @@ if ($resultView == null) {
   $searchprofile_results = new SearchProfile_Results();
 
   $searchprofile_results->setidUsuario($geral);
-  $searchprofile_results->setidClienteEncontrado($iduser);
-  $searchprofile_results->setidTipoNotif(2);
-
+  $searchprofile_results->setidClienteEncontrado($idusers);
+  $searchprofile_results->setpostId("#");
+  $searchprofile_results->seturl("#");
+  $searchprofile_results->setidTipoNotif("2");
+  $searchprofile_results->setestadoNotif("0");
   $searchprofile_results->cadastrar();
 }
-
-
 
 //$sqlconect = "SELECT * FROM tblconect WHERE idUserPed = :idUserPed AND idUserReceb = :idUserReceb ";
 //$queryconect = $dbh->prepare($sqlconect);
@@ -242,12 +250,12 @@ if ($resultView == null) {
 
 include_once('../model/classes/tblConect.php');
 
-$connect = new Conect();
+$connecttem = new Conect();
 
-$connect->setidUserPed($geral);
-$connect->setidUserReceb($iduser);
+$connecttem->setidUserPed($geral);
+$connecttem->setidUserReceb($idusers);
 
-$respoconect = $connect->consulta("WHERE idUserPed = :idUserPed AND idUserReceb = :idUserReceb");
+$respoconect = $connecttem->consulta("WHERE idUserPed = :idUserPed AND idUserReceb = :idUserReceb");
 
 if ($respoconect != null) {
   foreach ($respoconect as $rowconnect) {
@@ -271,7 +279,7 @@ if ($_POST["conectar"] != "") {
   $connect = new Conect();
 
   $connect->setidUserPed($geral);
-  $connect->setidUserReceb($iduser);
+  $connect->setidUserReceb($idusers);
   $connect->setstatus(0);
 
   $connect->cadastrar();
@@ -287,7 +295,7 @@ if ($_POST["conectar"] != "") {
   $searchprofile_results = new SearchProfile_Results();
 
   $searchprofile_results->setidUsuario($geral);
-  $searchprofile_results->setidClienteEncontrado($iduser);
+  $searchprofile_results->setidClienteEncontrado($idusers);
   $searchprofile_results->setidTipoNotif(4);
 
   $searchprofile_results->cadastrar();
@@ -787,12 +795,16 @@ if ($_POST["desconectar"] != "") {
           <div class="card rounded-4 shadow">
             <div class="card-body p-0 m-0">
               <div class="col-12 mh-25">
-                <img class="mh-25 rounded-top-3" src="https://images2.alphacoders.com/131/1317606.jpeg" alt="Descrição da Imagem" style="max-height: 100px; width: 100%;">
+                <img class="mh-25 rounded-top-3" src="<?php if ($imgcapa1 != "Avatar.png" && $imgcapa1 != "") {
+                                                    echo "" . $imgcapa1;
+                                                } else {
+                                                    echo "https://images2.alphacoders.com/131/1317606.jpeg";
+                                                } ?>" alt="Descrição da Imagem" style="max-height: 100px; width: 100%;">
               </div>
               <div class="row p-0 ml-0">
                 <div class="col-5 d-flex justify-content-start p-0 m-0 " style="height: 0px;">
-                  <img src=" <?php if ($imgperfil != "Avatar.png" && $imgperfil != "") {
-                                echo "" . $imgperfil;
+                  <img src=" <?php if ($imgperfils != "Avatar.png" && $imgperfils != "") {
+                                echo "" . $imgperfils;
                               } else {
                                 echo "assets/img/Avatar.png";
                               } ?>" alt="user" class="border-2 mini-profile-img " onclick="toggleMenu()">
@@ -866,19 +878,19 @@ if ($_POST["desconectar"] != "") {
               <?php } ?>
               <div class="row pr-2  mb-2">
                 <form method="POST" action="../controller/viewProfileController.php" enctype="multipart/form-data">
-                <input type="hidden" value="<?php echo $iduser;?>" name="iduser">
+                <input type="hidden" value="<?php echo $idusers;?>" name="iduser">
                 <input type="hidden" value="<?php echo $geral;?>" name="geral">
                 <div class="col-12 m-0 p-0 mr-2">
 
-                    <?php if ($temconexao == 1) { ?>
+                    <?php if ($temconexao == "1" && $temconexao != "") { ?>
                       <button type="submit" name="desconectar" value="desconectar" class="btn btn-outline-danger ms-1 m-1"><i class="bi bi-person-x-fill icon-btn-card"></i>&nbsp;Disconnect</button>
                     <?php   } else 
-                  if ($temconexao == 0) { ?>
+                  if ($temconexao == "0" && $temconexao != "") { ?>
                       <button type="submit" name="desconectar" value="desconectar" class="btn btn-outline-warning ms-1 m-1"><i class="bi bi-person-x-fill icon-btn-card"></i>&nbsp;Pending</button>
-                    <?php   } else { ?>
+                    <?php   }else if($temconexao == "" || $temconexao == "#" || $temconexao == null){ ?>
                       <button type="submit" name="conectar" value="conectar" class="btn btn-outline-primary ms-1 m-1"><i class="bi bi-person-plus-fill icon-btn-card"></i>&nbsp;Connect</button>
                     <?php   } ?>
-                    <a href="chatPage.php?idClientConversa=<?php echo $iduser;?>" class="btn btn-outline-primary ms-1 m-1"><i class="bi bi-chat-dots-fill icon-btn-card"></i>&nbsp;Message</a>
+                    <a href="chatPage.php?idClientConversa=<?php echo $idusers;?>" class="btn btn-outline-primary ms-1 m-1"><i class="bi bi-chat-dots-fill icon-btn-card"></i>&nbsp;Message</a>
 
                   </div>
                 </form>
@@ -918,7 +930,7 @@ if ($_POST["desconectar"] != "") {
                 include_once('../model/classes/tblFeeds.php');
 
                 $feeds = new Feeds();
-                $feeds->setidClient($iduser);
+                $feeds->setidClient($idusers);
                 $resultsfeed = $feeds->consulta("WHERE idClient = :idClient ORDER BY Published_at DESC LIMIT 8");
 
                 if ($resultsfeed != null) {
@@ -1101,7 +1113,7 @@ if ($_POST["desconectar"] != "") {
                           $curtidas = new Curtidas();
 
                           $curtidas->setidpost($rowfeed->IdFeed);
-                          $curtidas->setidusuario($iduser);
+                          $curtidas->setidusuario($idusers);
 
                           $resultsOperationpost = $curtidas->consulta("WHERE idpost = :idpost AND idusuario = :idusuario");
 

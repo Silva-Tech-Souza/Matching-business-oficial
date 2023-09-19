@@ -969,7 +969,7 @@ if ($resultsBusinessCategory != null) {
                       foreach ($resultsOperation as $rowOperation) { ?>
 
                         <li class="recommended-user icone-net" style="margin-bottom: 20px;">
-                          <form method="POST" enctype="multipart/form-data" class="w-100 h-100 d-flex">
+                          <form method="POST" enctype="multipart/form-data" action="../controller/profileController.php" class="w-100 h-100 d-flex">
                             <input class="form-control bordainput" value="<?php echo $rowviews->id; ?>" autocomplete="off" name="idconectar" type="hidden">
                             <input class="form-control bordainput" value="<?php echo $rowviews->idUserPed; ?>" autocomplete="off" name="idperfilpedido" type="hidden">
                             <div class="col-2 justify-content-center m-0 p-0 d-flex justify-content-end align-middle">

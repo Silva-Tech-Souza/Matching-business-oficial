@@ -348,6 +348,7 @@ if ($_POST["desconectar"] != "") {
   <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
   <link rel="stylesheet" href="assets/css/feed.css">
   <link rel="stylesheet" href="assets/css/navbar.css">
+  <link rel="stylesheet" href="assets/css/profile.css">
   <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick.css" />
   <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick-theme.css" />
   <script type="text/javascript" src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
@@ -915,6 +916,67 @@ if ($_POST["desconectar"] != "") {
         <!-- Meio -->
         <div class="col-lg-8 col-12 justify-content-center">
           <div class="col-md-12  justify-content-center">
+          <div class="col-md-12">
+              <?php if ($corebusiness != "3" && $corebusiness != "4") {
+              ?>
+                <div class="row">
+                  <div class="col-12">
+                    <div class="card card-body shadow">
+                      <div class="row">
+                        <div class="col-sm-12">
+                          <h2 class="text-muted valoresinsi"><b>Products</b></h2>
+                        </div>
+                        
+                      </div>
+                      <div class="row rowProduct overflow-auto">
+                        <?php
+                        include_once('../model/classes/tblProducts.php');
+                        $products = new Products();
+                        $products->setidClient($idusers);
+                        $resultsProdutos = $products->consulta("WHERE idClient = :idClient  ORDER BY idProduct ASC ");
+                        if ($resultsProdutos != null) {
+                          if (is_array($resultsProdutos) || is_object($resultsProdutos)) {
+                            foreach ($resultsProdutos as $rowProdutos) {
+                        ?>
+                              <div class="mb-4 " style="width: auto;">
+                                <div class="card-container">
+                                  <a data-toggle="modal" data-target="#modalEditarProduto" data-toggle="modal" data-target="#add_produto" data-id="<?php echo $rowProdutos->idProduct; ?>" class="hero-image-container">
+                                    <img class="hero-image produto-img" src="<?php
+
+                                                                              include_once('../model/classes/tblProductPictures.php');
+                                                                              $productsPicture = new ProductPictures();
+                                                                              $productsPicture->setidProduct($rowProdutos->idProduct);
+
+                                                                              $resultsProductsPicture = $productsPicture->consulta("WHERE idProduct = :idProduct");
+
+
+                                                                              if ($resultsProductsPicture != null) {
+                                                                                foreach ($resultsProductsPicture as $rowProdutos1) {
+                                                                                  echo $rowProdutos1->tblProductPicturePath;
+                                                                                }
+                                                                              } else {
+                                                                                echo "https://images.unsplash.com/photo-1507608158173-1dcec673a2e5?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1470&q=80";
+                                                                              }
+                                                                              ?>" alt="Spinning glass cube" />
+                                  </a>
+                                  <div class="col-12 mt-0 ">
+                                    <h1 class="mb-0"><a class="cortardescricao color-branco desc-perfil-text" href="#"><?php echo $rowProdutos->ProductName; ?></a></h1>
+                                    <p class="cortardescricao color-cinza-b produto-desc-text texto-desc"><?php echo $rowProdutos->ProdcuctDescription; ?></p>
+                                  </div>
+                                </div>
+                              </div>
+
+                        <?php }
+                          }
+                        } ?>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              <?php } else {  ?>
+
+              <?php } ?>
+            </div>
             <div class="col-md-12">
 
 

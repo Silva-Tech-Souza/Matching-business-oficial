@@ -1,5 +1,9 @@
 <?php
-session_start();
+if ( session_status() !== PHP_SESSION_ACTIVE )
+{
+   session_start();
+}
+include_once('../model/ErrorLog.php');
 date_default_timezone_set('America/Sao_Paulo');
 if ($_SESSION["id"] < 0 || $_SESSION["id"] == "") {
   header("Location: login.php");
@@ -148,14 +152,18 @@ if ($resultsBusinessCategory != null) {
   <!-- Header -->
   <?php include_once("widget/navbar.php"); ?><br><br><br><br><br>
   <!-- Body -->
-  <div class="col-12 p-3">
-    <div class="row">
+  <div class="col-12 p-3 ">
+    <div class="row ">
       <!-- Card Perfil -->
       <div class="col-12 col-md-4 p-3">
         <div class="col-12">
           <div class="card card-body p-0 shadow">
             <div class="col-12">
-              <img src="<?php echo $imgcapa; ?>" alt="" style="width: 100%; height: 120px;">
+              <img src="<?php if ($imgcapa != "Avatar.png" && $imgcapa != "") {
+                                                    echo "" . $imgcapa;
+                                                } else {
+                                                    echo "https://images2.alphacoders.com/131/1317606.jpeg";
+                                                } ?>" alt="" style="width: 100%; height: 120px;">
               <img src="<?php if ($imgperfil != "Avatar.png" && $imgperfil != "") {
                           echo $imgperfil;
                         } else {
@@ -181,10 +189,21 @@ if ($resultsBusinessCategory != null) {
               <div class="card card-body shadow">
                 <div class="row">
                   <div class="col-8 d-flex justify-content-start">
-                    <p class="d-inline m-0 color-preto"><a href="#">My saved search</a></p>
+                    <p class="d-inline m-0 color-preto"><a href="listcompani.php?text=mysp" class="nav-link">My saved search</a></p>
                   </div>
                   <div class="col-4 d-flex justify-content-end align-middle">
-                    <p class="d-inline m-0"><b>0</b></p>
+                    <p class="d-inline m-0"><b><?php include_once('../model/classes/tblSearch.php');
+                                                                            $Search = new Search();
+                                                                            $Search->setidClient($iduser);
+                                                                            $resultSearch = $Search->consulta("WHERE idClient = :idClient");
+                                                                            $numSearch = 0;
+                                                                            if ($resultSearch != null) {
+                                                                                foreach ($resultSearch as $resultConectUnidSearch) {
+                                                                                    $numSearch += 1;
+                                                                                }
+                                                                            }
+                                                                            echo $numSearch;
+                                                                            ?></b></p>
                   </div>
 
 
@@ -198,7 +217,7 @@ if ($resultsBusinessCategory != null) {
               <div class="card card-body shadow">
                 <div class="row">
                   <div class="col-8 d-flex justify-content-start">
-                    <p class=d-inline m-0 color-preto"><a href="#" data-toggle="modal" data-target="#exampleModalconect" class="nav-link">Want to Connect</a></p>
+                    <p class="d-inline m-0 color-preto"><a href="#" data-toggle="modal" data-target="#exampleModalconect" class="nav-link">Want to Connect</a></p>
                   </div>
                   <div class="col-4 d-flex justify-content-end align-middle">
                     <p class="d-inline m-0"><b><?php include_once('../model/classes/tblConect.php');
@@ -381,7 +400,7 @@ if ($resultsBusinessCategory != null) {
 
                     include_once('../model/classes/tblRangeValues.php');
 
-                   
+
                     $Fob3 = $row->Fob_3Y;
                     $nVol3 = $row->Vol_3Y;
                     $tblRangeValues = new RangeValues();
@@ -497,11 +516,30 @@ if ($resultsBusinessCategory != null) {
         <div class="card card-body shadow">
           <div class="row">
             <div class="col-2 d-flex justify-content-start">
+              <img src="<?php if ($imgperfil != "Avatar.png" && $imgperfil != "") {
+                          echo $imgperfil;
+                        } else {
+                          echo "assets/img/Avatar.png";
+                        } ?>" alt="user" class="nav-profile-img" onerror="this.onerror=null; this.src='assets/img/Avatar.png'">
+
+            </div>
+            <div class="col-6 d-flex justify-content-start d-flex align-items-center">
+              <p class="mb-0 text-center align-middle" style="font-size:larger"><b><?php echo $username;?></b></p>
+
+            </div>
+            <div class="col-4 d-flex justify-content-end d-flex align-items-center">
+              <input class="insertpost btn btn-warning pl-4 pr-4 no-border p-3 post-btn-confirm" type="submit" name="post" value="+ Edit">
+                <input class="insertpost btn btn-danger pl-4 pr-4 no-border p-3 post-btn-confirm" disabled  type="submit" name="post" value=" Delet">
+            </div>
+          </div>
+          <hr>
+          <div class="row">
+            <div class="col-2 d-flex justify-content-start">
               <img src="assets/img/Avatar.png" alt="user" class="nav-profile-img" onerror="this.onerror=null; this.src='assets/img/Avatar.png'">
 
             </div>
             <div class="col-6 d-flex justify-content-start d-flex align-items-center">
-              <p class="mb-0 text-center align-middle" style="font-size:larger"><b>Funcionario 1</b></p>
+              <p class="mb-0 text-center align-middle" style="font-size:larger"><b>Colaborador 2</b></p>
 
             </div>
             <div class="col-4 d-flex justify-content-end d-flex align-items-center">
@@ -517,7 +555,7 @@ if ($resultsBusinessCategory != null) {
 
             </div>
             <div class="col-6 d-flex justify-content-start d-flex align-items-center">
-              <p class="mb-0 text-center align-middle" style="font-size:larger"><b>Funcionario 2</b></p>
+              <p class="mb-0 text-center align-middle" style="font-size:larger"><b>Colaborador 3</b></p>
 
             </div>
             <div class="col-4 d-flex justify-content-end d-flex align-items-center">
@@ -533,7 +571,7 @@ if ($resultsBusinessCategory != null) {
 
             </div>
             <div class="col-6 d-flex justify-content-start d-flex align-items-center">
-              <p class="mb-0 text-center align-middle" style="font-size:larger"><b>Funcionario 3</b></p>
+              <p class="mb-0 text-center align-middle" style="font-size:larger"><b>Colaborador 4</b></p>
 
             </div>
             <div class="col-4 d-flex justify-content-end d-flex align-items-center">
@@ -549,23 +587,7 @@ if ($resultsBusinessCategory != null) {
 
             </div>
             <div class="col-6 d-flex justify-content-start d-flex align-items-center">
-              <p class="mb-0 text-center align-middle" style="font-size:larger"><b>Funcionario 4</b></p>
-
-            </div>
-            <div class="col-4 d-flex justify-content-end d-flex align-items-center">
-              <input class="insertpost btn btn-primary pl-4 pr-4 no-border p-3 post-btn-confirm" type="submit" name="post" value="+ Add">
-
-              </input>
-            </div>
-          </div>
-          <hr>
-          <div class="row">
-            <div class="col-2 d-flex justify-content-start">
-              <img src="assets/img/Avatar.png" alt="user" class="nav-profile-img" onerror="this.onerror=null; this.src='assets/img/Avatar.png'">
-
-            </div>
-            <div class="col-6 d-flex justify-content-start d-flex align-items-center">
-              <p class="mb-0 text-center align-middle" style="font-size:larger"><b>Funcionario 5</b></p>
+              <p class="mb-0 text-center align-middle" style="font-size:larger"><b>Colaborador 5</b></p>
 
             </div>
             <div class="col-4 d-flex justify-content-end d-flex align-items-center">
@@ -950,7 +972,7 @@ if ($resultsBusinessCategory != null) {
                       foreach ($resultsOperation as $rowOperation) { ?>
 
                         <li class="recommended-user icone-net" style="margin-bottom: 20px;">
-                          <form method="POST" enctype="multipart/form-data" class="w-100 h-100 d-flex">
+                          <form method="POST" enctype="multipart/form-data" action="../controller/profileController.php" class="w-100 h-100 d-flex">
                             <input class="form-control bordainput" value="<?php echo $rowviews->id; ?>" autocomplete="off" name="idconectar" type="hidden">
                             <input class="form-control bordainput" value="<?php echo $rowviews->idUserPed; ?>" autocomplete="off" name="idperfilpedido" type="hidden">
                             <div class="col-2 justify-content-center m-0 p-0 d-flex justify-content-end align-middle">
@@ -1058,8 +1080,8 @@ if ($resultsBusinessCategory != null) {
                             <input class="form-control bordainput" value="<?php echo $rowviews->idUserPed; ?>" autocomplete="off" name="idperfilpedido" type="hidden">
                             <div class="col-2 justify-content-center m-0 p-0 d-flex justify-content-end align-middle">
                               <a href="viewProfile.php?profile=<?php echo $rowcliente->idClient; ?>">
-                                <img src="<?php if ($rowOperation->PersonalUserPicturePath != "Avatar.png" && $rowOperation->PersonalUserPicturePath != "" && file_exists("" . $rowOperation->PersonalUserPicturePath)) {
-                                            echo "" . $rowOperation->PersonalUserPicturePath;
+                                <img src="<?php if ($rowcliente->PersonalUserPicturePath != "Avatar.png" && $rowcliente->PersonalUserPicturePath != "" && file_exists("" . $rowcliente->PersonalUserPicturePath)) {
+                                            echo "" . $rowcliente->PersonalUserPicturePath;
                                           } else {
                                             echo "assets/img/Avatar.png";
                                           } ?>" alt="user" alt="An unknown user." onerror="this.onerror=null; this.src='assets/img/Avatar.png'"></a>
@@ -1165,15 +1187,15 @@ if ($resultsBusinessCategory != null) {
 
                 ?>
 
-                        <li class="recommended-user icone-net mb-1" style="justify-content: normal !important;">
+                        <li class="recommended-user  mb-1" style="justify-content: normal !important;">
 
                           <div class="col-1 justify-content-center m-0 p-0">
                             <a href="viewProfile.php?profile=<?php echo $rowcliente->idClient; ?>">
-                              <img src="<?php if ($rowOperation->PersonalUserPicturePath != "Avatar.png" && $rowOperation->PersonalUserPicturePath != "" && file_exists("" . $rowOperation->PersonalUserPicturePath)) {
-                                          echo "" . $rowOperation->PersonalUserPicturePath;
+                              <img src="<?php if ($rowcliente->PersonalUserPicturePath != "Avatar.png" && $rowcliente->PersonalUserPicturePath != "" &&  $rowcliente->PersonalUserPicturePath != null) {
+                                          echo "" . $rowcliente->PersonalUserPicturePath;
                                         } else {
                                           echo "assets/img/Avatar.png";
-                                        } ?>" alt="user" alt="An unknown user." onerror="this.onerror=null; this.src='assets/img/Avatar.png'" class="nav-profile-img"></a>
+                                        } ?>" alt="user" alt="An unknown user." onerror="this.onerror=null;" class="nav-profile-img"></a>
                           </div>
                           <div class="col-8 p-0 justify-content-start align-items-center">
                             <p class="network-username-text"><a class="color-preto" href="viewProfile.php?profile=<?php echo $rowcliente->idClient; ?>"><b><?php echo $rowcliente->FirstName; ?><b> </a></p>

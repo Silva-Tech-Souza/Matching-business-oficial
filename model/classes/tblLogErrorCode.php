@@ -30,19 +30,16 @@ class LogErrorCode{
 
         
 
-        $sql = "INSERT INTO tblLogErrorCode (idLogErrorCode,DescLogError) VALUES (:idLogErrorCode, :DescLogError)";
+        $sql = "INSERT INTO tblLogErrorCode (DescLogError) VALUES ( :DescLogError)";
         $query = $this->dbh->prepare($sql);
         
-        if($this->idLogErrorCode != null){
-            $query->bindParam(':idLogErrorCode', $this->idLogErrorCode, PDO::PARAM_INT);
-        }
         if($this->DescLogError != null){
             $query->bindParam(':DescLogError', $this->DescLogError, PDO::PARAM_STR);
         }
 
 
         $query->execute();
-        return $query;
+        return $this->dbh->lastInsertId();
 
     }
 

@@ -1,10 +1,9 @@
 // Evento de instalação do Service Worker
 self.addEventListener('install', function(event) {
   event.waitUntil(
-    caches.open('cache-v1').then(function(cache) {
+    caches.open('cache-v5').then(function(cache) {
       return cache.addAll([
         '../visual.matchingbusiness.online/',
-       
         // Adicione aqui outros recursos estáticos que você deseja armazenar em cache
       ]);
     })

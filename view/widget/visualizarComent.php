@@ -1,6 +1,9 @@
 <?php
-session_start();
-error_reporting(0);
+if ( session_status() !== PHP_SESSION_ACTIVE )
+{
+   session_start();
+}
+
 date_default_timezone_set('America/Sao_Paulo');
 
 
@@ -8,7 +11,7 @@ $idPost = $_GET['idFeed'];
 $iduser = $_SESSION["id"];
 include_once('../../model/classes/tbPostComent.php');
 
-if ($_GET["texto"] != "") {
+if (isset($_GET["texto"]) && $_GET["texto"] != "") {
     $idFeed = $_GET["idFeed"];
     $texto = $_GET["texto"];
 

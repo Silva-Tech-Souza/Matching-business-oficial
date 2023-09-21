@@ -1850,8 +1850,8 @@ input {
     margin: 0;
     padding: 0 1em;
     line-height: 3em;
-    color: #369;
-    font-weight: 600;
+    color: #5eafff !important;
+    font-weight: 900;
     position: relative
 }
 

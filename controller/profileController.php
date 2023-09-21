@@ -671,7 +671,7 @@ if (isset($_POST["updateproduto"])) {
     $conect->setid($idconect);
     $conect->setstatus('1');
 
-    $conect->atualizar("status = '1' WHERE id  = :id ");
+    $conect->atualizar("status = '1' WHERE id = :id ");
   
   
     //$sqlinsertpost = "INSERT INTO tblsearchprofile_results (idUsuario, idClienteEncontrado, idTipoNotif) VALUES (:idUsuario, :idClienteEncontrado, '6')";

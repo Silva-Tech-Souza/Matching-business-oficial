@@ -1,6 +1,8 @@
 <?php
-session_start();
-//error_reporting(0);
+if ( session_status() !== PHP_SESSION_ACTIVE )
+{
+   session_start();
+}
 header("Access-Control-Allow-Origin: *");
 date_default_timezone_set('America/Sao_Paulo');
 
@@ -98,7 +100,7 @@ $iduser = $_SESSION["id"];
                                                                                             ?>">
                 <input type="hidden" id="id" name="id" value="<?php echo $rownotif->id; ?>">
                 <input type="hidden" id="url" name="url" value="<?php echo $rownotif->url; ?>">
-                <a class="notification notif-zoom">
+                <a class="notification notif-zoom" href="<?php echo $rownotif->url;?>">
 
                     <div class="row justify-content-start" href="<?php echo $rownotif->url;?>">
                         <div class="col-2 ">

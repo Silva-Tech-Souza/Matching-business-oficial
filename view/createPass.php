@@ -1,11 +1,9 @@
 <?php
 session_start();
-error_reporting(0);
+
 date_default_timezone_set('America/Sao_Paulo');
 
-if ($_SESSION['sessao'] > 0) {
-  header('location: profile.php');
-}
+
 $email = "";
 $codigoVerifEmail = $_GET['codigoCadastroIncompleto'];
 $decodificado = urldecode(str_replace("274bussiness5", "", str_replace("4matching7", "", $codigoVerifEmail)));
@@ -37,7 +35,45 @@ if ($codigoVerifEmail != "" && $codigoVerifEmail != '0') {
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
   <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+  <style>
+    /* The message box is shown when the user clicks on the password field */
+    #message {
 
+      background: #f1f1f1;
+      color: #000;
+      position: relative;
+      padding: 12px;
+      margin-top: 9px;
+    }
+
+    #message p {
+      padding: 5px 35px;
+      font-size: 12px;
+      margin-bottom: 0 !important;
+    }
+
+    /* Add a green text color and a checkmark when the requirements are right */
+    .valid {
+      color: green;
+    }
+
+    .valid:before {
+      position: relative;
+      left: -35px;
+      content: "✔";
+    }
+
+    /* Add a red text color and an "x" when the requirements are wrong */
+    .invalid {
+      color: red;
+    }
+
+    .invalid:before {
+      position: relative;
+      left: -35px;
+      content: "✖";
+    }
+  </style>
 
 
 </head>
@@ -47,29 +83,46 @@ if ($codigoVerifEmail != "" && $codigoVerifEmail != '0') {
     <div class="col-12">
       <div class="row">
         <form method="POST" action="../controller/createPassController.php" onsubmit="return validarSenha(this);" enctype="multipart/form-data" style="text-align: center;justify-content: center;align-items: center;">
-        <h1 class="color-branco titulologin" style="font-size: 40px;">Create your password: </h1>
+          <h1 class="color-branco titulologin" style="font-size: 40px;">Create your password: </h1>
           <fieldset>
-          <input type="hidden" name="email" id="email" value="<?php echo $email; ?>" required>
-            <div class="col-12"  style="text-align: initial; font-size: large;">
-            <label class="color-branco" for="password">Password </label>
+            <input type="hidden" name="email" id="email" value="<?php echo $email; ?>" required>
+            <div class="col-12" style="text-align: initial; font-size: large;">
+              <label class="color-branco" for="password">Password </label>
               <div class="input-group mb-2" id="input1">
-                <input  class="form-control inputtamanho"  maxlength="20" minlength="6" type="password" name="password" id="passwords" required placeholder="type here...">
-                
+                <div class="password-container" style="width: -webkit-fill-available;">
+                  <input autocomplete="off" class="form-control inputtamanho" id="psw" pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}" maxlength="20" minlength="6" type="password" name="password" required placeholder="type here...">
+                  <div class="input-group-text" id="togglePassword">
+                    <i class="fas fa-eye"></i>
+                  </div>
+                </div>
               </div>
             </div>
             <div class="col-12" style="text-align: initial; font-size: large;">
-            <label class="color-branco" for="password-confirm">Confirm password </label>
+              <label class="color-branco" for="password-confirm">Confirm password </label>
               <div class="input-group mb-2">
-                <input  class="form-control inputtamanho"  maxlength="20" minlength="6" type="password" name="password-confirm" id="password-confirm" required placeholder="repeat the password typed above">
-                
+                <div class="password-container" style="width: -webkit-fill-available;">
+                  <input autocomplete="off" class="form-control inputtamanho" id="psw2" pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}" maxlength="20" minlength="6" type="password" name="password-confirm" required placeholder="repeat the password typed above">
+                  <div class="input-group-text" id="togglePassword2">
+                    <i class="fas fa-eye"></i>
+                  </div>
+                </div>
               </div>
             </div>
-           
+            <div class="col-12" style="text-align: initial; font-size: large;">
+              <div id="message">
+                <h3>Password must contain the following:</h3>
+                <p id="letter" class="invalid">A <b>lowercase</b> letter</p>
+                <p id="capital" class="invalid">A <b>capital (uppercase)</b> letter</p>
+                <p id="number" class="invalid">A <b>number</b></p>
+                <p id="length" class="invalid">Minimum <b>8 characters</b></p>
+                <p id="confirm" class="invalid"><b>Confirm password</b></p>
+              </div>
+            </div>
             <p class="errologintxt"><?php echo $errosenha; ?></p><br>
             <div class="policy-agree" style="display: flex; width: 100%;margin-bottom: 1rem; font-size: 1.5rem; text-align: center; align-items: center; justify-content: center;">
-              <span class="color-branco">Checking this check box, you're accepting our <a href="#" id="openModalLink" data-toggle="modal" data-target="#exampleModalLong">privacy policy and terms</a> <input type="checkbox" style="width: 1.5rem; height: 1.5rem;"></span>
+              <span class="color-branco">Checking this check box, you're accepting our <a href="#" id="openModalLink" data-toggle="modal" data-target="#exampleModalLong">privacy policy and terms</a> <input type="checkbox" required style="width: 1.5rem; height: 1.5rem;"></span>
             </div>
-            <button style="width: 118px;font-size: small;" value="Create" name="create" type="submit"class="btn btn-primary login-btn inputtamanho">Create</button>
+            <button style="width: 118px;font-size: small;" value="Create" name="create" type="submit" class="btn btn-primary login-btn inputtamanho">Create</button>
           </fieldset>
         </form>
       </div>
@@ -80,10 +133,8 @@ if ($codigoVerifEmail != "" && $codigoVerifEmail != '0') {
 
 
 
-
   <!-- rights section footer -->
   <footer class="bg-dark text-center text-white loginfooter">
-
     <!-- Copyright -->
     <div class="text-center p-3" style="background-color: rgba(0, 0, 0, 0.2);">
       © 2023 All Rights Reserved:
@@ -98,18 +149,15 @@ if ($codigoVerifEmail != "" && $codigoVerifEmail != '0') {
       <div class="modal-content">
         <div class="modal-header" style="color: black;">
           <h5 class="modal-title" id="exampleModalLongTitle">Our Policy and Terms</h5>
-          </button>
+
         </div>
         <div class="modal-body" style="color: black;">
           <?php
-          //$sqlcontrato = "SELECT * from tblContract WHERE IdContractType = 1 AND ContractFlagAtive = 1 ORDER BY idContract DESC LIMIT 1";
-          //$querycontrato = $dbh->prepare($sqlcontrato);
-          //$querycontrato->execute();
-          //$resultscontrato = $querycontrato->fetchAll(PDO::FETCH_OBJ);
 
-          include_once('../model/classes/tblConect.php');
 
-          $conect = new Conect();
+          include_once('../model/classes/tblContract.php');
+
+          $conect = new Contract();
 
           $resultscontrato = $conect->consulta("WHERE IdContractType = 1 AND ContractFlagAtive = 1 ORDER BY idContract DESC LIMIT 1 ");
 
@@ -128,10 +176,92 @@ if ($codigoVerifEmail != "" && $codigoVerifEmail != '0') {
     </div>
   </div>
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.bundle.min.js" integrity="sha384-HwwvtgBNo3bZJJLYd8oVXjrBZt8cqVSpeBNS5n7C8IVInixGAoxmnlMuBnhbgrkm" crossorigin="anonymous"></script>
+
+
   <script>
+    var myInputconfirm = document.getElementById("psw2");
+    var myInput = document.getElementById("psw");
+    var letter = document.getElementById("letter");
+    var capital = document.getElementById("capital");
+    var number = document.getElementById("number");
+    var length = document.getElementById("length");
+    var confirm = document.getElementById("confirm");
+    // When the user clicks on the password field, show the message box
+
+    const togglePasswordButton = document.getElementById('togglePassword');
+    const togglePasswordButton2 = document.getElementById('togglePassword2');
+    togglePasswordButton.addEventListener('click', function() {
+      const type = myInput.getAttribute('type') === 'password' ? 'text' : 'password';
+      myInput.setAttribute('type', type);
+    });
+    togglePasswordButton2.addEventListener('click', function() {
+      const type = myInputconfirm.getAttribute('type') === 'password' ? 'text' : 'password';
+      myInputconfirm.setAttribute('type', type);
+    });
+    myInputconfirm.onkeyup = function() {
+      // Validate length
+      if (myInput.value == myInputconfirm.value) {
+        confirm.classList.remove("invalid");
+        confirm.classList.add("valid");
+      } else {
+        confirm.classList.remove("valid");
+        confirm.classList.add("invalid");
+      }
+    }
+    // When the user starts to type something inside the password field
+    myInput.onkeyup = function() {
+      // Validate lowercase letters
+      var lowerCaseLetters = /[a-z]/g;
+      if (myInput.value.match(lowerCaseLetters)) {
+        letter.classList.remove("invalid");
+        letter.classList.add("valid");
+      } else {
+        letter.classList.remove("valid");
+        letter.classList.add("invalid");
+      }
+
+      // Validate capital letters
+      var upperCaseLetters = /[A-Z]/g;
+      if (myInput.value.match(upperCaseLetters)) {
+        capital.classList.remove("invalid");
+        capital.classList.add("valid");
+      } else {
+        capital.classList.remove("valid");
+        capital.classList.add("invalid");
+      }
+
+      // Validate numbers
+      var numbers = /[0-9]/g;
+      if (myInput.value.match(numbers)) {
+        number.classList.remove("invalid");
+        number.classList.add("valid");
+      } else {
+        number.classList.remove("valid");
+        number.classList.add("invalid");
+      }
 
 
 
+      // Validate length
+      if (myInput.value.length >= 8) {
+        length.classList.remove("invalid");
+        length.classList.add("valid");
+      } else {
+        length.classList.remove("valid");
+        length.classList.add("invalid");
+      }
+
+      // Validate length
+      if (myInput.value == myInputconfirm.value) {
+        confirm.classList.remove("invalid");
+        confirm.classList.add("valid");
+      } else {
+        confirm.classList.remove("valid");
+        confirm.classList.add("invalid");
+      }
+    }
+  </script>
+  <script>
     function validarSenha() {
       var senhaInput = document.getElementById('password');
       var senhaConfirmadaInput = document.getElementById('password-confirm');
@@ -181,21 +311,20 @@ if ($codigoVerifEmail != "" && $codigoVerifEmail != '0') {
 
     });
 
-    $(document).ready(function(){
-  $('#showPassword').on('click', function(){
-    console.log("teste");
-    var passwordField = $('#passwords');
-    var passwordFieldType = passwordField.attr('type');
-    if(passwordFieldType == 'passwords')
-    {
-        passwordField.attr('type', 'text');
-        $(this).val('Hide');
-    } else {
-        passwordField.attr('type', 'passwords');
-        $(this).val('Show');
-    }
-  });
-});
+    $(document).ready(function() {
+      $('#showPassword').on('click', function() {
+        console.log("teste");
+        var passwordField = $('#passwords');
+        var passwordFieldType = passwordField.attr('type');
+        if (passwordFieldType == 'passwords') {
+          passwordField.attr('type', 'text');
+          $(this).val('Hide');
+        } else {
+          passwordField.attr('type', 'passwords');
+          $(this).val('Show');
+        }
+      });
+    });
   </script>
 
 </body>

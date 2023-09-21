@@ -1,6 +1,8 @@
 <?php
-session_start();
-//error_reporting(0);
+if ( session_status() !== PHP_SESSION_ACTIVE )
+{
+   session_start();
+}
 header("Access-Control-Allow-Origin: *");
 date_default_timezone_set('America/Sao_Paulo');
 $iduser = $_SESSION["id"];
@@ -55,9 +57,9 @@ $searchProfile = new SearchProfile_Results;
 $searchProfile->setidUsuario($idCliente);
 $searchProfile->setidClienteEncontrado($iduser);
 $searchProfile->setpostId($idPost);
-$searchProfile->seturl("https");
+$searchProfile->seturl("#");
 $searchProfile->setidTipoNotif("5");
-
+$searchProfile->setestadoNotif("0");
 $searchProfile->cadastrar();
 
 ?>

@@ -1,14 +1,29 @@
 <?php
-session_start();
-error_reporting(0);
+if ( session_status() !== PHP_SESSION_ACTIVE )
+{
+   session_start();
+}
+include_once('../model/ErrorLog.php');
 date_default_timezone_set('America/Sao_Paulo');
 if ($_SESSION["id"] < 0 || $_SESSION["id"] == "") {
   header("Location: login.php");
 }
 $iduser = $_SESSION["id"];
-$busines = $_GET["busines"];
-$operation = $_GET["operation"];
-$text = $_GET["text"];
+if(isset($_GET["busines"])){
+  $busines = $_GET["busines"];
+}else{
+  $busines = null;
+}
+if(isset($_GET["operation"])){
+  $operation = $_GET["operation"];
+}else{
+  $operation = null;
+}
+if(isset($_GET["text"])){
+  $text = $_GET["text"];
+}else{
+  $text = null;
+}
 
 $_SESSION["n"] = 5;
 
@@ -449,7 +464,9 @@ if ($results != null) {
                                                       }
                                                     }
                                                     ?> - <?php
-                                                          echo  $contoperationnotresults; ?>
+                                                        if(isset($contoperationnotresults)){
+                                                          echo  $contoperationnotresults; 
+                                                        }?>
 
 
                     </h2><br>
@@ -466,7 +483,11 @@ if ($results != null) {
                             <div class="card rounded-4 shadow celularcard">
                               <div class="card-body p-0 m-0" style="min-height: 300px !IMPORTANT;">
                                 <div class="col-12 mh-25">
-                                  <img class="mh-25 rounded-top-3" src="https://images2.alphacoders.com/131/1317606.jpeg" alt="Descrição da Imagem" style="max-height: 100px; width: 100%;">
+                                  <img class="mh-25 rounded-top-3" src="<?php if ($rowOperationselect->LogoPicturePath != "Avatar.png" && $rowOperationselect->LogoPicturePath != "") {
+                                                  echo "" . $rowOperationselect->LogoPicturePath;
+                                                } else {
+                                                  echo "https://images2.alphacoders.com/131/1317606.jpeg";
+                                                } ?>" alt="Descrição da Imagem" style="max-height: 100px; width: 100%;">
                                 </div>
                                 <div class="row p-0 ml-0">
                                   <div class="col-5 d-flex justify-content-start p-0 m-0 " style="height: 0px;">
@@ -554,7 +575,11 @@ if ($results != null) {
                           <div class="card rounded-4 shadow celularcard">
                             <div class="card-body p-0 m-0" style="min-height: 300px !IMPORTANT;">
                               <div class="col-12 mh-25">
-                                <img class="mh-25 rounded-top-3" src="https://images2.alphacoders.com/131/1317606.jpeg" alt="Descrição da Imagem" style="max-height: 100px; width: 100%;">
+                                <img class="mh-25 rounded-top-3" src="<?php if ($rowOperationselect->LogoPicturePath != "Avatar.png" && $rowOperationselect->LogoPicturePath != "") {
+                                                  echo "" . $rowOperationselect->LogoPicturePath;
+                                                } else {
+                                                  echo "https://images2.alphacoders.com/131/1317606.jpeg";
+                                                } ?>" alt="Descrição da Imagem" style="max-height: 100px; width: 100%;">
                               </div>
                               <div class="row p-0 ml-0">
                                 <div class="col-5 d-flex justify-content-start p-0 m-0 " style="height: 0px;">
@@ -653,7 +678,11 @@ if ($results != null) {
                                 <div class="card rounded-4 shadow celularcard">
                                   <div class="card-body p-0 m-0" style="min-height: 300px !IMPORTANT;">
                                     <div class="col-12 mh-25">
-                                      <img class="mh-25 rounded-top-3" src="https://images2.alphacoders.com/131/1317606.jpeg" alt="Descrição da Imagem" style="max-height: 100px; width: 100%;">
+                                      <img class="mh-25 rounded-top-3" src="<?php if ($rowOperationselect->LogoPicturePath != "Avatar.png" && $rowOperationselect->LogoPicturePath != "") {
+                                                  echo "" . $rowOperationselect->LogoPicturePath;
+                                                } else {
+                                                  echo "https://images2.alphacoders.com/131/1317606.jpeg";
+                                                } ?>" alt="Descrição da Imagem" style="max-height: 100px; width: 100%;">
                                     </div>
                                     <div class="row p-0 ml-0">
                                       <div class="col-5 d-flex justify-content-start p-0 m-0 " style="height: 0px;">
@@ -720,6 +749,35 @@ if ($results != null) {
                 }
               }
               if ($operation == null && $busines == null && $text != null) {
+                  
+                  if($text == "mysp"){?>
+                      <div class="carousel-filmes">
+                            <h1 id="filme" class="titulo2">Resultados do SEARCH PROFILES</h1><br>
+                               <div class=" owl-carousel owl-thema ">
+                          </div>
+                        </div>
+                        
+                         <?php
+                         include_once('../model/classes/tblSearch.php');
+                                                                            $Searchcard = new Search();
+                                                                            $Searchcard->setidClient($iduser);
+                                                                            $resultSearchcard = $Searchcard->consulta("WHERE idClient = :idClient");
+                                                                            if ($resultSearchcard != null) {
+                                                                                foreach ($resultSearchcard as $resultConectUnidSearch) {?>
+                                                                                  <div class="carousel-filmes">
+                            <h3 id="filme" class="titulo2">  <?php echo $resultConectUnidSearch->Nome ;?></h3>
+                               
+                                   <p>No results</p>
+                          
+                        </div>   
+                                                                                    
+                                                                              <?php    }}
+                         
+                         ?>
+                        
+             <?php      }else{
+                      
+                  
                 $operationsnomelike = new Operations();
 
                 $resultsOperationomelike = $operationsnomelike->consulta("WHERE NmOperation LIKE '%" . $text . "%'");
@@ -732,7 +790,9 @@ if ($results != null) {
                                                       echo $rowOperationomelike->NmOperation;
 
                                                       ?> - <?php
-                                                            echo  $contoperationnotresults; ?>
+                                                      if(isset($contoperationnotresults)){
+                                                        echo  $contoperationnotresults; 
+                                                      }?>
 
 
                       </h2><br>
@@ -749,7 +809,11 @@ if ($results != null) {
                               <div class="card rounded-4 shadow celularcard">
                                 <div class="card-body p-0 m-0" style="min-height: 300px !IMPORTANT;">
                                   <div class="col-12 mh-25">
-                                    <img class="mh-25 rounded-top-3" src="https://images2.alphacoders.com/131/1317606.jpeg" alt="Descrição da Imagem" style="max-height: 100px; width: 100%;">
+                                    <img class="mh-25 rounded-top-3" src="<?php if ($rowOperationselect->LogoPicturePath != "Avatar.png" && $rowOperationselect->LogoPicturePath != "") {
+                                                  echo "" . $rowOperationselect->LogoPicturePath;
+                                                } else {
+                                                  echo "https://images2.alphacoders.com/131/1317606.jpeg";
+                                                } ?>" alt="Descrição da Imagem" style="max-height: 100px; width: 100%;">
                                   </div>
                                   <div class="row p-0 ml-0">
                                     <div class="col-5 d-flex justify-content-start p-0 m-0 " style="height: 0px;">
@@ -823,7 +887,9 @@ if ($results != null) {
                                                       echo $rowBusinesslike->NmBusiness;
 
                                                       ?> - <?php
-                                                            echo  $contoperationnotresults; ?>
+                                                      if(isset($contoperationnotresults)){
+                                                        echo  $contoperationnotresults; 
+                                                      }?>
 
 
                       </h2><br>
@@ -840,7 +906,11 @@ if ($results != null) {
                               <div class="card rounded-4 shadow celularcard">
                                 <div class="card-body p-0 m-0" style="min-height: 300px !IMPORTANT;">
                                   <div class="col-12 mh-25">
-                                    <img class="mh-25 rounded-top-3" src="https://images2.alphacoders.com/131/1317606.jpeg" alt="Descrição da Imagem" style="max-height: 100px; width: 100%;">
+                                    <img class="mh-25 rounded-top-3" src="<?php if ($rowOperationselect->LogoPicturePath != "Avatar.png" && $rowOperationselect->LogoPicturePath != "") {
+                                                  echo "" . $rowOperationselect->LogoPicturePath;
+                                                } else {
+                                                  echo "https://images2.alphacoders.com/131/1317606.jpeg";
+                                                } ?>" alt="Descrição da Imagem" style="max-height: 100px; width: 100%;">
                                   </div>
                                   <div class="row p-0 ml-0">
                                     <div class="col-5 d-flex justify-content-start p-0 m-0 " style="height: 0px;">
@@ -912,7 +982,9 @@ if ($results != null) {
                                                       echo $rowBusinessCategorylike->NmBusinessCategory;
 
                                                       ?> - <?php
-                                                            echo  $contoperationnotresults; ?>
+                                                      if(isset($contoperationnotresults)){
+                                                        echo  $contoperationnotresults; 
+                                                      }?>
 
 
                       </h2><br>
@@ -929,7 +1001,11 @@ if ($results != null) {
                               <div class="card rounded-4 shadow celularcard">
                                 <div class="card-body p-0 m-0" style="min-height: 300px !IMPORTANT;">
                                   <div class="col-12 mh-25">
-                                    <img class="mh-25 rounded-top-3" src="https://images2.alphacoders.com/131/1317606.jpeg" alt="Descrição da Imagem" style="max-height: 100px; width: 100%;">
+                                    <img class="mh-25 rounded-top-3" src="<?php if ($rowOperationselect->LogoPicturePath != "Avatar.png" && $rowOperationselect->LogoPicturePath != "") {
+                                                  echo "" . $rowOperationselect->LogoPicturePath;
+                                                } else {
+                                                  echo "https://images2.alphacoders.com/131/1317606.jpeg";
+                                                } ?>" alt="Descrição da Imagem" style="max-height: 100px; width: 100%;">
                                   </div>
                                   <div class="row p-0 ml-0">
                                     <div class="col-5 d-flex justify-content-start p-0 m-0 " style="height: 0px;">
@@ -952,14 +1028,14 @@ if ($results != null) {
 
                                       <h5 class="fonte-principal">&nbsp;&nbsp;&nbsp;&nbsp;<i class="fa-solid fa-globe icon-notif-zoom mini-profile-icon"></i>&nbsp;&nbsp;<?php include_once('../model/classes/tblCountry.php');
 
-                                                                                                                                                                          $country = new Country();
+                                                                                                                                                                          $country1 = new Country();
 
-                                                                                                                                                                          $country->setidCountry($rowOperationselect->idCountry);
+                                                                                                                                                                          $country1->setidCountry($rowOperationselect->idCountry);
 
-                                                                                                                                                                          $resultsCountry = $country->consulta("WHERE idCountry = :idCountry ");
+                                                                                                                                                                          $resultsCountry1 = $country1->consulta("WHERE idCountry = :idCountry ");
 
-                                                                                                                                                                          if ($resultsCountry != null) {
-                                                                                                                                                                            foreach ($resultsCountry as $rowCountry) {
+                                                                                                                                                                          if ($resultsCountry1 != null) {
+                                                                                                                                                                            foreach ($resultsCountry1 as $rowCountry) {
                                                                                                                                                                               echo $rowCountry->NmCountry;
                                                                                                                                                                             }
                                                                                                                                                                           }
@@ -991,22 +1067,28 @@ if ($results != null) {
                 }
 
                 $Operationselectlike = new UserClients();
-                $resultsOperationselectlike = $Operationselectlike->consulta(" WHERE FirstName LIKE '%" . $text . "%' OR LastName LIKE '%" . $text . "%' OR FirstName LIKE '%" . $text . "%' OR JobTitle LIKE'%" . $text . "%'");
+                $resultsOperationselectlike = $Operationselectlike->consulta(" WHERE FirstName LIKE '%" . $text . "%' OR LastName LIKE '%" . $text . "%' OR FirstName LIKE '%" . $text . "%' OR JobTitle LIKE'%" . $text . "%'  OR CompanyName LIKE'%" . $text . "%'");
                 if ($resultsOperationselectlike != null) { ?>
                   <div class="carousel-filmes">
-                    <h2 id="filme" class="titulo2"><?php echo $text; ?> - <?php echo  $contoperationnotresults; ?>
+                    <h2 id="filme" class="titulo2"><?php echo $text; ?> - <?php if(isset($contoperationnotresults)){
+                                                                                  echo  $contoperationnotresults; 
+                                                                                } ?>
 
                     </h2><br>
 
-                   
 
-                      <div class=" owl-carousel owl-thema ">
+
+                    <div class=" owl-carousel owl-thema ">
                       <?php foreach ($resultsOperationselectlike as $rowOperationselect) { ?>
                         <div class="item celularcard">
                           <div class="card rounded-4 shadow celularcard">
                             <div class="card-body p-0 m-0" style="min-height: 300px !IMPORTANT;">
                               <div class="col-12 mh-25">
-                                <img class="mh-25 rounded-top-3" src="https://images2.alphacoders.com/131/1317606.jpeg" alt="Descrição da Imagem" style="max-height: 100px; width: 100%;">
+                                <img class="mh-25 rounded-top-3" src="<?php if ($rowOperationselect->LogoPicturePath != "Avatar.png" && $rowOperationselect->LogoPicturePath != "") {
+                                                  echo "" . $rowOperationselect->LogoPicturePath;
+                                                } else {
+                                                  echo "https://images2.alphacoders.com/131/1317606.jpeg";
+                                                } ?>" alt="Descrição da Imagem" style="max-height: 100px; width: 100%;">
                               </div>
                               <div class="row p-0 ml-0">
                                 <div class="col-5 d-flex justify-content-start p-0 m-0 " style="height: 0px;">
@@ -1029,14 +1111,14 @@ if ($results != null) {
 
                                   <h5 class="fonte-principal">&nbsp;&nbsp;&nbsp;&nbsp;<i class="fa-solid fa-globe icon-notif-zoom mini-profile-icon"></i>&nbsp;&nbsp;<?php include_once('../model/classes/tblCountry.php');
 
-                                                                                                                                                                      $country = new Country();
+                                                                                                                                                                      $country2 = new Country();
 
-                                                                                                                                                                      $country->setidCountry($rowOperationselect->idCountry);
+                                                                                                                                                                      $country2->setidCountry($rowOperationselect->idCountry);
 
-                                                                                                                                                                      $resultsCountry = $country->consulta("WHERE idCountry = :idCountry ");
+                                                                                                                                                                      $resultsCountry2 = $country2->consulta("WHERE idCountry = :idCountry ");
 
-                                                                                                                                                                      if ($resultsCountry != null) {
-                                                                                                                                                                        foreach ($resultsCountry as $rowCountry) {
+                                                                                                                                                                      if ($resultsCountry2 != null) {
+                                                                                                                                                                        foreach ($resultsCountry2 as $rowCountry) {
                                                                                                                                                                           echo $rowCountry->NmCountry;
                                                                                                                                                                         }
                                                                                                                                                                       }
@@ -1060,13 +1142,105 @@ if ($results != null) {
                             </div>
                           </div>
                         </div>
-                        <?php } ?>
-                      </div>
-                 
+                      <?php } ?>
+                    </div>
+
                   </div>
                 <?php } ?>
-              <?php
-              } ?>
+
+                <?php
+                include_once('../model/classes/tblCountry.php');
+                $countrylike = new Country();
+                $resultsCountrylike = $countrylike->consulta("WHERE NmCountry LIKE '%" . $text . "%' ");
+                if ($resultsCountrylike != null) {
+                 
+                  foreach ($resultsCountrylike as $rowCountrylike) {
+                    $paisclientepais = new UserClients();
+                    $paisclientepais->setidCountry($rowCountrylike->idCountry);
+                    $resultspaisclientepais = $paisclientepais->consulta(" WHERE idCountry = :idCountry");
+                    if ($resultspaisclientepais != null) { ?>
+                      <div class="carousel-filmes">
+                        <h2 id="filme" class="titulo2"><?php echo $text; ?> - <?php  ?>
+
+                        </h2><br>
+
+
+
+                        <div class=" owl-carousel owl-thema ">
+                          <?php foreach ($resultspaisclientepais as $rowpaiscliente) { ?>
+                            <div class="item celularcard">
+                              <div class="card rounded-4 shadow celularcard">
+                                <div class="card-body p-0 m-0" style="min-height: 300px !IMPORTANT;">
+                                  <div class="col-12 mh-25">
+                                    <img class="mh-25 rounded-top-3" src="<?php if ($rowOperationselect->LogoPicturePath != "Avatar.png" && $rowOperationselect->LogoPicturePath != "") {
+                                                  echo "" . $rowOperationselect->LogoPicturePath;
+                                                } else {
+                                                  echo "https://images2.alphacoders.com/131/1317606.jpeg";
+                                                } ?>" alt="Descrição da Imagem" style="max-height: 100px; width: 100%;">
+                                  </div>
+                                  <div class="row p-0 ml-0">
+                                    <div class="col-5 d-flex justify-content-start p-0 m-0 " style="height: 0px;">
+                                      <img src=" <?php if ($rowpaiscliente->PersonalUserPicturePath != "Avatar.png" && $rowpaiscliente->PersonalUserPicturePath != "") {
+                                                    echo "" . $rowpaiscliente->PersonalUserPicturePath;
+                                                  } else {
+                                                    echo "assets/img/Avatar.png";
+                                                  } ?>" alt="user" class="border-2 mini-profile-img " onclick="toggleMenu()">
+                                    </div>
+                                    <div class="col-6 p-0 m-0">
+                                      <h3 class="fonte-titulo cortardescricao"><?php echo  $rowpaiscliente->FirstName . " " . $rowpaiscliente->LastName; ?></h3>
+                                      <h6 class="fonte-principal cortardescricao"><?php echo  $rowpaiscliente->JobTitle . ' at ' . $rowpaiscliente->CompanyName ?></h6>
+                                    </div>
+                                  </div>
+                                  <div class="col-12 m-0 p-0">
+                                    <hr class="m-0">
+                                  </div>
+                                  <div class="row mt-3 pr-2">
+                                    <div class="col-9 m-0 p-0">
+
+                                      <h5 class="fonte-principal">&nbsp;&nbsp;&nbsp;&nbsp;<i class="fa-solid fa-globe icon-notif-zoom mini-profile-icon"></i>&nbsp;&nbsp;<?php 
+                                                                                                                                                                          include_once('../model/classes/tblCountry.php');
+                                                                                                                                                                          $country3 = new Country();
+
+                                                                                                                                                                          $country3->setidCountry($rowpaiscliente->idCountry);
+
+                                                                                                                                                                          $resultsCountry3 = $country3->consulta("WHERE idCountry = :idCountry ");
+
+                                                                                                                                                                          if ($resultsCountry3 != null) {
+                                                                                                                                                                            foreach ($resultsCountry3
+                                                                                                                                                                              as $rowCountry) {
+                                                                                                                                                                              echo $rowCountry->NmCountry;
+                                                                                                                                                                            }
+                                                                                                                                                                          }
+
+                                                                                                                                                                          ?> </h5>
+                                    </div>
+
+                                  </div>
+                                  <div class="row mt-3 pr-2" style="
+    padding-left: 6PX;
+    padding-right: 6px;
+">
+                                    <p class="pdescricaosp"><?php
+
+                                                            echo $rowpaiscliente->descricao;
+                                                            ?></p>
+                                  </div>
+                                  <div class="col-12">
+                                    <button type="button" class="btn btn-primary" style="width: -webkit-fill-available;left: 0;right: 0;bottom: 0;position: absolute;">View</button>
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
+                      <?php }
+                        }
+                      } ?>
+                        </div>
+
+                      </div>
+                    <?php }}?>
+
+                  <?php
+                } ?>
 
 
 

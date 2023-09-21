@@ -1,6 +1,9 @@
 <?php
-session_start();
-error_reporting(0);
+if ( session_status() !== PHP_SESSION_ACTIVE )
+{
+   session_start();
+}
+include_once('../model/ErrorLog.php');
 date_default_timezone_set('America/Sao_Paulo');
 include('../model/classes/conexao.php');
 $_SESSION["FlagOperation"] = 0;
@@ -20,7 +23,8 @@ if ($results != null) {
         $corebusiness = $row->CoreBusinessId;
         $satBusinessId =  $row->SatBusinessId;
         $imgperfilgeral = $row->PersonalUserPicturePath;
-    
+      $imgperfil = $row->PersonalUserPicturePath;
+    $imgcapa = $row->LogoPicturePath;
     }
 }
 
@@ -176,10 +180,10 @@ if ($resultsoperation != null) {
     <!-- Header -->
     <?php include_once("widget/navbar.php"); ?>
     <div class="container-fluid">
-        <div class="row justify-content-between telatoda">
+        <div class="row justify-content-between telatoda ">
             <div class="col-5 text-center p-0  mb-2 imglefturl telatoda d-none d-md-block">
             </div>
-            <div class="col-12 col-sm-12 col-md-12 col-lg-7 col-xl-7 text-center p-10  mb-2 arrastartela">
+            <div class="col-12 col-sm-12 col-md-12 col-lg-7 col-xl-7 text-center p-10  mb-2 arrastartela margemmnavbar">
                 <div class="card px-0  pb-0 mt-3 mb-3">
                     <h2 id="heading">Create Search Profiles</h2>
                     <p>Create searches to find the right match</p>
@@ -300,7 +304,7 @@ if ($resultsoperation != null) {
                                     </div>
                                     
                                 </div>
-                            </div> <input type="button" name="next" class="next action-button" value="Submit" /> <input type="button" name="previous" class="previous action-button-previous" value="Previous" />
+                            </div> <input type="button" name="next" class="next action-button" value="Create" /> <input type="button" name="previous" class="previous action-button-previous" value="Previous" />
                         </fieldset>
                         <fieldset class="p-2">
                             <div class="form-card">
@@ -318,7 +322,7 @@ if ($resultsoperation != null) {
                                     </div>
                                     <div class="col-6 text-center">
 
-                                        <a href="searchPage.php" class="btn action-button  fontsizelager" style="float: left">Creates New</a>
+                                      <input   type="submit" name="news"   class="btn action-button  fontsizelager" value="Creates New" style="float: left">
                                     </div>
                                     <div class="col-6 text-center">
                                     <input   type="submit" name="next"  class="btn action-button  fontsizelager" value="Results" /> 

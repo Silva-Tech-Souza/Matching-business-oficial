@@ -1,6 +1,9 @@
 <?php
-session_start();
-//error_reporting(0);
+if ( session_status() !== PHP_SESSION_ACTIVE )
+{
+   session_start();
+}
+include_once('../model/ErrorLog.php');
 header("Access-Control-Allow-Origin: *");
 date_default_timezone_set('America/Sao_Paulo');
 

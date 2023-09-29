@@ -3,8 +3,10 @@ if ( session_status() !== PHP_SESSION_ACTIVE )
 {
    session_start();
 }
+if(isset($_SESSION['error'])){
+    error_reporting(0);
+}
 if (isset($_COOKIE["remember_me"])) {
-
   header("Location: ../controller/loginController.php");
 }
 error_reporting(0);

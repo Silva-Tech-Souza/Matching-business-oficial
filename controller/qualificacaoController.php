@@ -53,10 +53,10 @@ session_start();
         //$querycategoria->bindParam(':idClient', $id, PDO::PARAM_INT);
         //$querycategoria->execute();
 
-        echo '<br>OperationsIdg: ' . $operationIdG;
-        echo '<br>coreBusinnesst: ' . $coreBusinesst;
-        echo '<br>satelliet: ' . $satellitet;
-        echo '<br>id: ' . $id;
+        //echo '<br>OperationsIdg: ' . $operationIdG;
+        //echo '<br>coreBusinnesst: ' . $coreBusinesst;
+        //echo '<br>satelliet: ' . $satellitet;
+        //echo '<br>id: ' . $id;
 
         include_once('../model/classes/tblUserClients.php');
 
@@ -77,8 +77,6 @@ session_start();
         //$query->execute();
         //$results = $query->fetchAll(PDO::FETCH_OBJ);
         //if ($query->rowCount() > 0) {return $results;}else{return null;}
-
-     
 
         $userClients3 = new UserClients();
 

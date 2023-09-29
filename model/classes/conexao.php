@@ -1,13 +1,13 @@
 <?php 
-/*define('DB_HOST','localhost');
+define('DB_HOST','localhost');
 define('DB_USER','root');
 define('DB_PASS','');
-define('DB_NAME','silvat81_business');*/
+define('DB_NAME','silvat81_business');
 
-define('DB_HOST','br628.hostgator.com.br');
+/*define('DB_HOST','br628.hostgator.com.br');
 define('DB_USER','silvat81_silvatc');
 define('DB_PASS','Lucas@2235');
-define('DB_NAME','silvat81_business');
+define('DB_NAME','silvat81_business');*/
 class Conexao{
 
     protected $dbh;

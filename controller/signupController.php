@@ -19,14 +19,25 @@
 
         $userClients = new UserClients();
         $userClients->setemail($email);
-        $userClients->settaxid($taxid);
 
-        $results = $userClients->consulta("WHERE email = :email AND taxid = :taxid");
+        $results = $userClients->consulta("WHERE email = :email");
 
         if ($results != null){
             $_SESSION['signuperro']= "Unable to register with this email";
-            header("Location: ../view/signup.php?teste=true");
-        }else{
+            header("Location: ../view/signup.php");
+        }
+
+        $userClients2 = new UserClients();
+        $userClients2->settaxid($taxid);
+        
+        $results2 = $userClients2->consulta("WHERE taxid = :taxid");
+
+        if ($results2 != null){
+            $_SESSION['signuperro']= "Unable to register with this taxid";
+            header("Location: ../view/signup.php");
+        }
+
+        if($results == null && $results2 == null){
 
             $cadastrarEmpresas = new Empresas();
             $cadastrarEmpresas->setNome($companyname);

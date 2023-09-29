@@ -1,4 +1,8 @@
 <?php
+if ( session_status() !== PHP_SESSION_ACTIVE )
+{
+  session_start();
+}
 
 function myLog()
 {
@@ -17,6 +21,8 @@ function myLog()
                                         "\nLinha: " . $line);
     
         $idLogErrorCode = $logErrorCode->cadastrar();
+
+        $_SESSION['error'] = TRUE;
 
         new Exception($message = $message,$code = $line,$previous=null);
 
@@ -107,6 +113,8 @@ function log_error( $code , $error , $file , $line )
                                     "\nLinha: " . $line);
 
     $idLogErrorCode = $logErrorCode->cadastrar();
+
+    $_SESSION['error'] = TRUE;
 
     new Exception($message = $error ,$code = $code ,$previous=null);
 

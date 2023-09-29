@@ -3,6 +3,9 @@ if ( session_status() !== PHP_SESSION_ACTIVE )
 {
    session_start();
 }
+if(isset($_SESSION['error'])){
+    error_reporting(0);
+}
 
 date_default_timezone_set('America/Sao_Paulo');
 
@@ -32,7 +35,7 @@ if ($tblOperations1 != null) {
     </div>
     <div class="col-sm-12">
       <div class="form-floating">
-        <select name="business[]" class=" form-select categmulti border-dark inputtamanho" multiple='multiple' id="floatingSelectGrid" aria-label="Floating label select example">
+        <select name="business[]" onchange="liberarNotaoNext()" class=" form-select categmulti border-dark inputtamanho" multiple='multiple' id="floatingSelectGrid" aria-label="Floating label select example">
           <option>Select</option>
           <?php
           include_once('../../model/classes/tblBusiness.php');
@@ -81,4 +84,6 @@ if ($tblOperations1 != null) {
       </div>
     </div>
   <?php } ?>
-<?php } ?>
+<?php 
+}?>
+

@@ -9,8 +9,12 @@ include_once('../model/classes/tblSearchSpecification.php');
 
 $corbusiness = $_POST["corbusiness"];
 //echo "corbusiness: " . $corbusiness . "<br>";
-$news = $_POST["news"];
-$next = $_POST["next"];
+if(isset($_POST["news"])){
+    $news = $_POST["news"];
+}
+if(isset($_POST["next"])){
+    $news = $_POST["next"];
+}
 if ($_POST["flagtipo"] == "D") {
     $business = $corbusiness;
   //  echo "business: " . $business;
@@ -126,16 +130,16 @@ if($_POST["flagtipo"] == "A"){
 
         }
 
-    //    echo 'Cadastro Realizado com sucesso';
-    if($news == "" || $news == null){
-        header("Location: ../view/searchPage.php");
-}else{
-     if($news != "" || $news != null){
-        header("Location: ../view/searchPage.php");
-}else{
-    header("Location: ../view/listcompani.php?text=mysp");
-}
-}        
+        //    echo 'Cadastro Realizado com sucesso';
+        if(!isset($news)){
+            header("Location: ../view/searchPage.php");
+        }else{
+            if($news != "" || $news != null){
+                header("Location: ../view/searchPage.php");
+            }else{
+                header("Location: ../view/listcompani.php?text=mysp");
+            }
+        }        
     }
     
 
@@ -184,7 +188,7 @@ if($_POST["flagtipo"] == "A"){
         echo "niveloperacao: " . $_POST["niveloperacao"] . "<br>";
         */
 
-        $searchspecification = new SearchEspecification();
+        $searchspecification = new SearchSpecification();
 
         $searchspecification->setidSearch($idSearch);
         $searchspecification->setidNumEmpregados($_POST["numempregados"]);
@@ -195,16 +199,16 @@ if($_POST["flagtipo"] == "A"){
         $searchspecification->cadastrar();
 
 
-        //echo 'Cadastro Realizado com sucesso';
-         if($news == "" || $news == null){
-        header("Location: ../view/searchPage.php");
-}else{
-  if($news != "" || $news != null){
-        header("Location: ../view/searchPage.php");
-}else{
-    header("Location: ../view/listcompani.php?text=mysp");
-}
-}
+        //    echo 'Cadastro Realizado com sucesso';
+        if(!isset($news)){
+            header("Location: ../view/searchPage.php");
+        }else{
+            if($news != "" || $news != null){
+                header("Location: ../view/searchPage.php");
+            }else{
+                header("Location: ../view/listcompani.php?text=mysp");
+            }
+        }  
     }
 
 
@@ -263,12 +267,16 @@ if($_POST["flagtipo"] == "A"){
 
         }
 
-      //  echo 'Cadastro Realizado com sucesso';
-  if($news != "" || $news != null){
-        header("Location: ../view/searchPage.php");
-}else{
-    header("Location: ../view/listcompani.php?text=mysp");
-}
+        //    echo 'Cadastro Realizado com sucesso';
+        if(!isset($news)){
+            header("Location: ../view/searchPage.php");
+        }else{
+            if($news != "" || $news != null){
+                header("Location: ../view/searchPage.php");
+            }else{
+                header("Location: ../view/listcompani.php?text=mysp");
+            }
+        }  
     }
 
 }else if($_POST["flagtipo"] == "D"){
@@ -315,17 +323,18 @@ if($_POST["flagtipo"] == "A"){
     
         }
 
-        //echo 'Cadastro Realizado com sucesso';
-       if($news == "" || $news == null){
-        header("Location: ../view/searchPage.php");
-}else{
-    if($news != "" || $news != null){
-        header("Location: ../view/searchPage.php");
-}else{
-    header("Location: ../view/listcompani.php?text=mysp");
+        //    echo 'Cadastro Realizado com sucesso';
+        if(!isset($news)){
+            header("Location: ../view/searchPage.php");
+        }else{
+            if($news != "" || $news != null){
+                header("Location: ../view/searchPage.php");
+            }else{
+                header("Location: ../view/listcompani.php?text=mysp");
+            }
+        }  
+
 }
-}
-    }
 
 }else{
    

@@ -7,6 +7,7 @@ class SearchSpecification{
     protected $idNumEmpregados = null;
     protected $idlRangeValue = null;
     protected $idNivelOperacao = null;
+    protected $DataDeAbertura = null;
     protected $dbh = null;
 
     function __construct()
@@ -39,10 +40,14 @@ class SearchSpecification{
 
     public function getidNivelOperacao(){return $this->idNivelOperacao;}
 
+    public function setDataDeAbertura($param){$this->DataDeAbertura = $param;}
+
+    public function getDataDeAbertura(){return $this->DataDeAbertura;}
+
 
     public function cadastrar(){
 
-        $sql = "INSERT INTO tblSearchSpecification (idSearch, idNumEmpregados, `idlRangeValue`, idNivelOperacao) VALUES ( :idSearch, :idNumEmpregados, :idlRangeValue, :idNivelOperacao)";
+        $sql = "INSERT INTO tblSearchSpecification (idSearch, idNumEmpregados, `idlRangeValue`, idNivelOperacao, DataDeAbertura) VALUES ( :idSearch, :idNumEmpregados, :idlRangeValue, :idNivelOperacao, :DataDeAbertura)";
         $query = $this->dbh->prepare($sql);
 
         if($this->idSearch != null){
@@ -56,6 +61,9 @@ class SearchSpecification{
         }
         if($this->idNivelOperacao != null){
             $query->bindParam(':idNivelOperacao', $this->idNivelOperacao,  PDO::PARAM_INT);
+        }
+        if($this->DataDeAbertura != null){
+            $query->bindParam(':DataDeAbertura', $this->DataDeAbertura,  PDO::PARAM_STR);
         }
 
         $query->execute();
@@ -85,6 +93,9 @@ class SearchSpecification{
         }
         if($this->idNivelOperacao != null){
             $query->bindParam(':idNivelOperacao', $this->idNivelOperacao,  PDO::PARAM_INT);
+        }
+        if($this->DataDeAbertura != null){
+            $query->bindParam(':DataDeAbertura', $this->DataDeAbertura,  PDO::PARAM_STR);
         }
 
         $query->execute();
@@ -117,6 +128,9 @@ class SearchSpecification{
         if($this->idNivelOperacao != null){
             $query->bindParam(':idNivelOperacao', $this->idNivelOperacao,  PDO::PARAM_INT);
         }
+        if($this->DataDeAbertura != null){
+            $query->bindParam(':DataDeAbertura', $this->DataDeAbertura,  PDO::PARAM_STR);
+        }
 
 
         $query->execute();
@@ -146,6 +160,9 @@ class SearchSpecification{
         }
         if($this->idNivelOperacao != null){
             $query->bindParam(':idNivelOperacao', $this->idNivelOperacao,  PDO::PARAM_INT);
+        }
+        if($this->DataDeAbertura != null){
+            $query->bindParam(':DataDeAbertura', $this->DataDeAbertura,  PDO::PARAM_STR);
         }
 
 

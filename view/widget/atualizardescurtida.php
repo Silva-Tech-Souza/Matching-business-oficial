@@ -3,6 +3,9 @@ if ( session_status() !== PHP_SESSION_ACTIVE )
 {
    session_start();
 }
+if(isset($_SESSION['error'])){
+    error_reporting(0);
+}
 date_default_timezone_set('America/Sao_Paulo');
 header("Access-Control-Allow-Origin: *");
 

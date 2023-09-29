@@ -2,11 +2,16 @@
 if ( session_status() !== PHP_SESSION_ACTIVE )
 {
    session_start();
+}else{
+  if ($_SESSION["id"] > 0 &&  $_SESSION["id"] != "") {
+    header("Location: home.php");
+  }
+}
+if(isset($_SESSION['error'])){
+    error_reporting(0);
 }
 date_default_timezone_set('America/Sao_Paulo');
-if ($_SESSION["id"] > 0 &&  $_SESSION["id"] != "") {
-    header("Location: home.php");
-}
+
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -105,7 +110,7 @@ if ($_SESSION["id"] > 0 &&  $_SESSION["id"] != "") {
                 <div class="col-sm-12">
                   <div class="form-group" style="text-align: start;">
                     <label class="color-branco labelcadastro" for="taxid">TAX ID </label>
-                    <input type="text" class="form-control inputtamanho" name="taxid" id="taxid" placeholder="ex: Devloper"><br>
+                    <input type="text" class="form-control inputtamanho" name="taxid" id="taxid" placeholder="ex: Devloper" required><br>
                   </div>
                 </div>
 
@@ -146,7 +151,7 @@ if ($_SESSION["id"] > 0 &&  $_SESSION["id"] != "") {
                 <div class="col-sm-12">
                   <div class="form-group" style="text-align: start;">
                   <label  class="color-branco labelcadastro"  for="country-select" class="form-label">Country</label>
-                  <select class="inputtamanho form-select selectfontsize" id="country-select" name="country">
+                  <select class="inputtamanho form-select selectfontsize" id="country-select" name="country" required>
                       <option value="">Select a country</option>
                       <?php
                       include_once('../model/classes/tblCountry.php');
@@ -167,7 +172,7 @@ if ($_SESSION["id"] > 0 &&  $_SESSION["id"] != "") {
                   </div>
                 </div>
                
-                <p class="errologintxt"><?php echo $_SESSION['signuperro']; ?></p>
+                <p class="errologintxt"><?php if(isset($_SESSION['signuperro'])){ echo $_SESSION['signuperro'];} ?></p>
                 <div class="col-sm-12">
                   <div class="form-group" style="text-align: center;">
                   <button type="submit" class="btn btn-primary login-btn inputtamanho" value="cadastro" name="signupsubmit">Signup</button>

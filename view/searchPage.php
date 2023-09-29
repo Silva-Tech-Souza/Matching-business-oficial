@@ -3,6 +3,9 @@ if ( session_status() !== PHP_SESSION_ACTIVE )
 {
    session_start();
 }
+if(isset($_SESSION['error'])){
+    error_reporting(0);
+}
 include_once('../model/ErrorLog.php');
 date_default_timezone_set('America/Sao_Paulo');
 include('../model/classes/conexao.php');
@@ -23,12 +26,10 @@ if ($results != null) {
         $corebusiness = $row->CoreBusinessId;
         $satBusinessId =  $row->SatBusinessId;
         $imgperfilgeral = $row->PersonalUserPicturePath;
-      $imgperfil = $row->PersonalUserPicturePath;
-    $imgcapa = $row->LogoPicturePath;
+        $imgperfil = $row->PersonalUserPicturePath;
+        $imgcapa = $row->LogoPicturePath;
     }
 }
-
-$idoperation;
 include_once('../model/classes/tblOperations.php');
 $operations = new Operations();
 $operations->setidOperation($corebusiness);
@@ -41,7 +42,6 @@ if ($resultsoperation != null) {
 ?>
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -91,10 +91,13 @@ if ($resultsoperation != null) {
 
 
                     function multiSearchKeyup(inputElement) {
-                        if (event.keyCode === 13) {
-                            inputElement.parentNode
-                                .insertBefore(createFilterItem(inputElement.value), inputElement);
-                            inputElement.value = "";
+                        
+                        if(inputElement !== ''){
+                            if (event.keyCode !== 13) {
+                                    inputElement.parentNode
+                                        .insertBefore(createFilterItem(inputElement.value), inputElement);
+                                    inputElement.value = "";
+                            }
                         }
 
                         function createFilterItem(text) {
@@ -134,12 +137,26 @@ if ($resultsoperation != null) {
                         maxHeight: 300,
 
                     });
-                    var doneButtonHtml = '<button id="doneButton" class="ms-done-button stylobutoninterno">Done</button>';
-                    optionsWrap.find('.no-result-message').before(doneButtonHtml);
+                    //var doneButtonHtml = '<button id="doneButton" class="ms-done-button stylobutoninterno">Done</button>';
+                    //optionsWrap.find('.no-result-message').before(doneButtonHtml);
                 }
             }
             xmlhttp.open("GET", "widget/seach1.php?q=" + str, true);
             xmlhttp.send();
+
+            if(str != 1 && str != 2 && str != 3 && str != 4 && str != 5){
+                console.log("certo");
+                console.log(str == 2);
+            
+                botao = document.getElementById("botaoNext");
+                botao.disabled = false;
+            }else{
+
+                botao = document.getElementById("botaoNext");
+                botao.disabled = true;
+
+            }
+
         }
 
         function showcategoria(str) {
@@ -169,13 +186,50 @@ if ($resultsoperation != null) {
                         selectionFooter: "<div class='custom-header'>Selection footer</div>"
                     });
 
-                    var doneButtonHtml = '<button id="doneButton" class="ms-done-button stylobutoninterno">Done</button>';
-                    optionsWrap.find('.no-result-message').before(doneButtonHtml);
+                    //var doneButtonHtml = '<button id="doneButton" class="ms-done-button stylobutoninterno">Done</button>';
+                    //optionsWrap.find('.no-result-message').before(doneButtonHtml);
                 }
             }
             xmlhttp.open("GET", "widget/seach2.php?q=" + str, true);
             xmlhttp.send();
+
+            var elemnt =  document.getElementById("floatingSelectGrid").value;
+
+            if(elemnt != 2 && elemnt != 3 && elemnt != 4 && elemnt !=5){
+                console.log("certo2");
+                console.log(str);
+            
+                botao = document.getElementById("botaoNext");
+                botao.disabled = false;
+            }else{
+
+                botao = document.getElementById("botaoNext");
+                botao.disabled = true;
+
+            }
+
         }
+
+        function liberarNotaoNext(){
+
+            console.log("certo3");
+            
+                botao = document.getElementById("botaoNext");
+                botao.disabled = false;
+
+        }
+
+        function controllerBotaoNext(controler){
+
+            if(controler === 1){
+
+                botao = document.getElementById("botaoNext2");
+                botao.disabled = false;
+
+            }
+
+        }
+
     </script>
     <!-- Header -->
     <?php include_once("widget/navbar.php"); ?>
@@ -237,12 +291,13 @@ if ($resultsoperation != null) {
                                     <div class="col-sm-12 mgtop" id="corBusiness"></div>
                                     <div class="col-sm-12 mgtop" id="categorias"></div>
                                 </div>
-                            </div> <input type="button" name="next" class="next action-button" value="Next" />
+                            </div> 
+                            <input type="button" name="next" class="next action-button" id="botaoNext" value="Next" disabled/>
                         </fieldset>
                         <fieldset class="p-2">
                             <div class="form-card" id="especification">
 
-                            </div><input required type="button" name="next" class="next action-button" value="Next" /> <input type="button" name="previous" class="previous action-button-previous" value="Previous" />
+                            </div><input required type="button" name="next" class="next action-button" value="Next" id='btnProdutos'/> <input type="button" name="previous" class="previous action-button-previous" value="Previous" />
                         </fieldset>
                         <fieldset class="p-2">
                             <div class="form-card">
@@ -261,7 +316,7 @@ if ($resultsoperation != null) {
                                     <div class="col-sm-12">
                                         <div class="form-floating">
 
-                                            <select required name="country[]" class=" form-select categmulti border-dark inputtamanho" multiple id="floatingSelectGrid" aria-label="Floating label select example">
+                                            <select required name="country[]" class=" form-select categmulti border-dark inputtamanho" onchange="controllerBotaoNext(1)" multiple id="floatingSelectGrid" aria-label="Floating label select example">
                                                 <?php
                                                 include('../model/classes/tblCountry.php');
 
@@ -280,7 +335,7 @@ if ($resultsoperation != null) {
                                         </div>
                                     </div>
                                 </div>
-                            </div> <input required type="button" name="next" class="next action-button" value="Next" /> <input type="button" name="previous" class="previous action-button-previous" value="Previous" />
+                            </div> <input required type="button" onclick="" name="next" class="next action-button" value="Next" id="botaoNext2" disabled/> <input type="button" name="previous" class="previous action-button-previous" value="Previous" />
                         </fieldset>
                         <fieldset class="p-2">
                             <div class="form-card">
@@ -304,7 +359,7 @@ if ($resultsoperation != null) {
                                     </div>
                                     
                                 </div>
-                            </div> <input type="button" name="next" class="next action-button" value="Create" /> <input type="button" name="previous" class="previous action-button-previous" value="Previous" />
+                            </div> <input type="submit" name="next" class="next action-button" value="Create" /> <input type="button" name="previous" class="previous action-button-previous" value="Previous" />
                         </fieldset>
                         <fieldset class="p-2">
                             <div class="form-card">
@@ -322,10 +377,10 @@ if ($resultsoperation != null) {
                                     </div>
                                     <div class="col-6 text-center">
 
-                                      <input   type="submit" name="news"   class="btn action-button  fontsizelager" value="Creates New" style="float: left">
+                                      <input type="button" name="news"   class="btn action-button  fontsizelager" value="Creates New" style="float: left">
                                     </div>
                                     <div class="col-6 text-center">
-                                    <input   type="submit" name="next"  class="btn action-button  fontsizelager" value="Results" /> 
+                                    <input   type="button" name="next"  class="btn action-button  fontsizelager" value="Results" /> 
                                    
                                     </div>
                                 </div>
@@ -340,10 +395,15 @@ if ($resultsoperation != null) {
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.bundle.min.js" integrity="sha384-HwwvtgBNo3bZJJLYd8oVXjrBZt8cqVSpeBNS5n7C8IVInixGAoxmnlMuBnhbgrkm" crossorigin="anonymous"></script>
 
     <script src="assets/js/select/jquery.multiselect.js"></script>
+
     <script>
-        var doneButtonHtml = '<button id="doneButton" class="ms-done-button stylobutoninterno">Done</button>';
+
+        botao = document.getElementById("botaoNext");
+        botao.disabled = true;
+
+        /*var doneButtonHtml = '<button id="doneButton" class="ms-done-button stylobutoninterno">Done</button>';
         optionsWrap.find('.no-result-message').before(doneButtonHtml);
-        document.getElementById('doneButton').addEventListener('click', function() {
+        /*document.getElementById('doneButton').addEventListener('click', function() {
             var element = document.getElementById('ms-list');
             var element2 = document.getElementById('ms-list-2');
             var element3 = document.getElementById('ms-list-3');
@@ -357,14 +417,18 @@ if ($resultsoperation != null) {
             element4.classList.remove('ms-active');
             element5.classList.remove('ms-active');
             element6.classList.remove('ms-active');
-        });
+        });*/
 
         function multiSearchKeyup(inputElement) {
+
             if (event.keyCode === 13) {
-                inputElement.parentNode
-                    .insertBefore(createFilterItem(inputElement.value), inputElement);
-                inputElement.value = "";
-                updateprodutohiden();
+                if(inputElement.value != ''){
+                    inputElement.parentNode
+                        .insertBefore(createFilterItem(inputElement.value), inputElement);
+                    inputElement.value = "";
+                    updateprodutohiden();
+                    
+                }
             }
 
             function createFilterItem(text) {
@@ -463,26 +527,24 @@ if ($resultsoperation != null) {
         });
     </script>
     <script>
+
         $(document).ready(function() {
 
             var current_fs, next_fs, previous_fs; //fieldsets
             var opacity;
             var current = 1;
             var steps = $("fieldset").length;
-
             setProgressBar(current);
 
             $(".next").click(function() {
 
                 var inputField = $(this).parent().find('.inputtamanho');
 
-
-                if (inputField.val() === '' || inputField.val() === null || inputField.val() === "") {
+                if ((inputField.val() === '' || inputField.val() === null || inputField.val() === "")) {
                     // Se o campo estiver vazio, não avance e mostre uma mensagem de erro
                     alert("Fill in the field before waiting.");
                     return;
                 }
-
 
                 current_fs = $(this).parent();
                 next_fs = $(this).parent().next();
@@ -511,6 +573,7 @@ if ($resultsoperation != null) {
                     duration: 500
                 });
                 setProgressBar(++current);
+                
             });
 
             $(".previous").click(function() {
@@ -611,11 +674,6 @@ if ($resultsoperation != null) {
         updateEmptyBoxDisplay();
         // Carousel Script
 
-
-
-
-
-
         $(document).ready(function() {
             // Ao clicar em um link de produto
             $('.hero-image-container').click(function() {
@@ -650,7 +708,7 @@ if ($resultsoperation != null) {
             });
         });
 
-        document.getElementById('doneButton').addEventListener('click', function() {
+        /*document.getElementById('doneButton').addEventListener('click', function() {
             var element = document.getElementById('ms-list');
             var element2 = document.getElementById('ms-list-2');
             var element3 = document.getElementById('ms-list-3');
@@ -664,7 +722,9 @@ if ($resultsoperation != null) {
             element4.classList.remove('ms-active');
             element5.classList.remove('ms-active');
             element6.classList.remove('ms-active');
-        });
+        });*/
+
+
     </script>
 </body>
 

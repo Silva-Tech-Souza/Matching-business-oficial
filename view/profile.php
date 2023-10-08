@@ -15,6 +15,7 @@ $iduser = $_SESSION["id"];
 
 $_SESSION["n"] = 5;
 
+
 include_once('../model/classes/tblUserClients.php');
 
 $userClients = new UserClients();
@@ -37,6 +38,7 @@ if ($results != null) {
     $imgperfil = $row->PersonalUserPicturePath;
     $imgcapa = $row->LogoPicturePath;
     $descricao =  $row->descricao;
+    $taxidempresa =  $row->taxid;
   }
 }
 
@@ -152,6 +154,38 @@ if ($resultsBusinessCategory != null) {
     }
   </script>
 
+  <script>
+    function showCurtida(iddiv) {
+      if (iddiv == "") {
+        document.getElementById("div-" + iddiv).innerHTML = "";
+        return;
+      }
+      var xmlhttp = new XMLHttpRequest();
+      xmlhttp.onreadystatechange = function() {
+        if (this.readyState == 4 && this.status == 200) {
+          document.getElementById("div-" + iddiv).innerHTML = this.responseText;
+        }
+      }
+      xmlhttp.open("GET", "widget/atualizarcurtida.php?id=" + iddiv, true);
+      xmlhttp.send();
+    }
+
+    function showDCurtida(iddiv) {
+      if (iddiv == "") {
+        document.getElementById("div-" + iddiv).innerHTML = "";
+        return;
+      }
+      var xmlhttp = new XMLHttpRequest();
+      xmlhttp.onreadystatechange = function() {
+        if (this.readyState == 4 && this.status == 200) {
+          document.getElementById("div-" + iddiv).innerHTML = this.responseText;
+        }
+      }
+      xmlhttp.open("GET", "widget/atualizardescurtida.php?id=" + iddiv, true);
+      xmlhttp.send();
+    }
+  </script>
+
   <!-- Header -->
   <?php include_once("widget/navbar.php"); ?><br><br><br><br><br>
   <!-- Body -->
@@ -163,10 +197,10 @@ if ($resultsBusinessCategory != null) {
           <div class="card card-body p-0 shadow">
             <div class="col-12">
               <img src="<?php if ($imgcapa != "Avatar.png" && $imgcapa != "") {
-                                                    echo "" . $imgcapa;
-                                                } else {
-                                                    echo "https://images2.alphacoders.com/131/1317606.jpeg";
-                                                } ?>" alt="" style="width: 100%; height: 120px;">
+                          echo "" . $imgcapa;
+                        } else {
+                          echo "https://images2.alphacoders.com/131/1317606.jpeg";
+                        } ?>" alt="" style="width: 100%; height: 120px;">
               <img src="<?php if ($imgperfil != "Avatar.png" && $imgperfil != "") {
                           echo $imgperfil;
                         } else {
@@ -196,17 +230,17 @@ if ($resultsBusinessCategory != null) {
                   </div>
                   <div class="col-4 d-flex justify-content-end align-middle">
                     <p class="d-inline m-0"><b><?php include_once('../model/classes/tblSearch.php');
-                                                                            $Search = new Search();
-                                                                            $Search->setidClient($iduser);
-                                                                            $resultSearch = $Search->consulta("WHERE idClient = :idClient");
-                                                                            $numSearch = 0;
-                                                                            if ($resultSearch != null) {
-                                                                                foreach ($resultSearch as $resultConectUnidSearch) {
-                                                                                    $numSearch += 1;
-                                                                                }
-                                                                            }
-                                                                            echo $numSearch;
-                                                                            ?></b></p>
+                                                $Search = new Search();
+                                                $Search->setidClient($iduser);
+                                                $resultSearch = $Search->consulta("WHERE idClient = :idClient");
+                                                $numSearch = 0;
+                                                if ($resultSearch != null) {
+                                                  foreach ($resultSearch as $resultConectUnidSearch) {
+                                                    $numSearch += 1;
+                                                  }
+                                                }
+                                                echo $numSearch;
+                                                ?></b></p>
                   </div>
 
 
@@ -527,12 +561,12 @@ if ($resultsBusinessCategory != null) {
 
             </div>
             <div class="col-6 d-flex justify-content-start d-flex align-items-center">
-              <p class="mb-0 text-center align-middle" style="font-size:larger"><b><?php echo $username;?></b></p>
+              <p class="mb-0 text-center align-middle" style="font-size:larger"><b><?php echo $username; ?></b></p>
 
             </div>
             <div class="col-4 d-flex justify-content-end d-flex align-items-center">
               <input class="insertpost btn btn-warning pl-4 pr-4 no-border p-3 post-btn-confirm" type="submit" name="post" value="+ Edit">
-                <input class="insertpost btn btn-danger pl-4 pr-4 no-border p-3 post-btn-confirm" disabled  type="submit" name="post" value=" Delet">
+              <input class="insertpost btn btn-danger pl-4 pr-4 no-border p-3 post-btn-confirm" disabled type="submit" name="post" value=" Delet">
             </div>
           </div>
           <hr>
@@ -542,13 +576,13 @@ if ($resultsBusinessCategory != null) {
 
             </div>
             <div class="col-6 d-flex justify-content-start d-flex align-items-center">
-              <p class="mb-0 text-center align-middle" style="font-size:larger"><b>Colaborador 2</b></p>
+              <p class="mb-0 text-center align-middle" style="font-size:larger"><b>Collaborator 2</b></p>
 
             </div>
             <div class="col-4 d-flex justify-content-end d-flex align-items-center">
-              <input class="insertpost btn btn-primary pl-4 pr-4 no-border p-3 post-btn-confirm" type="submit" name="post" value="+ Add">
-
-              </input>
+              <a class="insertpost btn btn-primary pl-4 pr-4 no-border p-3 post-btn-confirm" data-toggle="modal" data-target="#emailcolab" >
+                    + Add"
+              </a>
             </div>
           </div>
           <hr>
@@ -558,13 +592,13 @@ if ($resultsBusinessCategory != null) {
 
             </div>
             <div class="col-6 d-flex justify-content-start d-flex align-items-center">
-              <p class="mb-0 text-center align-middle" style="font-size:larger"><b>Colaborador 3</b></p>
+              <p class="mb-0 text-center align-middle" style="font-size:larger"><b>Collaborator 3</b></p>
 
             </div>
             <div class="col-4 d-flex justify-content-end d-flex align-items-center">
-              <input class="insertpost btn btn-primary pl-4 pr-4 no-border p-3 post-btn-confirm" type="submit" name="post" value="+ Add">
-
-              </input>
+               <a class="insertpost btn btn-primary pl-4 pr-4 no-border p-3 post-btn-confirm" data-toggle="modal" data-target="#emailcolab" >
+                    + Add"
+              </a>
             </div>
           </div>
           <hr>
@@ -574,13 +608,13 @@ if ($resultsBusinessCategory != null) {
 
             </div>
             <div class="col-6 d-flex justify-content-start d-flex align-items-center">
-              <p class="mb-0 text-center align-middle" style="font-size:larger"><b>Colaborador 4</b></p>
+              <p class="mb-0 text-center align-middle" style="font-size:larger"><b>Collaborator 4</b></p>
 
             </div>
             <div class="col-4 d-flex justify-content-end d-flex align-items-center">
-              <input class="insertpost btn btn-primary pl-4 pr-4 no-border p-3 post-btn-confirm" type="submit" name="post" value="+ Add">
-
-              </input>
+                <a class="insertpost btn btn-primary pl-4 pr-4 no-border p-3 post-btn-confirm" data-toggle="modal" data-target="#emailcolab" >
+                    + Add"
+              </a>
             </div>
           </div>
           <hr>
@@ -590,13 +624,13 @@ if ($resultsBusinessCategory != null) {
 
             </div>
             <div class="col-6 d-flex justify-content-start d-flex align-items-center">
-              <p class="mb-0 text-center align-middle" style="font-size:larger"><b>Colaborador 5</b></p>
+              <p class="mb-0 text-center align-middle" style="font-size:larger"><b>Collaborator 5</b></p>
 
             </div>
             <div class="col-4 d-flex justify-content-end d-flex align-items-center">
-              <input class="insertpost btn btn-primary pl-4 pr-4 no-border p-3 post-btn-confirm" type="submit" name="post" value="+ Add">
-
-              </input>
+               <a class="insertpost btn btn-primary pl-4 pr-4 no-border p-3 post-btn-confirm" data-toggle="modal" data-target="#emailcolab" >
+                    + Add"
+              </a>
             </div>
           </div>
         </div>
@@ -1264,15 +1298,24 @@ if ($resultsBusinessCategory != null) {
     </div>
   </div>
 
+  <div id="modalEditarProduto" class="modal custom-modal fade show comment-modal-primary" role="dialog">
+    <div class="modal-dialog modal-dialog-centered modal-lg">
+      <div class="modal-content">
 
+        <div class="modal-body comment-modal-primary">
+          <h1 id="modalProductName mb-0"></h1>
+          <p id="modalProductDescription color-cinza-b"></p>
+        </div>
+
+      </div>
+    </div>
+  </div>
 
   <?php include_once("widget/editarperfil.php"); ?>
 
-
-
   <?php include_once("widget/produto.php"); ?>
 
-
+  <?php include_once("widget/enviaremail.php"); ?>
 
 
 
@@ -1328,6 +1371,52 @@ if ($resultsBusinessCategory != null) {
       $('#video-input').on('change', function() {
         readURL(this);
       });
+    });
+
+
+    $(document).ready(function() {
+      // Ao clicar em um link de produto
+      $('.hero-image-container2').click(function() {
+        // Obtenha o ID do produto associado ao link clicado
+        var idFeed = $(this).data('id');
+        console.log(idFeed);
+        // Use o ID do produto para fazer uma requisição AJAX para buscar os dados do produto no servidor
+        $.ajax({
+          type: 'GET',
+          url: 'widget/visualizarComent.php', // Substitua pelo caminho correto
+          data: {
+            idFeed: idFeed
+          },
+          success: function(data) {
+            // Preencha o conteúdo do modal com as informações do produto
+            $('#modalEditarProduto .modal-content').html(data);
+          },
+          error: function() {
+            alert('Ocorreu um erro ao carregar os dados do produto.');
+          }
+        });
+
+        // Abra o modal correspondente
+        $('#modalEditarProduto').fadeIn();
+      });;
+
+      // Feche o modal ao clicar fora dele ou no botão de fechar
+      $('.modal').click(function(event) {
+        if ($(event.target).hasClass('modal')) {
+          $(this).fadeOut();
+        }
+      });
+    });
+
+    document.getElementById('comentbtn').addEventListener('click', function(e) {
+      e.preventDefault(); // Impede o comportamento padrão do link
+      var viewsElement = document.getElementById('modalEditarProduto');
+      if (viewsElement.classList.contains('d-none')) {
+        viewsElement.classList.remove('d-none');
+        viewsElement.classList.add('show');
+      } else {
+        viewsElement.classList.add('d-none');
+      }
     });
   </script>
 

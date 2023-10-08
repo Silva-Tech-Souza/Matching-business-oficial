@@ -96,7 +96,7 @@ date_default_timezone_set('America/Sao_Paulo');
 
         <div class="col-lg-4 col-12 ">
           <div class="cardcadastro">
-            <form action="../controller/signupController.php" method="POST" enctype="multipart/form-data">
+            <form action="../controller/signUpCoolabController.php" method="POST" enctype="multipart/form-data">
               <div class="row">
                 <div class="col-sm-12">
                   <div class="form-group" style="text-align: start;">
@@ -114,7 +114,7 @@ date_default_timezone_set('America/Sao_Paulo');
                 <div class="col-sm-12">
                   <div class="form-group" style="text-align: start;">
                     <label class="color-branco labelcadastro" for="taxid">TAX ID </label>
-                    <input type="text" class="form-control inputtamanho" name="taxid" id="taxid" placeholder="ex: Devloper" required><br><br>
+                    <input type="hidden" class="form-control inputtamanho" value="<?PHP if(isset($_GET["taxid"])){ echo $_GET["taxid"]; }?>" name="taxid" id="taxid" placeholder="ex: Devloper" required><br><br>
                   </div>
                 </div>
 
@@ -148,13 +148,20 @@ date_default_timezone_set('America/Sao_Paulo');
                 <div class="col-sm-12">
                   <div class="form-group" style="text-align: start;">
                     <label class="color-branco labelcadastro" for="email-address">Email address</label>
-                    <input type="email" class=" form-control inputtamanho inputtamanho" name="email" id="email" placeholder="ex: email@email.com" required><br>
+                    <input type="hidden" class=" form-control inputtamanho inputtamanho" value="<?PHP if(isset($_GET["email"])){ echo $_GET["email"]; }?>" name="email" id="email" placeholder="ex: email@email.com" required><br>
                   </div>
                 </div>
                 <div class="col-sm-12">
                   <div class="form-group" style="text-align: start;">
                     <label class="color-branco labelcadastro" for="phone">Phone Number </label>
                     <input class="inputauto form-control inputtamanho" type="tel" name="whatsapp" maxlength="20" value="" id="whatsapp" placeholder="Country code - Region code - Number" required><br>
+                  </div>
+                </div>
+
+                <div class="col-sm-12">
+                  <div class="form-group" style="text-align: start;">
+                    <label class="color-branco labelcadastro">Senha </label>
+                    <input class="inputauto form-control inputtamanho" name="senha" id="senha" placeholder="Senha" required><br>
                   </div>
                 </div>
 
@@ -185,7 +192,7 @@ date_default_timezone_set('America/Sao_Paulo');
                 <p class="errologintxt"><?php echo $_SESSION['signuperro']; ?></p>
                 <div class="col-sm-12">
                   <div class="form-group" style="text-align: center;">
-                    <button type="submit" class="btn btn-primary login-btn inputtamanho" value="cadastro" name="signupsubmit">Signup</button>
+                    <button type="submit" class="btn btn-primary login-btn inputtamanho" value="cadastro" name="signupsubmitcoolab">Signup</button>
                   </div>
                 </div>
 

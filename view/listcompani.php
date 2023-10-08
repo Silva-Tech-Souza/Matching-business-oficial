@@ -3,9 +3,7 @@ if ( session_status() !== PHP_SESSION_ACTIVE )
 {
    session_start();
 }
-if(isset($_SESSION['error'])){
-    error_reporting(0);
-}
+
 include_once('../model/ErrorLog.php');
 date_default_timezone_set('America/Sao_Paulo');
 if ($_SESSION["id"] < 0 || $_SESSION["id"] == "") {
@@ -335,17 +333,18 @@ if ($results != null) {
       }
 
       .celularcard {
-        width: 270px;
+        min-width: 370px !important;
       }
 
       .owl-item {
-        width: 270px !important;
+        min-width: 370px !important;
       }
     }
 
     .cortardescricao {
       display: -webkit-box;
       max-height: 2.4em !important;
+      min-height: 2.4em !important;
       /* Duas linhas com margem para a linha de corte */
       line-height: 1.2em !important;
       /* Altura da linha do texto */
@@ -355,6 +354,7 @@ if ($results != null) {
       -webkit-line-clamp: 2 !important;
       /* Suporte a navegadores WebKit, como o Chrome */
       -webkit-box-orient: vertical !important;
+      text-align: end !important;
     }
 
     .pdescricaosp {
@@ -366,6 +366,7 @@ if ($results != null) {
       line-height: 1.2em !important;
       display: -webkit-box;
       max-height: 8.4em !important;
+      min-height: 8.4em !important;
     }
   </style>
 </head>
@@ -467,9 +468,9 @@ if ($results != null) {
                                                       }
                                                     }
                                                     ?> - <?php
-                                                        if(isset($contoperationnotresults)){
-                                                          echo  $contoperationnotresults; 
-                                                        }?>
+                                                          if (isset($contoperationnotresults)) {
+                                                            echo  $contoperationnotresults;
+                                                          } ?>
 
 
                     </h2><br>
@@ -484,25 +485,25 @@ if ($results != null) {
                         foreach ($resultsOperationselect as $rowOperationselect) {  ?>
                           <div class="item celularcard">
                             <div class="card rounded-4 shadow celularcard">
-                              <div class="card-body p-0 m-0" style="min-height: 300px !IMPORTANT;">
+                              <div class="card-body p-0 m-0" style="min-height: 300px !IMPORTANT; max-height: 300px !IMPORTANT; min-width: 250px !IMPORTANT;">
                                 <div class="col-12 mh-25">
                                   <img class="mh-25 rounded-top-3" src="<?php if ($rowOperationselect->LogoPicturePath != "Avatar.png" && $rowOperationselect->LogoPicturePath != "") {
-                                                  echo "" . $rowOperationselect->LogoPicturePath;
-                                                } else {
-                                                  echo "https://images2.alphacoders.com/131/1317606.jpeg";
-                                                } ?>" alt="Descrição da Imagem" style="max-height: 100px; width: 100%;">
+                                                                          echo "" . $rowOperationselect->LogoPicturePath;
+                                                                        } else {
+                                                                          echo "https://images2.alphacoders.com/131/1317606.jpeg";
+                                                                        } ?>" alt="Descrição da Imagem" style="max-height: 100px; width: 100%;">
                                 </div>
-                                <div class="row p-0 ml-0">
-                                  <div class="col-5 d-flex justify-content-start p-0 m-0 " style="height: 0px;">
+                                <div class="row p-0 ml-0 m-0">
+                                  <div class="col-6 d-flex justify-content-start p-0 m-0 " style="height: 0px;">
                                     <img src=" <?php if ($rowOperationselect->PersonalUserPicturePath != "Avatar.png" && $rowOperationselect->PersonalUserPicturePath != "") {
                                                   echo "" . $rowOperationselect->PersonalUserPicturePath;
                                                 } else {
                                                   echo "assets/img/Avatar.png";
                                                 } ?>" alt="user" class="border-2 mini-profile-img " onclick="toggleMenu()">
                                   </div>
-                                  <div class="col-6 p-0 m-0">
-                                    <h3 class="fonte-titulo cortardescricao"><?php echo  $rowOperationselect->FirstName . " " . $rowOperationselect->LastName; ?></h3>
-                                    <h6 class="fonte-principal cortardescricao"><?php echo  $rowOperationselect->JobTitle . ' at ' . $rowOperationselect->CompanyName ?></h6>
+                                  <div class="col-6 text-end">
+                                    <h4 class="fonte-titulo cortardescricao text-end mr-1"><?php echo  $rowOperationselect->FirstName . " " . $rowOperationselect->LastName; ?></h4>
+                                    <h6 class="fonte-principal cortardescricao mr-1"><?php echo  $rowOperationselect->JobTitle . ' at ' . $rowOperationselect->CompanyName ?></h6>
                                   </div>
                                 </div>
                                 <div class="col-12 m-0 p-0">
@@ -538,8 +539,8 @@ if ($results != null) {
                                                           echo $rowOperationselect->descricao;
                                                           ?></p>
                                 </div>
-                                <div class="col-12">
-                                  <button type="button" class="btn btn-primary" style="width: -webkit-fill-available;left: 0;right: 0;bottom: 0;position: absolute;">View</button>
+                                <div class="col-12 p-2 d-flex justify-content-end">
+                                  <a href="viewProfile.php?profile=<?php echo $rowOperationselect->idClient; ?>" type="button" class="btn btn-primary" style="">View Profile</a>
                                 </div>
                               </div>
                             </div>
@@ -579,22 +580,22 @@ if ($results != null) {
                             <div class="card-body p-0 m-0" style="min-height: 300px !IMPORTANT;">
                               <div class="col-12 mh-25">
                                 <img class="mh-25 rounded-top-3" src="<?php if ($rowOperationselect->LogoPicturePath != "Avatar.png" && $rowOperationselect->LogoPicturePath != "") {
-                                                  echo "" . $rowOperationselect->LogoPicturePath;
-                                                } else {
-                                                  echo "https://images2.alphacoders.com/131/1317606.jpeg";
-                                                } ?>" alt="Descrição da Imagem" style="max-height: 100px; width: 100%;">
+                                                                        echo "" . $rowOperationselect->LogoPicturePath;
+                                                                      } else {
+                                                                        echo "https://images2.alphacoders.com/131/1317606.jpeg";
+                                                                      } ?>" alt="Descrição da Imagem" style="max-height: 100px; width: 100%;">
                               </div>
-                              <div class="row p-0 ml-0">
-                                <div class="col-5 d-flex justify-content-start p-0 m-0 " style="height: 0px;">
+                              <div class="row p-0 ml-0 m-0">
+                                <div class="col-6 d-flex justify-content-start p-0 m-0 " style="height: 0px;">
                                   <img src=" <?php if ($rowOperationselect->PersonalUserPicturePath != "Avatar.png" && $rowOperationselect->PersonalUserPicturePath != "") {
                                                 echo "" . $rowOperationselect->PersonalUserPicturePath;
                                               } else {
                                                 echo "assets/img/Avatar.png";
                                               } ?>" alt="user" class="border-2 mini-profile-img " onclick="toggleMenu()">
                                 </div>
-                                <div class="col-6 p-0 m-0">
-                                  <h3 class="fonte-titulo cortardescricao"><?php echo  $rowOperationselect->FirstName . " " . $rowOperationselect->LastName; ?></h3>
-                                  <h6 class="fonte-principal cortardescricao"><?php echo  $rowOperationselect->JobTitle . ' at ' . $rowOperationselect->CompanyName ?></h6>
+                                <div class="col-6">
+                                  <h4 class="fonte-titulo cortardescricao mr-1"><?php echo  $rowOperationselect->FirstName . " " . $rowOperationselect->LastName; ?></h4>
+                                  <h6 class="fonte-principal cortardescricao mr-1"><?php echo  $rowOperationselect->JobTitle . ' at ' . $rowOperationselect->CompanyName ?></h6>
                                 </div>
                               </div>
                               <div class="col-12 m-0 p-0">
@@ -631,8 +632,8 @@ if ($results != null) {
                                                         echo $rowOperationselect->descricao;
                                                         ?></p>
                               </div>
-                              <div class="col-12">
-                                <button type="button" class="btn btn-primary" style="width: -webkit-fill-available;left: 0;right: 0;bottom: 0;position: absolute;">View</button>
+                              <div class="col-12 p-2 d-flex justify-content-end">
+                                <a href="viewProfile.php?profile=<?php echo $rowOperationselect->idClient; ?>" type="button" class="btn btn-primary" style="">View Profile</a>
                               </div>
                             </div>
                           </div>
@@ -682,22 +683,22 @@ if ($results != null) {
                                   <div class="card-body p-0 m-0" style="min-height: 300px !IMPORTANT;">
                                     <div class="col-12 mh-25">
                                       <img class="mh-25 rounded-top-3" src="<?php if ($rowOperationselect->LogoPicturePath != "Avatar.png" && $rowOperationselect->LogoPicturePath != "") {
-                                                  echo "" . $rowOperationselect->LogoPicturePath;
-                                                } else {
-                                                  echo "https://images2.alphacoders.com/131/1317606.jpeg";
-                                                } ?>" alt="Descrição da Imagem" style="max-height: 100px; width: 100%;">
+                                                                              echo "" . $rowOperationselect->LogoPicturePath;
+                                                                            } else {
+                                                                              echo "https://images2.alphacoders.com/131/1317606.jpeg";
+                                                                            } ?>" alt="Descrição da Imagem" style="max-height: 100px; width: 100%;">
                                     </div>
-                                    <div class="row p-0 ml-0">
-                                      <div class="col-5 d-flex justify-content-start p-0 m-0 " style="height: 0px;">
+                                    <div class="row p-0 ml-0 m-0">
+                                      <div class="col-6 d-flex justify-content-start p-0 m-0 " style="height: 0px;">
                                         <img src=" <?php if ($rowOperationselect->PersonalUserPicturePath != "Avatar.png" && $rowOperationselect->PersonalUserPicturePath != "") {
                                                       echo "" . $rowOperationselect->PersonalUserPicturePath;
                                                     } else {
                                                       echo "assets/img/Avatar.png";
                                                     } ?>" alt="user" class="border-2 mini-profile-img " onclick="toggleMenu()">
                                       </div>
-                                      <div class="col-6 p-0 m-0">
-                                        <h3 class="fonte-titulo cortardescricao"><?php echo  $rowOperationselect->FirstName . " " . $rowOperationselect->LastName; ?></h3>
-                                        <h6 class="fonte-principal cortardescricao"><?php echo  $rowOperationselect->JobTitle . ' at ' . $rowOperationselect->CompanyName ?></h6>
+                                      <div class="col-6">
+                                        <h4 class="fonte-titulo cortardescricao mr-1"><?php echo  $rowOperationselect->FirstName . " " . $rowOperationselect->LastName; ?></h4>
+                                        <h6 class="fonte-principal cortardescricao mr-1"><?php echo  $rowOperationselect->JobTitle . ' at ' . $rowOperationselect->CompanyName ?></h6>
                                       </div>
                                     </div>
                                     <div class="col-12 m-0 p-0">
@@ -734,8 +735,8 @@ if ($results != null) {
                                                               echo $rowOperationselect->descricao;
                                                               ?></p>
                                     </div>
-                                    <div class="col-12">
-                                      <button type="button" class="btn btn-primary" style="width: -webkit-fill-available;">View</button>
+                                    <div class="col-12 p-2 d-flex justify-content-end">
+                                      <a href="viewProfile.php?profile=<?php echo $rowOperationselect->idClient; ?>" type="button" class="btn btn-primary" style="">View Profile</a>
                                     </div>
                                   </div>
                                 </div>
@@ -747,451 +748,382 @@ if ($results != null) {
 
 
 
-                    <?php  }
+                  <?php  }
                   }
                 }
               }
               if ($operation == null && $busines == null && $text != null) {
-                  
-                  if($text == "mysp"){?>
-                      <div class="carousel-filmes">
-                            <h1 id="filme" class="titulo2">Resultados do SEARCH PROFILES</h1><br>
-                               <div class=" owl-carousel owl-thema ">
-                          </div>
-                        </div>
-                        
-                         <?php
-                         include_once('../model/classes/tblSearch.php');
-                                                                            $Searchcard = new Search();
-                                                                            $Searchcard->setidClient($iduser);
-                                                                            $resultSearchcard = $Searchcard->consulta("WHERE idClient = :idClient");
-                                                                            if ($resultSearchcard != null) {
-                                                                                foreach ($resultSearchcard as $resultConectUnidSearch) {?>
-                                                                                  <div class="carousel-filmes">
-                            <h3 id="filme" class="titulo2">  <?php echo $resultConectUnidSearch->Nome ;?></h3>
-                               
-                                   <p>No results</p>
-                          
-                        </div>   
-                                                                                    
-                                                                              <?php    }}
-                         
-                         ?>
-                        
-             <?php      }else{
-                      
-                  
-                $operationsnomelike = new Operations();
 
-                $resultsOperationomelike = $operationsnomelike->consulta("WHERE NmOperation LIKE '%" . $text . "%'");
-                if ($resultsOperationomelike != null) {
-                  foreach ($resultsOperationomelike as $rowOperationomelike) { ?>
-                    <div class="carousel-filmes">
-                      <h2 id="filme" class="titulo2"><?php
-
-
-                                                      echo $rowOperationomelike->NmOperation;
-
-                                                      ?> - <?php
-                                                      if(isset($contoperationnotresults)){
-                                                        echo  $contoperationnotresults; 
-                                                      }?>
-
-
-                      </h2><br>
-
-                      <div class=" owl-carousel owl-thema ">
-                        <?php
-
-                        $Operationselect = new UserClients();
-                        $Operationselect->setCoreBusinessId($rowOperationomelike->idOperation);
-                        $resultsOperationselect = $Operationselect->consulta(" WHERE CoreBusinessId = :CoreBusinessId");
-                        if ($resultsOperationselect != null) {
-                          foreach ($resultsOperationselect as $rowOperationselect) {  ?>
-                            <div class="item celularcard">
-                              <div class="card rounded-4 shadow celularcard">
-                                <div class="card-body p-0 m-0" style="min-height: 300px !IMPORTANT;">
-                                  <div class="col-12 mh-25">
-                                    <img class="mh-25 rounded-top-3" src="<?php if ($rowOperationselect->LogoPicturePath != "Avatar.png" && $rowOperationselect->LogoPicturePath != "") {
-                                                  echo "" . $rowOperationselect->LogoPicturePath;
-                                                } else {
-                                                  echo "https://images2.alphacoders.com/131/1317606.jpeg";
-                                                } ?>" alt="Descrição da Imagem" style="max-height: 100px; width: 100%;">
-                                  </div>
-                                  <div class="row p-0 ml-0">
-                                    <div class="col-5 d-flex justify-content-start p-0 m-0 " style="height: 0px;">
-                                      <img src=" <?php if ($rowOperationselect->PersonalUserPicturePath != "Avatar.png" && $rowOperationselect->PersonalUserPicturePath != "") {
-                                                    echo "" . $rowOperationselect->PersonalUserPicturePath;
-                                                  } else {
-                                                    echo "assets/img/Avatar.png";
-                                                  } ?>" alt="user" class="border-2 mini-profile-img " onclick="toggleMenu()">
-                                    </div>
-                                    <div class="col-6 p-0 m-0">
-                                      <h3 class="fonte-titulo cortardescricao"><?php echo  $rowOperationselect->FirstName . " " . $rowOperationselect->LastName; ?></h3>
-                                      <h6 class="fonte-principal cortardescricao"><?php echo  $rowOperationselect->JobTitle . ' at ' . $rowOperationselect->CompanyName ?></h6>
-                                    </div>
-                                  </div>
-                                  <div class="col-12 m-0 p-0">
-                                    <hr class="m-0">
-                                  </div>
-                                  <div class="row mt-3 pr-2">
-                                    <div class="col-9 m-0 p-0">
-
-                                      <h5 class="fonte-principal">&nbsp;&nbsp;&nbsp;&nbsp;<i class="fa-solid fa-globe icon-notif-zoom mini-profile-icon"></i>&nbsp;&nbsp;<?php include_once('../model/classes/tblCountry.php');
-
-                                                                                                                                                                          $country = new Country();
-
-                                                                                                                                                                          $country->setidCountry($rowOperationselect->idCountry);
-
-                                                                                                                                                                          $resultsCountry = $country->consulta("WHERE idCountry = :idCountry ");
-
-                                                                                                                                                                          if ($resultsCountry != null) {
-                                                                                                                                                                            foreach ($resultsCountry as $rowCountry) {
-                                                                                                                                                                              echo $rowCountry->NmCountry;
-                                                                                                                                                                            }
-                                                                                                                                                                          }
-
-                                                                                                                                                                          ?> </h5>
-                                    </div>
-
-                                  </div>
-                                  <div class="row mt-3 pr-2" style="
-    padding-left: 6PX;
-    padding-right: 6px;
-">
-                                    <p class="pdescricaosp"><?php
-
-                                                            echo $rowOperationselect->descricao;
-                                                            ?></p>
-                                  </div>
-                                  <div class="col-12">
-                                    <button type="button" class="btn btn-primary" style="width: -webkit-fill-available;left: 0;right: 0;bottom: 0;position: absolute;">View</button>
-                                  </div>
-                                </div>
-                              </div>
-                            </div>
-                        <?php }
-                        } ?>
-                      </div>
-                    </div>
-
-                  <?php  }
-                }
-
-                include_once('../model/classes/tblBusiness.php');
-                $Businesslike = new Business();
-                $resultsBusinesslike = $Businesslike->consulta("WHERE NmBusiness LIKE '%" . $text . "%'");
-                if ($resultsBusinesslike != null) {
-                  foreach ($resultsBusinesslike as $rowBusinesslike) { ?>
-                    <div class="carousel-filmes">
-                      <h2 id="filme" class="titulo2"><?php
-
-
-                                                      echo $rowBusinesslike->NmBusiness;
-
-                                                      ?> - <?php
-                                                      if(isset($contoperationnotresults)){
-                                                        echo  $contoperationnotresults; 
-                                                      }?>
-
-
-                      </h2><br>
-
-                      <div class=" owl-carousel owl-thema ">
-                        <?php
-
-                        $Operationselect1 = new UserClients();
-                        $Operationselect1->setSatBusinessId($rowBusinesslike->idBusiness);
-                        $resultsOperationselect1 = $Operationselect1->consulta(" WHERE SatBusinessId = :SatBusinessId");
-                        if ($resultsOperationselect1 != null) {
-                          foreach ($resultsOperationselect1 as $rowOperationselect) {  ?>
-                            <div class="item celularcard">
-                              <div class="card rounded-4 shadow celularcard">
-                                <div class="card-body p-0 m-0" style="min-height: 300px !IMPORTANT;">
-                                  <div class="col-12 mh-25">
-                                    <img class="mh-25 rounded-top-3" src="<?php if ($rowOperationselect->LogoPicturePath != "Avatar.png" && $rowOperationselect->LogoPicturePath != "") {
-                                                  echo "" . $rowOperationselect->LogoPicturePath;
-                                                } else {
-                                                  echo "https://images2.alphacoders.com/131/1317606.jpeg";
-                                                } ?>" alt="Descrição da Imagem" style="max-height: 100px; width: 100%;">
-                                  </div>
-                                  <div class="row p-0 ml-0">
-                                    <div class="col-5 d-flex justify-content-start p-0 m-0 " style="height: 0px;">
-                                      <img src=" <?php if ($rowOperationselect->PersonalUserPicturePath != "Avatar.png" && $rowOperationselect->PersonalUserPicturePath != "") {
-                                                    echo "" . $rowOperationselect->PersonalUserPicturePath;
-                                                  } else {
-                                                    echo "assets/img/Avatar.png";
-                                                  } ?>" alt="user" class="border-2 mini-profile-img " onclick="toggleMenu()">
-                                    </div>
-                                    <div class="col-6 p-0 m-0">
-                                      <h3 class="fonte-titulo cortardescricao"><?php echo  $rowOperationselect->FirstName . " " . $rowOperationselect->LastName; ?></h3>
-                                      <h6 class="fonte-principal cortardescricao"><?php echo  $rowOperationselect->JobTitle . ' at ' . $rowOperationselect->CompanyName ?></h6>
-                                    </div>
-                                  </div>
-                                  <div class="col-12 m-0 p-0">
-                                    <hr class="m-0">
-                                  </div>
-                                  <div class="row mt-3 pr-2">
-                                    <div class="col-9 m-0 p-0">
-
-                                      <h5 class="fonte-principal">&nbsp;&nbsp;&nbsp;&nbsp;<i class="fa-solid fa-globe icon-notif-zoom mini-profile-icon"></i>&nbsp;&nbsp;<?php include_once('../model/classes/tblCountry.php');
-
-                                                                                                                                                                          $country = new Country();
-
-                                                                                                                                                                          $country->setidCountry($rowOperationselect->idCountry);
-
-                                                                                                                                                                          $resultsCountry = $country->consulta("WHERE idCountry = :idCountry ");
-
-                                                                                                                                                                          if ($resultsCountry != null) {
-                                                                                                                                                                            foreach ($resultsCountry as $rowCountry) {
-                                                                                                                                                                              echo $rowCountry->NmCountry;
-                                                                                                                                                                            }
-                                                                                                                                                                          }
-
-                                                                                                                                                                          ?> </h5>
-                                    </div>
-
-                                  </div>
-                                  <div class="row mt-3 pr-2" style="
-    padding-left: 6PX;
-    padding-right: 6px;
-">
-                                    <p class="pdescricaosp"><?php
-
-                                                            echo $rowOperationselect->descricao;
-                                                            ?></p>
-                                  </div>
-                                  <div class="col-12">
-                                    <button type="button" class="btn btn-primary" style="width: -webkit-fill-available;left: 0;right: 0;bottom: 0;position: absolute;">View</button>
-                                  </div>
-                                </div>
-                              </div>
-                            </div>
-                        <?php }
-                        } ?>
-                      </div>
-                    </div>
-                  <?php    }
-                }
-                include_once('../model/classes/tblBusinessCategory.php');
-                $tblBusinessCategorylike = new BusinessCategory();
-                $resultstblBusinessCategorylike = $tblBusinessCategorylike->consulta(" WHERE NmBusinessCategory LIKE '%" . $text . "%'");
-                if ($resultstblBusinessCategorylike != null) {
-                  foreach ($resultstblBusinessCategorylike as $rowBusinessCategorylike) { ?>
-                    <div class="carousel-filmes">
-                      <h2 id="filme" class="titulo2"><?php
-
-
-                                                      echo $rowBusinessCategorylike->NmBusinessCategory;
-
-                                                      ?> - <?php
-                                                      if(isset($contoperationnotresults)){
-                                                        echo  $contoperationnotresults; 
-                                                      }?>
-
-
-                      </h2><br>
-
-                      <div class=" owl-carousel owl-thema ">
-                        <?php
-
-                        $Operationselect2 = new UserClients();
-                        $Operationselect2->setIdOperation($rowBusinessCategorylike->idBusinessCategory);
-                        $resultsOperationselect2 = $Operationselect2->consulta(" WHERE IdOperation = :IdOperation");
-                        if ($resultsOperationselect2 != null) {
-                          foreach ($resultsOperationselect2 as $rowOperationselect) {  ?>
-                            <div class="item celularcard">
-                              <div class="card rounded-4 shadow celularcard">
-                                <div class="card-body p-0 m-0" style="min-height: 300px !IMPORTANT;">
-                                  <div class="col-12 mh-25">
-                                    <img class="mh-25 rounded-top-3" src="<?php if ($rowOperationselect->LogoPicturePath != "Avatar.png" && $rowOperationselect->LogoPicturePath != "") {
-                                                  echo "" . $rowOperationselect->LogoPicturePath;
-                                                } else {
-                                                  echo "https://images2.alphacoders.com/131/1317606.jpeg";
-                                                } ?>" alt="Descrição da Imagem" style="max-height: 100px; width: 100%;">
-                                  </div>
-                                  <div class="row p-0 ml-0">
-                                    <div class="col-5 d-flex justify-content-start p-0 m-0 " style="height: 0px;">
-                                      <img src=" <?php if ($rowOperationselect->PersonalUserPicturePath != "Avatar.png" && $rowOperationselect->PersonalUserPicturePath != "") {
-                                                    echo "" . $rowOperationselect->PersonalUserPicturePath;
-                                                  } else {
-                                                    echo "assets/img/Avatar.png";
-                                                  } ?>" alt="user" class="border-2 mini-profile-img " onclick="toggleMenu()">
-                                    </div>
-                                    <div class="col-6 p-0 m-0">
-                                      <h3 class="fonte-titulo cortardescricao"><?php echo  $rowOperationselect->FirstName . " " . $rowOperationselect->LastName; ?></h3>
-                                      <h6 class="fonte-principal cortardescricao"><?php echo  $rowOperationselect->JobTitle . ' at ' . $rowOperationselect->CompanyName ?></h6>
-                                    </div>
-                                  </div>
-                                  <div class="col-12 m-0 p-0">
-                                    <hr class="m-0">
-                                  </div>
-                                  <div class="row mt-3 pr-2">
-                                    <div class="col-9 m-0 p-0">
-
-                                      <h5 class="fonte-principal">&nbsp;&nbsp;&nbsp;&nbsp;<i class="fa-solid fa-globe icon-notif-zoom mini-profile-icon"></i>&nbsp;&nbsp;<?php include_once('../model/classes/tblCountry.php');
-
-                                                                                                                                                                          $country1 = new Country();
-
-                                                                                                                                                                          $country1->setidCountry($rowOperationselect->idCountry);
-
-                                                                                                                                                                          $resultsCountry1 = $country1->consulta("WHERE idCountry = :idCountry ");
-
-                                                                                                                                                                          if ($resultsCountry1 != null) {
-                                                                                                                                                                            foreach ($resultsCountry1 as $rowCountry) {
-                                                                                                                                                                              echo $rowCountry->NmCountry;
-                                                                                                                                                                            }
-                                                                                                                                                                          }
-
-                                                                                                                                                                          ?> </h5>
-                                    </div>
-
-                                  </div>
-                                  <div class="row mt-3 pr-2" style="
-    padding-left: 6PX;
-    padding-right: 6px;
-">
-                                    <p class="pdescricaosp"><?php
-
-                                                            echo $rowOperationselect->descricao;
-                                                            ?></p>
-                                  </div>
-                                  <div class="col-12">
-                                    <button type="button" class="btn btn-primary" style="width: -webkit-fill-available;left: 0;right: 0;bottom: 0;position: absolute;">View</button>
-                                  </div>
-                                </div>
-                              </div>
-                            </div>
-                        <?php }
-                        } ?>
-                      </div>
-                    </div>
-                  <?php     }
-                }
-
-                $Operationselectlike = new UserClients();
-                $resultsOperationselectlike = $Operationselectlike->consulta(" WHERE FirstName LIKE '%" . $text . "%' OR LastName LIKE '%" . $text . "%' OR FirstName LIKE '%" . $text . "%' OR JobTitle LIKE'%" . $text . "%'  OR CompanyName LIKE'%" . $text . "%'");
-                if ($resultsOperationselectlike != null) { ?>
+                if ($text == "mysp") { ?>
                   <div class="carousel-filmes">
-                    <h2 id="filme" class="titulo2"><?php echo $text; ?> - <?php if(isset($contoperationnotresults)){
-                                                                                  echo  $contoperationnotresults; 
-                                                                                } ?>
+                    <div class="row">
+                      <div class="col-8 d-flex align-middle">
+                        <h1 id="filme" class="titulo2">Results of SEARCH PROFILES</h1>
+                      </div>
+                      <div class="col-4 d-flex justify-content-end align-middle">
+                        <a href="searchPage.php" type="button" class="btn btn-primary align-middle mt-0">
+                          <h3>+ Create Search</h3>
+                        </a>
+                      </div>
+                    </div>
+                    <br>
 
-                    </h2><br>
+                    <div class="card card-body">
+                      <?php
+                      include_once('../model/classes/tblSearch.php');
+                      $Searchcard = new Search();
+                      $Searchcard->setidClient($iduser);
+                      $resultSearchcard = $Searchcard->consulta("WHERE idClient = :idClient");
+                      if ($resultSearchcard != null) {
+                        foreach ($resultSearchcard as $resultConectUnidSearch) { ?>
+                          <div class="row">
+                            <div class="col-10 d-flex ">
+                              <h3 id="filme" class="titulo2"> <?php echo $resultConectUnidSearch->Nome; ?></h3>
+                            </div>
+
+                            <div class="col-2 d-flex justify-content-center align-content-center align-items-center">
+                              <p>No results</p>
+                            </div>
 
 
 
-                    <div class=" owl-carousel owl-thema ">
-                      <?php foreach ($resultsOperationselectlike as $rowOperationselect) { ?>
-                        <div class="item celularcard">
-                          <div class="card rounded-4 shadow celularcard">
-                            <div class="card-body p-0 m-0" style="min-height: 300px !IMPORTANT;">
-                              <div class="col-12 mh-25">
-                                <img class="mh-25 rounded-top-3" src="<?php if ($rowOperationselect->LogoPicturePath != "Avatar.png" && $rowOperationselect->LogoPicturePath != "") {
-                                                  echo "" . $rowOperationselect->LogoPicturePath;
-                                                } else {
-                                                  echo "https://images2.alphacoders.com/131/1317606.jpeg";
-                                                } ?>" alt="Descrição da Imagem" style="max-height: 100px; width: 100%;">
-                              </div>
-                              <div class="row p-0 ml-0">
-                                <div class="col-5 d-flex justify-content-start p-0 m-0 " style="height: 0px;">
-                                  <img src=" <?php if ($rowOperationselect->PersonalUserPicturePath != "Avatar.png" && $rowOperationselect->PersonalUserPicturePath != "") {
-                                                echo "" . $rowOperationselect->PersonalUserPicturePath;
-                                              } else {
-                                                echo "assets/img/Avatar.png";
-                                              } ?>" alt="user" class="border-2 mini-profile-img " onclick="toggleMenu()">
-                                </div>
-                                <div class="col-6 p-0 m-0">
-                                  <h3 class="fonte-titulo cortardescricao"><?php echo  $rowOperationselect->FirstName . " " . $rowOperationselect->LastName; ?></h3>
-                                  <h6 class="fonte-principal cortardescricao"><?php echo  $rowOperationselect->JobTitle . ' at ' . $rowOperationselect->CompanyName ?></h6>
-                                </div>
-                              </div>
-                              <div class="col-12 m-0 p-0">
-                                <hr class="m-0">
-                              </div>
-                              <div class="row mt-3 pr-2">
-                                <div class="col-9 m-0 p-0">
 
-                                  <h5 class="fonte-principal">&nbsp;&nbsp;&nbsp;&nbsp;<i class="fa-solid fa-globe icon-notif-zoom mini-profile-icon"></i>&nbsp;&nbsp;<?php include_once('../model/classes/tblCountry.php');
+                          </div>
+                          <hr>
 
-                                                                                                                                                                      $country2 = new Country();
+                      <?php    }
+                      }
 
-                                                                                                                                                                      $country2->setidCountry($rowOperationselect->idCountry);
+                      ?>
+                    </div>
 
-                                                                                                                                                                      $resultsCountry2 = $country2->consulta("WHERE idCountry = :idCountry ");
 
-                                                                                                                                                                      if ($resultsCountry2 != null) {
-                                                                                                                                                                        foreach ($resultsCountry2 as $rowCountry) {
-                                                                                                                                                                          echo $rowCountry->NmCountry;
-                                                                                                                                                                        }
-                                                                                                                                                                      }
+                    <?php      } else {
 
-                                                                                                                                                                      ?> </h5>
-                                </div>
 
-                              </div>
-                              <div class="row mt-3 pr-2" style="
+                    $operationsnomelike = new Operations();
+
+                    $resultsOperationomelike = $operationsnomelike->consulta("WHERE NmOperation LIKE '%" . $text . "%'");
+                    if ($resultsOperationomelike != null) {
+                      foreach ($resultsOperationomelike as $rowOperationomelike) { ?>
+                        <div class="carousel-filmes">
+                          <h2 id="filme" class="titulo2"><?php
+
+
+                                                          echo $rowOperationomelike->NmOperation;
+
+                                                          ?> - <?php
+                                                                if (isset($contoperationnotresults)) {
+                                                                  echo  $contoperationnotresults;
+                                                                } ?>
+
+
+                          </h2><br>
+
+                          <div class=" owl-carousel owl-thema ">
+                            <?php
+
+                            $Operationselect = new UserClients();
+                            $Operationselect->setCoreBusinessId($rowOperationomelike->idOperation);
+                            $resultsOperationselect = $Operationselect->consulta(" WHERE CoreBusinessId = :CoreBusinessId");
+                            if ($resultsOperationselect != null) {
+                              foreach ($resultsOperationselect as $rowOperationselect) {  ?>
+                                <div class="item celularcard">
+                                  <div class="card rounded-4 shadow celularcard">
+                                    <div class="card-body p-0 m-0" style="min-height: 300px !IMPORTANT;">
+                                      <div class="col-12 mh-25">
+                                        <img class="mh-25 rounded-top-3" src="<?php if ($rowOperationselect->LogoPicturePath != "Avatar.png" && $rowOperationselect->LogoPicturePath != "") {
+                                                                                echo "" . $rowOperationselect->LogoPicturePath;
+                                                                              } else {
+                                                                                echo "https://images2.alphacoders.com/131/1317606.jpeg";
+                                                                              } ?>" alt="Descrição da Imagem" style="max-height: 100px; width: 100%;">
+                                      </div>
+                                      <div class="row p-0 ml-0 m-0">
+                                        <div class="col-6 d-flex justify-content-start p-0 m-0 " style="height: 0px;">
+                                          <img src=" <?php if ($rowOperationselect->PersonalUserPicturePath != "Avatar.png" && $rowOperationselect->PersonalUserPicturePath != "") {
+                                                        echo "" . $rowOperationselect->PersonalUserPicturePath;
+                                                      } else {
+                                                        echo "assets/img/Avatar.png";
+                                                      } ?>" alt="user" class="border-2 mini-profile-img " onclick="toggleMenu()">
+                                        </div>
+                                        <div class="col-6">
+                                          <h4 class="fonte-titulo cortardescricao mr-1"><?php echo  $rowOperationselect->FirstName . " " . $rowOperationselect->LastName; ?></h4>
+                                          <h6 class="fonte-principal cortardescricao mr-1"><?php echo  $rowOperationselect->JobTitle . ' at ' . $rowOperationselect->CompanyName ?></h6>
+                                        </div>
+                                      </div>
+                                      <div class="col-12 m-0 p-0">
+                                        <hr class="m-0">
+                                      </div>
+                                      <div class="row mt-3 pr-2">
+                                        <div class="col-9 m-0 p-0">
+
+                                          <h5 class="fonte-principal">&nbsp;&nbsp;&nbsp;&nbsp;<i class="fa-solid fa-globe icon-notif-zoom mini-profile-icon"></i>&nbsp;&nbsp;<?php include_once('../model/classes/tblCountry.php');
+
+                                                                                                                                                                              $country = new Country();
+
+                                                                                                                                                                              $country->setidCountry($rowOperationselect->idCountry);
+
+                                                                                                                                                                              $resultsCountry = $country->consulta("WHERE idCountry = :idCountry ");
+
+                                                                                                                                                                              if ($resultsCountry != null) {
+                                                                                                                                                                                foreach ($resultsCountry as $rowCountry) {
+                                                                                                                                                                                  echo $rowCountry->NmCountry;
+                                                                                                                                                                                }
+                                                                                                                                                                              }
+
+                                                                                                                                                                              ?> </h5>
+                                        </div>
+
+                                      </div>
+                                      <div class="row mt-3 pr-2" style="
     padding-left: 6PX;
     padding-right: 6px;
 ">
-                                <p class="pdescricaosp"><?php
+                                        <p class="pdescricaosp"><?php
 
-                                                        echo $rowOperationselect->descricao;
-                                                        ?></p>
-                              </div>
-                              <div class="col-12">
-                                <button type="button" class="btn btn-primary" style="width: -webkit-fill-available;left: 0;right: 0;bottom: 0;position: absolute;">View</button>
-                              </div>
-                            </div>
+                                                                echo $rowOperationselect->descricao;
+                                                                ?></p>
+                                      </div>
+                                      <div class="col-12 p-2 d-flex justify-content-end">
+                                        <a href="viewProfile.php?profile=<?php echo $rowOperationselect->idClient; ?>" type="button" class="btn btn-primary" style="">View Profile</a>
+                                      </div>
+                                    </div>
+                                  </div>
+                                </div>
+                            <?php }
+                            } ?>
                           </div>
                         </div>
-                      <?php } ?>
-                    </div>
 
-                  </div>
-                <?php } ?>
+                      <?php  }
+                    }
 
-                <?php
-                include_once('../model/classes/tblCountry.php');
-                $countrylike = new Country();
-                $resultsCountrylike = $countrylike->consulta("WHERE NmCountry LIKE '%" . $text . "%' ");
-                if ($resultsCountrylike != null) {
-                 
-                  foreach ($resultsCountrylike as $rowCountrylike) {
-                    $paisclientepais = new UserClients();
-                    $paisclientepais->setidCountry($rowCountrylike->idCountry);
-                    $resultspaisclientepais = $paisclientepais->consulta(" WHERE idCountry = :idCountry");
-                    if ($resultspaisclientepais != null) { ?>
+                    include_once('../model/classes/tblBusiness.php');
+                    $Businesslike = new Business();
+                    $resultsBusinesslike = $Businesslike->consulta("WHERE NmBusiness LIKE '%" . $text . "%'");
+                    if ($resultsBusinesslike != null) {
+                      foreach ($resultsBusinesslike as $rowBusinesslike) { ?>
+                        <div class="carousel-filmes">
+                          <h2 id="filme" class="titulo2"><?php
+
+
+                                                          echo $rowBusinesslike->NmBusiness;
+
+                                                          ?> - <?php
+                                                                if (isset($contoperationnotresults)) {
+                                                                  echo  $contoperationnotresults;
+                                                                } ?>
+
+
+                          </h2><br>
+
+                          <div class=" owl-carousel owl-thema ">
+                            <?php
+
+                            $Operationselect1 = new UserClients();
+                            $Operationselect1->setSatBusinessId($rowBusinesslike->idBusiness);
+                            $resultsOperationselect1 = $Operationselect1->consulta(" WHERE SatBusinessId = :SatBusinessId");
+                            if ($resultsOperationselect1 != null) {
+                              foreach ($resultsOperationselect1 as $rowOperationselect) {  ?>
+                                <div class="item celularcard">
+                                  <div class="card rounded-4 shadow celularcard">
+                                    <div class="card-body p-0 m-0" style="min-height: 300px !IMPORTANT;">
+                                      <div class="col-12 mh-25">
+                                        <img class="mh-25 rounded-top-3" src="<?php if ($rowOperationselect->LogoPicturePath != "Avatar.png" && $rowOperationselect->LogoPicturePath != "") {
+                                                                                echo "" . $rowOperationselect->LogoPicturePath;
+                                                                              } else {
+                                                                                echo "https://images2.alphacoders.com/131/1317606.jpeg";
+                                                                              } ?>" alt="Descrição da Imagem" style="max-height: 100px; width: 100%;">
+                                      </div>
+                                      <div class="row p-0 ml-0 m-0">
+                                        <div class="col-6 d-flex justify-content-start p-0 m-0 " style="height: 0px;">
+                                          <img src=" <?php if ($rowOperationselect->PersonalUserPicturePath != "Avatar.png" && $rowOperationselect->PersonalUserPicturePath != "") {
+                                                        echo "" . $rowOperationselect->PersonalUserPicturePath;
+                                                      } else {
+                                                        echo "assets/img/Avatar.png";
+                                                      } ?>" alt="user" class="border-2 mini-profile-img " onclick="toggleMenu()">
+                                        </div>
+                                        <div class="col-6">
+                                          <h4 class="fonte-titulo cortardescricao mr-1"><?php echo  $rowOperationselect->FirstName . " " . $rowOperationselect->LastName; ?></h4>
+                                          <h6 class="fonte-principal cortardescricao mr-1"><?php echo  $rowOperationselect->JobTitle . ' at ' . $rowOperationselect->CompanyName ?></h6>
+                                        </div>
+                                      </div>
+                                      <div class="col-12 m-0 p-0">
+                                        <hr class="m-0">
+                                      </div>
+                                      <div class="row mt-3 pr-2">
+                                        <div class="col-9 m-0 p-0">
+
+                                          <h5 class="fonte-principal">&nbsp;&nbsp;&nbsp;&nbsp;<i class="fa-solid fa-globe icon-notif-zoom mini-profile-icon"></i>&nbsp;&nbsp;<?php include_once('../model/classes/tblCountry.php');
+
+                                                                                                                                                                              $country = new Country();
+
+                                                                                                                                                                              $country->setidCountry($rowOperationselect->idCountry);
+
+                                                                                                                                                                              $resultsCountry = $country->consulta("WHERE idCountry = :idCountry ");
+
+                                                                                                                                                                              if ($resultsCountry != null) {
+                                                                                                                                                                                foreach ($resultsCountry as $rowCountry) {
+                                                                                                                                                                                  echo $rowCountry->NmCountry;
+                                                                                                                                                                                }
+                                                                                                                                                                              }
+
+                                                                                                                                                                              ?> </h5>
+                                        </div>
+
+                                      </div>
+                                      <div class="row mt-3 pr-2" style="
+    padding-left: 6PX;
+    padding-right: 6px;
+">
+                                        <p class="pdescricaosp"><?php
+
+                                                                echo $rowOperationselect->descricao;
+                                                                ?></p>
+                                      </div>
+                                      <div class="col-12 p-2 d-flex justify-content-end">
+                                        <a href="viewProfile.php?profile=<?php echo $rowOperationselect->idClient; ?>" type="button" class="btn btn-primary" style="">View Profile</a>
+                                      </div>
+                                    </div>
+                                  </div>
+                                </div>
+                            <?php }
+                            } ?>
+                          </div>
+                        </div>
+                      <?php    }
+                    }
+                    include_once('../model/classes/tblBusinessCategory.php');
+                    $tblBusinessCategorylike = new BusinessCategory();
+                    $resultstblBusinessCategorylike = $tblBusinessCategorylike->consulta(" WHERE NmBusinessCategory LIKE '%" . $text . "%'");
+                    if ($resultstblBusinessCategorylike != null) {
+                      foreach ($resultstblBusinessCategorylike as $rowBusinessCategorylike) { ?>
+                        <div class="carousel-filmes">
+                          <h2 id="filme" class="titulo2"><?php
+
+
+                                                          echo $rowBusinessCategorylike->NmBusinessCategory;
+
+                                                          ?> - <?php
+                                                                if (isset($contoperationnotresults)) {
+                                                                  echo  $contoperationnotresults;
+                                                                } ?>
+
+
+                          </h2><br>
+
+                          <div class=" owl-carousel owl-thema ">
+                            <?php
+
+                            $Operationselect2 = new UserClients();
+                            $Operationselect2->setIdOperation($rowBusinessCategorylike->idBusinessCategory);
+                            $resultsOperationselect2 = $Operationselect2->consulta(" WHERE IdOperation = :IdOperation");
+                            if ($resultsOperationselect2 != null) {
+                              foreach ($resultsOperationselect2 as $rowOperationselect) {  ?>
+                                <div class="item celularcard">
+                                  <div class="card rounded-4 shadow celularcard">
+                                    <div class="card-body p-0 m-0" style="min-height: 300px !IMPORTANT;">
+                                      <div class="col-12 mh-25">
+                                        <img class="mh-25 rounded-top-3" src="<?php if ($rowOperationselect->LogoPicturePath != "Avatar.png" && $rowOperationselect->LogoPicturePath != "") {
+                                                                                echo "" . $rowOperationselect->LogoPicturePath;
+                                                                              } else {
+                                                                                echo "https://images2.alphacoders.com/131/1317606.jpeg";
+                                                                              } ?>" alt="Descrição da Imagem" style="max-height: 100px; width: 100%;">
+                                      </div>
+                                      <div class="row p-0 ml-0 m-0">
+                                        <div class="col-6 d-flex justify-content-start p-0 m-0 " style="height: 0px;">
+                                          <img src=" <?php if ($rowOperationselect->PersonalUserPicturePath != "Avatar.png" && $rowOperationselect->PersonalUserPicturePath != "") {
+                                                        echo "" . $rowOperationselect->PersonalUserPicturePath;
+                                                      } else {
+                                                        echo "assets/img/Avatar.png";
+                                                      } ?>" alt="user" class="border-2 mini-profile-img " onclick="toggleMenu()">
+                                        </div>
+                                        <div class="col-6">
+                                          <h4 class="fonte-titulo cortardescricao mr-1"><?php echo  $rowOperationselect->FirstName . " " . $rowOperationselect->LastName; ?></h4>
+                                          <h6 class="fonte-principal cortardescricao mr-1"><?php echo  $rowOperationselect->JobTitle . ' at ' . $rowOperationselect->CompanyName ?></h6>
+                                        </div>
+                                      </div>
+                                      <div class="col-12 m-0 p-0">
+                                        <hr class="m-0">
+                                      </div>
+                                      <div class="row mt-3 pr-2">
+                                        <div class="col-9 m-0 p-0">
+
+                                          <h5 class="fonte-principal">&nbsp;&nbsp;&nbsp;&nbsp;<i class="fa-solid fa-globe icon-notif-zoom mini-profile-icon"></i>&nbsp;&nbsp;<?php include_once('../model/classes/tblCountry.php');
+
+                                                                                                                                                                              $country1 = new Country();
+
+                                                                                                                                                                              $country1->setidCountry($rowOperationselect->idCountry);
+
+                                                                                                                                                                              $resultsCountry1 = $country1->consulta("WHERE idCountry = :idCountry ");
+
+                                                                                                                                                                              if ($resultsCountry1 != null) {
+                                                                                                                                                                                foreach ($resultsCountry1 as $rowCountry) {
+                                                                                                                                                                                  echo $rowCountry->NmCountry;
+                                                                                                                                                                                }
+                                                                                                                                                                              }
+
+                                                                                                                                                                              ?> </h5>
+                                        </div>
+
+                                      </div>
+                                      <div class="row mt-3 pr-2" style="
+    padding-left: 6PX;
+    padding-right: 6px;
+">
+                                        <p class="pdescricaosp"><?php
+
+                                                                echo $rowOperationselect->descricao;
+                                                                ?></p>
+                                      </div>
+                                      <div class="col-12 p-2 d-flex justify-content-end">
+                                        <a href="viewProfile.php?profile=<?php echo $rowOperationselect->idClient; ?>" type="button" class="btn btn-primary" style="">View Profile</a>
+                                      </div>
+                                    </div>
+                                  </div>
+                                </div>
+                            <?php }
+                            } ?>
+                          </div>
+                        </div>
+                      <?php     }
+                    }
+
+                    $Operationselectlike = new UserClients();
+                    $resultsOperationselectlike = $Operationselectlike->consulta(" WHERE FirstName LIKE '%" . $text . "%' OR LastName LIKE '%" . $text . "%' OR FirstName LIKE '%" . $text . "%' OR JobTitle LIKE'%" . $text . "%'  OR CompanyName LIKE'%" . $text . "%'");
+                    if ($resultsOperationselectlike != null) { ?>
                       <div class="carousel-filmes">
-                        <h2 id="filme" class="titulo2"><?php echo $text; ?> - <?php  ?>
+                        <h2 id="filme" class="titulo2"><?php echo $text; ?> - <?php if (isset($contoperationnotresults)) {
+                                                                                echo  $contoperationnotresults;
+                                                                              } ?>
 
                         </h2><br>
 
 
 
                         <div class=" owl-carousel owl-thema ">
-                          <?php foreach ($resultspaisclientepais as $rowpaiscliente) { ?>
+                          <?php foreach ($resultsOperationselectlike as $rowOperationselect) { ?>
                             <div class="item celularcard">
                               <div class="card rounded-4 shadow celularcard">
                                 <div class="card-body p-0 m-0" style="min-height: 300px !IMPORTANT;">
                                   <div class="col-12 mh-25">
                                     <img class="mh-25 rounded-top-3" src="<?php if ($rowOperationselect->LogoPicturePath != "Avatar.png" && $rowOperationselect->LogoPicturePath != "") {
-                                                  echo "" . $rowOperationselect->LogoPicturePath;
-                                                } else {
-                                                  echo "https://images2.alphacoders.com/131/1317606.jpeg";
-                                                } ?>" alt="Descrição da Imagem" style="max-height: 100px; width: 100%;">
+                                                                            echo "" . $rowOperationselect->LogoPicturePath;
+                                                                          } else {
+                                                                            echo "https://images2.alphacoders.com/131/1317606.jpeg";
+                                                                          } ?>" alt="Descrição da Imagem" style="max-height: 100px; width: 100%;">
                                   </div>
-                                  <div class="row p-0 ml-0">
-                                    <div class="col-5 d-flex justify-content-start p-0 m-0 " style="height: 0px;">
-                                      <img src=" <?php if ($rowpaiscliente->PersonalUserPicturePath != "Avatar.png" && $rowpaiscliente->PersonalUserPicturePath != "") {
-                                                    echo "" . $rowpaiscliente->PersonalUserPicturePath;
+                                  <div class="row p-0 ml-0 m-0">
+                                    <div class="col-6 d-flex justify-content-start p-0 m-0 " style="height: 0px;">
+                                      <img src=" <?php if ($rowOperationselect->PersonalUserPicturePath != "Avatar.png" && $rowOperationselect->PersonalUserPicturePath != "") {
+                                                    echo "" . $rowOperationselect->PersonalUserPicturePath;
                                                   } else {
                                                     echo "assets/img/Avatar.png";
                                                   } ?>" alt="user" class="border-2 mini-profile-img " onclick="toggleMenu()">
                                     </div>
-                                    <div class="col-6 p-0 m-0">
-                                      <h3 class="fonte-titulo cortardescricao"><?php echo  $rowpaiscliente->FirstName . " " . $rowpaiscliente->LastName; ?></h3>
-                                      <h6 class="fonte-principal cortardescricao"><?php echo  $rowpaiscliente->JobTitle . ' at ' . $rowpaiscliente->CompanyName ?></h6>
+                                    <div class="col-6 ">
+                                      <h4 class="fonte-titulo cortardescricao mr-1"><?php echo  $rowOperationselect->FirstName . " " . $rowOperationselect->LastName; ?></h4>
+                                      <h6 class="fonte-principal cortardescricao mr-1"><?php echo  $rowOperationselect->JobTitle . ' at ' . $rowOperationselect->CompanyName ?></h6>
                                     </div>
                                   </div>
                                   <div class="col-12 m-0 p-0">
@@ -1200,17 +1132,16 @@ if ($results != null) {
                                   <div class="row mt-3 pr-2">
                                     <div class="col-9 m-0 p-0">
 
-                                      <h5 class="fonte-principal">&nbsp;&nbsp;&nbsp;&nbsp;<i class="fa-solid fa-globe icon-notif-zoom mini-profile-icon"></i>&nbsp;&nbsp;<?php 
-                                                                                                                                                                          include_once('../model/classes/tblCountry.php');
-                                                                                                                                                                          $country3 = new Country();
+                                      <h5 class="fonte-principal">&nbsp;&nbsp;&nbsp;&nbsp;<i class="fa-solid fa-globe icon-notif-zoom mini-profile-icon"></i>&nbsp;&nbsp;<?php include_once('../model/classes/tblCountry.php');
 
-                                                                                                                                                                          $country3->setidCountry($rowpaiscliente->idCountry);
+                                                                                                                                                                          $country2 = new Country();
 
-                                                                                                                                                                          $resultsCountry3 = $country3->consulta("WHERE idCountry = :idCountry ");
+                                                                                                                                                                          $country2->setidCountry($rowOperationselect->idCountry);
 
-                                                                                                                                                                          if ($resultsCountry3 != null) {
-                                                                                                                                                                            foreach ($resultsCountry3
-                                                                                                                                                                              as $rowCountry) {
+                                                                                                                                                                          $resultsCountry2 = $country2->consulta("WHERE idCountry = :idCountry ");
+
+                                                                                                                                                                          if ($resultsCountry2 != null) {
+                                                                                                                                                                            foreach ($resultsCountry2 as $rowCountry) {
                                                                                                                                                                               echo $rowCountry->NmCountry;
                                                                                                                                                                             }
                                                                                                                                                                           }
@@ -1225,25 +1156,112 @@ if ($results != null) {
 ">
                                     <p class="pdescricaosp"><?php
 
-                                                            echo $rowpaiscliente->descricao;
+                                                            echo $rowOperationselect->descricao;
                                                             ?></p>
                                   </div>
-                                  <div class="col-12">
-                                    <button type="button" class="btn btn-primary" style="width: -webkit-fill-available;left: 0;right: 0;bottom: 0;position: absolute;">View</button>
+                                  <div class="col-12 p-2 d-flex justify-content-end">
+                                    <a href="viewProfile.php?profile=<?php echo $rowOperationselect->idClient; ?>" type="button" class="btn btn-primary" style="">View Profile</a>
                                   </div>
                                 </div>
                               </div>
                             </div>
-                      <?php }
-                        }
-                      } ?>
+                          <?php } ?>
                         </div>
 
                       </div>
-                    <?php }}?>
+                    <?php } ?>
 
-                  <?php
-                } ?>
+                    <?php
+                    include_once('../model/classes/tblCountry.php');
+                    $countrylike = new Country();
+                    $resultsCountrylike = $countrylike->consulta("WHERE NmCountry LIKE '%" . $text . "%' ");
+                    if ($resultsCountrylike != null) {
+
+                      foreach ($resultsCountrylike as $rowCountrylike) {
+                        $paisclientepais = new UserClients();
+                        $paisclientepais->setidCountry($rowCountrylike->idCountry);
+                        $resultspaisclientepais = $paisclientepais->consulta(" WHERE idCountry = :idCountry");
+                        if ($resultspaisclientepais != null) { ?>
+                          <div class="carousel-filmes">
+                            <h2 id="filme" class="titulo2"><?php echo $text; ?> - <?php  ?>
+
+                            </h2><br>
+
+
+
+                            <div class=" owl-carousel owl-thema ">
+                              <?php foreach ($resultspaisclientepais as $rowpaiscliente) { ?>
+                                <div class="item celularcard">
+                                  <div class="card rounded-4 shadow celularcard">
+                                    <div class="card-body p-0 m-0" style="min-height: 300px !IMPORTANT;">
+                                      <div class="col-12 mh-25">
+                                        <img class="mh-25 rounded-top-3" src="<?php if ($rowOperationselect->LogoPicturePath != "Avatar.png" && $rowOperationselect->LogoPicturePath != "") {
+                                                                                echo "" . $rowOperationselect->LogoPicturePath;
+                                                                              } else {
+                                                                                echo "https://images2.alphacoders.com/131/1317606.jpeg";
+                                                                              } ?>" alt="Descrição da Imagem" style="max-height: 100px; width: 100%;">
+                                      </div>
+                                      <div class="row p-0 ml-0 m-0">
+                                        <div class="col-6 d-flex justify-content-start p-0 m-0 " style="height: 0px;">
+                                          <img src=" <?php if ($rowpaiscliente->PersonalUserPicturePath != "Avatar.png" && $rowpaiscliente->PersonalUserPicturePath != "") {
+                                                        echo "" . $rowpaiscliente->PersonalUserPicturePath;
+                                                      } else {
+                                                        echo "assets/img/Avatar.png";
+                                                      } ?>" alt="user" class="border-2 mini-profile-img " onclick="toggleMenu()">
+                                        </div>
+                                        <div class="col-6">
+                                          <h4 class="fonte-titulo cortardescricao mr-1"><?php echo  $rowpaiscliente->FirstName . " " . $rowpaiscliente->LastName; ?></h4>
+                                          <h6 class="fonte-principal cortardescricao mr-1"><?php echo  $rowpaiscliente->JobTitle . ' at ' . $rowpaiscliente->CompanyName ?></h6>
+                                        </div>
+                                      </div>
+                                      <div class="col-12 m-0 p-0">
+                                        <hr class="m-0">
+                                      </div>
+                                      <div class="row mt-3 pr-2">
+                                        <div class="col-9 m-0 p-0">
+
+                                          <h5 class="fonte-principal">&nbsp;&nbsp;&nbsp;&nbsp;<i class="fa-solid fa-globe icon-notif-zoom mini-profile-icon"></i>&nbsp;&nbsp;<?php
+                                                                                                                                                                              include_once('../model/classes/tblCountry.php');
+                                                                                                                                                                              $country3 = new Country();
+
+                                                                                                                                                                              $country3->setidCountry($rowpaiscliente->idCountry);
+
+                                                                                                                                                                              $resultsCountry3 = $country3->consulta("WHERE idCountry = :idCountry ");
+
+                                                                                                                                                                              if ($resultsCountry3 != null) {
+                                                                                                                                                                                foreach ($resultsCountry3
+                                                                                                                                                                                  as $rowCountry) {
+                                                                                                                                                                                  echo $rowCountry->NmCountry;
+                                                                                                                                                                                }
+                                                                                                                                                                              }
+
+                                                                                                                                                                              ?> </h5>
+                                        </div>
+
+                                      </div>
+                                      <div class="row mt-3 pr-2" style="padding-left: 6PX; padding-right: 6px;">
+                                        <p class="pdescricaosp"><?php
+
+                                                                echo $rowpaiscliente->descricao;
+                                                                ?></p>
+                                      </div> 
+                                      <div class="col-12 p-2 d-flex justify-content-end">
+                                        <a href="viewProfile.php?profile=<?php echo $rowOperationselect->idClient; ?>" type="button" class="btn btn-primary" style="">View Profile</a>
+                                      </div>
+                                    </div>
+                                  </div>
+                                </div>
+                          <?php }
+                            }
+                          } ?>
+                            </div>
+
+                          </div>
+                      <?php }
+                  } ?>
+
+                    <?php
+                  } ?>
 
 
 

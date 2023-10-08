@@ -3,9 +3,7 @@ if ( session_status() !== PHP_SESSION_ACTIVE )
 {
    session_start();
 }
-if(isset($_SESSION['error'])){
-    error_reporting(0);
-}
+
 include_once('../model/ErrorLog.php');
 date_default_timezone_set('America/Sao_Paulo');
 
@@ -92,8 +90,9 @@ $UserClientreal->setidClient($iduser);
 $resultsreal = $UserClientreal->consulta("WHERE idClient = :idClient");
 if ($resultsreal != null) {
   foreach ($resultsreal as $row) {
-      $imgperfil = $row->PersonalUserPicturePath;
-  }}
+    $imgperfil = $row->PersonalUserPicturePath;
+  }
+}
 
 //$sqlCountry = "SELECT * from tblCountry WHERE idCountry = :idCountry";
 //$queryCountry = $dbh->prepare($sqlCountry);
@@ -153,8 +152,8 @@ if ($resultsbusiness != null) {
 //  }
 //}
 
-if($satBusinessId != null){
-include_once('../model/classes/tblBusiness.php');
+if ($satBusinessId != null) {
+  include_once('../model/classes/tblBusiness.php');
 
   $Business = new Business();
   $Business->setidBusiness($satBusinessId);
@@ -236,7 +235,7 @@ if ($resultView == null) {
   $searchprofile_results->setidUsuario($geral);
   $searchprofile_results->setidClienteEncontrado($idusers);
   $searchprofile_results->setpostId("#");
-  $searchprofile_results->seturl("#");
+  $searchprofile_results->seturl("viewProfile.php?profile=" . $geral);
   $searchprofile_results->setidTipoNotif("2");
   $searchprofile_results->setestadoNotif("0");
   $searchprofile_results->cadastrar();
@@ -268,6 +267,7 @@ $respoconect = $connecttem->consulta("WHERE idUserPed = :idUserPed AND idUserRec
 if ($respoconect != null) {
   foreach ($respoconect as $rowconnect) {
     $temconexao = $rowconnect->status;
+    $idconect = $rowconnect->id;
   }
 } else {
   $temconexao = "";
@@ -748,10 +748,10 @@ if ($respoconect != null) {
             <div class="card-body p-0 m-0">
               <div class="col-12 mh-25">
                 <img class="mh-25 rounded-top-3" src="<?php if ($imgcapas != "Avatar.png" && $imgcapas != "" && $imgcapas != null) {
-                                                    echo "" . $imgcapas;
-                                                } else {
-                                                    echo "https://images2.alphacoders.com/131/1317606.jpeg";
-                                                } ?>" alt="Descrição da Imagem" style="max-height: 100px; width: 100%;">
+                                                        echo "" . $imgcapas;
+                                                      } else {
+                                                        echo "https://images2.alphacoders.com/131/1317606.jpeg";
+                                                      } ?>" alt="Descrição da Imagem" style="max-height: 100px; width: 100%;">
               </div>
               <div class="row p-0 ml-0">
                 <div class="col-5 d-flex justify-content-start p-0 m-0 " style="height: 0px;">
@@ -812,7 +812,9 @@ if ($respoconect != null) {
                 <div class="row pr-2  mb-2">
                   <div class="col-9 m-0 p-0 mr-2">
 
-                    <h5 class="fonte-principal">&nbsp;&nbsp;&nbsp;&nbsp;<i class="fa-solid fa-briefcase "></i>&nbsp;&nbsp;<?php if(isset($NmBusinesscor)){ echo  $NmBusinesscor; }?></h5>
+                    <h5 class="fonte-principal">&nbsp;&nbsp;&nbsp;&nbsp;<i class="fa-solid fa-briefcase "></i>&nbsp;&nbsp;<?php if (isset($NmBusinesscor)) {
+                                                                                                                            echo  $NmBusinesscor;
+                                                                                                                          } ?></h5>
                   </div>
                   <div class="col-3 m-0 p-0">
                     <h5 class="fonte-principal text-left"></h5>
@@ -830,19 +832,22 @@ if ($respoconect != null) {
               <?php } ?>
               <div class="row pr-2  mb-2">
                 <form method="POST" action="../controller/viewProfileController.php" enctype="multipart/form-data">
-                <input type="hidden" value="<?php echo $idusers;?>" name="iduser">
-                <input type="hidden" value="<?php echo $geral;?>" name="geral">
-                <div class="col-12 m-0 p-0 mr-2">
+                  <input type="hidden" value="<?php echo $idusers; ?>" name="iduser">
+                  <input type="hidden" value="<?php echo $geral; ?>" name="geral">
+                  <input type="hidden" value="<?php echo $idconect; ?>" name="idconectar">
+                  <div class="col-12 m-0 p-0 mr-2">
 
                     <?php if ($temconexao == "1" && $temconexao != "") { ?>
                       <button type="submit" name="desconectar" value="desconectar" class="btn btn-outline-danger ms-1 m-1"><i class="bi bi-person-x-fill icon-btn-card"></i>&nbsp;Disconnect</button>
                     <?php   } else 
                   if ($temconexao == "0" && $temconexao != "") { ?>
                       <button type="submit" name="desconectar" value="desconectar" class="btn btn-outline-warning ms-1 m-1"><i class="bi bi-person-x-fill icon-btn-card"></i>&nbsp;Pending</button>
-                    <?php   }else if($temconexao == "" || $temconexao == "#" || $temconexao == null){ ?>
+                    <?php   } else if ($temconexao == "" || $temconexao == "#" || $temconexao == null) { ?>
                       <button type="submit" name="conectar" value="conectar" class="btn btn-outline-primary ms-1 m-1"><i class="bi bi-person-plus-fill icon-btn-card"></i>&nbsp;Connect</button>
                     <?php   } ?>
-                    <a href="chatPage.php?idClientConversa=<?php echo $idusers;?>" class="btn btn-outline-primary ms-1 m-1"><i class="bi bi-chat-dots-fill icon-btn-card"></i>&nbsp;Message</a>
+                    <?php if ($temconexao == "1" && $temconexao != "") { ?>
+                      <a href="chatPage.php?idClientConversa=<?php echo $idusers; ?>" class="btn btn-outline-primary ms-1 m-1"><i class="bi bi-chat-dots-fill icon-btn-card"></i>&nbsp;Message</a>
+                    <?php } ?>
 
                   </div>
                 </form>
@@ -867,7 +872,7 @@ if ($respoconect != null) {
         <!-- Meio -->
         <div class="col-lg-8 col-12 justify-content-center">
           <div class="col-md-12  justify-content-center">
-          <div class="col-md-12">
+            <div class="col-md-12">
               <?php if ($corebusiness != "3" && $corebusiness != "4") {
               ?>
                 <div class="row">
@@ -877,7 +882,7 @@ if ($respoconect != null) {
                         <div class="col-sm-12">
                           <h2 class="text-muted valoresinsi"><b>Products</b></h2>
                         </div>
-                        
+
                       </div>
                       <div class="row rowProduct overflow-auto">
                         <?php
@@ -891,7 +896,7 @@ if ($respoconect != null) {
                         ?>
                               <div class="mb-4 " style="width: auto;">
                                 <div class="card-container">
-                                  <a data-toggle="modal" data-target="#modalEditarProduto" data-toggle="modal" data-target="#add_produto" data-id="<?php echo $rowProdutos->idProduct; ?>" class="hero-image-container">
+                                  <a data-toggle="modal" data-target="#modalViewProduto" data-toggle="modal" data-id="<?php echo $rowProdutos->idProduct; ?>" class="hero-image-container">
                                     <img class="hero-image produto-img" src="<?php
 
                                                                               include_once('../model/classes/tblProductPictures.php');
@@ -1200,6 +1205,102 @@ if ($respoconect != null) {
       </div>
     </div>
   </div>
+
+  <div id="modalViewProduto" class="modal custom-modal fade" role="dialog">
+    <div class="modal-dialog modal-dialog-centered modal-lg">
+      <div class="modal-content">
+
+        <div class="modal-body">
+          <h1 id="modalProductName" class="mb-0"></h1>
+          <p id="modalProductDescription" class="color-cinza-b produto-desc-text"></p>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+  <div id="modalEditarProduto" class="modal custom-modal fade show comment-modal-primary" role="dialog">
+    <div class="modal-dialog modal-dialog-centered modal-lg">
+      <div class="modal-content">
+
+        <div class="modal-body comment-modal-primary">
+          <h1 id="modalProductName mb-0"></h1>
+          <p id="modalProductDescription color-cinza-b"></p>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+  <script>
+    $(document).ready(function() {
+      // Ao clicar em um link de produto
+      $('.hero-image-container').click(function() {
+        // Obtenha o ID do produto associado ao link clicado
+        var idProduto = $(this).data('id');
+        console.log(idProduto);
+        // Use o ID do produto para fazer uma requisição AJAX para buscar os dados do produto no servidor
+        $.ajax({
+          type: 'GET',
+          url: 'widget/viewProduto.php', // Substitua pelo caminho correto
+          data: {
+            idProduto: idProduto
+          },
+          success: function(data) {
+            // Preencha o conteúdo do modal com as informações do produto
+            $('#modalViewProduto .modal-content').html(data);
+          },
+          error: function() {
+            alert('Ocorreu um erro ao carregar os dados do produto.');
+          }
+        });
+
+        // Abra o modal correspondente
+        $('#modalViewProduto').fadeIn();
+      });;
+
+      // Feche o modal ao clicar fora dele ou no botão de fechar
+      $('.modal').click(function(event) {
+        if ($(event.target).hasClass('modal')) {
+          $(this).fadeOut();
+        }
+      });
+    });
+
+    $(document).ready(function() {
+      // Ao clicar em um link de produto
+      $('.hero-image-container2').click(function() {
+        // Obtenha o ID do produto associado ao link clicado
+        var idFeed = $(this).data('id');
+        console.log(idFeed);
+        // Use o ID do produto para fazer uma requisição AJAX para buscar os dados do produto no servidor
+        $.ajax({
+          type: 'GET',
+          url: 'widget/visualizarComent.php', // Substitua pelo caminho correto
+          data: {
+            idFeed: idFeed
+          },
+          success: function(data) {
+            // Preencha o conteúdo do modal com as informações do produto
+            $('#modalEditarProduto .modal-content').html(data);
+          },
+          error: function() {
+            alert('Ocorreu um erro ao carregar os dados do produto.');
+          }
+        });
+
+        // Abra o modal correspondente
+        $('#modalEditarProduto').fadeIn();
+      });;
+
+      // Feche o modal ao clicar fora dele ou no botão de fechar
+      $('.modal').click(function(event) {
+        if ($(event.target).hasClass('modal')) {
+          $(this).fadeOut();
+        }
+      });
+    });
+  </script>
 </body>
 
 </html>

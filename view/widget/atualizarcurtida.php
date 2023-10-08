@@ -60,7 +60,7 @@ $searchProfile = new SearchProfile_Results;
 $searchProfile->setidUsuario($idCliente);
 $searchProfile->setidClienteEncontrado($iduser);
 $searchProfile->setpostId($idPost);
-$searchProfile->seturl("#");
+$searchProfile->seturl("viewPost.php?post=" . $idPost);
 $searchProfile->setidTipoNotif("5");
 $searchProfile->setestadoNotif("0");
 $searchProfile->cadastrar();

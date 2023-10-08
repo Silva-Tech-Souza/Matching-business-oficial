@@ -2,25 +2,49 @@
     
     <nav id="navbar" class="bg-light-alt container-fluid position-fixed" style="z-index: 9999999; padding-top: 10px;">
 
-        <script>
-            function toggleMenuNetwork() {
-                const networkMenu = document.getElementById('networkMenu');
-                console.log('Entrou aqui');
-                networkMenu.classList.toggle("open-menu");
-            }
+    <script>
+    function toggleMenuNetwork() {
+        const networkMenu = document.getElementById('networkMenu');
+        const notifyMenu = document.getElementById('notifyMenu');
+        const profileMenu = document.getElementById('profileMenu');
 
-            function toggleNotifyMenu() {
-                const notifyMenu = document.getElementById('notifyMenu');
-                notifyMenu.classList.toggle("open-menu");
-            }
+        console.log('Entrou aqui');
+        
+        // Feche os outros menus
+        notifyMenu.classList.remove("open-menu");
+        profileMenu.classList.remove("open-menu");
 
-            function toggleMenu() {
-                const profileMenu = document.getElementById('profileMenu');
-                profileMenu.classList.toggle("open-menu");
-            }
+        // Abra o menu de rede
+        networkMenu.classList.toggle("open-menu");
+    }
 
-            function clicarNotif() {}
-        </script>
+    function toggleNotifyMenu() {
+        const networkMenu = document.getElementById('networkMenu');
+        const notifyMenu = document.getElementById('notifyMenu');
+        const profileMenu = document.getElementById('profileMenu');
+
+        // Feche os outros menus
+        networkMenu.classList.remove("open-menu");
+        profileMenu.classList.remove("open-menu");
+
+        // Abra o menu de notificação
+        notifyMenu.classList.toggle("open-menu");
+    }
+
+    function toggleMenu() {
+        const networkMenu = document.getElementById('networkMenu');
+        const notifyMenu = document.getElementById('notifyMenu');
+        const profileMenu = document.getElementById('profileMenu');
+
+        // Feche os outros menus
+        networkMenu.classList.remove("open-menu");
+        notifyMenu.classList.remove("open-menu");
+
+        // Abra o menu de perfil
+        profileMenu.classList.toggle("open-menu");
+    }
+</script>
+
 
         <div class="card d-flex pb-2 justify-content-center shadow-none d-none d-md-block" style="background-color: #00000000; border: 1px; margin-bottom: 0px !important;">
 

@@ -127,7 +127,7 @@ if (isset($_POST["AdicionarProdutos"])) {
   header("Location: ../view/profile.php");
 }
 
-if (isset($_POST["add_orcamento"] )) {
+if (isset($_POST["editarPerfil"] )) {
   $arquivoUser = $_FILES['user-image'];
   $arquivoCompany = $_FILES['banner-image'];
   if ($arquivoUser != "" && $arquivoUser != 0) {
@@ -278,48 +278,19 @@ if (isset($_POST["add_orcamento"] )) {
     }
   }
 
-  $_POST["add_orcamento"] = "";
+  $_POST["editarPerfil"] = "";
   $POSTFirstName = $_POST["nome"];
   $POSTLastName = $_POST["lastname"];
   $POSTJobTitle = $_POST["jobtitle"];
   $POSTCompanyName = $_POST["conpany"];
   $POSTdescricao = $_POST["descricao"];
-  $CoreBusinessIdpost = $_POST["business"];
+  $CoreBusinessIdpost = $_POST["coreBusiness"];
 
+  if($_POST["coreBusiness"] >= 6){
+   
+    $_POST["satellite"] = $_POST["coreBusiness"];
 
-  //$sqlbusinesop = "SELECT * from tblBusiness  ";
-  //$querybusinesop = $dbh->prepare($sqlbusinesop);
-  //$querybusinesop->bindParam(':IdOperation', $CoreBusinessIdpost, PDO::PARAM_INT);
-  //$querybusinesop->execute();
-  //$resulbusinesop = $querybusinesop->fetchAll(PDO::FETCH_OBJ);
-
-  include_once('../model/classes/tblBusiness.php');
-
-  $Business = new Business();
-  $Business->setIdOperation($CoreBusinessIdpost);
-  $resulbusinesop = $Business->consulta("WHERE IdOperation = :IdOperation");
-
-  if($resulbusinesop != null){
-    foreach ($resulbusinesop as $rowlbssop) {
-      $idoperationbs = $rowlbssop->idBusiness;
-
-      if ($BusinessIdpost == "") {
-
-        $BusinessIdpost = $CoreBusinessIdpost;
-
-        if ($idoperationbs == 0) {
-          $BusinessIdpost = $_POST["coreBusiness"];
-        } else {
-          $BusinessIdpost = $idoperationbs;
-        }
-
-      }
-
-    }
   }
-
-  $BusinessCategIdpost = $_POST["satellite"];
-  $BusinessIdpost = $_POST["coreBusiness"];
 
   include_once('../model/classes/tblUserClients.php');
 
@@ -331,10 +302,22 @@ if (isset($_POST["add_orcamento"] )) {
   $userClients-> setCompanyName($POSTCompanyName);
   $userClients-> setdescricao($POSTdescricao);
   $userClients-> setCoreBusinessId($CoreBusinessIdpost);
-  $userClients-> setSatBusinessId($BusinessIdpost);
-  $userClients-> setIdOperation($BusinessCategIdpost);
+  if(isset($_POST["satellite"])){
+    $userClients-> setSatBusinessId($_POST["satellite"]);
+  }
+  if(isset($_POST["Business"])){
+    $userClients-> setIdOperation($_POST["business"]);
+  }
 
-  $userClients->atualizar("FirstName =:FirstName, LastName =:LastName, JobTitle = :JobTitle, CompanyName = :CompanyName, descricao = :descricao, CoreBusinessId = :CoreBusinessId, IdOperation = :IdOperation, SatBusinessId = :SatBusinessId WHERE idClient = :idClient");
+  if(isset($_POST["Business"])){
+
+    $userClients->atualizar("FirstName =:FirstName, LastName =:LastName, JobTitle = :JobTitle, CompanyName = :CompanyName, descricao = :descricao, CoreBusinessId = :CoreBusinessId, IdOperation = :IdOperation, SatBusinessId = :SatBusinessId WHERE idClient = :idClient");
+  
+  }else{
+
+    $userClients->atualizar("FirstName =:FirstName, LastName =:LastName, JobTitle = :JobTitle, CompanyName = :CompanyName, descricao = :descricao, CoreBusinessId = :CoreBusinessId, IdOperation = NULL, SatBusinessId = :SatBusinessId WHERE idClient = :idClient");
+
+  }
 
   //$sqleditperfil = "UPDATE tblUserClients SET FirstName =:FirstName, LastName =:LastName, JobTitle = :JobTitle, CompanyName = :CompanyName, descricao = :descricao, CoreBusinessId = :CoreBusinessId, IdOperation = :IdOperation, SatBusinessId = :SatBusinessId WHERE idClient = :idClient";
   //$queryeditperfil = $dbh->prepare($sqleditperfil);
@@ -655,62 +638,78 @@ if (isset($_POST["updateproduto"])) {
   header("Location: ../view/profile.php");
 }
   
-  if (isset($_POST["conectar"])) {
-    $idconect = $_POST["idconectar"];
-    $idperfilpedido = $_POST["idperfilpedido"];
-  
-    //$sqlconectup = "UPDATE tblconect SET status = '1' WHERE id  = :id ";
-    //$queryconectup = $dbh->prepare($sqlconectup);
-    //$queryconectup->bindParam(':id', $idconect, PDO::PARAM_INT);
-    //$queryconectup->execute();
+if (isset($_POST["conectar"])) {
+  $idconect = $_POST["idconectar"];
+  $idperfilpedido = $_POST["idperfilpedido"];
 
-    include_once('../model/classes/tblConect.php');
+  //$sqlconectup = "UPDATE tblconect SET status = '1' WHERE id  = :id ";
+  //$queryconectup = $dbh->prepare($sqlconectup);
+  //$queryconectup->bindParam(':id', $idconect, PDO::PARAM_INT);
+  //$queryconectup->execute();
 
-    $conect = new Conect();
+  include_once('../model/classes/tblConect.php');
 
-    $conect->setid($idconect);
-    $conect->setstatus('1');
+  $conect = new Conect();
 
-    $conect->atualizar("status = '1' WHERE id = :id ");
-  
-  
-    //$sqlinsertpost = "INSERT INTO tblsearchprofile_results (idUsuario, idClienteEncontrado, idTipoNotif) VALUES (:idUsuario, :idClienteEncontrado, '6')";
-    //$queryinsertpost = $dbh->prepare($sqlinsertpost);
-    //$queryinsertpost->bindParam(':idUsuario', $iduser, PDO::PARAM_INT);
-    //$queryinsertpost->bindParam(':idClienteEncontrado', $idperfilpedido, PDO::PARAM_INT);
-    //$queryinsertpost->execute();
+  $conect->setid($idconect);
+  $conect->setstatus('1');
 
-    include_once('../model/classes/tblSearchProfile_Results.php');
+  $conect->atualizar("status = '1' WHERE id = :id ");
 
-    $tblsearchprofile_results = new SearchProfile_Results();
 
-    $tblsearchprofile_results->setidUsuario($iduser);
-    $tblsearchprofile_results->setidClienteEncontrado($idperfilpedido);
-    $tblsearchprofile_results->setidTipoNotif('6');
+  //$sqlinsertpost = "INSERT INTO tblsearchprofile_results (idUsuario, idClienteEncontrado, idTipoNotif) VALUES (:idUsuario, :idClienteEncontrado, '6')";
+  //$queryinsertpost = $dbh->prepare($sqlinsertpost);
+  //$queryinsertpost->bindParam(':idUsuario', $iduser, PDO::PARAM_INT);
+  //$queryinsertpost->bindParam(':idClienteEncontrado', $idperfilpedido, PDO::PARAM_INT);
+  //$queryinsertpost->execute();
 
-    $tblsearchprofile_results->cadastrar();
+  include_once('../model/classes/tblSearchProfile_Results.php');
 
-    header("Location: ../view/profile.php");
-  }
-  if (isset($_POST["desconectar"])) {
-    $idconect = $_POST["idconectar"];
-    $idperfilpedido = $_POST["idperfilpedido"];
+  $tblsearchprofile_results = new SearchProfile_Results();
 
-    include_once('../model/classes/tblConect.php');
+  $tblsearchprofile_results->setidUsuario($iduser);
+  $tblsearchprofile_results->setidClienteEncontrado($idperfilpedido);
+  $tblsearchprofile_results->setidTipoNotif('6');
 
-    $conect = new Conect();
+  $tblsearchprofile_results->cadastrar();
 
-    $conect->setid($idconect);
+  header("Location: ../view/profile.php");
+}
+if (isset($_POST["desconectar"])) {
+  $idconect = $_POST["idconectar"];
+  $idperfilpedido = $_POST["idperfilpedido"];
 
-    $conect->deletar("WHERE  id = :id");
+  include_once('../model/classes/tblConect.php');
 
-    //$sqlconectdelet = "DELETE FROM tblconect WHERE  id = :id";
-    //$queryconectdelet = $dbh->prepare($sqlconectdelet);
-    //$queryconectdelet->bindParam(':id', $idconect, PDO::PARAM_INT);
-    //$queryconectdelet->execute();
-    header("Location: ../view/profile.php");
-  }
+  $conect = new Conect();
 
+  $conect->setid($idconect);
+
+  $conect->deletar("WHERE  id = :id");
+
+  //$sqlconectdelet = "DELETE FROM tblconect WHERE  id = :id";
+  //$queryconectdelet = $dbh->prepare($sqlconectdelet);
+  //$queryconectdelet->bindParam(':id', $idconect, PDO::PARAM_INT);
+  //$queryconectdelet->execute();
+  header("Location: ../view/profile.php");
+}
+
+if(isset($_POST["enviaremail"])){
+
+  $email = $_POST["emailcolab"];
+
+  $codigoCadastroIncompleto = urlencode($email);
+  ini_set('display_erros', 1);
+  error_reporting(E_ALL);
+  $from = "noreplay@matchingbusiness.online";
+  $to = $email;
+  $subject = "Teste cadastro coolab";//"Matching Business Online - Confirmation Link";
+  $message = "https://visual.matchingbusiness.online/view/cadastrarCoolab.php?email=".$codigoCadastroIncompleto."&taxid=".urlencode($_POST["taxid"]);//"Dear User," . "\n" . "Thank you for registering with us!" . "\n" . "We are excited to have you join Matching Business Online. This email serves as confirmation of your successful registration. We appreciate your interest and look forward to providing you with a fantastic experience." . "\n" . "Please click on the link below to enter your password and complete your registration." . "\n" . "https://visual.matchingbusiness.online/view/createPass.php?codigoCadastroIncompleto=" . $codigoCadastroIncompleto;
+  $headers = "From:" . $from;
+  mail($to, $subject, $message, $headers);
+  header("Location: ../view/cadastrarCoolab.php?email=".$codigoCadastroIncompleto."&taxid=".urlencode($_POST["taxid"]));
+
+}
 
 
 ?>

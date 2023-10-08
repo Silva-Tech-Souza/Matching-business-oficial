@@ -42,9 +42,9 @@ if ($_POST["desconectar"] != "") {
 
     $conect->setid($idconect);
 
-    $conect->deletar("WHERE  id = :id");
+    $conect->deletar("WHERE id = :id");
 
-    header("Location: ../view/viewProfile.php?profile=$iduser");
+    header("Location: ../view/viewProfile.php?profile=" . $geral);
 }
 
 ?>

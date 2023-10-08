@@ -194,7 +194,7 @@ if($_POST["flagtipo"] == "A"){
         $searchspecification->setidNumEmpregados($_POST["numempregados"]);
         $searchspecification->setidlRangeValue($_POST["rangevalues"]);
         $searchspecification->setidNivelOperacao($_POST["niveloperacao"]);
-        $searchspecification->setDataDeAbertura($_POST["year"]);
+      
 
         $searchspecification->cadastrar();
 

@@ -3,9 +3,7 @@ if ( session_status() !== PHP_SESSION_ACTIVE )
 {
    session_start();
 }
-if(isset($_SESSION['error'])){
-    error_reporting(0);
-}
+
 include_once('../model/ErrorLog.php');
 
 date_default_timezone_set('America/Sao_Paulo');
@@ -32,7 +30,7 @@ $results = $userClients->consulta("WHERE idClient = :idClient");
 
 if ($results != null) {
     foreach ($results as $row) {
-        $username = $row->FirstName . " " . $row->LastName; 
+        $username = $row->FirstName . " " . $row->LastName;
         $jobtitle = $row->JobTitle;
         $idcountry = $row->idCountry;
         $idoperation = $row->IdOperation;
@@ -217,6 +215,10 @@ if ($resultsCountry != null) {
 
         });
     </script>
+
+
+
+
     <style>
         /*-----------------
        9. Sidebar
@@ -533,10 +535,10 @@ if ($resultsCountry != null) {
                         <div class="card-body p-0 m-0">
                             <div class="col-12 mh-25">
                                 <img class="mh-25 rounded-top-3" src="<?php if ($imgcapa != "Avatar.png" && $imgcapa != "") {
-                                                    echo "" . $imgcapa;
-                                                } else {
-                                                    echo "https://images2.alphacoders.com/131/1317606.jpeg";
-                                                } ?>" alt="Descrição da Imagem" style="max-height: 100px; width: 100%;">
+                                                                            echo "" . $imgcapa;
+                                                                        } else {
+                                                                            echo "https://images2.alphacoders.com/131/1317606.jpeg";
+                                                                        } ?>" alt="Descrição da Imagem" style="max-height: 100px; width: 100%;">
                             </div>
                             <div class="row p-0 ml-0">
                                 <div class="col-5 d-flex justify-content-start p-0 m-0 " style="height: 0px;">
@@ -692,28 +694,36 @@ if ($resultsCountry != null) {
                         <div class="col-md-12">
                             <div class="card shadow rounded-4 ">
                                 <div class="card-body shadow d-flex flex-column rounded-4 ">
-                                    <form action="../controller/homeController.php" method="POST" enctype="multipart/form-data">
+                                    <form action="../controller/homeController.php" method="POST" enctype="multipart/form-data" id="meuFormulario">
                                         <div class="col-md-12">
                                             <textarea name="txtpos" class="form-control input-new-post" rows="1" placeholder="Write a post..." id="myTextarea" maxlength="500"></textarea>
                                         </div>
                                         <br>
                                         <div class="col-md-12 d-flex justify-content-center">
                                             <img id="preview-image" src="" alt="" class="d-flex post-imgvideo-style">
-                                            <video id="preview-video" src="" class="post-imgvideo-style" controls></video>
+                                            <!-- Botão "X" para remover a imagem -->
+                                            <button type="button" id="remove-image-button" class="btn btn-danger btn-sm bcolor-azul-escuro" style="display: none;">X</button>
                                         </div>
-                                        <div class="col-md-12 ">
+                                        <div class="col-md-12">
                                             <div class="row justify-content-end mt-auto">
-                                                <label class=" insertpost btn btn-second mr-2 btn-lg" for="file-input"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-images" viewBox="0 0 16 16">
+                                                <label class="insertpost btn btn-second mr-2 btn-lg" for="file-input">
+                                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-images" viewBox="0 0 16 16">
                                                         <path d="M4.502 9a1.5 1.5 0 1 0 0-3 1.5 1.5 0 0 0 0 3z" />
                                                         <path d="M14.002 13a2 2 0 0 1-2 2h-10a2 2 0 0 1-2-2V5A2 2 0 0 1 2 3a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2v8a2 2 0 0 1-1.998 2zM14 2H4a1 1 0 0 0-1 1h9.002a2 2 0 0 1 2 2v7A1 1 0 0 0 15 11V3a1 1 0 0 0-1-1zM2.002 4a1 1 0 0 0-1 1v8l2.646-2.354a.5.5 0 0 1 .63-.062l2.66 1.773 3.71-3.71a.5.5 0 0 1 .577-.094l1.777 1.947V5a1 1 0 0 0-1-1h-10z" />
                                                     </svg></label>
+                                                </label>
                                                 <input id="file-input" accept="image/*" type="file" name="postphoto" class="d-none">
 
-                                                <label class="insertpost btn btn-second mr-2 btn-lg" for="video-input"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-camera-video" viewBox="0 0 16 16">
+                                                <label class="insertpost btn btn-second mr-2 btn-lg" for="video-input">
+                                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-camera-video" viewBox="0 0 16 16">
                                                         <path fill-rule="evenodd" d="M0 5a2 2 0 0 1 2-2h7.5a2 2 0 0 1 1.983 1.738l3.11-1.382A1 1 0 0 1 16 4.269v7.462a1 1 0 0 1-1.406.913l-3.111-1.382A2 2 0 0 1 9.5 13H2a2 2 0 0 1-2-2V5zm11.5 5.175 3.5 1.556V4.269l-3.5 1.556v4.35zM2 4a1 1 0 0 0-1 1v6a1 1 0 0 0 1 1h7.5a1 1 0 0 0 1-1V5a1 1 0 0 0-1-1H2z" />
-                                                    </svg></label>
+                                                    </svg>
+                                                </label>
                                                 <input id="video-input" accept="video/*" type="file" name="postvideo" class="d-none">
-                                                <input class="insertpost btn btn-primary pl-4 pr-4 no-border p-3 post-btn-confirm" type="submit" name="post" value="Post">
+                                                <!-- Botão "X" para remover o vídeo -->
+                                                <button type="button" id="remove-video-button" class="btn btn-danger btn-sm bcolor-azul-escuro" style="display: none;">X</button>
+
+                                                <input class="insertpost btn btn-primary pl-4 pr-4 no-border p-3 post-btn-confirm" type="submit" name="post" value="Post" id="submit-button">
                                                 </input>
                                             </div>
                                         </div>
@@ -728,40 +738,39 @@ if ($resultsCountry != null) {
                                     $productss = new Products();
                                     $resultsProdutoss = $productss->consulta("ORDER BY idProduct ASC");
                                     if ($resultsProdutoss != null) {
-                                        
-                                            foreach ($resultsProdutoss as $rowProdutos) { ?>
-                                                <div class="card-produto-uni">
-                                                    <div class="card-container bcolor-azul-escuro rounded-4">
-                                                        <div class="col-12">
-                                                            <a href="viewProfile.php?profile=<?php echo $rowProdutos->idClient; ?>" class="hero-image-container">
-                                                                <img class="hero-image produtos-img rounded-4" style=" user-drag: none;" src="<?php
-                                                                                                                                                include_once('../model/classes/tblProductPictures.php');
-                                                                                                                                                $productsPictures = new ProductPictures();
-                                                                                                                                                $productsPictures->setidProduct($rowProdutos->idProduct);
-                                                                                                                                                $resultsProdutos1 = $productsPictures->consulta("WHERE idProduct = :idProduct");
-                                                                                                                                                if ($resultsProdutos1 != null) {
-                                                                                                                                                    foreach ($resultsProdutos1 as $rowProdutosu) {
-                                                                                                                                                        echo $rowProdutosu->tblProductPicturePath;
-                                                                                                                                                    }
-                                                                                                                                                }else{
-                                                                                                                                                    echo "";
-                                                                                                                                                }
-                                                                                                                                                ?>" alt="Spinning glass cube" />
-                                                            </a>
-                                                        </div>
-                                                        <div class="col-12" style="padding: 6px;">
-                                                            <div class="col-12">
-                                                                <h5 class="mb-0"><a class="text-decoration-none color-branco" href="viewProfile.php?profile=<?php echo $rowProdutos->idClient; ?>"><?php echo $rowProdutos->ProductName; ?></a></h5>
-                                                            </div>
-                                                            <div class="col-12 ">
-                                                                <p class="cortardescricao color-cinza-b desc-produto fonte-principal "><?php echo $rowProdutos->ProdcuctDescription; ?></p>
-                                                            </div>
-                                                        </div>
 
+                                        foreach ($resultsProdutoss as $rowProdutos) { ?>
+                                            <div class="card-produto-uni">
+                                                <div class="card-container bcolor-azul-escuro rounded-4">
+                                                    <div class="col-12">
+                                                    <a data-toggle="modal" data-target="#modalViewProduto" data-toggle="modal" data-id="<?php echo $rowProdutos->idProduct; ?>" class="hero-image-container">
+                                                            <img class="hero-image produtos-img rounded-4" style=" user-drag: none;" src="<?php
+                                                                                                                                            include_once('../model/classes/tblProductPictures.php');
+                                                                                                                                            $productsPictures = new ProductPictures();
+                                                                                                                                            $productsPictures->setidProduct($rowProdutos->idProduct);
+                                                                                                                                            $resultsProdutos1 = $productsPictures->consulta("WHERE idProduct = :idProduct");
+                                                                                                                                            if ($resultsProdutos1 != null) {
+                                                                                                                                                foreach ($resultsProdutos1 as $rowProdutosu) {
+                                                                                                                                                    echo $rowProdutosu->tblProductPicturePath;
+                                                                                                                                                }
+                                                                                                                                            } else {
+                                                                                                                                                echo "";
+                                                                                                                                            }
+                                                                                                                                            ?>" alt="Spinning glass cube" />
+                                                        </a>
                                                     </div>
+                                                    <div class="col-12" style="padding: 6px;">
+                                                        <div class="col-12">
+                                                            <h5 class="mb-0"><a class="text-decoration-none color-branco" href="viewProfile.php?profile=<?php echo $rowProdutos->idClient; ?>"><?php echo $rowProdutos->ProductName; ?></a></h5>
+                                                        </div>
+                                                        <div class="col-12 ">
+                                                            <p class="cortardescricao color-cinza-b desc-produto fonte-principal "><?php echo $rowProdutos->ProdcuctDescription; ?></p>
+                                                        </div>
+                                                    </div>
+
                                                 </div>
+                                            </div>
                                     <?php }
-                                        
                                     } ?>
                                 </div>
                             </div>
@@ -1237,7 +1246,114 @@ font-size: small;
             </div>
         </div>
     </div>
+    <div id="modalViewProduto" class="modal custom-modal fade" role="dialog">
+    <div class="modal-dialog modal-dialog-centered modal-lg">
+      <div class="modal-content">
+
+        <div class="modal-body">
+          <h1 id="modalProductName" class="mb-0"></h1>
+          <p id="modalProductDescription" class="color-cinza-b produto-desc-text"></p>
+        </div>
+
+      </div>
+    </div>
+  </div>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.bundle.min.js" integrity="sha384-HwwvtgBNo3bZJJLYd8oVXjrBZt8cqVSpeBNS5n7C8IVInixGAoxmnlMuBnhbgrkm" crossorigin="anonymous"></script>
+    <script>
+
+$(document).ready(function() {
+      // Ao clicar em um link de produto
+      $('.hero-image-container').click(function() {
+        // Obtenha o ID do produto associado ao link clicado
+        var idProduto = $(this).data('id');
+        console.log(idProduto);
+        // Use o ID do produto para fazer uma requisição AJAX para buscar os dados do produto no servidor
+        $.ajax({
+          type: 'GET',
+          url: 'widget/viewProduto.php', // Substitua pelo caminho correto
+          data: {
+            idProduto: idProduto
+          },
+          success: function(data) {
+            // Preencha o conteúdo do modal com as informações do produto
+            $('#modalViewProduto .modal-content').html(data);
+          },
+          error: function() {
+            alert('Ocorreu um erro ao carregar os dados do produto.');
+          }
+        });
+
+        // Abra o modal correspondente
+        $('#modalViewProduto').fadeIn();
+      });;
+
+      // Feche o modal ao clicar fora dele ou no botão de fechar
+      $('.modal').click(function(event) {
+        if ($(event.target).hasClass('modal')) {
+          $(this).fadeOut();
+        }
+      });
+    });
+    
+    document.addEventListener("DOMContentLoaded", function() {
+        const form = document.querySelector("#meuFormulario");
+        const textarea = document.querySelector("#myTextarea");
+        const imageInput = document.querySelector("#file-input");
+        const videoInput = document.querySelector("#video-input");
+        const submitButton = document.querySelector("#submit-button");
+        const previewImage = document.querySelector("#preview-image");
+        const previewVideo = document.querySelector("#preview-video");
+        const removeImageButton = document.querySelector("#remove-image-button");
+        const removeVideoButton = document.querySelector("#remove-video-button");
+
+        // Função para mostrar ou ocultar o botão "X" da imagem
+        function toggleRemoveImage() {
+            if (imageInput.files.length > 0) {
+                removeImageButton.style.display = "block"; // Mostrar o botão "X"
+            } else {
+                removeImageButton.style.display = "none"; // Ocultar o botão "X"
+            }
+        }
+
+        // Função para mostrar ou ocultar o botão "X" do vídeo
+        function toggleRemoveVideo() {
+            if (videoInput.files.length > 0) {
+                removeVideoButton.style.display = "block"; // Mostrar o botão "X"
+            } else {
+                removeVideoButton.style.display = "none"; // Ocultar o botão "X"
+            }
+        }
+
+        // Adicione ouvintes de eventos para atualizar a exibição dos botões "X"
+        imageInput.addEventListener("change", toggleRemoveImage);
+        videoInput.addEventListener("change", toggleRemoveVideo);
+
+        // Adicione ouvintes de eventos para remover a imagem ou o vídeo quando o botão "X" é clicado
+        removeImageButton.addEventListener("click", function() {
+            imageInput.value = ""; // Limpar o campo do arquivo de imagem
+            previewImage.src = ""; // Limpar a visualização da imagem
+            toggleRemoveImage(); // Ocultar o botão "X"
+        });
+
+        removeVideoButton.addEventListener("click", function() {
+            videoInput.value = ""; // Limpar o campo do arquivo de vídeo
+            previewVideo.src = ""; // Limpar a visualização do vídeo
+            toggleRemoveVideo(); // Ocultar o botão "X"
+        });
+
+        // Adicione um ouvinte de evento para validar antes de enviar o formulário
+        submitButton.addEventListener("click", function(event) {
+            if (textarea.value.trim() === "" && imageInput.files.length === 0 && videoInput.files.length === 0) {
+                event.preventDefault();
+                alert("Por favor, adicione texto, imagem ou vídeo antes de postar.");
+            }
+        });
+    });
+</script>
+
+
+
+
     <script>
         $.fn.extend({
             treed: function(o) {
@@ -1300,6 +1416,7 @@ font-size: small;
                 navbar.classList.add('transparent');
             }
         });
+
         $(document).ready(function() {
             // Ao clicar em um link de produto
             $('.hero-image-container2').click(function() {

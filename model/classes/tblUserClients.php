@@ -34,7 +34,6 @@ class UserClients{
     protected $Fob_1Y = null;
     protected $Vol_1Y = null;
     protected $dbh = null;
-    protected $idemrpesa = null;
 
     function __construct()
     {
@@ -171,15 +170,9 @@ class UserClients{
     
     public function getVol_1Y(){return $this->Vol_1Y;}
 
-    public function setidEmpresa($param){$this->idemrpesa = $param;}
-
-    public function getidEmpresa(){return $this->idemrpesa;}
-
     public function cadastrar(){
 
-        
-
-        $sql = "INSERT INTO tblUserClients ( `FirstName`,  `LastName`, `JobTitle`, `idCountry`, `CompanyName`,  `email`, IdOperation, idFlagStatusCadastro, idPerfilUsuario, `WhatsAppNumber`, `taxid`, idemrpesa) VALUES ( :FirstName,  :LastName, :JobTitle, :idCountry, :CompanyName, :email, '1', '2', '1', :WhatsAppNumber, :taxid, :idemrpesa)";
+        $sql = "INSERT INTO tblUserClients ( `FirstName`,  `LastName`, `JobTitle`, `idCountry`, `CompanyName`,  `email`, IdOperation, idFlagStatusCadastro, idPerfilUsuario, `WhatsAppNumber`, `taxid`) VALUES ( :FirstName,  :LastName, :JobTitle, :idCountry, :CompanyName, :email, '1', '2', '1', :WhatsAppNumber, :taxid)";
         $query = $this->dbh->prepare($sql);
         
         if($this->idClient != null){
@@ -240,12 +233,9 @@ class UserClients{
         if($this->taxid != null){
             $query->bindParam(':taxid', $this->taxid, PDO::PARAM_STR);
         }
-        if($this->idemrpesa != null){
-            $query->bindParam(':idemrpesa', $this->idemrpesa, PDO::PARAM_INT);
-        }
 
         $query->execute();
-        return $query;
+        return $this->dbh->lastInsertId();
 
     }
 
@@ -347,9 +337,6 @@ class UserClients{
         }
         if($this->Vol_1Y != null){
             $query->bindParam(':Vol_1Y', $this->Vol_1Y, PDO::PARAM_INT);
-        }
-        if($this->idemrpesa != null){
-            $query->bindParam(':idemrpesa', $this->idemrpesa, PDO::PARAM_INT);
         }
         $query->execute();
         $results = $query->fetchAll(PDO::FETCH_OBJ);
@@ -457,9 +444,6 @@ class UserClients{
         if($this->Vol_1Y != null){
             $query->bindParam(':Vol_1Y', $this->Vol_1Y, PDO::PARAM_INT);
         }
-        if($this->idemrpesa != null){
-            $query->bindParam(':idemrpesa', $this->idemrpesa, PDO::PARAM_INT);
-        }
         $query->execute();
         return $query;
 
@@ -563,9 +547,6 @@ class UserClients{
         }
         if($this->Vol_1Y != null){
             $query->bindParam(':Vol_1Y', $this->Vol_1Y, PDO::PARAM_INT);
-        }
-        if($this->idemrpesa != null){
-            $query->bindParam(':idemrpesa', $this->idemrpesa, PDO::PARAM_INT);
         }
         $query->execute();
         $results = $query->fetchAll(PDO::FETCH_OBJ);
@@ -673,9 +654,6 @@ class UserClients{
         }
         if($this->Vol_1Y != null){
             $query->bindParam(':Vol_1Y', $this->Vol_1Y, PDO::PARAM_INT);
-        }
-        if($this->idemrpesa != null){
-            $query->bindParam(':idemrpesa', $this->idemrpesa, PDO::PARAM_INT);
         }
         $query->execute();
         return $query;

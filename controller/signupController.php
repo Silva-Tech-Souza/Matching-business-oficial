@@ -39,11 +39,6 @@
 
         if($results == null && $results2 == null){
 
-            $cadastrarEmpresas = new Empresas();
-            $cadastrarEmpresas->setNome($companyname);
-            $cadastrarEmpresas->setTaxid($taxid);
-            $idemrpesa = $cadastrarEmpresas->cadastrar();
-
             $userClients = new UserClients();
 
             $userClients->setFirstName($name);
@@ -54,8 +49,13 @@
             $userClients->setemail($email);
             $userClients->setWhatsAppNumber($phone);
             $userClients->settaxid($taxid);
-            $userClients->setidEmpresa($idemrpesa);
-            $userClients->cadastrar();
+            $resultCadastro = $userClients->cadastrar();
+
+            $cadastrarEmpresas = new Empresas();
+            $cadastrarEmpresas->setNome($companyname);
+            $cadastrarEmpresas->setTaxid($taxid);
+            $cadastrarEmpresas->setidClient($resultCadastro);
+            $cadastrarEmpresas->cadastrar();
 
     
             $codigoCadastroIncompleto = "4matching7" . urlencode($email) . "274bussiness5";

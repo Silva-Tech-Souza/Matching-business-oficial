@@ -35,6 +35,25 @@ if(isset($_COOKIE["remember_me"])){
                 $_SESSION['idC'] = $row->idClient;
                 $_SESSION['fName'] = $row->FirstName;
                 $_SESSION['lName'] = $row->LastName; 
+
+                include_once('../model/classes/tblEmpresas.php');
+                $empresas = new Empresas();
+
+                $empresas->setidClient($row->idClient);
+                $empresas->setTaxid($row->taxid);
+
+                $resultsEmpresas = $empresas->consulta('WHERE taxid = :taxid AND idClient = :idClient');
+
+                if($resultsEmpresas == null){
+
+                    $_SESSION['ADM'] = TRUE;
+
+                }else{
+
+                    $_SESSION['ADM'] = FALSE;
+
+                }
+
                 header("Location: ../view/home.php");
             }
         }else{

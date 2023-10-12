@@ -26,8 +26,8 @@ if ($tblBusiness1 != null) {
     }
 }
 ?>
-<label class="color-branco labelcadastro">Satellite Business: </label>
-<select class="form-control bordainput inputtamanho" name="satellite">
+<label class="color-branco labelcadastro">Business category: </label>
+<select class="form-control bordainput inputtamanho" name="category">
     <option value="0">Select</option>
     <?php
 

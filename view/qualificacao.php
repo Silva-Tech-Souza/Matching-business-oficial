@@ -91,8 +91,8 @@ date_default_timezone_set('America/Sao_Paulo');
 
                                 <div class="col-sm-12">
                                     <div class="form-group" style="text-align: start;">
-                                        <label class="color-branco labelcadastro" style="text-align: start !important;">What kind of business you have?</label>
-                                        <select onchange="showbusines(this.value)" class="form-control inputtamanho" name="business">
+                                        <label class="color-branco labelcadastro" style="text-align: start !important;">What kind of core business you have?</label>
+                                        <select onchange="showbusines(this.value)" class="form-control inputtamanho"id="coreBusiness" name="coreBusiness"  >
                                             <option value="0">Select</option>
                                             <?php
                                             include_once('../model/classes/tblOperations.php');

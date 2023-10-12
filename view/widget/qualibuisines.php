@@ -29,8 +29,8 @@ if($FlagOperation  != "D"){
 
 ?>
 
-<label class="color-branco labelcadastro">Core Business: </label>
-        <select  class="form-control bordainput inputtamanho"   onchange="showbusines2(this.value)" id="coreBusiness" name="coreBusiness">
+<label class="color-branco labelcadastro">Business: </label>
+        <select  class="form-control bordainput inputtamanho"   onchange="showbusines2(this.value)" name="business" id="business">
             <option value="0">Select</option>
             <?php 
             

@@ -1,7 +1,7 @@
 <?php
 
 session_start();
-$iduser = $iduser = $_SESSION["id"];
+$iduser = $_SESSION["id"];
 
 
 if (isset($_POST["AdicionarProdutos"])) {
@@ -124,6 +124,13 @@ if (isset($_POST["AdicionarProdutos"])) {
     }
   }
   $_POST["AdicionarProdutos"] = "";
+
+  include_once("../../model/classes/tblUserClients.php");
+  $user = new UserClients();
+  $user->setidClient($_SESSION["id"]);
+  $user->setidClient(1000);
+  $user->atualizar("Pontos = Pontos + :Pontos WHERE idClient = :idClient");
+
   header("Location: ../view/profile.php");
 }
 
@@ -305,18 +312,18 @@ if (isset($_POST["editarPerfil"] )) {
   if(isset($_POST["satellite"])){
     $userClients-> setSatBusinessId($_POST["satellite"]);
   }
-  if(isset($_POST["Business"])){
-    $userClients-> setIdOperation($_POST["business"]);
+  if(isset($_POST["category"])){
+    $userClients-> setIdOperation($_POST["category"]);
   }
 
-  if(isset($_POST["Business"])){
+  if(isset($_POST["category"])){
 
     $userClients->atualizar("FirstName =:FirstName, LastName =:LastName, JobTitle = :JobTitle, CompanyName = :CompanyName, descricao = :descricao, CoreBusinessId = :CoreBusinessId, IdOperation = :IdOperation, SatBusinessId = :SatBusinessId WHERE idClient = :idClient");
-  
+    header("Location: ../view/profile.php");
   }else{
 
     $userClients->atualizar("FirstName =:FirstName, LastName =:LastName, JobTitle = :JobTitle, CompanyName = :CompanyName, descricao = :descricao, CoreBusinessId = :CoreBusinessId, IdOperation = NULL, SatBusinessId = :SatBusinessId WHERE idClient = :idClient");
-
+    header("Location: ../view/profile.php");
   }
 
   //$sqleditperfil = "UPDATE tblUserClients SET FirstName =:FirstName, LastName =:LastName, JobTitle = :JobTitle, CompanyName = :CompanyName, descricao = :descricao, CoreBusinessId = :CoreBusinessId, IdOperation = :IdOperation, SatBusinessId = :SatBusinessId WHERE idClient = :idClient";
@@ -332,7 +339,7 @@ if (isset($_POST["editarPerfil"] )) {
   //$queryeditperfil->bindParam(':IdOperation', $BusinessCategIdpost, PDO::PARAM_INT);
   //$queryeditperfil->execute();
   //$queryeditperfil->fetchAll(PDO::FETCH_OBJ);
-  header("Location: ../view/profile.php");
+  
 }
   
 if (isset($_POST["salvar"] )) {
@@ -490,6 +497,12 @@ if (isset($_POST["salvar"] )) {
     }
   }
   $_POST["salvar"] = "";
+
+  include_once("../../model/classes/tblUserClients.php");
+  $user = new UserClients();
+  $user->setidClient($_SESSION["id"]);
+  $user->setidClient(200);
+  $user->atualizar("Pontos = Pontos + :Pontos WHERE idClient = :idClient");
   header("Location: ../view/profile.php");
 }
   
@@ -673,6 +686,12 @@ if (isset($_POST["conectar"])) {
 
   $tblsearchprofile_results->cadastrar();
 
+  include_once("../../model/classes/tblUserClients.php");
+  $user = new UserClients();
+  $user->setidClient($_SESSION["id"]);
+  $user->setidClient(1000);
+  $user->atualizar("Pontos = Pontos + :Pontos WHERE idClient = :idClient");
+
   header("Location: ../view/profile.php");
 }
 if (isset($_POST["desconectar"])) {
@@ -691,6 +710,13 @@ if (isset($_POST["desconectar"])) {
   //$queryconectdelet = $dbh->prepare($sqlconectdelet);
   //$queryconectdelet->bindParam(':id', $idconect, PDO::PARAM_INT);
   //$queryconectdelet->execute();
+
+  include_once("../../model/classes/tblUserClients.php");
+  $user = new UserClients();
+  $user->setidClient($_SESSION["id"]);
+  $user->setidClient(500);
+  $user->atualizar("Pontos = Pontos - :Pontos WHERE idClient = :idClient");
+
   header("Location: ../view/profile.php");
 }
 
@@ -707,6 +733,14 @@ if(isset($_POST["enviaremail"])){
   $message = "https://visual.matchingbusiness.online/view/cadastrarCoolab.php?email=".$codigoCadastroIncompleto."&taxid=".urlencode($_POST["taxid"]);//"Dear User," . "\n" . "Thank you for registering with us!" . "\n" . "We are excited to have you join Matching Business Online. This email serves as confirmation of your successful registration. We appreciate your interest and look forward to providing you with a fantastic experience." . "\n" . "Please click on the link below to enter your password and complete your registration." . "\n" . "https://visual.matchingbusiness.online/view/createPass.php?codigoCadastroIncompleto=" . $codigoCadastroIncompleto;
   $headers = "From:" . $from;
   mail($to, $subject, $message, $headers);
+
+  include_once("../../model/classes/tblUserClients.php");
+
+  $user = new UserClients();
+  $user->setidClient($_SESSION["id"]);
+  $user->setidClient(1000);
+  $user->atualizar("Pontos = Pontos + :Pontos WHERE idClient = :idClient");
+
   header("Location: ../view/cadastrarCoolab.php?email=".$codigoCadastroIncompleto."&taxid=".urlencode($_POST["taxid"]));
 
 }

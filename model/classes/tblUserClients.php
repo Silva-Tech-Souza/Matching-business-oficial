@@ -3,6 +3,7 @@
 class UserClients{ 
     
     protected $idClient = null;
+    protected $Pontos = null;
     protected $FirstName = null;
     protected $MiddleName = null;
     protected $LastName = null;
@@ -49,6 +50,10 @@ class UserClients{
     public function setidClient($param){$this->idClient = $param;}
 
     public function getidClient(){return $this->idClient;}
+
+    public function getPontos(){return $this->Pontos;}
+
+    public function setPontos($param){$this->Pontos = $param;}
 
     public function setFirstName($param){$this->FirstName = $param;}
     
@@ -338,6 +343,10 @@ class UserClients{
         if($this->Vol_1Y != null){
             $query->bindParam(':Vol_1Y', $this->Vol_1Y, PDO::PARAM_INT);
         }
+        if($this->Pontos != null){
+            $query->bindParam(':Pontos', $this->Pontos, PDO::PARAM_INT);
+        }
+
         $query->execute();
         $results = $query->fetchAll(PDO::FETCH_OBJ);
 
@@ -444,6 +453,10 @@ class UserClients{
         if($this->Vol_1Y != null){
             $query->bindParam(':Vol_1Y', $this->Vol_1Y, PDO::PARAM_INT);
         }
+        if($this->Pontos != null){
+            $query->bindParam(':Pontos', $this->Pontos, PDO::PARAM_INT);
+        }
+
         $query->execute();
         return $query;
 
@@ -548,6 +561,10 @@ class UserClients{
         if($this->Vol_1Y != null){
             $query->bindParam(':Vol_1Y', $this->Vol_1Y, PDO::PARAM_INT);
         }
+        if($this->Pontos != null){
+            $query->bindParam(':Pontos', $this->Pontos, PDO::PARAM_INT);
+        }
+
         $query->execute();
         $results = $query->fetchAll(PDO::FETCH_OBJ);
 
@@ -655,6 +672,10 @@ class UserClients{
         if($this->Vol_1Y != null){
             $query->bindParam(':Vol_1Y', $this->Vol_1Y, PDO::PARAM_INT);
         }
+        if($this->Pontos != null){
+            $query->bindParam(':Pontos', $this->Pontos, PDO::PARAM_INT);
+        }
+
         $query->execute();
         return $query;
 

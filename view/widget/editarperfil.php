@@ -41,7 +41,7 @@ header("Access-Control-Allow-Origin: *");
                         <div class="col-sm-6 mt-4">
                             <div class="form-group">
                                 <label class="txtinput">Name:</label>
-                                <input class="form-control bordainput" value="<?php echo $FirstName; ?>" autocomplete="off" name="nome" type="text">
+                                <input class="form-control bordainput" value="<?php echo $FirstName; ?>" autocomplete="off" name="nome" type="text" required>
                                 <datalist id="referencia">
                                 </datalist>
                             </div>
@@ -50,7 +50,7 @@ header("Access-Control-Allow-Origin: *");
                         <div class="col-sm-6 mt-4">
                             <div class="form-group">
                                 <label class="txtinput">LastName:</label>
-                                <input class="form-control bordainput" required value="<?php echo $LastName; ?>" autocomplete="off" name="lastname" type="text">
+                                <input class="form-control bordainput" required value="<?php echo $LastName; ?>" autocomplete="off" name="lastname" type="text" required>
                                 <datalist id="referencia">
                                 </datalist>
                             </div>
@@ -59,7 +59,7 @@ header("Access-Control-Allow-Origin: *");
                         <div class="col-sm-6 mt-4">
                             <div class="form-group">
                                 <label class="txtinput">Job tittle:</label>
-                                <input class="form-control bordainput" required value="<?php echo $jobtitle; ?>" autocomplete="off" name="jobtitle" type="text">
+                                <input class="form-control bordainput" required value="<?php echo $jobtitle; ?>" autocomplete="off" name="jobtitle" type="text" required>
                                 <datalist id="referencia">
                                 </datalist>
                             </div>
@@ -68,7 +68,7 @@ header("Access-Control-Allow-Origin: *");
                         <div class="col-sm-6 mt-4">
                             <div class="form-group">
                                 <label class="txtinput">Company name:</label>
-                                <input class="form-control bordainput" required value="<?php echo $companyname; ?>" autocomplete="off" name="conpany" type="text">
+                                <input class="form-control bordainput" required value="<?php echo $companyname; ?>" autocomplete="off" name="conpany" type="text" required>
                                 <datalist id="referencia">
                                 </datalist>
                             </div>
@@ -77,7 +77,7 @@ header("Access-Control-Allow-Origin: *");
                             <div class="form-group">
                                 <label class="txtinput">Core Business:</label>
 
-                                <select class="form-control bordainput" onchange="showbusines(this.value)" id="coreBusiness" name="coreBusiness">
+                                <select class="form-control bordainput" onchange="showbusines(this.value)" id="coreBusiness" name="coreBusiness" required>
 
                                     <?php
                                     
@@ -101,7 +101,7 @@ header("Access-Control-Allow-Origin: *");
                             <div class="col-sm-6 mt-4" id="refHint">
                                 <div class="form-group">
                                     <label class="txtinput">Business:</label>
-                                    <select onchange="showbusines2(this.value)" class="form-control bordainput" id="business" name="business">
+                                    <select onchange="showbusines2(this.value)" class="form-control bordainput"name="satellite" id="satellite" required>
                                         <?php
                                         include_once('../model/classes/tblBusiness.php');
                                         $bussiness = new Business();
@@ -122,7 +122,7 @@ header("Access-Control-Allow-Origin: *");
                             </div>
                             <div class="col mt-4" id="refHint2">
                                 <label>Business Category:</label>
-                                <select  class="form-control bordainput" name="satellite" id="satellite">
+                                <select  class="form-control bordainput"  id="BusinessCategory" name="BusinessCategory" required>
 
                                     <?php
                                     
@@ -146,13 +146,13 @@ header("Access-Control-Allow-Origin: *");
                         <div class="col-sm-12  mt-4">
                             <div class="form-group">
                                 <label class="txtinput">Description:</label>
-                                <textarea class="form-control bordainput" name="descricao" type="text"><?php echo $descricao; ?></textarea>
+                                <textarea class="form-control bordainput" name="descricao" type="text" required><?php echo $descricao; ?></textarea>
                             </div>
                         </div>
                     </div>
 
                     <div class="submit-section mt-4">
-                        <button type="submit" name="add_orcamento" value="Salvar" class="btn btn-primary submit-btn">Confirm</button>
+                        <button type="submit" name="editarPerfil" value="Salvar" class="btn btn-primary submit-btn">Confirm</button>
                     </div>
                 </form>
             </div>

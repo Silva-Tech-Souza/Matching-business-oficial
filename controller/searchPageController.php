@@ -6,6 +6,7 @@ include_once('../model/classes/tblSearchCategory.php');
 include_once('../model/classes/tblSearchCountry.php');
 include_once('../model/classes/tblSearchEspecificationTag.php');
 include_once('../model/classes/tblSearchSpecification.php');
+session_start();
 
 $corbusiness = $_POST["corbusiness"];
 //echo "corbusiness: " . $corbusiness . "<br>";
@@ -130,6 +131,12 @@ if($_POST["flagtipo"] == "A"){
 
         }
 
+        include_once("../../model/classes/tblUserClients.php");
+        $user = new UserClients();
+        $user->setidClient($_SESSION["id"]);
+        $user->setidClient(200);
+        $user->atualizar("Pontos = Pontos + :Pontos WHERE idClient = :idClient");
+
         //    echo 'Cadastro Realizado com sucesso';
         if(!isset($news)){
             header("Location: ../view/searchPage.php");
@@ -198,6 +205,11 @@ if($_POST["flagtipo"] == "A"){
 
         $searchspecification->cadastrar();
 
+        include_once("../../model/classes/tblUserClients.php");
+        $user = new UserClients();
+        $user->setidClient($_SESSION["id"]);
+        $user->setidClient(200);
+        $user->atualizar("Pontos = Pontos + :Pontos WHERE idClient = :idClient");
 
         //    echo 'Cadastro Realizado com sucesso';
         if(!isset($news)){
@@ -267,6 +279,12 @@ if($_POST["flagtipo"] == "A"){
 
         }
 
+        include_once("../../model/classes/tblUserClients.php");
+        $user = new UserClients();
+        $user->setidClient($_SESSION["id"]);
+        $user->setidClient(200);
+        $user->atualizar("Pontos = Pontos + :Pontos WHERE idClient = :idClient");
+
         //    echo 'Cadastro Realizado com sucesso';
         if(!isset($news)){
             header("Location: ../view/searchPage.php");
@@ -322,6 +340,12 @@ if($_POST["flagtipo"] == "A"){
             }
     
         }
+
+        include_once("../../model/classes/tblUserClients.php");
+        $user = new UserClients();
+        $user->setidClient($_SESSION["id"]);
+        $user->setidClient(200);
+        $user->atualizar("Pontos = Pontos + :Pontos WHERE idClient = :idClient");
 
         //    echo 'Cadastro Realizado com sucesso';
         if(!isset($news)){

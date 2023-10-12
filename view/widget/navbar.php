@@ -1,3 +1,9 @@
+<?php
+if ( session_status() !== PHP_SESSION_ACTIVE )
+{
+   session_start();
+}
+?>
 <div class="header">
     
     <nav id="navbar" class="bg-light-alt container-fluid position-fixed" style="z-index: 9999999; padding-top: 10px;">
@@ -355,18 +361,46 @@
                         <ul>
                             <?php
 
-
                             include_once('../model/classes/tblUserClients.php');
+
+                            $userClientsAtual = new UserClients();
+                            $userClientsAtual->setidClient($_SESSION["id"]);
+                            $resultsUsuarioAtual = $userClientsAtual->consulta("WHERE idClient = :idClient");
+
+                            foreach($resultsUsuarioAtual as $resultsUsuarioAtualUnid){
+
+                                $Flag = $resultsUsuarioAtualUnid->CoreBusinessId;
+
+                            }
+
                             $userClients = new UserClients();
 
-                            $resultsUserClients = $userClients->consulta("LIMIT 30");
+                            if($Flag == 2){
+                                //Flag A
+
+                                $resultsUserClients = $userClients->consulta("WHERE CoreBusinessId IN (3, 4,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23) ORDER BY tblUserClients.Pontos DESC LIMIT 30");
 
 
+                            }else if( $Flag == 3 || $Flag == 4){
+                                //Flag B
+
+                                $resultsUserClients = $userClients->consulta("WHERE CoreBusinessId IN (2, 5) ORDER BY tblUserClients.Pontos DESC LIMIT 30");
+
+                            }else if( $Flag == 5){
+                                //Flag C
+
+                                $resultsUserClients = $userClients->consulta("WHERE CoreBusinessId IN (3,4) ORDER BY tblUserClients.Pontos DESC LIMIT 30");
+
+                            }else{
+                                //Flag D
+
+                                $resultsUserClients = $userClients->consulta("ORDER BY tblUserClients.Pontos DESC LIMIT 30");
+
+                            }
+
+                            
                             if ($resultsUserClients != null) {
                                 foreach ($resultsUserClients as $rowcliente) {
-
-
-
 
                                     include_once('../model/classes/tblOperations.php');
 

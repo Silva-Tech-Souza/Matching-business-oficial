@@ -16,12 +16,19 @@ $horaAtual = date('H:i');
 //cria
 include_once("../../model/classes/tblCurtidas.php");
 
+include_once("../../model/classes/tblUserClients.php");
+
 $tbcurtida = new Curtidas;
 $tbcurtida->setidusuario($iduser);
 $tbcurtida->setidpost($idPost);
 $tbcurtida->setdata($dataAtual);
 $tbcurtida->sethora($horaAtual);
 $tbcurtida->cadastrar();
+
+$user = new UserClients();
+$user->setidClient($iduser);
+$user->setidClient(10);
+$user->atualizar("Pontos = Pontos + :Pontos WHERE idClient = :idClient");
 
 
 

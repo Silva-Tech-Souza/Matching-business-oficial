@@ -1,58 +1,48 @@
 <?php
 session_start();
-if ($_POST["create"] != "") {
+    if ($_POST["create"] != "") {
         
 
-    $id = $_SESSION["id"];
-    $idoperationbs = 0;
-
-    echo $_POST["coreBusiness"];
-    echo $_POST["business"];
-    echo $_POST["category"];
-
-    if(isset($_POST["coreBusiness"]) && $_POST["coreBusiness"] != 0){
-        $coreBussines = $_POST["coreBusiness"];
+        $id = $_SESSION["id"];
+        $idoperationbs = 0;
+        $operationIdG = $_POST["business"];
         
 
-        if(($coreBussines >= 2 && $coreBussines <= 5) && (isset($_POST["coreBusiness"]) && $_POST["coreBusiness"] != 0)  && (isset($_POST["category"]) && $_POST["category"] != 0) ){
-            
-            $sateliteBussines = $_POST["business"];
-            $category = $_POST["category"];
+        //$sqlbusinesop = "SELECT * from tblBusiness WHERE IdOperation = :IdOperation ";
+        //$querybusinesop = $dbh->prepare($sqlbusinesop);
+        //$querybusinesop->bindParam(':IdOperation', $businesst, PDO::PARAM_INT);
+        //$querybusinesop->execute();
+        //$resulbusinesop = $querybusinesop->fetchAll(PDO::FETCH_OBJ);
+        //if ($querybusinesop->rowCount() > 0){return $resulbusinesop;}else{return null;}
 
-            include_once('../model/classes/tblUserClients.php');
+        include_once('../model/classes/tblBusiness.php');
 
-            $userClients2 = new UserClients();
+        $business = new Business();
 
-            $userClients2->setCoreBusinessId($coreBussines);
-            $userClients2->setSatBusinessId($sateliteBussines);
-            $userClients2->setIdOperation($category);
-            $userClients2->setidClient($id);
+        $business->setIdOperation($operationIdG);
 
-            $userClients2->atualizar("CoreBusinessId = :CoreBusinessId, SatBusinessId = :SatBusinessId, IdOperation = :IdOperation WHERE idClient = :idClient");
+        $resulbusinesop = $business->consulta("WHERE IdOperation = :IdOperation");
 
+        if($resulbusinesop != null) {
+            foreach ($resulbusinesop as $rowlbssop) {
+                $idoperationbs = $rowlbssop->idBusiness;
+            }
+        }
 
-        }else if(($coreBussines >= 6)){    
+        if ($idoperationbs == 0) {
+            $coreBusinesst = $_POST["coreBusiness"];
+        } else {
+            $coreBusinesst = $idoperationbs;
+        }
 
+        $satellitet = $_POST["satellite"];
+    
 
-            $sateliteBussines = $_POST["coreBusiness"];
-
-            include_once('../model/classes/tblUserClients.php');
-
-            $userClients2 = new UserClients();
-
-            $userClients2->setCoreBusinessId($coreBussines);
-            $userClients2->setSatBusinessId($sateliteBussines);
-            $userClients2->setidClient($id);
-
-            $userClients2->atualizar("CoreBusinessId = :CoreBusinessId, SatBusinessId = :SatBusinessId, IdOperation = NULL WHERE idClient = :idClient");
-
-            
-        }else{
-
-            $_SESSION['errorQuali'] = "Nenhum satelite bussiness ou category selecionado";
-
-            header("Location: ../view/qualificacao.php?aba=".$_SESSION['errorQuali']);
-
+        if ($satellitet == "") {
+            $satellitet = $operationIdG;
+        }
+        if ($coreBusinesst == "") {
+            $satellitet = $operationIdG;
         }
 
         //$sqlcategoria = "UPDATE tblUserClients SET CoreBusinessId = :CoreBusinessId, SatBusinessId = :SatBusinessId, IdOperation = :IdOperation WHERE idClient = :idClient LIMIT 1";
@@ -68,7 +58,17 @@ if ($_POST["create"] != "") {
         //echo '<br>satelliet: ' . $satellitet;
         //echo '<br>id: ' . $id;
 
-        
+        include_once('../model/classes/tblUserClients.php');
+
+        $userClients2 = new UserClients();
+
+        $userClients2->setCoreBusinessId($operationIdG);
+        $userClients2->setSatBusinessId($coreBusinesst);
+        $userClients2->setIdOperation($satellitet);
+        $userClients2->setidClient($id);
+
+        $userClients2->atualizar("CoreBusinessId = :CoreBusinessId, SatBusinessId = :SatBusinessId, IdOperation = :IdOperation WHERE idClient = :idClient");
+
         $_POST["create"] = "";
 
         //$sql = "SELECT * from tblUserClients WHERE idClient = :idClient";
@@ -94,21 +94,14 @@ if ($_POST["create"] != "") {
                 $_SESSION['fName'] = $rowlogin->FirstName;
                 $_SESSION['lName'] = $rowlogin->LastName;
 
-                if($coreBussines == "3" || $coreBussines == "4"){
+                if($operationIdG == "3" || $operationIdG == "4"){
                     header("Location: ../view/qualidistribuidor.php");
                 }else{
-                    header("Location: ../view/home.php");
+                    header("Location: ../view/profile.php");
                 }
                 
             }
         }
-    }else{
-
-        $_SESSION['errorQuali'] = "Nenhum core bussiness selecionado";
-
-        header("Location: ../view/qualificacao.php?aba=".$_SESSION['errorQuali']);
-
     }
-}
 
 ?>

@@ -44,7 +44,7 @@ if(isset($_COOKIE["remember_me"])){
 
                 $resultsEmpresas = $empresas->consulta('WHERE taxid = :taxid AND idClient = :idClient');
 
-                if($resultsEmpresas == null){
+                if($resultsEmpresas != null){
 
                     $_SESSION['ADM'] = TRUE;
 

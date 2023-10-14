@@ -857,8 +857,11 @@ if ($respoconect != null) {
           <div class="card rounded-4 shadow mt-2">
             <div class="card-body p-0 m-0">
               <div class="row ">
+              <div class="col-12 ">
+                  <p class="fonte-titulo" style="padding: 7px; font-size: 17px;">Description</p>
+                </div>
                 <div class="col-12 ">
-                  <p class="fonte-principal" style="padding: 7px;"><?php echo $descricao; ?></p>
+                  <p class="fonte-principal" style="padding: 7px; font-size: 14px;"><?php echo $descricao; ?></p>
                 </div>
                 <div class="col-3 m-0 p-0">
                 </div>
@@ -1059,23 +1062,23 @@ if ($respoconect != null) {
                           <?php
                           $numeroCaracteres = strlen($rowfeed->Text);
                           if ($numeroCaracteres > 200) {
-                            echo "
+                                                        echo "
                                                         <div id='textoEx" . $rowfeed->IdFeed . "' style='height: 8em; overflow: hidden;'>
                                                             <h3 class='fonte-principal color-preto'>
                                                                 <br>
                                                                 " . $rowfeed->Text . "
                                                             </h3>
                                                         </div>";
-                            echo "<a href='javascript:void(0)' id='btn-vm" . $rowfeed->IdFeed . "' onClick='alterarLimite(" . $rowfeed->IdFeed . ")'>Ver mais</a>";
-                          } else {
-                            echo "
-                                                        <div id='textoEx" . $rowfeed->IdFeed . "' style='height: 4em; overflow: hidden;'>
+                                                        echo "<a href='javascript:void(0)' id='btn-vm" . $rowfeed->IdFeed . "' onClick='alterarLimite(" . $rowfeed->IdFeed . ")'>Ver mais</a>";
+                                                    } else {
+                                                        echo "
+                                                        <div id='textoEx" . $rowfeed->IdFeed . "'>
                                                             <h3 class='fonte-principal color-preto'>
                                                                 <br>
                                                                 " . $rowfeed->Text . "
                                                             </h3>
                                                         </div>";
-                          }
+                                                    }
                           ?>
                           <br>
 

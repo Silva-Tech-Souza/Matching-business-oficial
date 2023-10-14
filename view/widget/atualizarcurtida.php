@@ -27,7 +27,7 @@ $tbcurtida->cadastrar();
 
 $user = new UserClients();
 $user->setidClient($iduser);
-$user->setidClient(10);
+$user->setPontos(10);
 $user->atualizar("Pontos = Pontos + :Pontos WHERE idClient = :idClient");
 
 

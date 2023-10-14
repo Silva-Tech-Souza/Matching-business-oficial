@@ -369,33 +369,33 @@ if ($resultsBusinessCategory != null) {
         </div>
       </div>
       <div class="col-12 col-md-4 p-3">
-        <div class="card card-body shadow">
+        <div class="card card-body shadow bcolor-azul-escuro">
           <div class="col-12">
             <div class="row">
               <div class="col-7 d-flex justify-content-start">
-                <p class="mb-0"><b>Core Business:</b></p>
+                <p class="mb-0 textmeiosize color-branco"><b>Core Business:</b></p>
 
               </div>
               <div class="col-5 d-flex justify-content-end align-middle">
-                <p class="mb-0"> <?php echo $NmBusiness; ?></p>
+                <p class="mb-0 textmeiosize color-branco"> <?php echo $NmBusiness; ?></p>
               </div>
               <?php if ($corebusiness == "1" || $corebusiness == "2" || $corebusiness == "3" || $corebusiness == "4" || $corebusiness == "5") {
               ?>
                 <hr>
                 <div class="col-7 d-flex justify-content-start">
-                  <p class="mb-0"><b>Business:</b></p>
+                  <p class="mb-0 textmeiosize color-branco"><b>Business:</b></p>
 
                 </div>
                 <div class="col-5 d-flex justify-content-end align-middle">
-                  <p class="mb-0"> <?php echo $NmBusinesscor; ?></p>
+                  <p class="mb-0 textmeiosize color-branco"> <?php echo $NmBusinesscor; ?></p>
                 </div>
                 <hr>
                 <div class="col-7 d-flex justify-content-start">
-                  <p class="mb-0"><b>Business Category:</b></p>
+                  <p class="mb-0 textmeiosize color-branco"><b>Business Category:</b></p>
 
                 </div>
                 <div class="col-5 d-flex justify-content-end align-middle">
-                  <p class="mb-0"> <?php echo $NmBusinessCategory; ?></p>
+                  <p class="mb-0 textmeiosize color-branco"> <?php echo $NmBusinessCategory; ?></p>
                 </div>
               <?php }  ?>
               <?php if ($corebusiness == "3" || $corebusiness == "4") {
@@ -475,65 +475,70 @@ if ($resultsBusinessCategory != null) {
               ?>
                 <hr>
                 <div class="col-7 d-flex justify-content-start">
-                  <p class="mb-0"><b>Founded in:</b></p>
+                  <p class="mb-0 textmeiosize color-branco"><b>Founded in:</b></p>
 
                 </div>
                 <div class="col-5 d-flex justify-content-end align-middle">
-                  <p class="mb-0"> <?php echo $AnoFundacao; ?></p>
+                  <p class="mb-0 textmeiosize color-branco"> <?php echo $AnoFundacao; ?></p>
                 </div>
                 <hr>
                 <div class="col-7 d-flex justify-content-start">
-                  <p class="mb-0"><b>Number of Employees:</b></p>
+                  <p class="mb-0 textmeiosize color-branco"><b>Number of Employees:</b></p>
 
                 </div>
                 <div class="col-5 d-flex justify-content-end align-middle">
-                  <p class="mb-0"> <?php echo $numEmpregados; ?></p>
+                  <p class="mb-0 textmeiosize color-branco"> <?php echo $numEmpregados; ?></p>
                 </div>
                 <hr>
                 <div class="col-7 d-flex justify-content-start">
-                  <p class="mb-0"><b>Number of Sellers:</b></p>
+                  <p class="mb-0 textmeiosize color-branco"><b>Number of Sellers:</b></p>
 
                 </div>
                 <div class="col-5 d-flex justify-content-end align-middle">
-                  <p class="mb-0"> <?php echo $numVendedores; ?></p>
+                  <p class="mb-0 textmeiosize color-branco"> <?php echo $numVendedores; ?></p>
                 </div>
                 <hr>
                 <div class="col-7 d-flex justify-content-start">
-                  <p class="mb-0"><b>Operation Level:</b></p>
+                  <p class="mb-0 textmeiosize color-branco"><b>Operation Level:</b></p>
 
                 </div>
                 <div class="col-5 d-flex justify-content-end align-middle">
-                  <p class="mb-0"> <?php echo $NivelOperacao; ?></p>
+                  <p class="mb-0 textmeiosize color-branco"> <?php echo $NivelOperacao; ?></p>
                 </div>
                 <hr>
                 <div class="col-7 d-flex justify-content-start">
-                  <p class="mb-0"><b>Region Details:</b></p>
+                  <p class="mb-0 textmeiosize color-branco"><b>Region Details:</b></p>
 
                 </div>
                 <div class="col-5 d-flex justify-content-end align-middle">
-                  <p class="mb-0"> <?php echo $DetalheRegiao; ?></p>
+                  <p class="mb-0 textmeiosize color-branco"> <?php echo $DetalheRegiao; ?></p>
                 </div>
                 <hr>
                 <div class="col-7 d-flex justify-content-start">
-                  <p class="mb-0"><b>Fob <?php echo $Fob3; ?>:</b></p>
+                  <p class="mb-0 textmeiosize color-branco"><b>Fob <?php echo $Fob3; ?>:</b></p>
 
                 </div>
                 <div class="col-5 d-flex justify-content-end align-middle">
-                  <p class="mb-0"> <?php echo $Vol3; ?></p>
+                  <p class="mb-0 textmeiosize color-branco"> <?php echo $Vol3; ?></p>
                 </div>
                 <div class="col-7 d-flex justify-content-start">
-                  <p class="mb-0"><b>Fob <?php echo $Fob2; ?>:</b></p>
+                  <p class="mb-0 textmeiosize color-branco"><b>Fob <?php echo $Fob2; ?>:</b></p>
 
                 </div>
                 <div class="col-5 d-flex justify-content-end align-middle">
-                  <p class="mb-0"> <?php echo $Vol2; ?></p>
+                  <p class="mb-0 textmeiosize color-branco"> <?php echo $Vol2; ?></p>
                 </div>
                 <div class="col-7 d-flex justify-content-start">
-                  <p class="mb-0"><b>Fob <?php echo $Fob1; ?>:</b></p>
+                  <p class="mb-0 textmeiosize color-branco"><b>Fob <?php echo $Fob1; ?>:</b></p>
 
                 </div>
                 <div class="col-5 d-flex justify-content-end align-middle">
-                  <p class="mb-0"> <?php echo $Vol1; ?></p>
+                  <p class="mb-0 textmeiosize color-branco"> <?php echo $Vol1; ?></p>
+                </div>
+                
+                <div  class="col-12 d-flex justify-content-end align-middle">
+       
+                  <a href="#" class="btn btn-outline-primary ms-1 color-branco editdistribtn" data-toggle="modal" data-target="#edit_dist"><i class="bi bi-pen icon-btn-card "></i>&nbsp;Edit</a>
                 </div>
               <?php } ?>
             </div>
@@ -541,16 +546,16 @@ if ($resultsBusinessCategory != null) {
         </div>
         <div class="card card-body mt-3 shadow" style="height:auto;">
           <div class="col-12">
-            <p class="mb-0" style="font-size:medium;"><b>Description</b></p>
+            <p class="mb-0" style="font-size:large;"><b>Description</b></p>
           </div>
           <div class="col-12">
-            <p class="text-muted"><?php echo $descricao; ?></p>
+            <p class="text-muted textmeiosize"><?php echo $descricao; ?></p>
           </div>
         </div>
       </div>
       <!-- Body -->
-      <div class="col-12 col-md-4 p-3">
-        <div class="card card-body shadow">
+      <div class="col-12 col-md-4 p-3 ">
+        <div class="card card-body shadow bcolor-azul-escuro">
           <div class="row">
             <div class="col-2 d-flex justify-content-start">
               <img src="<?php if ($imgperfil != "Avatar.png" && $imgperfil != "") {
@@ -561,7 +566,7 @@ if ($resultsBusinessCategory != null) {
 
             </div>
             <div class="col-6 d-flex justify-content-start d-flex align-items-center">
-              <p class="mb-0 text-center align-middle" style="font-size:larger"><b><?php echo $username; ?></b></p>
+              <p class="mb-0 text-center align-middle color-branco" style="font-size:larger"><b><?php echo $username; ?></b></p>
 
             </div>
             <div class="col-4 d-flex justify-content-end d-flex align-items-center">
@@ -576,7 +581,7 @@ if ($resultsBusinessCategory != null) {
 
             </div>
             <div class="col-6 d-flex justify-content-start d-flex align-items-center">
-              <p class="mb-0 text-center align-middle" style="font-size:larger"><b>Collaborator 2</b></p>
+              <p class="mb-0 text-center align-middle color-branco" style="font-size:larger"><b>Collaborator 2</b></p>
 
             </div>
             <div class="col-4 d-flex justify-content-end d-flex align-items-center">
@@ -592,7 +597,7 @@ if ($resultsBusinessCategory != null) {
 
             </div>
             <div class="col-6 d-flex justify-content-start d-flex align-items-center">
-              <p class="mb-0 text-center align-middle" style="font-size:larger"><b>Collaborator 3</b></p>
+              <p class="mb-0 text-center align-middle color-branco" style="font-size:larger"><b>Collaborator 3</b></p>
 
             </div>
             <div class="col-4 d-flex justify-content-end d-flex align-items-center">
@@ -608,7 +613,7 @@ if ($resultsBusinessCategory != null) {
 
             </div>
             <div class="col-6 d-flex justify-content-start d-flex align-items-center">
-              <p class="mb-0 text-center align-middle" style="font-size:larger"><b>Collaborator 4</b></p>
+              <p class="mb-0 text-center align-middle color-branco" style="font-size:larger"><b>Collaborator 4</b></p>
 
             </div>
             <div class="col-4 d-flex justify-content-end d-flex align-items-center">
@@ -624,7 +629,7 @@ if ($resultsBusinessCategory != null) {
 
             </div>
             <div class="col-6 d-flex justify-content-start d-flex align-items-center">
-              <p class="mb-0 text-center align-middle" style="font-size:larger"><b>Collaborator 5</b></p>
+              <p class="mb-0 text-center align-middle color-branco" style="font-size:larger"><b>Collaborator 5</b></p>
 
             </div>
             <div class="col-4 d-flex justify-content-end d-flex align-items-center">
@@ -826,24 +831,24 @@ if ($resultsBusinessCategory != null) {
 
                     <?php
                     $numeroCaracteres = strlen($rowfeed->Text);
-                    if ($numeroCaracteres > 200) {
-                      echo "
+                   if ($numeroCaracteres > 200) {
+                                                        echo "
                                                         <div id='textoEx" . $rowfeed->IdFeed . "' style='height: 8em; overflow: hidden;'>
                                                             <h3 class='fonte-principal color-preto'>
                                                                 <br>
                                                                 " . $rowfeed->Text . "
                                                             </h3>
                                                         </div>";
-                      echo "<a href='javascript:void(0)' id='btn-vm" . $rowfeed->IdFeed . "' onClick='alterarLimite(" . $rowfeed->IdFeed . ")'>Ver mais</a>";
-                    } else {
-                      echo "
-                                                        <div id='textoEx" . $rowfeed->IdFeed . "' style='height: 4em; overflow: hidden;'>
+                                                        echo "<a href='javascript:void(0)' id='btn-vm" . $rowfeed->IdFeed . "' onClick='alterarLimite(" . $rowfeed->IdFeed . ")'>Ver mais</a>";
+                                                    } else {
+                                                        echo "
+                                                        <div id='textoEx" . $rowfeed->IdFeed . "'>
                                                             <h3 class='fonte-principal color-preto'>
                                                                 <br>
                                                                 " . $rowfeed->Text . "
                                                             </h3>
                                                         </div>";
-                    }
+                                                    }
                     ?>
                     <br>
 
@@ -973,9 +978,9 @@ if ($resultsBusinessCategory != null) {
       <div class="modal-content">
         <div class="modal-header">
           <h5 class="modal-title" id="exampleModalLabel">Want to Connect</h5>
-          <button type="button" class="close rounded-2 border-0" data-dismiss="modal" aria-label="Close">
-            <span aria-hidden="true">&times;</span>
-          </button>
+                <button type="button" class="close rounded-2 border-0 bcolor-azul-escuro " data-dismiss="modal" aria-label="Close" style="width: 25px; height: 25px;">
+                            <span aria-hidden="false" class="color-branco">x</span>
+                        </button>
         </div>
         <div class="modal-body">
           <ul class="m-0 overflow-auto p-1 ul-view">
@@ -1076,9 +1081,9 @@ if ($resultsBusinessCategory != null) {
       <div class="modal-content">
         <div class="modal-header">
           <h5 class="modal-title" id="exampleModalLabel">Network</h5>
-          <button type="button" class="close rounded-2 border-0" data-dismiss="modal" aria-label="Close">
-            <span aria-hidden="true">&times;</span>
-          </button>
+          <button type="button" class="close rounded-2 border-0 bcolor-azul-escuro " data-dismiss="modal" aria-label="Close" style="width: 25px; height: 25px;">
+                            <span aria-hidden="false" class="color-branco">x</span>
+                        </button>
         </div>
         <div class="modal-body">
           <ul class="m-0 overflow-auto p-1 ul-view">
@@ -1179,13 +1184,13 @@ if ($resultsBusinessCategory != null) {
   </div>
 
   <div class="modal custom-modal fade" id="exampleModal" role="dialog">
-    <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
-      <div class="modal-content">
+    <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable" >
+      <div class="modal-content" style="max-height: 400px !important;">
         <div class="modal-header">
           <h5 class="modal-title" id="exampleModalLabel">Views</h5>
-          <button type="button" class="close rounded-2 border-0" data-dismiss="modal" aria-label="Close">
-            <span aria-hidden="true">&times;</span>
-          </button>
+                <button type="button" class="close rounded-2 border-0 bcolor-azul-escuro " data-dismiss="modal" aria-label="Close" style="width: 25px; height: 25px;">
+                            <span aria-hidden="false" class="color-branco">x</span>
+                        </button>
         </div>
         <div class="modal-body">
           <ul class="m-0 overflow-y p-1 ul-view">
@@ -1310,12 +1315,12 @@ if ($resultsBusinessCategory != null) {
       </div>
     </div>
   </div>
-
+  <?php include_once("widget/editdist.php"); ?>
   <?php include_once("widget/editarperfil.php"); ?>
-
   <?php include_once("widget/produto.php"); ?>
-
   <?php include_once("widget/enviaremail.php"); ?>
+
+
 
 
 

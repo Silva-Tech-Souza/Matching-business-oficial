@@ -81,7 +81,7 @@ date_default_timezone_set('America/Sao_Paulo');
                 <div class="col-lg-6 col-12">
                     <div class="mt-5">
                     <h1 class="color-branco titulologin" style="font-size: 40px;">Qualify your profile.</span></h1><br>
-                    <h4 class="color-branco">This part is essential for the system to work, in this qualification process we can better understand what our system should show you, thus bringing a relevant profile to your needs.</h4>
+                    <h4 class="color-branco txtqualisize">This part is essential for the system to work, in this qualification process we can better understand what our system should show you, thus bringing a relevant profile to your needs.</h4>
                     </div>
                 </div>
                 <div class="col-lg-6 col-12">
@@ -91,8 +91,8 @@ date_default_timezone_set('America/Sao_Paulo');
 
                                 <div class="col-sm-12">
                                     <div class="form-group" style="text-align: start;">
-                                        <label class="color-branco labelcadastro" style="text-align: start !important;">What kind of core business you have?</label>
-                                        <select onchange="showbusines(this.value)" class="form-control inputtamanho"id="coreBusiness" name="coreBusiness"  >
+                                        <label class="color-branco labelcadastro" style="text-align: start !important;">What type of main business do you have?</label>
+                                        <select onchange="showbusines(this.value)" class="form-control inputtamanho selectsize" name="business">
                                             <option value="0">Select</option>
                                             <?php
                                             include_once('../model/classes/tblOperations.php');

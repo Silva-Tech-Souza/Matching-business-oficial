@@ -1,9 +1,5 @@
 <?php
-    if ( session_status() !== PHP_SESSION_ACTIVE )
-    {
     session_start();
-    }
-    
     include('../model/classes/tblUserClients.php');
     include('../model/classes/tblEmpresas.php');
     if ($_POST["signupsubmit"] != "") {

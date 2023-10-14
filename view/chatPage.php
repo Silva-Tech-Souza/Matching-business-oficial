@@ -135,10 +135,16 @@ if ($resultsoperation != null) {
                                                       $resultsUserClients = $userClients->consulta("WHERE idClient = :idClient");
                                                       if ($resultsUserClients != null) {
                                                         foreach ($resultsUserClients as $rowCon) {
+                                                            
+                                                             $imgchatuserS = $rowCon->PersonalUserPicturePath;
                                                   ?>
                                     <a href="#" class="d-flex align-items-center" onclick="atualizarMensagens(<?php echo $idconectado; ?>)">
                                       <div class="flex-shrink-0">
-                                        <img class="imgavatar" src="assets/img/Avatar.png" alt="user img">
+                                        <img class="imgavatar" src="<?php if ($imgchatuserS != "Avatar.png" && $imgchatuserS != "" && file_exists("" . $imgchatuserS)) {
+                                                                            echo "" . $imgchatuserS;
+                                                                        } else {
+                                                                            echo "assets/img/Avatar.png";
+                                                                        } ?>" alt="user img">
                                         <span class="active"></span>
                                       </div>
                                       <div class="flex-grow-1 ms-3">
@@ -269,8 +275,7 @@ if ($resultsoperation != null) {
               '<li class="navbar nav-item dropdown">' +
               '<a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false"><i class="fa fa-ellipsis-v" aria-hidden="true"></i></a>' +
               '<ul class="dropdown-menu">' +
-              '<li><a class="dropdown-item" href="#">Disconnect</a></li>' +
-              '<li><a class="dropdown-item" href="#">View Profile</a></li>' +
+              '<li><a class="dropdown-item" href="viewProfile.php?profile=' + idClientConversa + '">View Profile</a></li>' +
               '</ul>' +
               '</li>' +
               '</ul>' +

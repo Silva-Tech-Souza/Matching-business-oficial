@@ -20,6 +20,7 @@ date_default_timezone_set('America/Sao_Paulo');
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link rel="stylesheet" href="assets/css/geral.css">
   <link rel="stylesheet" href="assets/css/login.css">
+  <link rel="stylesheet" href="assets/css/signup.css">
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-4bw+/aepP/YC94hEpVNVgiZdgIC5+VKNBQNGCHeKRQN+PtmoHDEXuppvnDJzQIu9" crossorigin="anonymous">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
   <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
@@ -33,54 +34,18 @@ date_default_timezone_set('America/Sao_Paulo');
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
   <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
   <title>Matching Business</title>
-  <style>
-    .modal-body {
-      display: flex;
-      flex-direction: column;
-      height: 20rem;
-      align-items: center;
-      justify-content: center;
-      padding: 2rem;
 
-    }
-
-    .modal-body h3 {
-      font-weight: bold;
-    }
-
-    .modal-header {
-      color: white;
-      background-color: black;
-    }
-
-    @media (max-width: 720px) {
-
-
-      .modal-body {
-        display: flex;
-        flex-direction: column;
-        height: 15rem;
-        align-items: center;
-        justify-content: center;
-
-      }
-
-      .modal-header {
-        color: white;
-        background-color: black;
-      }
-    }
-  </style>
 </head>
 
 <body class="hero">
   <div class="container m-auto">
+    <br>
     <div class="col-12">
       <div class="row">
         <div class="col-lg-8 col-12">
           <div class="mt-5">
             <h1 class="color-branco titulologin" style="font-size: 40px;">Welcome to <span style="color:#0057e4;">Matching Business Online.</span></h1>
-            <p class="color-branco desclogin d-none d-md-block">Dear user,<br>
+            <p class="color-branco desclogin">Dear user,<br>
 
               Your account is linked to a Legal Entity (PJ). Each PJ account can have up to 5 users. This restriction aims to ensure security and proper control of the company's activities. <br>
 
@@ -93,7 +58,7 @@ date_default_timezone_set('America/Sao_Paulo');
               Best regards.</p>
           </div>
         </div>
-
+        
         <div class="col-lg-4 col-12 ">
           <div class="cardcadastro">
             <form action="../controller/signupController.php" method="POST" enctype="multipart/form-data">
@@ -107,14 +72,14 @@ date_default_timezone_set('America/Sao_Paulo');
                 <div class="col-sm-12">
                   <div class="form-group" style="text-align: start;">
                     <label class="color-branco labelcadastro" for="company-name">Company name </label>
-                    <input type="text" name="nomeEmpresa" class="form-control inputtamanho" id="nomeEmpresa" placeholder="ex: Devloper" required><br>
+                    <input type="text" name="nomeEmpresa" class="form-control inputtamanho fonteinput" id="nomeEmpresa" placeholder="ex: Matching Business Online" required><br>
                   </div>
                 </div>
 
                 <div class="col-sm-12">
                   <div class="form-group" style="text-align: start;">
                     <label class="color-branco labelcadastro" for="taxid">TAX ID </label>
-                    <input type="text" class="form-control inputtamanho" name="taxid" id="taxid" placeholder="ex: Devloper" required><br><br>
+                    <input type="text" class="form-control inputtamanho fonteinput" name="taxid" id="taxid" placeholder="ex: 0000.000.00/000" required><br><br>
                   </div>
                 </div>
 
@@ -127,41 +92,41 @@ date_default_timezone_set('America/Sao_Paulo');
                 <div class="col-sm-12">
                   <div class="form-group" style="text-align: start;">
                     <label class="color-branco labelcadastro" for="job-tittle">Job tittle</label>
-                    <input type="text" class="form-control inputtamanho" name="cargo" id="cargo" placeholder="ex: Devloper" required><br>
+                    <input type="text" class="form-control inputtamanho fonteinput" name="cargo" id="cargo" placeholder="ex: Devloper" required><br>
                   </div>
                 </div>
 
                 <div class="col-sm-6">
                   <div class="form-group" style="text-align: start;">
                     <label class="color-branco labelcadastro" for="first-name">Name</label>
-                    <input class="inputauto form-control inputtamanho" type="text" name="nome" id="nome" placeholder="type here..." required>
+                    <input class="inputauto form-control inputtamanho fonteinput" type="text" name="nome" id="nome" placeholder="type here..." required>
                   </div>
                 </div>
 
                 <div class="col-sm-6">
                   <div class="form-group" style="text-align: start;">
-                    <label class="color-branco labelcadastro" for="last-name">LastName</label>
-                    <input class="inputauto form-control inputtamanho" type="text" name="sobrenome" id="sobrenome" placeholder="type here..." required><br>
+                    <label class="color-branco labelcadastro" for="last-name">Last Name</label>
+                    <input class="inputauto form-control inputtamanho fonteinput" type="text" name="sobrenome" id="sobrenome" placeholder="type here..." required><br>
                   </div>
                 </div>
 
                 <div class="col-sm-12">
                   <div class="form-group" style="text-align: start;">
                     <label class="color-branco labelcadastro" for="email-address">Email address</label>
-                    <input type="email" class=" form-control inputtamanho inputtamanho" name="email" id="email" placeholder="ex: email@email.com" required><br>
+                    <input type="email" class=" form-control inputtamanho inputtamanho fonteinput" name="email" id="email" placeholder="ex: email@email.com" required><br>
                   </div>
                 </div>
                 <div class="col-sm-12">
                   <div class="form-group" style="text-align: start;">
                     <label class="color-branco labelcadastro" for="phone">Phone Number </label>
-                    <input class="inputauto form-control inputtamanho" type="tel" name="whatsapp" maxlength="20" value="" id="whatsapp" placeholder="Country code - Region code - Number" required><br>
+                    <input class="inputauto form-control inputtamanho fonteinput" type="tel" name="whatsapp" maxlength="20" value="" id="whatsapp" placeholder="Country code - Region code - Number" required><br>
                   </div>
                 </div>
 
                 <div class="col-sm-12">
                   <div class="form-group" style="text-align: start;">
                     <label class="color-branco labelcadastro" for="country-select" class="form-label">Country</label>
-                    <select class="inputtamanho form-select selectfontsize" id="country-select" name="country" required>
+                    <select class="inputtamanho form-select selectfontsize fonteinput" id="country-select" name="country" required>
                       <option value="">Select a country</option>
                       <?php
                       include_once('../model/classes/tblCountry.php');
@@ -181,11 +146,12 @@ date_default_timezone_set('America/Sao_Paulo');
                     </select>
                   </div>
                 </div>
-
-                <p class="errologintxt"><?php echo $_SESSION['signuperro']; ?></p>
+                     
                 <div class="col-sm-12">
                   <div class="form-group" style="text-align: center;">
-                    <button type="submit" class="btn btn-primary login-btn inputtamanho" value="cadastro" name="signupsubmit">Signup</button>
+                  <br>
+                <p class="border-rounded txterrologin errologintxt "><?php echo $_SESSION['signuperro']; ?></p>
+                    <button type="submit" class="btn btn-primary login-btn inputtamanho btnsignsize" value="cadastro" name="signupsubmit">Signup</button>
                   </div>
                 </div>
 
@@ -200,6 +166,7 @@ date_default_timezone_set('America/Sao_Paulo');
         </div>
       </div>
     </div>
+    <br>
   </div>
 
   <!-- rights section footer -->

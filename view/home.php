@@ -580,8 +580,9 @@ if ($resultsCountry != null) {
                             </div>
                             <div class="row pr-2">
                                 <div class="col-9 m-0 p-0 mr-2">
-
+                                <a href="#" data-toggle="modal" data-target="#exampleModalconect" class="minimenuoption">
                                     <h5 class="fonte-principal">&nbsp;&nbsp;&nbsp;&nbsp;<i class="fa-solid fa-users icon-notif-zoom mini-profile-icon"></i>&nbsp;&nbsp;Want to Connect</h5>
+                                    </a>
                                 </div>
                                 <div class="col-3 m-0 p-0">
                                     <h5 class="fonte-principal text-left"><?php include_once('../model/classes/tblConect.php');
@@ -701,9 +702,16 @@ if ($resultsCountry != null) {
                                         <br>
                                         <div class="col-md-12 d-flex justify-content-center">
                                             <img id="preview-image" src="" alt="" class="d-flex post-imgvideo-style">
+                                            
                                             <!-- Botão "X" para remover a imagem -->
                                             <button type="button" id="remove-image-button" class="btn btn-danger btn-sm bcolor-azul-escuro" style="display: none;">X</button>
                                         </div>
+                                        <div class="col-md-12 d-flex justify-content-center">
+                                        <video id="preview-video" src="" class="post-imgvideo-style" controls></video>
+                                            <!-- Botão "X" para remover a imagem -->
+                                            <button type="button" id="remove-video-button" class="btn btn-danger btn-sm bcolor-azul-escuro" style="display: none;">X</button>
+                                        </div>
+                                        
                                         <div class="col-md-12">
                                             <div class="row justify-content-end mt-auto">
                                                 <label class="insertpost btn btn-second mr-2 btn-lg" for="file-input">
@@ -721,7 +729,7 @@ if ($resultsCountry != null) {
                                                 </label>
                                                 <input id="video-input" accept="video/*" type="file" name="postvideo" class="d-none">
                                                 <!-- Botão "X" para remover o vídeo -->
-                                                <button type="button" id="remove-video-button" class="btn btn-danger btn-sm bcolor-azul-escuro" style="display: none;">X</button>
+                                                
 
                                                 <input class="insertpost btn btn-primary pl-4 pr-4 no-border p-3 post-btn-confirm" type="submit" name="post" value="Post" id="submit-button">
                                                 </input>
@@ -907,7 +915,7 @@ if ($resultsCountry != null) {
                                                         echo "<a href='javascript:void(0)' id='btn-vm" . $rowfeed->IdFeed . "' onClick='alterarLimite(" . $rowfeed->IdFeed . ")'>Ver mais</a>";
                                                     } else {
                                                         echo "
-                                                        <div id='textoEx" . $rowfeed->IdFeed . "' style='height: 4em; overflow: hidden;'>
+                                                        <div id='textoEx" . $rowfeed->IdFeed . "'>
                                                             <h3 class='fonte-principal color-preto'>
                                                                 <br>
                                                                 " . $rowfeed->Text . "
@@ -1121,11 +1129,11 @@ font-size: small;
         <!-- ------------------------main-content------------------------>
         <div class="modal custom-modal fade" id="exampleModal" role="dialog">
             <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
-                <div class="modal-content">
+                <div class="modal-content" style="max-height: 400px !important;">
                     <div class="modal-header">
                         <h5 class="modal-title" id="exampleModalLabel">Views</h5>
-                        <button type="button" class="close rounded-2 border-0" data-dismiss="modal" aria-label="Close">
-                            <span aria-hidden="true">&times;</span>
+                        <button type="button" class="close rounded-2 border-0 bcolor-azul-escuro" data-dismiss="modal" aria-label="Close" style="width: 25px; height: 25px;">
+                            <span aria-hidden="false" class="color-branco">x</span>
                         </button>
                     </div>
                     <div class="modal-body">
@@ -1233,6 +1241,109 @@ font-size: small;
 
     </div>
     <!-- footer -->
+
+    <div class="modal custom-modal fade" id="exampleModalconect" role="dialog">
+    <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLabel">Want to Connect</h5>
+          <button type="button" class="close rounded-2 border-0 bcolor-azul-escuro m-2" data-dismiss="modal" aria-label="Close" style="width: 25px; height: 25px;">
+                            <span aria-hidden="false" class="color-branco">x</span>
+                        </button>
+        </div>
+        <div class="modal-body">
+          <ul class="m-0 overflow-auto p-1 ul-view">
+            <?php
+            include_once('../model/classes/tblConect.php');
+            $connect = new Conect();
+            $connect->setidUserReceb($iduser);
+            $resultsconect = $connect->consulta("WHERE idUserReceb = :idUserReceb AND status = '0'  ORDER BY datapedido DESC");
+
+
+
+            if ($resultsconect != null) {
+              foreach ($resultsconect as $rowviews) {
+
+            ?>
+                <?php
+                include_once('../model/classes/tblUserClients.php');
+                $userClients = new UserClients();
+                $userClients->setidClient($rowviews->idUserPed);
+                $resultsUserClients = $userClients->consulta("WHERE idClient = :idClient");
+
+                if ($resultsUserClients != null) {
+                  foreach ($resultsUserClients as $rowcliente) {
+
+                    include_once('../model/classes/tblOperations.php');
+                    $operations = new Operations();
+                    $operations->setidOperation($rowcliente->CoreBusinessId);
+                    $resultsOperation = $operations->consulta("WHERE FlagOperation != '0' AND idOperation = :idOperation");
+
+                    if ($resultsOperation != null) {
+                      foreach ($resultsOperation as $rowOperation) { ?>
+
+                        <li class="recommended-user icone-net" style="margin-bottom: 20px;">
+                          <form method="POST" enctype="multipart/form-data" action="../controller/profileController.php" class="w-100 h-100 d-flex">
+                            <input class="form-control bordainput" value="<?php echo $rowviews->id; ?>" autocomplete="off" name="idconectar" type="hidden">
+                            <input class="form-control bordainput" value="<?php echo $rowviews->idUserPed; ?>" autocomplete="off" name="idperfilpedido" type="hidden">
+                            <div class="col-2 justify-content-center m-0 p-0 d-flex justify-content-end align-middle">
+                              <a href="viewProfile.php?profile=<?php echo $rowcliente->idClient; ?>">
+                                <img src="<?php if ($rowOperation->PersonalUserPicturePath != "Avatar.png" && $rowOperation->PersonalUserPicturePath != "" && file_exists("" . $rowOperation->PersonalUserPicturePath)) {
+                                            echo "" . $rowOperation->PersonalUserPicturePath;
+                                          } else {
+                                            echo "assets/img/Avatar.png";
+                                          } ?>" alt="user" alt="An unknown user." onerror="this.onerror=null; this.src='assets/img/Avatar.png'"></a>
+                            </div>
+                            <div class="col-7 p-0">
+                              <p class="mb-0 network-username-text"><b><a href="viewProfile.php?profile=<?php echo $rowcliente->idClient; ?>"><?php echo $rowcliente->FirstName; ?><b> </a></p>
+                              <p class="network-operation-text"><a href="viewProfile.php?profile=<?php echo $rowcliente->idClient; ?>"><?php echo $rowOperation->NmOperation; ?></a></p>
+                              <p class="network-timeago-text"><?php
+                                                              $postDateTime = new DateTime($rowviews->datapedido);
+
+                                                              // Obtenha o objeto DateTime da data e hora atual
+                                                              $currentTime = new DateTime();
+
+                                                              // Calcula a diferença entre a data e hora atual e a da postagem
+                                                              $timeDiff = $postDateTime->diff($currentTime);
+
+                                                              // Formata o tempo decorrido com base nas unidades (ano, mês, dia, hora, minuto, segundo)
+                                                              if ($timeDiff->y > 0) {
+                                                                $timeAgo = $timeDiff->y . " ano(s) atrás";
+                                                              } elseif ($timeDiff->m > 0) {
+                                                                $timeAgo = $timeDiff->m . " mês(es) atrás";
+                                                              } elseif ($timeDiff->d > 0) {
+                                                                $timeAgo = $timeDiff->d . " dia(s) atrás";
+                                                              } elseif ($timeDiff->h > 0) {
+                                                                $timeAgo = $timeDiff->h . " hora(s) atrás";
+                                                              } elseif ($timeDiff->i > 0) {
+                                                                $timeAgo = $timeDiff->i . " minuto(s) atrás";
+                                                              } else {
+                                                                $timeAgo = "Alguns segundos atrás";
+                                                              }
+
+                                                              echo $timeAgo; ?></p>
+                            </div>
+                            <div class="col-2 justify-content-center">
+                              <button type="submit" name="conectar" value="conectar" class="btn btn-outline-primary ms-1 m-1"><i class="bi bi-person-check-fill icon-btn-card"></i>&nbsp;Connect</button>
+                            </div>
+                          </form>
+                        </li>
+                        <hr>
+                <?php }
+                    }
+                  }
+                } ?>
+            <?php }
+            } ?>
+          </ul>
+        </div>
+        <div class="modal-footer">
+
+
+        </div>
+      </div>
+    </div>
+  </div>
 
     <div id="modalEditarProduto" class="modal custom-modal fade show comment-modal-primary" role="dialog">
         <div class="modal-dialog modal-dialog-centered modal-lg">

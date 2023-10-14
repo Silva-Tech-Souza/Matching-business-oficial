@@ -1,6 +1,6 @@
 <?php
 session_start();
-
+error_reporting(0);
 date_default_timezone_set('America/Sao_Paulo');
 
 
@@ -21,6 +21,7 @@ if ($codigoVerifEmail != "" && $codigoVerifEmail != '0') {
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link rel="stylesheet" href="assets/css/geral.css">
   <link rel="stylesheet" href="assets/css/login.css">
+  <link rel="stylesheet" href="assets/css/createpass.css">
 
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-4bw+/aepP/YC94hEpVNVgiZdgIC5+VKNBQNGCHeKRQN+PtmoHDEXuppvnDJzQIu9" crossorigin="anonymous">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
@@ -35,45 +36,7 @@ if ($codigoVerifEmail != "" && $codigoVerifEmail != '0') {
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
   <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
-  <style>
-    /* The message box is shown when the user clicks on the password field */
-    #message {
 
-      background: #f1f1f1;
-      color: #000;
-      position: relative;
-      padding: 12px;
-      margin-top: 9px;
-    }
-
-    #message p {
-      padding: 5px 35px;
-      font-size: 12px;
-      margin-bottom: 0 !important;
-    }
-
-    /* Add a green text color and a checkmark when the requirements are right */
-    .valid {
-      color: green;
-    }
-
-    .valid:before {
-      position: relative;
-      left: -35px;
-      content: "✔";
-    }
-
-    /* Add a red text color and an "x" when the requirements are wrong */
-    .invalid {
-      color: red;
-    }
-
-    .invalid:before {
-      position: relative;
-      left: -35px;
-      content: "✖";
-    }
-  </style>
 
 
 </head>
@@ -90,7 +53,7 @@ if ($codigoVerifEmail != "" && $codigoVerifEmail != '0') {
               <label class="color-branco" for="password">Password </label>
               <div class="input-group mb-2" id="input1">
                 <div class="password-container" style="width: -webkit-fill-available;">
-                  <input autocomplete="off" class="form-control inputtamanho" id="psw" pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}" maxlength="20" minlength="6" type="password" name="password" required placeholder="type here...">
+                  <input autocomplete="off" class="form-control inputtamanho fonteinputpass" id="psw" pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}" maxlength="20" minlength="6" type="password" name="password" required placeholder="type here...">
                   <div class="input-group-text" id="togglePassword">
                     <i class="fas fa-eye"></i>
                   </div>
@@ -101,7 +64,7 @@ if ($codigoVerifEmail != "" && $codigoVerifEmail != '0') {
               <label class="color-branco" for="password-confirm">Confirm password </label>
               <div class="input-group mb-2">
                 <div class="password-container" style="width: -webkit-fill-available;">
-                  <input autocomplete="off" class="form-control inputtamanho" id="psw2" pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}" maxlength="20" minlength="6" type="password" name="password-confirm" required placeholder="repeat the password typed above">
+                  <input autocomplete="off" class="form-control inputtamanho fonteinputpass" id="psw2" pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}" maxlength="20" minlength="6" type="password" name="password-confirm" required placeholder="repeat the password typed above">
                   <div class="input-group-text" id="togglePassword2">
                     <i class="fas fa-eye"></i>
                   </div>
@@ -148,10 +111,10 @@ if ($codigoVerifEmail != "" && $codigoVerifEmail != '0') {
     <div class="modal-dialog" role="document">
       <div class="modal-content">
         <div class="modal-header" style="color: black;">
-          <h5 class="modal-title" id="exampleModalLongTitle">Our Policy and Terms</h5>
+          <h5 class="modal-title privacetexttitle" id="exampleModalLongTitle">Our Policy and Terms</h5>
 
         </div>
-        <div class="modal-body" style="color: black;">
+        <div class="modal-body privacetext" style="color: black;">
           <?php
 
 
@@ -170,7 +133,7 @@ if ($codigoVerifEmail != "" && $codigoVerifEmail != '0') {
         </div>
         <div class="modal-footer">
 
-          <button type="button" class="btn btn-primary closes" data-dismiss="modal" aria-label="Close">Agree</button>
+          <button type="button" class="btn btn-primary closes privacetextbtn" data-dismiss="modal" aria-label="Close">Agree</button>
         </div>
       </div>
     </div>

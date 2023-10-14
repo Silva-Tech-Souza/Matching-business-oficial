@@ -282,7 +282,7 @@ p {
 .imglefturl {
     background-image: url(../img/seachimgleft.jpeg);
     background-position: center center;
-    background-repeat: no-repeat;
+    background-repeat: repeat-x;
     background-size: cover;
     opacity: 0.7;
     backdrop-filter: blur(5px);

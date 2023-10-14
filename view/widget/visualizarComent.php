@@ -1,9 +1,8 @@
 <?php
-if ( session_status() !== PHP_SESSION_ACTIVE )
-{
-   session_start();
+if (session_status() !== PHP_SESSION_ACTIVE) {
+    session_start();
 }
-if(isset($_SESSION['error'])){
+if (isset($_SESSION['error'])) {
     error_reporting(0);
 }
 
@@ -32,7 +31,13 @@ if (isset($_GET["texto"]) && $_GET["texto"] != "") {
 
 
 
-<div class="col-12" style="min-height: 400px; max-height: 400px; overflow-y: auto;">
+<div class="col-12" style="min-height: 375px; max-height: 375px; overflow-y: auto;">
+    <div class="col-12 d-flex justify-content-end align-items-end">
+        <br>
+        <button type="button" class="close rounded-2 border-0 bcolor-azul-escuro m-2" data-dismiss="modal" aria-label="Close" style="width: 25px; height: 25px;">
+                            <span aria-hidden="false" class="color-branco">x</span>
+                        </button>
+    </div>
 
     <?php
     $tbPostComent1 = new PostComent();
@@ -81,10 +86,7 @@ if (isset($_GET["texto"]) && $_GET["texto"] != "") {
             }
 
     ?>
-            <div class="row" style="
-    margin-left: 0;
-    margin-right: 0;
-">
+            <div class="row" style=" margin-left: 0; margin-right: 0;">
                 <div class="col-1 d-flex flex-column justify-content-center align-items-center" style="height: auto;">
                     <img src="<?php if ($imgpostuser != "Avatar.png" && $imgpostuser != "") {
                                     echo "" . $imgpostuser;
@@ -97,7 +99,9 @@ if (isset($_GET["texto"]) && $_GET["texto"] != "") {
                         <input class="form-control bordainput" value="" autocomplete="off" name="idproduto" type="hidden">
 
                         <div class="col-12 d-flex flex-column justify-content-start align-items-start" style="height: auto;">
-                        <a href="viewProfile.php?profile=<?php echo $rowfeed->iduser; ?>" class="minimenuoption"><h4><?php echo $usernamepost; ?></h4></a>
+                            <a href="viewProfile.php?profile=<?php echo $rowfeed->iduser; ?>" class="minimenuoption">
+                                <h4><?php echo $usernamepost; ?></h4>
+                            </a>
                             <?php
                             include_once('../../model/classes/tblOperations.php');
                             $operations = new Operations();
@@ -108,7 +112,8 @@ if (isset($_GET["texto"]) && $_GET["texto"] != "") {
                                     echo $rowoperation->NmOperation;
                                 }
                             }
-                            ?><br><hr>
+                            ?><br>
+                            <hr>
                         </div>
                         <div class="col-12" style="overflow-wrap: break-word;font-size: small;">
                             <?php echo $rowfeed->texto; ?>

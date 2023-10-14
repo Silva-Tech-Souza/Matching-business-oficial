@@ -45,7 +45,7 @@ if ($resultsoperation != null) {
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>Create Search Profile</title>
     <link rel="stylesheet" href="assets/css/geral.css">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-4bw+/aepP/YC94hEpVNVgiZdgIC5+VKNBQNGCHeKRQN+PtmoHDEXuppvnDJzQIu9" crossorigin="anonymous">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
@@ -181,7 +181,7 @@ if ($resultsoperation != null) {
     <?php include_once("widget/navbar.php"); ?>
     <div class="container-fluid">
         <div class="row justify-content-between telatoda ">
-            <div class="col-5 text-center p-0  mb-2 imglefturl telatoda d-none d-md-block">
+            <div class="col-5 text-center p-0  mb-2 imglefturl telatoda d-none d-md-block h-auto">
             </div>
             <div class="col-12 col-sm-12 col-md-12 col-lg-7 col-xl-7 text-center p-10  mb-2 arrastartela margemmnavbar">
                 <div class="card px-0  pb-0 mt-3 mb-3">
@@ -322,7 +322,7 @@ if ($resultsoperation != null) {
                                     </div>
                                     <div class="col-6 text-center">
 
-                                      <input   type="submit" name="news"   class="btn action-button  fontsizelager" value="Creates New" style="float: left">
+                                      <input   type="submit" name="news"   class="btn action-button  fontsizelager" value="Create New" style="float: left">
                                     </div>
                                     <div class="col-6 text-center">
                                     <input   type="submit" name="next"  class="btn action-button  fontsizelager" value="Results" /> 

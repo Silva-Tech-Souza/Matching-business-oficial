@@ -171,7 +171,7 @@ date_default_timezone_set('America/Sao_Paulo');
                                 </div>
                                 <div class="col-sm-12">
                                     <div class="form-group" style="text-align: center;">
-                                        <button  style="width: 118px;font-size: small;" type="submit" class="btn btn-primary login-btn inputtamanho" value="NETX" name="savedistribuidor">NETX</button>
+                                        <button  style="width: 118px;font-size: small;" type="submit" class="btn btn-primary login-btn inputtamanho" value="NETX" name="savedistribuidor">NEXT</button>
                                     </div>
                                 </div>
                             </div>

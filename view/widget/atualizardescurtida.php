@@ -3,6 +3,9 @@ if ( session_status() !== PHP_SESSION_ACTIVE )
 {
    session_start();
 }
+if(isset($_SESSION['error'])){
+    error_reporting(0);
+}
 date_default_timezone_set('America/Sao_Paulo');
 header("Access-Control-Allow-Origin: *");
 
@@ -11,17 +14,10 @@ $idpost = $_GET['id'];
 
 //parte 1
 include_once("../../model/classes/tblCurtidas.php");
-include_once("../../model/classes/tblUserClients.php");
-
 $tblcurtidadelete = new Curtidas;
 $tblcurtidadelete->setidpost($idpost);
 $tblcurtidadelete->setidusuario($iduser);
 $tblcurtidadelete->deletar("WHERE idpost = :idpost AND idusuario = :idusuario");
-
-$user = new UserClients();
-$user->setidClient($iduser);
-$user->setidClient(10);
-$user->atualizar("Pontos = Pontos + :Pontos WHERE idClient = :idClient");
 
 
 

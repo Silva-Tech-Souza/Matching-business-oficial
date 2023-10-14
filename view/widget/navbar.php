@@ -1,55 +1,49 @@
-<?php
-if ( session_status() !== PHP_SESSION_ACTIVE )
-{
-   session_start();
-}
-?>
 <div class="header">
-    
+
     <nav id="navbar" class="bg-light-alt container-fluid position-fixed" style="z-index: 9999999; padding-top: 10px;">
 
-    <script>
-    function toggleMenuNetwork() {
-        const networkMenu = document.getElementById('networkMenu');
-        const notifyMenu = document.getElementById('notifyMenu');
-        const profileMenu = document.getElementById('profileMenu');
+        <script>
+            function toggleMenuNetwork() {
+                const networkMenu = document.getElementById('networkMenu');
+                const notifyMenu = document.getElementById('notifyMenu');
+                const profileMenu = document.getElementById('profileMenu');
 
-        console.log('Entrou aqui');
-        
-        // Feche os outros menus
-        notifyMenu.classList.remove("open-menu");
-        profileMenu.classList.remove("open-menu");
+                console.log('Entrou aqui');
 
-        // Abra o menu de rede
-        networkMenu.classList.toggle("open-menu");
-    }
+                // Feche os outros menus
+                notifyMenu.classList.remove("open-menu");
+                profileMenu.classList.remove("open-menu");
 
-    function toggleNotifyMenu() {
-        const networkMenu = document.getElementById('networkMenu');
-        const notifyMenu = document.getElementById('notifyMenu');
-        const profileMenu = document.getElementById('profileMenu');
+                // Abra o menu de rede
+                networkMenu.classList.toggle("open-menu");
+            }
 
-        // Feche os outros menus
-        networkMenu.classList.remove("open-menu");
-        profileMenu.classList.remove("open-menu");
+            function toggleNotifyMenu() {
+                const networkMenu = document.getElementById('networkMenu');
+                const notifyMenu = document.getElementById('notifyMenu');
+                const profileMenu = document.getElementById('profileMenu');
 
-        // Abra o menu de notificação
-        notifyMenu.classList.toggle("open-menu");
-    }
+                // Feche os outros menus
+                networkMenu.classList.remove("open-menu");
+                profileMenu.classList.remove("open-menu");
 
-    function toggleMenu() {
-        const networkMenu = document.getElementById('networkMenu');
-        const notifyMenu = document.getElementById('notifyMenu');
-        const profileMenu = document.getElementById('profileMenu');
+                // Abra o menu de notificação
+                notifyMenu.classList.toggle("open-menu");
+            }
 
-        // Feche os outros menus
-        networkMenu.classList.remove("open-menu");
-        notifyMenu.classList.remove("open-menu");
+            function toggleMenu() {
+                const networkMenu = document.getElementById('networkMenu');
+                const notifyMenu = document.getElementById('notifyMenu');
+                const profileMenu = document.getElementById('profileMenu');
 
-        // Abra o menu de perfil
-        profileMenu.classList.toggle("open-menu");
-    }
-</script>
+                // Feche os outros menus
+                networkMenu.classList.remove("open-menu");
+                notifyMenu.classList.remove("open-menu");
+
+                // Abra o menu de perfil
+                profileMenu.classList.toggle("open-menu");
+            }
+        </script>
 
 
         <div class="card d-flex pb-2 justify-content-center shadow-none d-none d-md-block" style="background-color: #00000000; border: 1px; margin-bottom: 0px !important;">
@@ -175,7 +169,7 @@ if ( session_status() !== PHP_SESSION_ACTIVE )
 
                     <div class="navbarcenter ">
                         <ul class="p-0">
-                        <li><a id="mobile_btn" class="mobile_btn" href="#sidebar"><i class="fa fa-bars"></i></a></li>&nbsp;&nbsp;
+                            <li><a id="mobile_btn" class="mobile_btn" href="#sidebar"><i class="fa fa-bars"></i></a></li>&nbsp;&nbsp;
                             <li><a href="#"><i class="fa-solid fa-crown icon-small-screen-navbar"></i><span style="font-size: 12px;">&nbsp;Premium&nbsp;Plan</span></a></li>&nbsp;&nbsp;
                             <li><a href="searchPage.php"><i class="fa-solid  fa-address-card icon-small-screen-navbar"></i><span style="font-size: 12px;">&nbsp;Search&nbsp;Profile</span></a></li>&nbsp;&nbsp;
                             <li><a href="#" onclick="toggleMenuNetwork();"><i class="fa-solid fa-globe icon-small-screen-navbar"></i><span style="font-size: 12px;">&nbsp;Network</span></a></li>&nbsp;&nbsp;
@@ -232,8 +226,8 @@ if ( session_status() !== PHP_SESSION_ACTIVE )
                 $searchProfileResults = new SearchProfile_Results();
                 $searchProfileResults->setidClienteEncontrado($iduser);
                 $resultsSearchProfile = $searchProfileResults->consulta("WHERE idClienteEncontrado = :idClienteEncontrado ORDER BY datahora DESC");
-                  
-                
+
+
 
 
                 if ($resultsSearchProfile != null) {
@@ -316,7 +310,7 @@ if ( session_status() !== PHP_SESSION_ACTIVE )
                                                                                                     ?>">
                             <input type="hidden" id="id" name="id" value="<?php echo $rownotif->id; ?>">
                             <input type="hidden" id="url" name="url" value="<?php echo $rownotif->url; ?>">
-                            <a class="notification notif-zoom" href="<?php echo $rownotif->url;?>">
+                            <a class="notification notif-zoom" href="<?php echo $rownotif->url; ?>">
 
                                 <div class="row justify-content-start">
                                     <div class="col-2 ">
@@ -367,38 +361,32 @@ if ( session_status() !== PHP_SESSION_ACTIVE )
                             $userClientsAtual->setidClient($_SESSION["id"]);
                             $resultsUsuarioAtual = $userClientsAtual->consulta("WHERE idClient = :idClient");
 
-                            foreach($resultsUsuarioAtual as $resultsUsuarioAtualUnid){
+                            foreach ($resultsUsuarioAtual as $resultsUsuarioAtualUnid) {
 
                                 $Flag = $resultsUsuarioAtualUnid->CoreBusinessId;
-
                             }
 
                             $userClients = new UserClients();
 
-                            if($Flag == 2){
+                            if ($Flag == 2) {
                                 //Flag A
 
                                 $resultsUserClients = $userClients->consulta("WHERE CoreBusinessId IN (3, 4,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23) ORDER BY tblUserClients.Pontos DESC LIMIT 30");
-
-
-                            }else if( $Flag == 3 || $Flag == 4){
+                            } else if ($Flag == 3 || $Flag == 4) {
                                 //Flag B
 
                                 $resultsUserClients = $userClients->consulta("WHERE CoreBusinessId IN (2, 5) ORDER BY tblUserClients.Pontos DESC LIMIT 30");
-
-                            }else if( $Flag == 5){
+                            } else if ($Flag == 5) {
                                 //Flag C
 
                                 $resultsUserClients = $userClients->consulta("WHERE CoreBusinessId IN (3,4) ORDER BY tblUserClients.Pontos DESC LIMIT 30");
-
-                            }else{
+                            } else {
                                 //Flag D
 
                                 $resultsUserClients = $userClients->consulta("ORDER BY tblUserClients.Pontos DESC LIMIT 30");
-
                             }
 
-                            
+
                             if ($resultsUserClients != null) {
                                 foreach ($resultsUserClients as $rowcliente) {
 
@@ -511,12 +499,11 @@ if ( session_status() !== PHP_SESSION_ACTIVE )
     }
 
     document.addEventListener('DOMContentLoaded', function() {
-    var mobileBtn = document.getElementById('mobile_btn');
-    var sidebar = document.getElementById('sidebar');
+        var mobileBtn = document.getElementById('mobile_btn');
+        var sidebar = document.getElementById('sidebar');
 
-    mobileBtn.addEventListener('click', function() {
-        sidebar.classList.toggle('expanded'); // Toggle a classe 'expanded' no elemento sidebar
+        mobileBtn.addEventListener('click', function() {
+            sidebar.classList.toggle('expanded'); // Toggle a classe 'expanded' no elemento sidebar
+        });
     });
-});
 </script>
-

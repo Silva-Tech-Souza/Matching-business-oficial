@@ -55,7 +55,7 @@ if ( session_status() !== PHP_SESSION_ACTIVE )
                     $userClients->setemail($email);
                     $userClients->setWhatsAppNumber($phone);
                     $userClients->settaxid($taxid);
-                    $userClients->setidEmpresa($resultEmpresasUnid->nome);
+                    //$userClients->setidEmpresa($resultEmpresasUnid->nome);
                     $userClients->cadastrar();
 
                     $userClients = new UserClients();

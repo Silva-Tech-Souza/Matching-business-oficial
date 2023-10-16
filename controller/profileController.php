@@ -125,7 +125,7 @@ if (isset($_POST["AdicionarProdutos"])) {
   }
   $_POST["AdicionarProdutos"] = "";
 
-  include_once("../../model/classes/tblUserClients.php");
+  include_once("../model/classes/tblUserClients.php");
   $user = new UserClients();
   $user->setidClient($_SESSION["id"]);
   $user->setPontos(1000);
@@ -498,7 +498,7 @@ if (isset($_POST["salvar"] )) {
   }
   $_POST["salvar"] = "";
 
-  include_once("../../model/classes/tblUserClients.php");
+  include_once("../model/classes/tblUserClients.php");
   $user = new UserClients();
   $user->setidClient($_SESSION["id"]);
   $user->setPontos(200);
@@ -667,7 +667,7 @@ if (isset($_POST["conectar"])) {
   $conect->setid($idconect);
   $conect->setstatus('1');
 
-  $conect->atualizar("status = '1' WHERE id = :id ");
+  $conect->atualizar("status = :status WHERE id = :id ");
 
 
   //$sqlinsertpost = "INSERT INTO tblsearchprofile_results (idUsuario, idClienteEncontrado, idTipoNotif) VALUES (:idUsuario, :idClienteEncontrado, '6')";
@@ -686,7 +686,7 @@ if (isset($_POST["conectar"])) {
 
   $tblsearchprofile_results->cadastrar();
 
-  include_once("../../model/classes/tblUserClients.php");
+  include_once("../model/classes/tblUserClients.php");
   $user = new UserClients();
   $user->setidClient($_SESSION["id"]);
   $user->setPontos(1000);
@@ -711,7 +711,7 @@ if (isset($_POST["desconectar"])) {
   //$queryconectdelet->bindParam(':id', $idconect, PDO::PARAM_INT);
   //$queryconectdelet->execute();
 
-  include_once("../../model/classes/tblUserClients.php");
+  include_once("../model/classes/tblUserClients.php");
   $user = new UserClients();
   $user->setidClient($_SESSION["id"]);
   $user->setPontos(500);
@@ -734,7 +734,7 @@ if(isset($_POST["enviaremail"])){
   $headers = "From:" . $from;
   mail($to, $subject, $message, $headers);
 
-  include_once("../../model/classes/tblUserClients.php");
+  include_once("../model/classes/tblUserClients.php");
 
   $user = new UserClients();
   $user->setidClient($_SESSION["id"]);
@@ -873,7 +873,7 @@ if (isset($_POST["AdicionarProdutos"])) {
   }
   $_POST["AdicionarProdutos"] = "";
 
-  include_once("../../model/classes/tblUserClients.php");
+  include_once("../model/classes/tblUserClients.php");
   $user = new UserClients();
   $user->setidClient($_SESSION["id"]);
   $user->setPontos(1000);
@@ -1246,7 +1246,7 @@ if (isset($_POST["salvar"] )) {
   }
   $_POST["salvar"] = "";
 
-  include_once("../../model/classes/tblUserClients.php");
+  include_once("../model/classes/tblUserClients.php");
   $user = new UserClients();
   $user->setidClient($_SESSION["id"]);
   $user->setPontos(200);
@@ -1434,7 +1434,7 @@ if (isset($_POST["conectar"])) {
 
   $tblsearchprofile_results->cadastrar();
 
-  include_once("../../model/classes/tblUserClients.php");
+  include_once("../model/classes/tblUserClients.php");
   $user = new UserClients();
   $user->setidClient($_SESSION["id"]);
   $user->setPontos(1000);
@@ -1459,7 +1459,7 @@ if (isset($_POST["desconectar"])) {
   //$queryconectdelet->bindParam(':id', $idconect, PDO::PARAM_INT);
   //$queryconectdelet->execute();
 
-  include_once("../../model/classes/tblUserClients.php");
+  include_once("../model/classes/tblUserClients.php");
   $user = new UserClients();
   $user->setidClient($_SESSION["id"]);
   $user->setPontos(500);
@@ -1482,7 +1482,7 @@ if(isset($_POST["enviaremail"])){
   $headers = "From:" . $from;
   mail($to, $subject, $message, $headers);
 
-  include_once("../../model/classes/tblUserClients.php");
+  include_once("../model/classes/tblUserClients.php");
 
   $user = new UserClients();
   $user->setidClient($_SESSION["id"]);

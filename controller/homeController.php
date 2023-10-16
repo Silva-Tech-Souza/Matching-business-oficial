@@ -143,11 +143,12 @@ if ($_POST["post"] != "") {
     $feeds->setVideo($caminho2);
     $feeds->cadastrar();
 
+    include_once("../model/classes/tblUserClients.php");
     
-    /*$user = new UserClients();
+    $user = new UserClients();
     $user->setidClient($_SESSION["id"]);
     $user->setPontos(500);
-    $user->atualizar("Pontos = Pontos + :Pontos WHERE idClient = :idClient");*/
+    $user->atualizar("Pontos = Pontos + :Pontos WHERE idClient = :idClient");
       
     header("Location: ../view/home.php");
 }

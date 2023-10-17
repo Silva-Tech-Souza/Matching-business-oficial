@@ -101,7 +101,7 @@ header("Access-Control-Allow-Origin: *");
                             <div class="col-sm-6 mt-4" id="refHint">
                                 <div class="form-group">
                                     <label class="txtinput sizetituloedit">Business:</label>
-                                    <select onchange="showbusines2(this.value)" class="form-control bordainput sizeinputedit" id="business" name="business">
+                                    <select onchange="showbusines2(this.value)" class="form-control bordainput sizeinputedit" id="satellite" name="satellite">
                                         <?php
                                         include_once('../model/classes/tblBusiness.php');
                                         $bussiness = new Business();
@@ -122,7 +122,7 @@ header("Access-Control-Allow-Origin: *");
                             </div>
                             <div class="col mt-4" id="refHint2">
                                 <label class="txtinput sizetituloedit">Business Category:</label>
-                                <select  class="form-control bordainput sizeinputedit" name="satellite" id="satellite">
+                                <select  class="form-control bordainput sizeinputedit" name="category" id="category">
 
                                     <?php
                                     

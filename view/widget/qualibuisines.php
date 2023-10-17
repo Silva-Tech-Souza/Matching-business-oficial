@@ -30,7 +30,7 @@ if($FlagOperation  != "D"){
 ?>
 
 <label class="color-branco labelcadastro">What is your business sector? </label>
-        <select  class="form-control bordainput inputtamanho selectsize"   onchange="showbusines2(this.value)" id="coreBusiness" name="coreBusiness">
+        <select  class="form-control bordainput inputtamanho selectsize"   onchange="showbusines2(this.value)" id="coreBusiness" name="satellite">
             <option value="0">Select</option>
             <?php 
             

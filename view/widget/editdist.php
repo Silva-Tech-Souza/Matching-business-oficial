@@ -11,7 +11,7 @@ header("Access-Control-Allow-Origin: *");
                 </button>
             </div>
             <div class="modal-body">
-            <form action="../controller/distribuidorProfileController.php" method="POST" enctype="multipart/form-data">
+            <form action="../controller/profileController.php" method="POST" enctype="multipart/form-data">
                             <div class="row">
 
                                 <div class="col-sm-12">
@@ -132,7 +132,7 @@ header("Access-Control-Allow-Origin: *");
                                 </div>
                                 <div class="col-sm-12">
                                     <div class="form-group" style="text-align: center;">
-                                        <button  style="width: 118px;font-size: small;" type="submit" class="btn btn-primary login-btn inputtamanho" value="NETX" name="savedistribuidor">NEXT</button>
+                                        <button  style="width: 118px;font-size: small;" type="submit" class="btn btn-primary login-btn inputtamanho" value="NETX" name="EditDistribuidor">NEXT</button>
                                     </div>
                                 </div>
                             </div>

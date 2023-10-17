@@ -64,6 +64,7 @@ class SearchProfile_Results{
        
         if($this->idUsuario != null){
             $query->bindParam(':idUsuario', $this->idUsuario, PDO::PARAM_INT);
+            
         }
         if($this->idClienteEncontrado != null){
             $query->bindParam(':idClienteEncontrado', $this->idClienteEncontrado, PDO::PARAM_INT);
@@ -79,6 +80,7 @@ class SearchProfile_Results{
         }
         if($this->estadoNotif != null){
             $query->bindParam(':estadoNotif', $this->estadoNotif, PDO::PARAM_INT);
+            echo "teste";
         }
 
         

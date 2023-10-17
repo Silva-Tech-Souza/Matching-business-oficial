@@ -11,6 +11,11 @@ if ($_SESSION["id"] < 0 || $_SESSION["id"] == "") {
   header("Location: index.php");
 }
 
+if($_GET["profile"] == null || !isset($_GET["profile"])){
+
+  header("Location: ../view/login.php");
+
+}
 $iduser = $_SESSION["id"];
 $idusers = $_GET["profile"];
 

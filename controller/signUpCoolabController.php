@@ -30,8 +30,7 @@ if ( session_status() !== PHP_SESSION_ACTIVE )
 
         if ($results != null){
             $_SESSION['signuperro']= "Unable to register with this email";
-            echo "ERRO email";  
-            //header("Location: ../view/cadastrarCoolab.php?email=".urlencode($email)."&taxid=".urlencode($taxid));
+            header("Location: ../view/cadastrarCoolab.php?email=".urlencode($email)."&taxid=".urlencode($taxid));
         }
 
         if($results == null){

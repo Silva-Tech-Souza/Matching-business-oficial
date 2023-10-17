@@ -7,7 +7,6 @@ $iduser = $_SESSION["id"];
 if (isset($_POST["AdicionarProdutos"])) {
   $POSTnomeproduto = $_POST["nomeproduto"];
   $POSTdescricao = $_POST["descricao"];
-  $POSTspecification = $_POST["specification"];
 
   include_once('../model/classes/tblUserClients.php');
 
@@ -41,11 +40,23 @@ if (isset($_POST["AdicionarProdutos"])) {
   $Produtos->setidBusinessCategory($corebusiness);
   $Produtos->setProductName($POSTnomeproduto);
   $Produtos->setProdcuctDescription($POSTdescricao);
-  $Produtos->setProdcuctEspecification($POSTspecification);
+  if(isset($_POST["specification"]) && $_POST["specification"] != null){
+    
+    $Produtos->setProdcuctEspecification($_POST["specification"]);
+
+  }else{
+
+    $Produtos->setProdcuctEspecification('.');
+
+  }
   $Produtos->setCategory($satBusinessId);
   $Produtos->setflagExcluido('0');
 
   $lastInsertedId = $Produtos->cadastrar();  
+
+  $Produtos = new Products();
+  $Produtos->setidProduct($lastInsertedId);
+  $Produtos->atualizar('ProdcuctEspecification = "" WHERE idProduct = :idProduct'); 
 
 
   $arquivoUser = $_FILES['user-produto'];
@@ -560,14 +571,30 @@ if (isset($_POST["AdicionarProdutos"])) {
 
   $Product = new Products();
 
-  $Product->setidProduct($idproduto);
-  $Product->setidBusinessCategory($satBusinessId);
-  $Product->setProductName($nomeproduto);
-  $Product->setProdcuctDescription($descricao);
-  $Product->setProdcuctEspecification($specification);
-  $Product->setCategory($corebusiness);
+  if(isset($_POST["specification"]) && $_POST["specification"] != null){
+    
+    $Product->setidProduct($idproduto);
+    $Product->setidBusinessCategory($satBusinessId);
+    $Product->setProductName($nomeproduto);
+    $Product->setProdcuctDescription($descricao);
+    $Product->setProdcuctEspecification($specification);
+    $Product->setCategory($corebusiness);
+  
+    $Product->atualizar("idBusinessCategory = :idBusinessCategory, ProductName= :ProductName,ProdcuctDescription = :ProdcuctDescription,ProdcuctEspecification=:ProdcuctEspecification,Category = :Category WHERE idProduct = :idProduct ");
+  
 
-  $Product->atualizar("idBusinessCategory = :idBusinessCategory, ProductName= :ProductName,ProdcuctDescription = :ProdcuctDescription,ProdcuctEspecification=:ProdcuctEspecification,Category = :Category WHERE idProduct = :idProduct ");
+  }else{
+
+    $Product->setidProduct($idproduto);
+    $Product->setidBusinessCategory($satBusinessId);
+    $Product->setProductName($nomeproduto);
+    $Product->setProdcuctDescription($descricao);
+    $Product->setCategory($corebusiness);
+  
+    $Product->atualizar('idBusinessCategory = :idBusinessCategory, ProductName= :ProductName,ProdcuctDescription = :ProdcuctDescription,ProdcuctEspecification= "" ,Category = :Category WHERE idProduct = :idProduct ');
+  
+
+  }
 
   $lastInsertedId = $idproduto;
   $arquivoUser = $_FILES['imgproduto'];
@@ -679,6 +706,9 @@ if (isset($_POST["AdicionarProdutos"])) {
   $tblsearchprofile_results->setidUsuario($iduser);
   $tblsearchprofile_results->setidClienteEncontrado($idperfilpedido);
   $tblsearchprofile_results->setidTipoNotif('6');
+  $tblsearchprofile_results->setestadoNotif('0');
+  $tblsearchprofile_results->setpostId('0');
+  $tblsearchprofile_results->seturl("viewProfile.php?profile=".$iduser);
 
   $tblsearchprofile_results->cadastrar();
 

@@ -5,6 +5,7 @@ class Empresas{
     protected $id = null;
     protected $nome = null;
     protected $taxid = null;
+    protected $idClient = null;
     protected $dbh = null;
 
     function __construct()
@@ -29,9 +30,13 @@ class Empresas{
 
     public function getTaxid(){return $this->taxid;}
 
+    public function setidClient($param){$this->idClient = $param;}
+
+    public function getidClient(){return $this->idClient;}
+
     public function cadastrar(){
 
-        $sql = "INSERT INTO tblEmpresas (nome, taxid) VALUES (:nome, :taxid)";
+        $sql = "INSERT INTO tblEmpresas (nome, taxid,idClient) VALUES (:nome, :taxid,:idClient)";
         $query = $this->dbh->prepare($sql);
         
         if($this->nome != null){
@@ -39,6 +44,9 @@ class Empresas{
         }
         if($this->taxid != null){
             $query->bindParam(':taxid', $this->taxid, PDO::PARAM_STR);
+        }
+        if($this->idClient != null){
+            $query->bindParam(':idClient', $this->idClient, PDO::PARAM_STR);
         }
 
         $query->execute();
@@ -62,6 +70,9 @@ class Empresas{
         if($this->taxid != null){
             $query->bindParam(':taxid', $this->taxid, PDO::PARAM_STR);
         }
+        if($this->idClient != null){
+            $query->bindParam(':idClient', $this->idClient, PDO::PARAM_STR);
+        }
 
         $query->execute();
         $results = $query->fetchAll(PDO::FETCH_OBJ);
@@ -84,6 +95,9 @@ class Empresas{
         }
         if($this->taxid != null){
             $query->bindParam(':taxid', $this->taxid, PDO::PARAM_STR);
+        }
+        if($this->idClient != null){
+            $query->bindParam(':idClient', $this->idClient, PDO::PARAM_STR);
         }
 
         $query->execute();
@@ -109,6 +123,9 @@ class Empresas{
         }
         if($this->taxid != null){
             $query->bindParam(':taxid', $this->taxid, PDO::PARAM_STR);
+        }
+        if($this->idClient != null){
+            $query->bindParam(':idClient', $this->idClient, PDO::PARAM_STR);
         }
         $query->execute();
         $results = $query->fetchAll(PDO::FETCH_OBJ);

@@ -1,7 +1,10 @@
 <?php
-session_start();
-if (isset($_COOKIE["remember_me"])) {
+if ( session_status() !== PHP_SESSION_ACTIVE )
+{
+   session_start();
+}
 
+if (isset($_COOKIE["remember_me"])) {
   header("Location: ../controller/loginController.php");
 }
 error_reporting(0);
@@ -47,7 +50,7 @@ date_default_timezone_set('America/Sao_Paulo');
         <div class="col-lg-6 col-12">
           <div class="mt-5">
             <h1 class="color-branco titulologin">Welcome to <span style="color:#0057e4;">Matching Business Online.</span></h1>
-            <p class="color-branco desclogin d-none d-md-block">Discover a new way to accelerate your business in the international market. Matching Business is the platform that proactively brings together supply and demand, providing a powerful digital tool for direct connections.</p>
+            <p class="color-branco desclogin ">Discover a new way to accelerate your business in the international market. Matching Business is the platform that proactively brings together supply and demand, providing a powerful digital tool for direct connections.</p>
           </div>
         </div>
         <div class="col-lg-6 col-12">
@@ -72,15 +75,16 @@ date_default_timezone_set('America/Sao_Paulo');
                         </div>
                       </div>
                     </div>
-                  </div>
+                  </div><br>
                   <div class="col-sm-12">
                     <div class="form-group" style="text-align: start;">
                       <label class="color-branco" for="remember" id="keep-credentials">Remember me</label>
                       <input type="checkbox" id="keep-credentials-input" name="remember_me"><br><br>
                     </div>
                   </div>
-
-                  <p class="color-branco errologintxt"><?php echo $_SESSION['loginerro']; ?></p>
+                  <?php if( $_SESSION['loginerro'] != ""){?>
+                  <p class="border-rounded txterrologin errologintxt"><?php echo $_SESSION['loginerro']; ?>&nbsp;&nbsp;<i class="fa fa-exclamation"></i></p>
+                  <?php }?>
                   <button type="submit" name="signupsubmit" class="login-btn">Login</button><br><br>
                   <div class="social-media-icons m-0">
                     <a href="#" class="btn btn-outline-light btn-floating m-0 btn-mobile" id="meuBotaoDeDownload" role="button"><i class="fa fa-android icone-btn-mobile"></i></a>
@@ -88,7 +92,7 @@ date_default_timezone_set('America/Sao_Paulo');
                   </div>
                   <div class="cancel-login">
                     <span class="color-branco">Or</span><br>
-                    <a href="signup.php" class="btn btn-primary create-btn-modal ">
+                    <a href="signup.php" class="createaccounttxt btn btn-primary create-btn-modal ">
                       Create an account
                     </a>
                   </div>

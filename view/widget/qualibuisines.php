@@ -1,6 +1,12 @@
 <?php 
-session_start();
-error_reporting(0);
+if ( session_status() !== PHP_SESSION_ACTIVE )
+{
+   session_start();
+}
+if(isset($_SESSION['error'])){
+    error_reporting(0);
+}
+
 header("Access-Control-Allow-Origin: *");
 date_default_timezone_set('America/Sao_Paulo');
 
@@ -23,8 +29,8 @@ if($FlagOperation  != "D"){
 
 ?>
 
-<label class="color-branco labelcadastro">Core Business: </label>
-        <select  class="form-control bordainput inputtamanho"   onchange="showbusines2(this.value)" id="coreBusiness" name="coreBusiness">
+<label class="color-branco labelcadastro">What is your business sector? </label>
+        <select  class="form-control bordainput inputtamanho selectsize"   onchange="showbusines2(this.value)" id="coreBusiness" name="satellite">
             <option value="0">Select</option>
             <?php 
             

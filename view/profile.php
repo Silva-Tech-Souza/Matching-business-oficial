@@ -1,6 +1,12 @@
 <?php
-session_start();
-error_reporting(0);
+if ( session_status() !== PHP_SESSION_ACTIVE )
+{
+   session_start();
+}
+if(isset($_SESSION['error'])){
+    error_reporting(0);
+}
+include_once('../model/ErrorLog.php');
 date_default_timezone_set('America/Sao_Paulo');
 if ($_SESSION["id"] < 0 || $_SESSION["id"] == "") {
   header("Location: login.php");
@@ -8,6 +14,7 @@ if ($_SESSION["id"] < 0 || $_SESSION["id"] == "") {
 $iduser = $_SESSION["id"];
 
 $_SESSION["n"] = 5;
+
 
 include_once('../model/classes/tblUserClients.php');
 
@@ -31,6 +38,7 @@ if ($results != null) {
     $imgperfil = $row->PersonalUserPicturePath;
     $imgcapa = $row->LogoPicturePath;
     $descricao =  $row->descricao;
+    $taxidempresa =  $row->taxid;
   }
 }
 
@@ -146,6 +154,38 @@ if ($resultsBusinessCategory != null) {
     }
   </script>
 
+  <script>
+    function showCurtida(iddiv) {
+      if (iddiv == "") {
+        document.getElementById("div-" + iddiv).innerHTML = "";
+        return;
+      }
+      var xmlhttp = new XMLHttpRequest();
+      xmlhttp.onreadystatechange = function() {
+        if (this.readyState == 4 && this.status == 200) {
+          document.getElementById("div-" + iddiv).innerHTML = this.responseText;
+        }
+      }
+      xmlhttp.open("GET", "widget/atualizarcurtida.php?id=" + iddiv, true);
+      xmlhttp.send();
+    }
+
+    function showDCurtida(iddiv) {
+      if (iddiv == "") {
+        document.getElementById("div-" + iddiv).innerHTML = "";
+        return;
+      }
+      var xmlhttp = new XMLHttpRequest();
+      xmlhttp.onreadystatechange = function() {
+        if (this.readyState == 4 && this.status == 200) {
+          document.getElementById("div-" + iddiv).innerHTML = this.responseText;
+        }
+      }
+      xmlhttp.open("GET", "widget/atualizardescurtida.php?id=" + iddiv, true);
+      xmlhttp.send();
+    }
+  </script>
+
   <!-- Header -->
   <?php include_once("widget/navbar.php"); ?><br><br><br><br><br>
   <!-- Body -->
@@ -157,10 +197,10 @@ if ($resultsBusinessCategory != null) {
           <div class="card card-body p-0 shadow">
             <div class="col-12">
               <img src="<?php if ($imgcapa != "Avatar.png" && $imgcapa != "") {
-                                                    echo "" . $imgcapa;
-                                                } else {
-                                                    echo "https://images2.alphacoders.com/131/1317606.jpeg";
-                                                } ?>" alt="" style="width: 100%; height: 120px;">
+                          echo "" . $imgcapa;
+                        } else {
+                          echo "https://images2.alphacoders.com/131/1317606.jpeg";
+                        } ?>" alt="" style="width: 100%; height: 120px;">
               <img src="<?php if ($imgperfil != "Avatar.png" && $imgperfil != "") {
                           echo $imgperfil;
                         } else {
@@ -190,17 +230,17 @@ if ($resultsBusinessCategory != null) {
                   </div>
                   <div class="col-4 d-flex justify-content-end align-middle">
                     <p class="d-inline m-0"><b><?php include_once('../model/classes/tblSearch.php');
-                                                                            $Search = new Search();
-                                                                            $Search->setidClient($iduser);
-                                                                            $resultSearch = $Search->consulta("WHERE idClient = :idClient");
-                                                                            $numSearch = 0;
-                                                                            if ($resultSearch != null) {
-                                                                                foreach ($resultSearch as $resultConectUnidSearch) {
-                                                                                    $numSearch += 1;
-                                                                                }
-                                                                            }
-                                                                            echo $numSearch;
-                                                                            ?></b></p>
+                                                $Search = new Search();
+                                                $Search->setidClient($iduser);
+                                                $resultSearch = $Search->consulta("WHERE idClient = :idClient");
+                                                $numSearch = 0;
+                                                if ($resultSearch != null) {
+                                                  foreach ($resultSearch as $resultConectUnidSearch) {
+                                                    $numSearch += 1;
+                                                  }
+                                                }
+                                                echo $numSearch;
+                                                ?></b></p>
                   </div>
 
 
@@ -329,33 +369,33 @@ if ($resultsBusinessCategory != null) {
         </div>
       </div>
       <div class="col-12 col-md-4 p-3">
-        <div class="card card-body shadow">
+        <div class="card card-body shadow bcolor-azul-escuro">
           <div class="col-12">
             <div class="row">
               <div class="col-7 d-flex justify-content-start">
-                <p class="mb-0"><b>Core Business:</b></p>
+                <p class="mb-0 textmeiosize color-branco"><b>Core Business:</b></p>
 
               </div>
               <div class="col-5 d-flex justify-content-end align-middle">
-                <p class="mb-0"> <?php echo $NmBusiness; ?></p>
+                <p class="mb-0 textmeiosize color-branco"> <?php echo $NmBusiness; ?></p>
               </div>
               <?php if ($corebusiness == "1" || $corebusiness == "2" || $corebusiness == "3" || $corebusiness == "4" || $corebusiness == "5") {
               ?>
                 <hr>
                 <div class="col-7 d-flex justify-content-start">
-                  <p class="mb-0"><b>Business:</b></p>
+                  <p class="mb-0 textmeiosize color-branco"><b>Business:</b></p>
 
                 </div>
                 <div class="col-5 d-flex justify-content-end align-middle">
-                  <p class="mb-0"> <?php echo $NmBusinesscor; ?></p>
+                  <p class="mb-0 textmeiosize color-branco"> <?php echo $NmBusinesscor; ?></p>
                 </div>
                 <hr>
                 <div class="col-7 d-flex justify-content-start">
-                  <p class="mb-0"><b>Business Category:</b></p>
+                  <p class="mb-0 textmeiosize color-branco"><b>Business Category:</b></p>
 
                 </div>
                 <div class="col-5 d-flex justify-content-end align-middle">
-                  <p class="mb-0"> <?php echo $NmBusinessCategory; ?></p>
+                  <p class="mb-0 textmeiosize color-branco"> <?php echo $NmBusinessCategory; ?></p>
                 </div>
               <?php }  ?>
               <?php if ($corebusiness == "3" || $corebusiness == "4") {
@@ -435,65 +475,70 @@ if ($resultsBusinessCategory != null) {
               ?>
                 <hr>
                 <div class="col-7 d-flex justify-content-start">
-                  <p class="mb-0"><b>Founded in:</b></p>
+                  <p class="mb-0 textmeiosize color-branco"><b>Founded in:</b></p>
 
                 </div>
                 <div class="col-5 d-flex justify-content-end align-middle">
-                  <p class="mb-0"> <?php echo $AnoFundacao; ?></p>
+                  <p class="mb-0 textmeiosize color-branco"> <?php echo $AnoFundacao; ?></p>
                 </div>
                 <hr>
                 <div class="col-7 d-flex justify-content-start">
-                  <p class="mb-0"><b>Number of Employees:</b></p>
+                  <p class="mb-0 textmeiosize color-branco"><b>Number of Employees:</b></p>
 
                 </div>
                 <div class="col-5 d-flex justify-content-end align-middle">
-                  <p class="mb-0"> <?php echo $numEmpregados; ?></p>
+                  <p class="mb-0 textmeiosize color-branco"> <?php echo $numEmpregados; ?></p>
                 </div>
                 <hr>
                 <div class="col-7 d-flex justify-content-start">
-                  <p class="mb-0"><b>Number of Sellers:</b></p>
+                  <p class="mb-0 textmeiosize color-branco"><b>Number of Sellers:</b></p>
 
                 </div>
                 <div class="col-5 d-flex justify-content-end align-middle">
-                  <p class="mb-0"> <?php echo $numVendedores; ?></p>
+                  <p class="mb-0 textmeiosize color-branco"> <?php echo $numVendedores; ?></p>
                 </div>
                 <hr>
                 <div class="col-7 d-flex justify-content-start">
-                  <p class="mb-0"><b>Operation Level:</b></p>
+                  <p class="mb-0 textmeiosize color-branco"><b>Operation Level:</b></p>
 
                 </div>
                 <div class="col-5 d-flex justify-content-end align-middle">
-                  <p class="mb-0"> <?php echo $NivelOperacao; ?></p>
+                  <p class="mb-0 textmeiosize color-branco"> <?php echo $NivelOperacao; ?></p>
                 </div>
                 <hr>
                 <div class="col-7 d-flex justify-content-start">
-                  <p class="mb-0"><b>Region Details:</b></p>
+                  <p class="mb-0 textmeiosize color-branco"><b>Region Details:</b></p>
 
                 </div>
                 <div class="col-5 d-flex justify-content-end align-middle">
-                  <p class="mb-0"> <?php echo $DetalheRegiao; ?></p>
+                  <p class="mb-0 textmeiosize color-branco"> <?php echo $DetalheRegiao; ?></p>
                 </div>
                 <hr>
                 <div class="col-7 d-flex justify-content-start">
-                  <p class="mb-0"><b>Fob <?php echo $Fob3; ?>:</b></p>
+                  <p class="mb-0 textmeiosize color-branco"><b>Fob <?php echo $Fob3; ?>:</b></p>
 
                 </div>
                 <div class="col-5 d-flex justify-content-end align-middle">
-                  <p class="mb-0"> <?php echo $Vol3; ?></p>
+                  <p class="mb-0 textmeiosize color-branco"> <?php echo $Vol3; ?></p>
                 </div>
                 <div class="col-7 d-flex justify-content-start">
-                  <p class="mb-0"><b>Fob <?php echo $Fob2; ?>:</b></p>
+                  <p class="mb-0 textmeiosize color-branco"><b>Fob <?php echo $Fob2; ?>:</b></p>
 
                 </div>
                 <div class="col-5 d-flex justify-content-end align-middle">
-                  <p class="mb-0"> <?php echo $Vol2; ?></p>
+                  <p class="mb-0 textmeiosize color-branco"> <?php echo $Vol2; ?></p>
                 </div>
                 <div class="col-7 d-flex justify-content-start">
-                  <p class="mb-0"><b>Fob <?php echo $Fob1; ?>:</b></p>
+                  <p class="mb-0 textmeiosize color-branco"><b>Fob <?php echo $Fob1; ?>:</b></p>
 
                 </div>
                 <div class="col-5 d-flex justify-content-end align-middle">
-                  <p class="mb-0"> <?php echo $Vol1; ?></p>
+                  <p class="mb-0 textmeiosize color-branco"> <?php echo $Vol1; ?></p>
+                </div>
+                
+                <div  class="col-12 d-flex justify-content-end align-middle">
+       
+                  <a href="#" class="btn btn-outline-primary ms-1 color-branco editdistribtn" data-toggle="modal" data-target="#edit_dist"><i class="bi bi-pen icon-btn-card "></i>&nbsp;Edit</a>
                 </div>
               <?php } ?>
             </div>
@@ -501,16 +546,16 @@ if ($resultsBusinessCategory != null) {
         </div>
         <div class="card card-body mt-3 shadow" style="height:auto;">
           <div class="col-12">
-            <p class="mb-0" style="font-size:medium;"><b>Description</b></p>
+            <p class="mb-0" style="font-size:large;"><b>Description</b></p>
           </div>
           <div class="col-12">
-            <p class="text-muted"><?php echo $descricao; ?></p>
+            <p class="text-muted textmeiosize"><?php echo $descricao; ?></p>
           </div>
         </div>
       </div>
       <!-- Body -->
-      <div class="col-12 col-md-4 p-3">
-        <div class="card card-body shadow">
+      <div class="col-12 col-md-4 p-3 ">
+        <div class="card card-body shadow bcolor-azul-escuro">
           <div class="row">
             <div class="col-2 d-flex justify-content-start">
               <img src="<?php if ($imgperfil != "Avatar.png" && $imgperfil != "") {
@@ -521,12 +566,12 @@ if ($resultsBusinessCategory != null) {
 
             </div>
             <div class="col-6 d-flex justify-content-start d-flex align-items-center">
-              <p class="mb-0 text-center align-middle" style="font-size:larger"><b><?php echo $username;?></b></p>
+              <p class="mb-0 text-center align-middle color-branco" style="font-size:larger"><b><?php echo $username; ?></b></p>
 
             </div>
             <div class="col-4 d-flex justify-content-end d-flex align-items-center">
               <input class="insertpost btn btn-warning pl-4 pr-4 no-border p-3 post-btn-confirm" type="submit" name="post" value="+ Edit">
-                <input class="insertpost btn btn-danger pl-4 pr-4 no-border p-3 post-btn-confirm" disabled  type="submit" name="post" value=" Delet">
+              <input class="insertpost btn btn-danger pl-4 pr-4 no-border p-3 post-btn-confirm" disabled type="submit" name="post" value=" Delet">
             </div>
           </div>
           <hr>
@@ -536,13 +581,13 @@ if ($resultsBusinessCategory != null) {
 
             </div>
             <div class="col-6 d-flex justify-content-start d-flex align-items-center">
-              <p class="mb-0 text-center align-middle" style="font-size:larger"><b>Colaborador 2</b></p>
+              <p class="mb-0 text-center align-middle color-branco" style="font-size:larger"><b>Collaborator 2</b></p>
 
             </div>
             <div class="col-4 d-flex justify-content-end d-flex align-items-center">
-              <input class="insertpost btn btn-primary pl-4 pr-4 no-border p-3 post-btn-confirm" type="submit" name="post" value="+ Add">
-
-              </input>
+              <a class="insertpost btn btn-primary pl-4 pr-4 no-border p-3 post-btn-confirm" data-toggle="modal" data-target="#emailcolab" >
+                    + Add"
+              </a>
             </div>
           </div>
           <hr>
@@ -552,13 +597,13 @@ if ($resultsBusinessCategory != null) {
 
             </div>
             <div class="col-6 d-flex justify-content-start d-flex align-items-center">
-              <p class="mb-0 text-center align-middle" style="font-size:larger"><b>Colaborador 3</b></p>
+              <p class="mb-0 text-center align-middle color-branco" style="font-size:larger"><b>Collaborator 3</b></p>
 
             </div>
             <div class="col-4 d-flex justify-content-end d-flex align-items-center">
-              <input class="insertpost btn btn-primary pl-4 pr-4 no-border p-3 post-btn-confirm" type="submit" name="post" value="+ Add">
-
-              </input>
+               <a class="insertpost btn btn-primary pl-4 pr-4 no-border p-3 post-btn-confirm" data-toggle="modal" data-target="#emailcolab" >
+                    + Add"
+              </a>
             </div>
           </div>
           <hr>
@@ -568,13 +613,13 @@ if ($resultsBusinessCategory != null) {
 
             </div>
             <div class="col-6 d-flex justify-content-start d-flex align-items-center">
-              <p class="mb-0 text-center align-middle" style="font-size:larger"><b>Colaborador 4</b></p>
+              <p class="mb-0 text-center align-middle color-branco" style="font-size:larger"><b>Collaborator 4</b></p>
 
             </div>
             <div class="col-4 d-flex justify-content-end d-flex align-items-center">
-              <input class="insertpost btn btn-primary pl-4 pr-4 no-border p-3 post-btn-confirm" type="submit" name="post" value="+ Add">
-
-              </input>
+                <a class="insertpost btn btn-primary pl-4 pr-4 no-border p-3 post-btn-confirm" data-toggle="modal" data-target="#emailcolab" >
+                    + Add"
+              </a>
             </div>
           </div>
           <hr>
@@ -584,13 +629,13 @@ if ($resultsBusinessCategory != null) {
 
             </div>
             <div class="col-6 d-flex justify-content-start d-flex align-items-center">
-              <p class="mb-0 text-center align-middle" style="font-size:larger"><b>Colaborador 5</b></p>
+              <p class="mb-0 text-center align-middle color-branco" style="font-size:larger"><b>Collaborator 5</b></p>
 
             </div>
             <div class="col-4 d-flex justify-content-end d-flex align-items-center">
-              <input class="insertpost btn btn-primary pl-4 pr-4 no-border p-3 post-btn-confirm" type="submit" name="post" value="+ Add">
-
-              </input>
+               <a class="insertpost btn btn-primary pl-4 pr-4 no-border p-3 post-btn-confirm" data-toggle="modal" data-target="#emailcolab" >
+                    + Add"
+              </a>
             </div>
           </div>
         </div>
@@ -786,24 +831,24 @@ if ($resultsBusinessCategory != null) {
 
                     <?php
                     $numeroCaracteres = strlen($rowfeed->Text);
-                    if ($numeroCaracteres > 200) {
-                      echo "
+                   if ($numeroCaracteres > 200) {
+                                                        echo "
                                                         <div id='textoEx" . $rowfeed->IdFeed . "' style='height: 8em; overflow: hidden;'>
                                                             <h3 class='fonte-principal color-preto'>
                                                                 <br>
                                                                 " . $rowfeed->Text . "
                                                             </h3>
                                                         </div>";
-                      echo "<a href='javascript:void(0)' id='btn-vm" . $rowfeed->IdFeed . "' onClick='alterarLimite(" . $rowfeed->IdFeed . ")'>Ver mais</a>";
-                    } else {
-                      echo "
-                                                        <div id='textoEx" . $rowfeed->IdFeed . "' style='height: 4em; overflow: hidden;'>
+                                                        echo "<a href='javascript:void(0)' id='btn-vm" . $rowfeed->IdFeed . "' onClick='alterarLimite(" . $rowfeed->IdFeed . ")'>Ver mais</a>";
+                                                    } else {
+                                                        echo "
+                                                        <div id='textoEx" . $rowfeed->IdFeed . "'>
                                                             <h3 class='fonte-principal color-preto'>
                                                                 <br>
                                                                 " . $rowfeed->Text . "
                                                             </h3>
                                                         </div>";
-                    }
+                                                    }
                     ?>
                     <br>
 
@@ -933,9 +978,9 @@ if ($resultsBusinessCategory != null) {
       <div class="modal-content">
         <div class="modal-header">
           <h5 class="modal-title" id="exampleModalLabel">Want to Connect</h5>
-          <button type="button" class="close rounded-2 border-0" data-dismiss="modal" aria-label="Close">
-            <span aria-hidden="true">&times;</span>
-          </button>
+                <button type="button" class="close rounded-2 border-0 bcolor-azul-escuro " data-dismiss="modal" aria-label="Close" style="width: 25px; height: 25px;">
+                            <span aria-hidden="false" class="color-branco">x</span>
+                        </button>
         </div>
         <div class="modal-body">
           <ul class="m-0 overflow-auto p-1 ul-view">
@@ -1036,9 +1081,9 @@ if ($resultsBusinessCategory != null) {
       <div class="modal-content">
         <div class="modal-header">
           <h5 class="modal-title" id="exampleModalLabel">Network</h5>
-          <button type="button" class="close rounded-2 border-0" data-dismiss="modal" aria-label="Close">
-            <span aria-hidden="true">&times;</span>
-          </button>
+          <button type="button" class="close rounded-2 border-0 bcolor-azul-escuro " data-dismiss="modal" aria-label="Close" style="width: 25px; height: 25px;">
+                            <span aria-hidden="false" class="color-branco">x</span>
+                        </button>
         </div>
         <div class="modal-body">
           <ul class="m-0 overflow-auto p-1 ul-view">
@@ -1077,8 +1122,8 @@ if ($resultsBusinessCategory != null) {
                             <input class="form-control bordainput" value="<?php echo $rowviews->idUserPed; ?>" autocomplete="off" name="idperfilpedido" type="hidden">
                             <div class="col-2 justify-content-center m-0 p-0 d-flex justify-content-end align-middle">
                               <a href="viewProfile.php?profile=<?php echo $rowcliente->idClient; ?>">
-                                <img src="<?php if ($rowOperation->PersonalUserPicturePath != "Avatar.png" && $rowOperation->PersonalUserPicturePath != "" && file_exists("" . $rowOperation->PersonalUserPicturePath)) {
-                                            echo "" . $rowOperation->PersonalUserPicturePath;
+                                <img src="<?php if ($rowcliente->PersonalUserPicturePath != "Avatar.png" && $rowcliente->PersonalUserPicturePath != "" && file_exists("" . $rowcliente->PersonalUserPicturePath)) {
+                                            echo "" . $rowcliente->PersonalUserPicturePath;
                                           } else {
                                             echo "assets/img/Avatar.png";
                                           } ?>" alt="user" alt="An unknown user." onerror="this.onerror=null; this.src='assets/img/Avatar.png'"></a>
@@ -1139,13 +1184,13 @@ if ($resultsBusinessCategory != null) {
   </div>
 
   <div class="modal custom-modal fade" id="exampleModal" role="dialog">
-    <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
-      <div class="modal-content">
+    <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable" >
+      <div class="modal-content" style="max-height: 400px !important;">
         <div class="modal-header">
           <h5 class="modal-title" id="exampleModalLabel">Views</h5>
-          <button type="button" class="close rounded-2 border-0" data-dismiss="modal" aria-label="Close">
-            <span aria-hidden="true">&times;</span>
-          </button>
+                <button type="button" class="close rounded-2 border-0 bcolor-azul-escuro " data-dismiss="modal" aria-label="Close" style="width: 25px; height: 25px;">
+                            <span aria-hidden="false" class="color-branco">x</span>
+                        </button>
         </div>
         <div class="modal-body">
           <ul class="m-0 overflow-y p-1 ul-view">
@@ -1188,8 +1233,8 @@ if ($resultsBusinessCategory != null) {
 
                           <div class="col-1 justify-content-center m-0 p-0">
                             <a href="viewProfile.php?profile=<?php echo $rowcliente->idClient; ?>">
-                              <img src="<?php if ($rowOperation->PersonalUserPicturePath != "Avatar.png" && $rowOperation->PersonalUserPicturePath != "" ) {
-                                          echo "" . $rowOperation->PersonalUserPicturePath;
+                              <img src="<?php if ($rowcliente->PersonalUserPicturePath != "Avatar.png" && $rowcliente->PersonalUserPicturePath != "" &&  $rowcliente->PersonalUserPicturePath != null) {
+                                          echo "" . $rowcliente->PersonalUserPicturePath;
                                         } else {
                                           echo "assets/img/Avatar.png";
                                         } ?>" alt="user" alt="An unknown user." onerror="this.onerror=null;" class="nav-profile-img"></a>
@@ -1258,13 +1303,22 @@ if ($resultsBusinessCategory != null) {
     </div>
   </div>
 
+  <div id="modalEditarProduto" class="modal custom-modal fade show comment-modal-primary" role="dialog">
+    <div class="modal-dialog modal-dialog-centered modal-lg">
+      <div class="modal-content">
 
+        <div class="modal-body comment-modal-primary">
+          <h1 id="modalProductName mb-0"></h1>
+          <p id="modalProductDescription color-cinza-b"></p>
+        </div>
 
+      </div>
+    </div>
+  </div>
+  <?php include_once("widget/editdist.php"); ?>
   <?php include_once("widget/editarperfil.php"); ?>
-
-
-
   <?php include_once("widget/produto.php"); ?>
+  <?php include_once("widget/enviaremail.php"); ?>
 
 
 
@@ -1322,6 +1376,52 @@ if ($resultsBusinessCategory != null) {
       $('#video-input').on('change', function() {
         readURL(this);
       });
+    });
+
+
+    $(document).ready(function() {
+      // Ao clicar em um link de produto
+      $('.hero-image-container2').click(function() {
+        // Obtenha o ID do produto associado ao link clicado
+        var idFeed = $(this).data('id');
+        console.log(idFeed);
+        // Use o ID do produto para fazer uma requisição AJAX para buscar os dados do produto no servidor
+        $.ajax({
+          type: 'GET',
+          url: 'widget/visualizarComent.php', // Substitua pelo caminho correto
+          data: {
+            idFeed: idFeed
+          },
+          success: function(data) {
+            // Preencha o conteúdo do modal com as informações do produto
+            $('#modalEditarProduto .modal-content').html(data);
+          },
+          error: function() {
+            alert('Ocorreu um erro ao carregar os dados do produto.');
+          }
+        });
+
+        // Abra o modal correspondente
+        $('#modalEditarProduto').fadeIn();
+      });;
+
+      // Feche o modal ao clicar fora dele ou no botão de fechar
+      $('.modal').click(function(event) {
+        if ($(event.target).hasClass('modal')) {
+          $(this).fadeOut();
+        }
+      });
+    });
+
+    document.getElementById('comentbtn').addEventListener('click', function(e) {
+      e.preventDefault(); // Impede o comportamento padrão do link
+      var viewsElement = document.getElementById('modalEditarProduto');
+      if (viewsElement.classList.contains('d-none')) {
+        viewsElement.classList.remove('d-none');
+        viewsElement.classList.add('show');
+      } else {
+        viewsElement.classList.add('d-none');
+      }
     });
   </script>
 

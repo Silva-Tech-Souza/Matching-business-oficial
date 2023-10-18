@@ -1,6 +1,11 @@
 <?php
-session_start();
-error_reporting(0);
+if ( session_status() !== PHP_SESSION_ACTIVE )
+{
+   session_start();
+}
+if(isset($_SESSION['error'])){
+    error_reporting(0);
+}
 header("Access-Control-Allow-Origin: *");
 date_default_timezone_set('America/Sao_Paulo');
 $iduser = $_SESSION["id"];
@@ -11,12 +16,19 @@ $horaAtual = date('H:i');
 //cria
 include_once("../../model/classes/tblCurtidas.php");
 
+include_once("../../model/classes/tblUserClients.php");
+
 $tbcurtida = new Curtidas;
 $tbcurtida->setidusuario($iduser);
 $tbcurtida->setidpost($idPost);
 $tbcurtida->setdata($dataAtual);
 $tbcurtida->sethora($horaAtual);
 $tbcurtida->cadastrar();
+
+$user = new UserClients();
+$user->setidClient($iduser);
+$user->setPontos(10);
+$user->atualizar("Pontos = Pontos + :Pontos WHERE idClient = :idClient");
 
 
 
@@ -55,7 +67,7 @@ $searchProfile = new SearchProfile_Results;
 $searchProfile->setidUsuario($idCliente);
 $searchProfile->setidClienteEncontrado($iduser);
 $searchProfile->setpostId($idPost);
-$searchProfile->seturl("#");
+$searchProfile->seturl("viewPost.php?post=" . $idPost);
 $searchProfile->setidTipoNotif("5");
 $searchProfile->setestadoNotif("0");
 $searchProfile->cadastrar();

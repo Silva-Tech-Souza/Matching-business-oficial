@@ -31,3 +31,50 @@ Stack trace:
   thrown in /home1/crmlab04/public_html/sites/visual.matchingbusiness.online/controller/searchPageController.php on line 187
 [18-Sep-2023 14:40:02 America/Fortaleza] PHP Warning:  include_once(../model/classes/tblSearchSpecification.php): failed to open stream: No such file or directory in /home1/crmlab04/public_html/sites/visual.matchingbusiness.online/controller/searchPageController.php on line 8
 [18-Sep-2023 14:40:02 America/Fortaleza] PHP Warning:  include_once(): Failed opening '../model/classes/tblSearchSpecification.php' for inclusion (include_path='.:/opt/cpanel/ea-php74/root/usr/share/pear') in /home1/crmlab04/public_html/sites/visual.matchingbusiness.online/controller/searchPageController.php on line 8
+[13-Oct-2023 17:09:47 America/Sao_Paulo] PHP Warning:  include_once(../../model/classes/tblUserClients.php): failed to open stream: No such file or directory in /home1/crmlab04/public_html/sites/visual.matchingbusiness.online/controller/homeController.php on line 146
+[13-Oct-2023 17:09:47 America/Sao_Paulo] PHP Warning:  include_once(): Failed opening '../../model/classes/tblUserClients.php' for inclusion (include_path='.:/opt/cpanel/ea-php74/root/usr/share/pear') in /home1/crmlab04/public_html/sites/visual.matchingbusiness.online/controller/homeController.php on line 146
+[13-Oct-2023 17:09:47 America/Sao_Paulo] PHP Fatal error:  Uncaught Error: Class 'UserClients' not found in /home1/crmlab04/public_html/sites/visual.matchingbusiness.online/controller/homeController.php:147
+Stack trace:
+#0 {main}
+  thrown in /home1/crmlab04/public_html/sites/visual.matchingbusiness.online/controller/homeController.php on line 147
+[13-Oct-2023 17:10:19 America/Sao_Paulo] PHP Warning:  include_once(../../model/classes/tblUserClients.php): failed to open stream: No such file or directory in /home1/crmlab04/public_html/sites/visual.matchingbusiness.online/controller/homeController.php on line 146
+[13-Oct-2023 17:10:19 America/Sao_Paulo] PHP Warning:  include_once(): Failed opening '../../model/classes/tblUserClients.php' for inclusion (include_path='.:/opt/cpanel/ea-php74/root/usr/share/pear') in /home1/crmlab04/public_html/sites/visual.matchingbusiness.online/controller/homeController.php on line 146
+[13-Oct-2023 17:10:19 America/Sao_Paulo] PHP Fatal error:  Uncaught Error: Class 'UserClients' not found in /home1/crmlab04/public_html/sites/visual.matchingbusiness.online/controller/homeController.php:147
+Stack trace:
+#0 {main}
+  thrown in /home1/crmlab04/public_html/sites/visual.matchingbusiness.online/controller/homeController.php on line 147
+[13-Oct-2023 17:22:11 America/Fortaleza] PHP Warning:  PDOStatement::execute(): SQLSTATE[HY093]: Invalid parameter number: number of bound variables does not match number of tokens in /home1/crmlab04/public_html/sites/visual.matchingbusiness.online/model/classes/tblUserClients.php on line 460
+[13-Oct-2023 17:22:11 America/Fortaleza] PHP Warning:  PDOStatement::execute(): SQLSTATE[HY093]: Invalid parameter number: number of bound variables does not match number of tokens in /home1/crmlab04/public_html/sites/visual.matchingbusiness.online/model/classes/tblUserClients.php on line 460
+[13-Oct-2023 17:22:18 America/Fortaleza] PHP Warning:  PDOStatement::execute(): SQLSTATE[HY093]: Invalid parameter number: number of bound variables does not match number of tokens in /home1/crmlab04/public_html/sites/visual.matchingbusiness.online/model/classes/tblUserClients.php on line 460
+[13-Oct-2023 17:22:18 America/Fortaleza] PHP Warning:  PDOStatement::execute(): SQLSTATE[HY093]: Invalid parameter number: number of bound variables does not match number of tokens in /home1/crmlab04/public_html/sites/visual.matchingbusiness.online/model/classes/tblUserClients.php on line 460
+[13-Oct-2023 17:22:25 America/Fortaleza] PHP Warning:  PDOStatement::execute(): SQLSTATE[HY093]: Invalid parameter number: number of bound variables does not match number of tokens in /home1/crmlab04/public_html/sites/visual.matchingbusiness.online/model/classes/tblUserClients.php on line 460
+[13-Oct-2023 17:22:25 America/Fortaleza] PHP Warning:  PDOStatement::execute(): SQLSTATE[HY093]: Invalid parameter number: number of bound variables does not match number of tokens in /home1/crmlab04/public_html/sites/visual.matchingbusiness.online/model/classes/tblUserClients.php on line 460
+[13-Oct-2023 17:22:31 America/Fortaleza] PHP Warning:  PDOStatement::execute(): SQLSTATE[HY093]: Invalid parameter number: number of bound variables does not match number of tokens in /home1/crmlab04/public_html/sites/visual.matchingbusiness.online/model/classes/tblUserClients.php on line 460
+[13-Oct-2023 17:22:31 America/Fortaleza] PHP Warning:  PDOStatement::execute(): SQLSTATE[HY093]: Invalid parameter number: number of bound variables does not match number of tokens in /home1/crmlab04/public_html/sites/visual.matchingbusiness.online/model/classes/tblUserClients.php on line 460
+[13-Oct-2023 17:23:02 America/Fortaleza] PHP Warning:  PDOStatement::execute(): SQLSTATE[HY093]: Invalid parameter number: number of bound variables does not match number of tokens in /home1/crmlab04/public_html/sites/visual.matchingbusiness.online/model/classes/tblUserClients.php on line 460
+[13-Oct-2023 17:23:02 America/Fortaleza] PHP Warning:  PDOStatement::execute(): SQLSTATE[HY093]: Invalid parameter number: number of bound variables does not match number of tokens in /home1/crmlab04/public_html/sites/visual.matchingbusiness.online/model/classes/tblUserClients.php on line 460
+[13-Oct-2023 17:24:09 America/Sao_Paulo] PHP Warning:  PDOStatement::execute(): SQLSTATE[HY093]: Invalid parameter number: number of bound variables does not match number of tokens in /home1/crmlab04/public_html/sites/visual.matchingbusiness.online/model/classes/tblUserClients.php on line 350
+[13-Oct-2023 17:24:37 America/Fortaleza] PHP Warning:  PDOStatement::execute(): SQLSTATE[HY093]: Invalid parameter number: number of bound variables does not match number of tokens in /home1/crmlab04/public_html/sites/visual.matchingbusiness.online/model/classes/tblUserClients.php on line 460
+[13-Oct-2023 17:24:37 America/Fortaleza] PHP Warning:  PDOStatement::execute(): SQLSTATE[HY093]: Invalid parameter number: number of bound variables does not match number of tokens in /home1/crmlab04/public_html/sites/visual.matchingbusiness.online/model/classes/tblUserClients.php on line 460
+[13-Oct-2023 17:38:03 America/Sao_Paulo] PHP Warning:  include_once(../../model/classes/tblUserClients.php): failed to open stream: No such file or directory in /home1/crmlab04/public_html/sites/visual.matchingbusiness.online/controller/homeController.php on line 146
+[13-Oct-2023 17:38:03 America/Sao_Paulo] PHP Warning:  include_once(): Failed opening '../../model/classes/tblUserClients.php' for inclusion (include_path='.:/opt/cpanel/ea-php74/root/usr/share/pear') in /home1/crmlab04/public_html/sites/visual.matchingbusiness.online/controller/homeController.php on line 146
+[13-Oct-2023 17:38:03 America/Sao_Paulo] PHP Fatal error:  Uncaught Error: Class 'UserClients' not found in /home1/crmlab04/public_html/sites/visual.matchingbusiness.online/controller/homeController.php:147
+Stack trace:
+#0 {main}
+  thrown in /home1/crmlab04/public_html/sites/visual.matchingbusiness.online/controller/homeController.php on line 147
+[13-Oct-2023 17:39:14 America/Sao_Paulo] PHP Warning:  include_once(../../model/classes/tblUserClients.php): failed to open stream: No such file or directory in /home1/crmlab04/public_html/sites/visual.matchingbusiness.online/controller/homeController.php on line 146
+[13-Oct-2023 17:39:14 America/Sao_Paulo] PHP Warning:  include_once(): Failed opening '../../model/classes/tblUserClients.php' for inclusion (include_path='.:/opt/cpanel/ea-php74/root/usr/share/pear') in /home1/crmlab04/public_html/sites/visual.matchingbusiness.online/controller/homeController.php on line 146
+[13-Oct-2023 17:39:14 America/Sao_Paulo] PHP Fatal error:  Uncaught Error: Class 'UserClients' not found in /home1/crmlab04/public_html/sites/visual.matchingbusiness.online/controller/homeController.php:147
+Stack trace:
+#0 {main}
+  thrown in /home1/crmlab04/public_html/sites/visual.matchingbusiness.online/controller/homeController.php on line 147
+[13-Oct-2023 17:41:01 America/Sao_Paulo] PHP Warning:  include_once(../../model/classes/tblUserClients.php): failed to open stream: No such file or directory in /home1/crmlab04/public_html/sites/visual.matchingbusiness.online/controller/homeController.php on line 146
+[13-Oct-2023 17:41:01 America/Sao_Paulo] PHP Warning:  include_once(): Failed opening '../../model/classes/tblUserClients.php' for inclusion (include_path='.:/opt/cpanel/ea-php74/root/usr/share/pear') in /home1/crmlab04/public_html/sites/visual.matchingbusiness.online/controller/homeController.php on line 146
+[13-Oct-2023 17:41:01 America/Sao_Paulo] PHP Fatal error:  Uncaught Error: Class 'UserClients' not found in /home1/crmlab04/public_html/sites/visual.matchingbusiness.online/controller/homeController.php:147
+Stack trace:
+#0 {main}
+  thrown in /home1/crmlab04/public_html/sites/visual.matchingbusiness.online/controller/homeController.php on line 147
+[13-Oct-2023 17:42:09 America/Sao_Paulo] PHP Fatal error:  Uncaught Error: Class 'UserClients' not found in /home1/crmlab04/public_html/sites/visual.matchingbusiness.online/controller/homeController.php:147
+Stack trace:
+#0 {main}
+  thrown in /home1/crmlab04/public_html/sites/visual.matchingbusiness.online/controller/homeController.php on line 147

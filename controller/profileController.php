@@ -1,13 +1,12 @@
 <?php
 
 session_start();
-$iduser = $iduser = $_SESSION["id"];
+$iduser = $_SESSION["id"];
 
 
 if (isset($_POST["AdicionarProdutos"])) {
   $POSTnomeproduto = $_POST["nomeproduto"];
   $POSTdescricao = $_POST["descricao"];
-  $POSTspecification = $_POST["specification"];
 
   include_once('../model/classes/tblUserClients.php');
 
@@ -41,11 +40,23 @@ if (isset($_POST["AdicionarProdutos"])) {
   $Produtos->setidBusinessCategory($corebusiness);
   $Produtos->setProductName($POSTnomeproduto);
   $Produtos->setProdcuctDescription($POSTdescricao);
-  $Produtos->setProdcuctEspecification($POSTspecification);
+  if(isset($_POST["specification"]) && $_POST["specification"] != null){
+    
+    $Produtos->setProdcuctEspecification($_POST["specification"]);
+
+  }else{
+
+    $Produtos->setProdcuctEspecification('.');
+
+  }
   $Produtos->setCategory($satBusinessId);
   $Produtos->setflagExcluido('0');
 
   $lastInsertedId = $Produtos->cadastrar();  
+
+  $Produtos = new Products();
+  $Produtos->setidProduct($lastInsertedId);
+  $Produtos->atualizar('ProdcuctEspecification = "" WHERE idProduct = :idProduct'); 
 
 
   $arquivoUser = $_FILES['user-produto'];
@@ -124,10 +135,15 @@ if (isset($_POST["AdicionarProdutos"])) {
     }
   }
   $_POST["AdicionarProdutos"] = "";
-  header("Location: ../view/profile.php");
-}
 
-if (isset($_POST["add_orcamento"] )) {
+  include_once("../model/classes/tblUserClients.php");
+  $user = new UserClients();
+  $user->setidClient($_SESSION["id"]);
+  $user->setPontos(1000);
+  $user->atualizar("Pontos = Pontos + :Pontos WHERE idClient = :idClient");
+
+  header("Location: ../view/profile.php");
+}else if (isset($_POST["editarPerfil"] )) {
   $arquivoUser = $_FILES['user-image'];
   $arquivoCompany = $_FILES['banner-image'];
   if ($arquivoUser != "" && $arquivoUser != 0) {
@@ -278,48 +294,19 @@ if (isset($_POST["add_orcamento"] )) {
     }
   }
 
-  $_POST["add_orcamento"] = "";
+  $_POST["editarPerfil"] = "";
   $POSTFirstName = $_POST["nome"];
   $POSTLastName = $_POST["lastname"];
   $POSTJobTitle = $_POST["jobtitle"];
   $POSTCompanyName = $_POST["conpany"];
   $POSTdescricao = $_POST["descricao"];
-  $CoreBusinessIdpost = $_POST["business"];
+  $CoreBusinessIdpost = $_POST["coreBusiness"];
 
+  if($_POST["coreBusiness"] >= 6){
+   
+    $_POST["satellite"] = $_POST["coreBusiness"];
 
-  //$sqlbusinesop = "SELECT * from tblBusiness  ";
-  //$querybusinesop = $dbh->prepare($sqlbusinesop);
-  //$querybusinesop->bindParam(':IdOperation', $CoreBusinessIdpost, PDO::PARAM_INT);
-  //$querybusinesop->execute();
-  //$resulbusinesop = $querybusinesop->fetchAll(PDO::FETCH_OBJ);
-
-  include_once('../model/classes/tblBusiness.php');
-
-  $Business = new Business();
-  $Business->setIdOperation($CoreBusinessIdpost);
-  $resulbusinesop = $Business->consulta("WHERE IdOperation = :IdOperation");
-
-  if($resulbusinesop != null){
-    foreach ($resulbusinesop as $rowlbssop) {
-      $idoperationbs = $rowlbssop->idBusiness;
-
-      if ($BusinessIdpost == "") {
-
-        $BusinessIdpost = $CoreBusinessIdpost;
-
-        if ($idoperationbs == 0) {
-          $BusinessIdpost = $_POST["coreBusiness"];
-        } else {
-          $BusinessIdpost = $idoperationbs;
-        }
-
-      }
-
-    }
   }
-
-  $BusinessCategIdpost = $_POST["satellite"];
-  $BusinessIdpost = $_POST["coreBusiness"];
 
   include_once('../model/classes/tblUserClients.php');
 
@@ -328,13 +315,31 @@ if (isset($_POST["add_orcamento"] )) {
   $userClients-> setFirstName($POSTFirstName);
   $userClients-> setLastName($POSTLastName);
   $userClients-> setJobTitle($POSTJobTitle);
+  
   $userClients-> setCompanyName($POSTCompanyName);
-  $userClients-> setdescricao($POSTdescricao);
+  if($POSTdescricao == null){
+    $userClients-> setdescricao("");
+  }else{
+    $userClients-> setdescricao($POSTdescricao);
+  }
   $userClients-> setCoreBusinessId($CoreBusinessIdpost);
-  $userClients-> setSatBusinessId($BusinessIdpost);
-  $userClients-> setIdOperation($BusinessCategIdpost);
+  
+  if(isset($_POST["satellite"])){
+    $userClients-> setSatBusinessId($_POST["satellite"]);
+  }
+  if(isset($_POST["category"])){
+    $userClients-> setIdOperation($_POST["category"]);
+  }
 
-  $userClients->atualizar("FirstName =:FirstName, LastName =:LastName, JobTitle = :JobTitle, CompanyName = :CompanyName, descricao = :descricao, CoreBusinessId = :CoreBusinessId, IdOperation = :IdOperation, SatBusinessId = :SatBusinessId WHERE idClient = :idClient");
+  if(isset($_POST["category"])){
+
+    $userClients->atualizar("FirstName =:FirstName, LastName =:LastName, JobTitle = :JobTitle, CompanyName = :CompanyName, descricao = :descricao, CoreBusinessId = :CoreBusinessId, IdOperation = :IdOperation, SatBusinessId = :SatBusinessId WHERE idClient = :idClient");
+    header("Location: ../view/profile.php");
+  }else{
+
+    $userClients->atualizar("FirstName =:FirstName, LastName =:LastName, JobTitle = :JobTitle, CompanyName = :CompanyName, descricao = :descricao, CoreBusinessId = :CoreBusinessId, IdOperation = NULL, SatBusinessId = :SatBusinessId WHERE idClient = :idClient");
+    header("Location: ../view/profile.php");
+  }
 
   //$sqleditperfil = "UPDATE tblUserClients SET FirstName =:FirstName, LastName =:LastName, JobTitle = :JobTitle, CompanyName = :CompanyName, descricao = :descricao, CoreBusinessId = :CoreBusinessId, IdOperation = :IdOperation, SatBusinessId = :SatBusinessId WHERE idClient = :idClient";
   //$queryeditperfil = $dbh->prepare($sqleditperfil);
@@ -349,10 +354,8 @@ if (isset($_POST["add_orcamento"] )) {
   //$queryeditperfil->bindParam(':IdOperation', $BusinessCategIdpost, PDO::PARAM_INT);
   //$queryeditperfil->execute();
   //$queryeditperfil->fetchAll(PDO::FETCH_OBJ);
-  header("Location: ../view/profile.php");
-}
   
-if (isset($_POST["salvar"] )) {
+}else if (isset($_POST["salvar"] )) {
 
   $arquivoUser = $_FILES['user-image'];
   $arquivoCompany = $_FILES['banner-image'];
@@ -507,10 +510,14 @@ if (isset($_POST["salvar"] )) {
     }
   }
   $_POST["salvar"] = "";
+
+  include_once("../model/classes/tblUserClients.php");
+  $user = new UserClients();
+  $user->setidClient($_SESSION["id"]);
+  $user->setPontos(200);
+  $user->atualizar("Pontos = Pontos + :Pontos WHERE idClient = :idClient");
   header("Location: ../view/profile.php");
-}
-  
-if (isset($_POST["deleteproduto"] )) {
+}else if (isset($_POST["deleteproduto"] )) {
   $idproduto = $_POST["idproduto"];
   $_POST["deleteproduto"] = "";
 
@@ -527,9 +534,7 @@ if (isset($_POST["deleteproduto"] )) {
   //$querydelete->bindParam(':idProduct', $idproduto, PDO::PARAM_INT);
   //$querydelete->execute();
   header("Location: ../view/profile.php");
-}
-  
-if (isset($_POST["updateproduto"])) {
+}else if (isset($_POST["updateproduto"])) {
 
   include_once('../model/classes/tblUserClients.php');
 
@@ -566,14 +571,30 @@ if (isset($_POST["updateproduto"])) {
 
   $Product = new Products();
 
-  $Product->setidProduct($idproduto);
-  $Product->setidBusinessCategory($satBusinessId);
-  $Product->setProductName($nomeproduto);
-  $Product->setProdcuctDescription($descricao);
-  $Product->setProdcuctEspecification($specification);
-  $Product->setCategory($corebusiness);
+  if(isset($_POST["specification"]) && $_POST["specification"] != null){
+    
+    $Product->setidProduct($idproduto);
+    $Product->setidBusinessCategory($satBusinessId);
+    $Product->setProductName($nomeproduto);
+    $Product->setProdcuctDescription($descricao);
+    $Product->setProdcuctEspecification($specification);
+    $Product->setCategory($corebusiness);
+  
+    $Product->atualizar("idBusinessCategory = :idBusinessCategory, ProductName= :ProductName,ProdcuctDescription = :ProdcuctDescription,ProdcuctEspecification=:ProdcuctEspecification,Category = :Category WHERE idProduct = :idProduct ");
+  
 
-  $Product->atualizar("idBusinessCategory = :idBusinessCategory, ProductName= :ProductName,ProdcuctDescription = :ProdcuctDescription,ProdcuctEspecification=:ProdcuctEspecification,Category = :Category WHERE idProduct = :idProduct ");
+  }else{
+
+    $Product->setidProduct($idproduto);
+    $Product->setidBusinessCategory($satBusinessId);
+    $Product->setProductName($nomeproduto);
+    $Product->setProdcuctDescription($descricao);
+    $Product->setCategory($corebusiness);
+  
+    $Product->atualizar('idBusinessCategory = :idBusinessCategory, ProductName= :ProductName,ProdcuctDescription = :ProdcuctDescription,ProdcuctEspecification= "" ,Category = :Category WHERE idProduct = :idProduct ');
+  
+
+  }
 
   $lastInsertedId = $idproduto;
   $arquivoUser = $_FILES['imgproduto'];
@@ -653,64 +674,136 @@ if (isset($_POST["updateproduto"])) {
     header("Location: ../view/profile.php");
   }
   header("Location: ../view/profile.php");
+}else if (isset($_POST["conectar"])) {
+  $idconect = $_POST["idconectar"];
+  $idperfilpedido = $_POST["idperfilpedido"];
+
+  //$sqlconectup = "UPDATE tblconect SET status = '1' WHERE id  = :id ";
+  //$queryconectup = $dbh->prepare($sqlconectup);
+  //$queryconectup->bindParam(':id', $idconect, PDO::PARAM_INT);
+  //$queryconectup->execute();
+
+  include_once('../model/classes/tblConect.php');
+
+  $conect = new Conect();
+
+  $conect->setid($idconect);
+  $conect->setstatus('1');
+
+  $conect->atualizar("status = :status WHERE id = :id ");
+
+
+  //$sqlinsertpost = "INSERT INTO tblsearchprofile_results (idUsuario, idClienteEncontrado, idTipoNotif) VALUES (:idUsuario, :idClienteEncontrado, '6')";
+  //$queryinsertpost = $dbh->prepare($sqlinsertpost);
+  //$queryinsertpost->bindParam(':idUsuario', $iduser, PDO::PARAM_INT);
+  //$queryinsertpost->bindParam(':idClienteEncontrado', $idperfilpedido, PDO::PARAM_INT);
+  //$queryinsertpost->execute();
+
+  include_once('../model/classes/tblSearchProfile_Results.php');
+
+  $tblsearchprofile_results = new SearchProfile_Results();
+
+  $tblsearchprofile_results->setidUsuario($iduser);
+  $tblsearchprofile_results->setidClienteEncontrado($idperfilpedido);
+  $tblsearchprofile_results->setidTipoNotif('6');
+  $tblsearchprofile_results->setestadoNotif('0');
+  $tblsearchprofile_results->setpostId('0');
+  $tblsearchprofile_results->seturl("viewProfile.php?profile=".$iduser);
+
+  $tblsearchprofile_results->cadastrar();
+
+  include_once("../model/classes/tblUserClients.php");
+  $user = new UserClients();
+  $user->setidClient($_SESSION["id"]);
+  $user->setPontos(1000);
+  $user->atualizar("Pontos = Pontos + :Pontos WHERE idClient = :idClient");
+
+  header("Location: ../view/profile.php");
+}else if (isset($_POST["desconectar"])) {
+  $idconect = $_POST["idconectar"];
+  $idperfilpedido = $_POST["idperfilpedido"];
+
+  include_once('../model/classes/tblConect.php');
+
+  $conect = new Conect();
+
+  $conect->setid($idconect);
+
+  $conect->deletar("WHERE  id = :id");
+
+  //$sqlconectdelet = "DELETE FROM tblconect WHERE  id = :id";
+  //$queryconectdelet = $dbh->prepare($sqlconectdelet);
+  //$queryconectdelet->bindParam(':id', $idconect, PDO::PARAM_INT);
+  //$queryconectdelet->execute();
+
+  include_once("../model/classes/tblUserClients.php");
+  $user = new UserClients();
+  $user->setidClient($_SESSION["id"]);
+  $user->setPontos(500);
+  $user->atualizar("Pontos = Pontos - :Pontos WHERE idClient = :idClient");
+
+  header("Location: ../view/profile.php");
+}else if(isset($_POST["enviaremail"])){
+
+  $email = $_POST["emailcolab"];
+
+  $codigoCadastroIncompleto = urlencode($email);
+  ini_set('display_erros', 1);
+  error_reporting(E_ALL);
+  $from = "noreplay@matchingbusiness.online";
+  $to = $email;
+  $subject = "Teste cadastro coolab";//"Matching Business Online - Confirmation Link";
+  $message = "https://visual.matchingbusiness.online/view/cadastrarCoolab.php?email=".$codigoCadastroIncompleto."&taxid=".urlencode($_POST["taxid"]);//"Dear User," . "\n" . "Thank you for registering with us!" . "\n" . "We are excited to have you join Matching Business Online. This email serves as confirmation of your successful registration. We appreciate your interest and look forward to providing you with a fantastic experience." . "\n" . "Please click on the link below to enter your password and complete your registration." . "\n" . "https://visual.matchingbusiness.online/view/createPass.php?codigoCadastroIncompleto=" . $codigoCadastroIncompleto;
+  $headers = "From:" . $from;
+  mail($to, $subject, $message, $headers);
+
+  include_once("../model/classes/tblUserClients.php");
+
+  $user = new UserClients();
+  $user->setidClient($_SESSION["id"]);
+  $user->setPontos(1000);
+  $user->atualizar("Pontos = Pontos + :Pontos WHERE idClient = :idClient");
+
+  header("Location: ../view/cadastrarCoolab.php?email=".$codigoCadastroIncompleto."&taxid=".urlencode($_POST["taxid"]));
+
+}else if(isset($_POST["EditDistribuidor"])){
+
+  $numEmpregados = $_POST["numEmpregados"];
+
+  $anoFundacao = substr($_POST["year"], 0, 4);
+
+  $nivelOperacao = $_POST["nivelOperacao"];
+
+  $Vol_1Y = $_POST["ano1"];
+
+  $Vol_2Y = $_POST["ano2"];
+
+  $Vol_3Y = $_POST["ano3"];
+
+  include_once('../model/classes/tblUserClients.php');
+  $distributorProfile = new UserClients();
+
+  $distributorProfile->setAnoFundacao($anoFundacao);
+  $distributorProfile->setNumEmpregados($numEmpregados);
+  $distributorProfile->setNumVendedores($Vol_3Y);
+  $distributorProfile->setNivelOperacao($nivelOperacao);
+  $distributorProfile->setidClient($iduser);
+  $distributorProfile->setFob_1Y("2020"); 
+  $distributorProfile->setFob_2Y("2021"); 
+  $distributorProfile->setFob_3Y("2022");
+
+  $distributorProfile->setVol_1Y($Vol_1Y); 
+  $distributorProfile->setVol_2Y($Vol_2Y); 
+  $distributorProfile->setVol_3Y($Vol_3Y);
+
+  $resultsdistributorProfile = $distributorProfile->atualizar("AnoFundacao = :AnoFundacao, NumEmpregados = :NumEmpregados, NumVendedores = :NumVendedores, NivelOperacao = :NivelOperacao, Fob_3Y = :Fob_3Y, Vol_3Y = :Vol_3Y, Fob_2Y = :Fob_2Y, Vol_2Y = :Vol_2Y, Fob_1Y = :Fob_1Y, Vol_1Y = :Vol_1Y WHERE idClient = :idClient");
+  header("Location: ../view/profile.php");
+
+}else{
+
+  //header("Location: ../view/profile.php");
+
 }
-  
-  if (isset($_POST["conectar"])) {
-    $idconect = $_POST["idconectar"];
-    $idperfilpedido = $_POST["idperfilpedido"];
-  
-    //$sqlconectup = "UPDATE tblconect SET status = '1' WHERE id  = :id ";
-    //$queryconectup = $dbh->prepare($sqlconectup);
-    //$queryconectup->bindParam(':id', $idconect, PDO::PARAM_INT);
-    //$queryconectup->execute();
-
-    include_once('../model/classes/tblConect.php');
-
-    $conect = new Conect();
-
-    $conect->setid($idconect);
-    $conect->setstatus('1');
-
-    $conect->atualizar("status = '1' WHERE id = :id ");
-  
-  
-    //$sqlinsertpost = "INSERT INTO tblsearchprofile_results (idUsuario, idClienteEncontrado, idTipoNotif) VALUES (:idUsuario, :idClienteEncontrado, '6')";
-    //$queryinsertpost = $dbh->prepare($sqlinsertpost);
-    //$queryinsertpost->bindParam(':idUsuario', $iduser, PDO::PARAM_INT);
-    //$queryinsertpost->bindParam(':idClienteEncontrado', $idperfilpedido, PDO::PARAM_INT);
-    //$queryinsertpost->execute();
-
-    include_once('../model/classes/tblSearchProfile_Results.php');
-
-    $tblsearchprofile_results = new SearchProfile_Results();
-
-    $tblsearchprofile_results->setidUsuario($iduser);
-    $tblsearchprofile_results->setidClienteEncontrado($idperfilpedido);
-    $tblsearchprofile_results->setidTipoNotif('6');
-
-    $tblsearchprofile_results->cadastrar();
-
-    header("Location: ../view/profile.php");
-  }
-  if (isset($_POST["desconectar"])) {
-    $idconect = $_POST["idconectar"];
-    $idperfilpedido = $_POST["idperfilpedido"];
-
-    include_once('../model/classes/tblConect.php');
-
-    $conect = new Conect();
-
-    $conect->setid($idconect);
-
-    $conect->deletar("WHERE  id = :id");
-
-    //$sqlconectdelet = "DELETE FROM tblconect WHERE  id = :id";
-    //$queryconectdelet = $dbh->prepare($sqlconectdelet);
-    //$queryconectdelet->bindParam(':id', $idconect, PDO::PARAM_INT);
-    //$queryconectdelet->execute();
-    header("Location: ../view/profile.php");
-  }
-
 
 
 ?>

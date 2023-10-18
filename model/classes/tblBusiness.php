@@ -65,7 +65,7 @@ class Business{
         
 
         //$sql = "SELECT * from tblUserClients WHERE idClient = :idClient ";
-        $sql = "SELECT * from tblBusiness ".$paramsExtra;
+        $sql = "SELECT * from `tblBusiness` ".$paramsExtra;
         $query = $this->dbh->prepare($sql);
         
         if($this->idBusiness != null){

@@ -4,70 +4,36 @@ session_start();
         
 
         $id = $_SESSION["id"];
-        $idoperationbs = 0;
-        $operationIdG = $_POST["business"];
-        
 
-        //$sqlbusinesop = "SELECT * from tblBusiness WHERE IdOperation = :IdOperation ";
-        //$querybusinesop = $dbh->prepare($sqlbusinesop);
-        //$querybusinesop->bindParam(':IdOperation', $businesst, PDO::PARAM_INT);
-        //$querybusinesop->execute();
-        //$resulbusinesop = $querybusinesop->fetchAll(PDO::FETCH_OBJ);
-        //if ($querybusinesop->rowCount() > 0){return $resulbusinesop;}else{return null;}
+        $CoreBusinessIdpost = $_POST["coreBusiness"];
 
-        include_once('../model/classes/tblBusiness.php');
-
-        $business = new Business();
-
-        $business->setIdOperation($operationIdG);
-
-        $resulbusinesop = $business->consulta("WHERE IdOperation = :IdOperation");
-
-        if($resulbusinesop != null) {
-            foreach ($resulbusinesop as $rowlbssop) {
-                $idoperationbs = $rowlbssop->idBusiness;
-            }
+        if($_POST["coreBusiness"] >= 6){
+         
+          $_POST["satellite"] = $_POST["coreBusiness"];
+      
         }
-
-        if ($idoperationbs == 0) {
-            $coreBusinesst = $_POST["coreBusiness"];
-        } else {
-            $coreBusinesst = $idoperationbs;
-        }
-
-        $satellitet = $_POST["satellite"];
-    
-
-        if ($satellitet == "") {
-            $satellitet = $operationIdG;
-        }
-        if ($coreBusinesst == "") {
-            $satellitet = $operationIdG;
-        }
-
-        //$sqlcategoria = "UPDATE tblUserClients SET CoreBusinessId = :CoreBusinessId, SatBusinessId = :SatBusinessId, IdOperation = :IdOperation WHERE idClient = :idClient LIMIT 1";
-        //$querycategoria = $dbh->prepare($sqlcategoria);
-        //$querycategoria->bindParam(':CoreBusinessId', $businesst, PDO::PARAM_INT);
-        //$querycategoria->bindParam(':SatBusinessId', $coreBusinesst, PDO::PARAM_INT);
-        //$querycategoria->bindParam(':IdOperation', $satellitet, PDO::PARAM_INT);
-        //$querycategoria->bindParam(':idClient', $id, PDO::PARAM_INT);
-        //$querycategoria->execute();
-
-        echo '<br>OperationsIdg: ' . $operationIdG;
-        echo '<br>coreBusinnesst: ' . $coreBusinesst;
-        echo '<br>satelliet: ' . $satellitet;
-        echo '<br>id: ' . $id;
-
+      
         include_once('../model/classes/tblUserClients.php');
+      
+        $userClients = new UserClients();
+        $userClients-> setidClient($id);
 
-        $userClients2 = new UserClients();
-
-        $userClients2->setCoreBusinessId($operationIdG);
-        $userClients2->setSatBusinessId($coreBusinesst);
-        $userClients2->setIdOperation($satellitet);
-        $userClients2->setidClient($id);
-
-        $userClients2->atualizar("CoreBusinessId = :CoreBusinessId, SatBusinessId = :SatBusinessId, IdOperation = :IdOperation WHERE idClient = :idClient");
+        $userClients-> setCoreBusinessId($CoreBusinessIdpost);
+        
+        if(isset($_POST["satellite"])){
+          $userClients-> setSatBusinessId($_POST["satellite"]);
+        }
+        if(isset($_POST["category"])){
+          $userClients-> setIdOperation($_POST["category"]);
+        }
+      
+        if(isset($_POST["category"])){
+      
+          $userClients->atualizar("CoreBusinessId = :CoreBusinessId, IdOperation = :IdOperation, SatBusinessId = :SatBusinessId WHERE idClient = :idClient");
+        }else{
+      
+          $userClients->atualizar("CoreBusinessId = :CoreBusinessId, IdOperation = NULL, SatBusinessId = :SatBusinessId WHERE idClient = :idClient");
+        }
 
         $_POST["create"] = "";
 
@@ -77,8 +43,6 @@ session_start();
         //$query->execute();
         //$results = $query->fetchAll(PDO::FETCH_OBJ);
         //if ($query->rowCount() > 0) {return $results;}else{return null;}
-
-     
 
         $userClients3 = new UserClients();
 
@@ -99,7 +63,7 @@ session_start();
                 if($operationIdG == "3" || $operationIdG == "4"){
                     header("Location: ../view/qualidistribuidor.php");
                 }else{
-                    header("Location: ../view/home.php");
+                    header("Location: ../view/profile.php");
                 }
                 
             }

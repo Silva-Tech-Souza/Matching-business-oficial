@@ -1,6 +1,11 @@
 <?php
-session_start();
-//error_reporting(0);
+if ( session_status() !== PHP_SESSION_ACTIVE )
+{
+   session_start();
+}
+if(isset($_SESSION['error'])){
+    error_reporting(0);
+}
 date_default_timezone_set('America/Sao_Paulo');
 
 $idbusines = $_GET["q"];
@@ -41,9 +46,9 @@ if ($_SESSION["FlagOperation"] == "A" || $_SESSION["FlagOperation"] == "C") {
 <div class="row">
     <?php if ($_SESSION["FlagOperation"] == "A" || $_SESSION["FlagOperation"] == "C") { ?>
         <div class="col-sm-12">
-            <div class="form-floating mb-3 multi-search-filter" onclick="Array.from(this.children).find(n=>n.tagName==='INPUT').focus()">
+            <div class="form-floating mb-3 multi-search-filter" onclick="">
 
-                <input type="text" class="form-control inputstyle border-dark inputtamanhoarea" onkeyup="multiSearchKeyup(this)">
+                <input type="text" onkeyup="multiSearchKeyup(this)" class="form-control inputstyle border-dark inputtamanhoarea" id='Produto_servico' >
                 <input type="hidden" id="keywords-hiddens" name="produtostags" value="">
 
             </div>
@@ -108,9 +113,9 @@ if ($_SESSION["FlagOperation"] == "A" || $_SESSION["FlagOperation"] == "C") {
             </div>
         <?php } else { ?>
             <div class="col-sm-12">
-                <div class="form-floating mb-3 multi-search-filter" onclick="Array.from(this.children).find(n=>n.tagName==='INPUT').focus()">
+                <div class="form-floating mb-3 multi-search-filter" onclick="">
 
-                    <input type="text" class="form-control inputstyle border-dark inputtamanhoarea" onkeyup="multiSearchKeyup(this)">
+                    <input type="text" onkeyup="multiSearchKeyup(this)" class="form-control inputstyle border-dark inputtamanhoarea" id='Produto_servico' >
                     <input type="hidden" id="keywords-hiddens" name="servicostags" value="">
 
                 </div>

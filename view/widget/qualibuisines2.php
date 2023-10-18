@@ -1,6 +1,12 @@
 <?php
-session_start();
-error_reporting(0);
+if ( session_status() !== PHP_SESSION_ACTIVE )
+{
+   session_start();
+}
+if(isset($_SESSION['error'])){
+    error_reporting(0);
+}
+
 header("Access-Control-Allow-Origin: *");
 date_default_timezone_set('America/Sao_Paulo');
 
@@ -20,8 +26,8 @@ if ($tblBusiness1 != null) {
     }
 }
 ?>
-<label class="color-branco labelcadastro">Satellite Business: </label>
-<select class="form-control bordainput inputtamanho" name="satellite">
+<label class="color-branco labelcadastro">What is your business category? </label>
+<select class="form-control bordainput inputtamanho selectsize" name="category">
     <option value="0">Select</option>
     <?php
 

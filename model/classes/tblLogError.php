@@ -4,10 +4,8 @@ class LogError{
     
     protected $idLogError = null;
     protected $idClient = null;
-    protected $IdModule = null;
     protected $IdError = null;
     protected $ErrorDate = null;
-    protected $ErrAuxMsg = null;
     protected $dbh = null;
 
     function __construct()
@@ -29,10 +27,6 @@ class LogError{
     
     public function getidClient(){return $this->idClient;}
 
-    public function setIdModule($param){$this->IdModule = $param;}
-    
-    public function getIdModule(){return $this->IdModule;}
-
     public function setIdError($param){$this->IdError = $param;}
 
     public function getIdError(){return $this->IdError;}
@@ -41,27 +35,18 @@ class LogError{
     
     public function getErrorDate(){return $this->ErrorDate;}
 
-    public function setErrAuxMsg($param){$this->ErrAuxMsg = $param;}
-    
-    public function getErrAuxMsg(){return $this->ErrAuxMsg;}
-
     
 
     public function cadastrar(){
 
-        
-
-        $sql = "INSERT INTO tblLogError (idLogError,idClient,IdModule,IdError,ErrorDate,ErrAuxMsg) VALUES (:idLogActivity,:idClient,:IdModule,:IdError,:ErrorDate,:ErrAuxMsg)";
+        $sql = "INSERT INTO tblLogError (idLogError,idClient,IdError,ErrorDate) VALUES (:idLogError,:idClient,:IdError,:ErrorDate)";
         $query = $this->dbh->prepare($sql);
-        
+                
         if($this->idLogError != null){
             $query->bindParam(':idLogError', $this->idLogError, PDO::PARAM_INT);
         }
         if($this->idClient != null){
             $query->bindParam(':idClient', $this->idClient, PDO::PARAM_INT);
-        }
-        if($this->IdModule != null){
-            $query->bindParam(':IdModule', $this->IdModule, PDO::PARAM_INT);
         }
         if($this->IdError != null){
             $query->bindParam(':IdError', $this->IdError, PDO::PARAM_INT);
@@ -69,12 +54,9 @@ class LogError{
         if($this->ErrorDate != null){
             $query->bindParam(':ErrorDate', $this->ErrorDate, PDO::PARAM_STR);
         }
-        if($this->ErrAuxMsg != null){
-            $query->bindParam(':ErrAuxMsg', $this->ErrAuxMsg, PDO::PARAM_STR);
-        }
 
         $query->execute();
-        return $query;
+        return $this->dbh->lastInsertId();
 
     }
 
@@ -92,17 +74,11 @@ class LogError{
         if($this->idClient != null){
             $query->bindParam(':idClient', $this->idClient, PDO::PARAM_INT);
         }
-        if($this->IdModule != null){
-            $query->bindParam(':IdModule', $this->IdModule, PDO::PARAM_INT);
-        }
         if($this->IdError != null){
             $query->bindParam(':IdError', $this->IdError, PDO::PARAM_INT);
         }
         if($this->ErrorDate != null){
             $query->bindParam(':ErrorDate', $this->ErrorDate, PDO::PARAM_STR);
-        }
-        if($this->ErrAuxMsg != null){
-            $query->bindParam(':ErrAuxMsg', $this->ErrAuxMsg, PDO::PARAM_STR);
         }
 
         $query->execute();
@@ -126,18 +102,13 @@ class LogError{
         if($this->idClient != null){
             $query->bindParam(':idClient', $this->idClient, PDO::PARAM_INT);
         }
-        if($this->IdModule != null){
-            $query->bindParam(':IdModule', $this->IdModule, PDO::PARAM_INT);
-        }
         if($this->IdError != null){
             $query->bindParam(':IdError', $this->IdError, PDO::PARAM_INT);
         }
         if($this->ErrorDate != null){
             $query->bindParam(':ErrorDate', $this->ErrorDate, PDO::PARAM_STR);
         }
-        if($this->ErrAuxMsg != null){
-            $query->bindParam(':ErrAuxMsg', $this->ErrAuxMsg, PDO::PARAM_STR);
-        }
+
 
         $query->execute();
         return $query;
@@ -158,17 +129,11 @@ class LogError{
         if($this->idClient != null){
             $query->bindParam(':idClient', $this->idClient, PDO::PARAM_INT);
         }
-        if($this->IdModule != null){
-            $query->bindParam(':IdModule', $this->IdModule, PDO::PARAM_INT);
-        }
         if($this->IdError != null){
             $query->bindParam(':IdError', $this->IdError, PDO::PARAM_INT);
         }
         if($this->ErrorDate != null){
             $query->bindParam(':ErrorDate', $this->ErrorDate, PDO::PARAM_STR);
-        }
-        if($this->ErrAuxMsg != null){
-            $query->bindParam(':ErrAuxMsg', $this->ErrAuxMsg, PDO::PARAM_STR);
         }
 
         $query->execute();

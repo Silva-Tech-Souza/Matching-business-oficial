@@ -416,7 +416,7 @@ body {
 }
 
 .desclogin {
-    font-size: 15px;
+    font-size: 20px;
 }
 
 .loginfooter {
@@ -464,4 +464,13 @@ body {
     top: 50%;
     transform: translateY(-50%);
     cursor: pointer;
+}
+
+.txterrologin {
+    font-size: 15px;
+    background-color: #f5b5b5;
+}
+
+.createaccounttxt {
+    font-size: medium !important;
 }

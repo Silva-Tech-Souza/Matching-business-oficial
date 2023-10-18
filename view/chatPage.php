@@ -1,6 +1,8 @@
 <?php
 session_start();
-error_reporting(0);
+
+include_once('../model/ErrorLog.php');
+
 date_default_timezone_set('America/Sao_Paulo');
 if ($_SESSION["id"] < 0 || $_SESSION["id"] == "") {
   header("Location: login.php");
@@ -50,6 +52,7 @@ if ($resultsoperation != null) {
     $NmOperation = $rowbusiness->NmOperation;
   }
 }
+
 
 ?>
 
@@ -132,10 +135,16 @@ if ($resultsoperation != null) {
                                                       $resultsUserClients = $userClients->consulta("WHERE idClient = :idClient");
                                                       if ($resultsUserClients != null) {
                                                         foreach ($resultsUserClients as $rowCon) {
+                                                            
+                                                             $imgchatuserS = $rowCon->PersonalUserPicturePath;
                                                   ?>
                                     <a href="#" class="d-flex align-items-center" onclick="atualizarMensagens(<?php echo $idconectado; ?>)">
                                       <div class="flex-shrink-0">
-                                        <img class="imgavatar" src="assets/img/Avatar.png" alt="user img">
+                                        <img class="imgavatar" src="<?php if ($imgchatuserS != "Avatar.png" && $imgchatuserS != "" && file_exists("" . $imgchatuserS)) {
+                                                                            echo "" . $imgchatuserS;
+                                                                        } else {
+                                                                            echo "assets/img/Avatar.png";
+                                                                        } ?>" alt="user img">
                                         <span class="active"></span>
                                       </div>
                                       <div class="flex-grow-1 ms-3">
@@ -192,13 +201,13 @@ if ($resultsoperation != null) {
                       </ul>
                     </div>
                     <div class="col-12 col-md-12 col-lg-12 send-box" style=" bottom: 0; right: 0;background: #fff;">
-                      <form id="sendMessageForm">
+                      <form id="sendMessageForm" method="POST" enctype="multipart/form-data" onsubmit="limparTextarea()">
                         <input required type="text" class="form-control" aria-label="message…" placeholder="Write message…" id="txtarea" name="Texto">
                         <input type="hidden" value="<?php echo $iduser; ?>" name="iduser">
                         <input type="hidden" value="<?php echo $idClientConversa; ?>" name="idClientConversa">
 
                         <input type="hidden" value="cadastrar" name="acao">
-                        <button type="submit" value="Send"><i class="fa fa-paper-plane" aria-hidden="true"></i> Send</button>
+                        <button type="submit"  name="envarmsg" value="Send"><i class="fa fa-paper-plane" aria-hidden="true"></i> Send</button>
                       </form>
                     </div>
                   </div>
@@ -223,6 +232,16 @@ if ($resultsoperation != null) {
   <script src="assets/plugins/summernote/dist/summernote-bs4.min.js"></script>
   <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
   <script>
+  <?php if($_POST["envarmsg"] != ""){
+      $_POST["envarmsg"] != "";
+      echo "<script>scrollToBottom();</script>";
+  
+  } ?>
+  function limparTextarea() {
+ setTimeout(function() {
+        document.getElementById('txtarea').value = '';
+    }, 2);
+}var idConversaAtiva ="";
     function atualizarMensagens(idconectado) {
       var iduser = <?php echo $iduser; ?>;
       idConversaAtiva = idconectado;
@@ -245,7 +264,7 @@ if ($resultsoperation != null) {
           henderchat.empty();
           console.log(data);
           if (data.messages) {
-            console.log("teste");
+           
             data.messages.forEach(function(message) {
             henderchat.append(
               '<div class="row">' +
@@ -266,8 +285,7 @@ if ($resultsoperation != null) {
               '<li class="navbar nav-item dropdown">' +
               '<a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false"><i class="fa fa-ellipsis-v" aria-hidden="true"></i></a>' +
               '<ul class="dropdown-menu">' +
-              '<li><a class="dropdown-item" href="#">Disconnect</a></li>' +
-              '<li><a class="dropdown-item" href="#">View Profile</a></li>' +
+              '<li><a class="dropdown-item" href="viewProfile.php?profile=' + idClientConversa + '">View Profile</a></li>' +
               '</ul>' +
               '</li>' +
               '</ul>' +
@@ -298,21 +316,18 @@ if ($resultsoperation != null) {
             data.messages.forEach(function(message) {
               var messageClass = message.type === 'repaly' ? 'repaly' : 'sender';
               msgContainer.append('<li class="' + messageClass + '"><p>' + message.text + '</p><span class="time">' + message.date + '</span></li>');
-              txtarea.value = "";
-              scrollToBottom();
+             
+             // 
             });
           }
         }
       });
     }
-
-    function scrollToBottom() {
-      var msgBody = document.querySelector('.msg-body');
-      msgBody.scrollTop = msgBody.scrollHeight;
-    }
-    document.addEventListener('DOMContentLoaded', function() {
-      scrollToBottom();
-    });
+function chamarAtualizarMensagens() {
+    atualizarMensagens(idConversaAtiva);
+}
+setInterval(chamarAtualizarMensagens, 1000);
+   
     $(document).ready(function() {
 
 
@@ -634,6 +649,13 @@ if ($resultsoperation != null) {
       });
 
 
+    });
+     function scrollToBottom() {
+      var msgBody = document.querySelector('.msg-body');
+      msgBody.scrollTop = msgBody.scrollHeight;
+    }
+    document.addEventListener('DOMContentLoaded', function() {
+      scrollToBottom();
     });
   </script>
 

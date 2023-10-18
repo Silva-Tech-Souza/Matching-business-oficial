@@ -6,47 +6,56 @@ include_once('../model/classes/tblSearchCategory.php');
 include_once('../model/classes/tblSearchCountry.php');
 include_once('../model/classes/tblSearchEspecificationTag.php');
 include_once('../model/classes/tblSearchSpecification.php');
+session_start();
 
 $corbusiness = $_POST["corbusiness"];
 //echo "corbusiness: " . $corbusiness . "<br>";
-$news = $_POST["news"];
-$next = $_POST["next"];
+if(isset($_POST["news"])){
+    $news = $_POST["news"];
+}
+if(isset($_POST["next"])){
+    $news = $_POST["next"];
+}
 if ($_POST["flagtipo"] == "D") {
     $business = $corbusiness;
   //  echo "business: " . $business;
-}
+}else{
 
- $_POST["flagtipo"];
-try {
-    //caso o flag do cor Business for tipo B ELENCAI DENTRO DO IF E SE FOR
-    if ($_POST["flagtipo"] == "B") {
-        $business = implode(", ", $_POST["business"]);
-      //  echo "business: " . $business . "<br>";
-    } else {
-        $business = $_POST["business"];
-      //  echo "business: " . $busines . "<br>";
-        //só existe categoria se a business não for um array
-        try {
-            if (!is_null($_POST["category"])) {
-                $category = implode(", ", $_POST["category"]);
-                //echo  "category: " . $category  . "<br>";
+    $_POST["flagtipo"];
+    try {
+        //caso o flag do cor Business for tipo B ELENCAI DENTRO DO IF E SE FOR
+        if ($_POST["flagtipo"] == "B") {
+            $business = implode(", ", $_POST["business"]);
+        //  echo "business: " . $business . "<br>";
+        } else {
+            $business = $_POST["business"];
+        //  echo "business: " . $busines . "<br>";
+            //só existe categoria se a business não for um array
+            try {
+                if (!is_null($_POST["category"])) {
+                    $category = implode(", ", $_POST["category"]);
+                    //echo  "category: " . $category  . "<br>";
+                }
+            } catch (\Throwable $th) {
             }
-        } catch (\Throwable $th) {
         }
+    } catch (\Throwable $th) {
+        echo "erro na parte 1 da step";
     }
-} catch (\Throwable $th) {
-    echo "erro na parte 1 da step";
 }
 
 
 try {
+    if($_POST["flagtipo"] == "A" || $_POST["flagtipo"] == "C"){
     //só existe se o flag do cor business for A OU C
     $produtostags =  $_POST["produtostags"];
  //   echo "produtostags: " . $produtostags  . "<br>";
+    }else if ($_POST["flagtipo"] == "D"){
 
     //só existe se o flag do cor business for D
     $servicostags =  $_POST["servicostags"];
  //   echo "servicostags: " . $servicostags . "<br>";
+    }
 
 } catch (\Throwable $th) {
    // echo "erro na parte 2 da step";
@@ -126,16 +135,22 @@ if($_POST["flagtipo"] == "A"){
 
         }
 
-    //    echo 'Cadastro Realizado com sucesso';
-    if($news == "" || $news == null){
-        header("Location: ../view/searchPage.php");
-}else{
-     if($news != "" || $news != null){
-        header("Location: ../view/searchPage.php");
-}else{
-    header("Location: ../view/listcompani.php?text=mysp");
-}
-}        
+        include_once("../model/classes/tblUserClients.php");
+        $user = new UserClients();
+        $user->setidClient($_SESSION["id"]);
+        $user->setPontos(200);
+        $user->atualizar("Pontos = Pontos + :Pontos WHERE idClient = :idClient");
+
+        //    echo 'Cadastro Realizado com sucesso';
+        if(!isset($news)){
+            header("Location: ../view/searchPage.php");
+        }else{
+            if($news != "" || $news != null){
+                header("Location: ../view/searchPage.php");
+            }else{
+                header("Location: ../view/listcompani.php?text=mysp");
+            }
+        }        
     }
     
 
@@ -184,7 +199,7 @@ if($_POST["flagtipo"] == "A"){
         echo "niveloperacao: " . $_POST["niveloperacao"] . "<br>";
         */
 
-        $searchspecification = new SearchEspecification();
+        $searchspecification = new SearchSpecification();
 
         $searchspecification->setidSearch($idSearch);
         $searchspecification->setidNumEmpregados($_POST["numempregados"]);
@@ -192,19 +207,28 @@ if($_POST["flagtipo"] == "A"){
         $searchspecification->setidNivelOperacao($_POST["niveloperacao"]);
         $searchspecification->setDataDeAbertura($_POST["year"]);
 
+        echo $_POST["numempregados"];
+        echo $_POST["rangevalues"];
+        echo $_POST["niveloperacao"];
+      
         $searchspecification->cadastrar();
 
+        include_once("../model/classes/tblUserClients.php");
+        $user = new UserClients();
+        $user->setidClient($_SESSION["id"]);
+        $user->setPontos(200);
+        $user->atualizar("Pontos = Pontos + :Pontos WHERE idClient = :idClient");
 
-        //echo 'Cadastro Realizado com sucesso';
-         if($news == "" || $news == null){
-        header("Location: ../view/searchPage.php");
-}else{
-  if($news != "" || $news != null){
-        header("Location: ../view/searchPage.php");
-}else{
-    header("Location: ../view/listcompani.php?text=mysp");
-}
-}
+        //    echo 'Cadastro Realizado com sucesso';
+        if(!isset($news)){
+            header("Location: ../view/searchPage.php");
+        }else{
+            if($news != "" || $news != null){
+                header("Location: ../view/searchPage.php");
+            }else{
+                header("Location: ../view/listcompani.php?text=mysp");
+            }
+        }  
     }
 
 
@@ -263,12 +287,22 @@ if($_POST["flagtipo"] == "A"){
 
         }
 
-      //  echo 'Cadastro Realizado com sucesso';
-  if($news != "" || $news != null){
-        header("Location: ../view/searchPage.php");
-}else{
-    header("Location: ../view/listcompani.php?text=mysp");
-}
+        include_once("../model/classes/tblUserClients.php");
+        $user = new UserClients();
+        $user->setidClient($_SESSION["id"]);
+        $user->setPontos(200);
+        $user->atualizar("Pontos = Pontos + :Pontos WHERE idClient = :idClient");
+
+        //    echo 'Cadastro Realizado com sucesso';
+        if(!isset($news)){
+            header("Location: ../view/searchPage.php");
+        }else{
+            if($news != "" || $news != null){
+                header("Location: ../view/searchPage.php");
+            }else{
+                header("Location: ../view/listcompani.php?text=mysp");
+            }
+        }  
     }
 
 }else if($_POST["flagtipo"] == "D"){
@@ -315,17 +349,24 @@ if($_POST["flagtipo"] == "A"){
     
         }
 
-        //echo 'Cadastro Realizado com sucesso';
-       if($news == "" || $news == null){
-        header("Location: ../view/searchPage.php");
-}else{
-    if($news != "" || $news != null){
-        header("Location: ../view/searchPage.php");
-}else{
-    header("Location: ../view/listcompani.php?text=mysp");
+        include_once("../model/classes/tblUserClients.php");
+        $user = new UserClients();
+        $user->setidClient($_SESSION["id"]);
+        $user->setPontos(200);
+        $user->atualizar("Pontos = Pontos + :Pontos WHERE idClient = :idClient");
+
+        //    echo 'Cadastro Realizado com sucesso';
+        if(!isset($news)){
+            header("Location: ../view/searchPage.php");
+        }else{
+            if($news != "" || $news != null){
+                header("Location: ../view/searchPage.php");
+            }else{
+                header("Location: ../view/listcompani.php?text=mysp");
+            }
+        }  
+
 }
-}
-    }
 
 }else{
    

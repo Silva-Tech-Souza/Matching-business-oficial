@@ -30,7 +30,7 @@ if ($_POST["savedistribuidor"] != "") {
     $distributorProfile->setVol_3Y($ano3);
 
    $resultsdistributorProfile = $distributorProfile->atualizar("AnoFundacao = :AnoFundacao, NumEmpregados = :NumEmpregados, NumVendedores = :NumVendedores, NivelOperacao = :NivelOperacao, Fob_3Y = :Fob_3Y, Vol_3Y = :Vol_3Y, Fob_2Y = :Fob_2Y, Vol_2Y = :Vol_2Y, Fob_1Y = :Fob_1Y, Vol_1Y = :Vol_1Y WHERE idClient = :idClient");
-    header("Location: ../view/home.php");
+    header("Location: ../view/profile.php");
 }else{
     echo "teste";
 }

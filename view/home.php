@@ -1,7 +1,6 @@
 <?php
-if ( session_status() !== PHP_SESSION_ACTIVE )
-{
-   session_start();
+if (session_status() !== PHP_SESSION_ACTIVE) {
+    session_start();
 }
 
 include_once('../model/ErrorLog.php');
@@ -12,14 +11,14 @@ if ($_SESSION["id"] < 0 || $_SESSION["id"] == "") {
 }
 $iduser = $_SESSION["id"];
 
-$_SESSION["n"] = 5;
+$_SESSION["n"] = 8;
 
 //$sql = "SELECT * from tblUserClients WHERE idClient = :idClient";
 //$query = $dbh->prepare($sql);
 //$query->bindParam(':idClient', $iduser, PDO::PARAM_INT);
 //$query->execute();
 //$results = $query->fetchAll(PDO::FETCH_OBJ);
-
+include_once("../model/classes/tblEmpresas.php");
 include_once('../model/classes/tblUserClients.php');
 
 $userClients = new UserClients();
@@ -138,9 +137,47 @@ if ($resultsCountry != null) {
             xmlhttp.open("GET", "widget/atualizarNotif.php", true);
             xmlhttp.send();
         }, 5000);
+   
+        
+
+        
     </script>
     <script>
         document.addEventListener("DOMContentLoaded", function() {
+
+
+
+            var xmlhttp5 = new XMLHttpRequest();
+            xmlhttp5.onreadystatechange = function() {
+                if (this.readyState == 4 && this.status == 200) {
+                    document.getElementById("sponsored-container").innerHTML = this.responseText;
+                    $(document).ready(function() {
+        var $sponsoredItems = $('.sponsored-item');
+        var currentIndex = 0;
+        var numItems = $sponsoredItems.length;
+        var showInterval = 20000; // Tempo (em milissegundos) entre cada troca
+
+        function showNextGroup() {
+            $sponsoredItems.hide(); // Oculta todas as empresas
+            var endIndex = currentIndex + 3;
+            if (endIndex >= numItems) {
+                endIndex = numItems;
+            }
+            $sponsoredItems.slice(currentIndex, endIndex).fadeIn(1000);
+            currentIndex = endIndex % numItems; // Atualiza o índice atual
+        }
+
+        showNextGroup(); // Exibe o primeiro grupo
+
+        setInterval(showNextGroup, showInterval); // Altere o intervalo (em milissegundos) conforme desejado
+    });
+                }
+            }
+            xmlhttp5.open("GET", "widget/propagandas.php", true);
+            xmlhttp5.send();
+
+
+
             var rowProduct = document.querySelector(".rowProduct");
             var rowProductInner = rowProduct.innerHTML;
             var scrollPosition = 0;
@@ -209,6 +246,9 @@ if ($resultsCountry != null) {
             $('#file-input').on('change', function() {
                 readURL(this);
             });
+            $('#file-inputs').on('change', function() {
+                readURL(this);
+            });
             $('#video-input').on('change', function() {
                 readURL(this);
             });
@@ -216,7 +256,9 @@ if ($resultsCountry != null) {
         });
     </script>
 
-
+<script>
+   
+</script>
 
 
     <style>
@@ -451,7 +493,18 @@ if ($resultsCountry != null) {
                 display: block;
             }
         }
+
+        @media (prefers-reduced-motion: reduce) {
+            .progress-bar-animated {
+                animation: 1s linear infinite progress-bar-stripes !important;
+            }
+        }
+
+        .progress {
+            display: none;
+        }
     </style>
+
 </head>
 
 <body class="funcolinhas">
@@ -580,8 +633,8 @@ if ($resultsCountry != null) {
                             </div>
                             <div class="row pr-2">
                                 <div class="col-9 m-0 p-0 mr-2">
-                                <a href="#" data-toggle="modal" data-target="#exampleModalconect" class="minimenuoption">
-                                    <h5 class="fonte-principal">&nbsp;&nbsp;&nbsp;&nbsp;<i class="fa-solid fa-users icon-notif-zoom mini-profile-icon"></i>&nbsp;&nbsp;Want to Connect</h5>
+                                    <a href="#" data-toggle="modal" data-target="#exampleModalconect" class="minimenuoption">
+                                        <h5 class="fonte-principal">&nbsp;&nbsp;&nbsp;&nbsp;<i class="fa-solid fa-users icon-notif-zoom mini-profile-icon"></i>&nbsp;&nbsp;Want to Connect</h5>
                                     </a>
                                 </div>
                                 <div class="col-3 m-0 p-0">
@@ -702,28 +755,28 @@ if ($resultsCountry != null) {
                                         <br>
                                         <div class="col-md-12 d-flex justify-content-center">
                                             <img id="preview-image" src="" alt="" class="d-flex post-imgvideo-style">
-                                            
+
                                             <!-- Botão "X" para remover a imagem -->
                                             <button type="button" id="remove-image-button" class="btn btn-danger btn-sm bcolor-azul-escuro" style="display: none;">X</button>
                                         </div>
                                         <div class="col-md-12 d-flex justify-content-center">
-                                        <video id="preview-video" src="" class="post-imgvideo-style" controls></video>
+                                            <video id="preview-video" src="" class="post-imgvideo-style" controls></video>
                                             <!-- Botão "X" para remover a imagem -->
                                             <button type="button" id="remove-video-button" class="btn btn-danger btn-sm bcolor-azul-escuro" style="display: none;">X</button>
                                         </div>
-                                        
+
                                         <div class="col-md-12">
                                             <div class="row justify-content-end mt-auto">
                                                 <label class="insertpost btn btn-second mr-2 btn-lg" for="file-input">
-                                               <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-camera" viewBox="0 0 16 16">
-  <path d="M15 12a1 1 0 0 1-1 1H2a1 1 0 0 1-1-1V6a1 1 0 0 1 1-1h1.172a3 3 0 0 0 2.12-.879l.83-.828A1 1 0 0 1 6.827 3h2.344a1 1 0 0 1 .707.293l.828.828A3 3 0 0 0 12.828 5H14a1 1 0 0 1 1 1v6zM2 4a2 2 0 0 0-2 2v6a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V6a2 2 0 0 0-2-2h-1.172a2 2 0 0 1-1.414-.586l-.828-.828A2 2 0 0 0 9.172 2H6.828a2 2 0 0 0-1.414.586l-.828.828A2 2 0 0 1 3.172 4H2z"/>
-  <path d="M8 11a2.5 2.5 0 1 1 0-5 2.5 2.5 0 0 1 0 5zm0 1a3.5 3.5 0 1 0 0-7 3.5 3.5 0 0 0 0 7zM3 6.5a.5.5 0 1 1-1 0 .5.5 0 0 1 1 0z"/>
-</svg></label>
+                                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-camera" viewBox="0 0 16 16">
+                                                        <path d="M15 12a1 1 0 0 1-1 1H2a1 1 0 0 1-1-1V6a1 1 0 0 1 1-1h1.172a3 3 0 0 0 2.12-.879l.83-.828A1 1 0 0 1 6.827 3h2.344a1 1 0 0 1 .707.293l.828.828A3 3 0 0 0 12.828 5H14a1 1 0 0 1 1 1v6zM2 4a2 2 0 0 0-2 2v6a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V6a2 2 0 0 0-2-2h-1.172a2 2 0 0 1-1.414-.586l-.828-.828A2 2 0 0 0 9.172 2H6.828a2 2 0 0 0-1.414.586l-.828.828A2 2 0 0 1 3.172 4H2z" />
+                                                        <path d="M8 11a2.5 2.5 0 1 1 0-5 2.5 2.5 0 0 1 0 5zm0 1a3.5 3.5 0 1 0 0-7 3.5 3.5 0 0 0 0 7zM3 6.5a.5.5 0 1 1-1 0 .5.5 0 0 1 1 0z" />
+                                                    </svg></label>
                                                 </label>
-                                                 <input id="file-input" accept="image/*" capture="camera" type="file" name="postphoto" class="d-none">
+                                                <input id="file-input" accept="image/*" capture="camera" type="file" name="postphotocamera" class="d-none">
 
-<label class="insertpost btn btn-second mr-2 btn-lg" for="file-inputs">
-                                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-images" viewBox="0 0 16 16">
+                                                <label class="insertpost btn btn-second mr-2 btn-lg" for="file-inputs">
+                                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-images" viewBox="0 0 16 16">
                                                         <path d="M4.502 9a1.5 1.5 0 1 0 0-3 1.5 1.5 0 0 0 0 3z" />
                                                         <path d="M14.002 13a2 2 0 0 1-2 2h-10a2 2 0 0 1-2-2V5A2 2 0 0 1 2 3a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2v8a2 2 0 0 1-1.998 2zM14 2H4a1 1 0 0 0-1 1h9.002a2 2 0 0 1 2 2v7A1 1 0 0 0 15 11V3a1 1 0 0 0-1-1zM2.002 4a1 1 0 0 0-1 1v8l2.646-2.354a.5.5 0 0 1 .63-.062l2.66 1.773 3.71-3.71a.5.5 0 0 1 .577-.094l1.777 1.947V5a1 1 0 0 0-1-1h-10z" />
                                                     </svg></label>
@@ -731,16 +784,19 @@ if ($resultsCountry != null) {
                                                 <input id="file-inputs" accept="image/*" type="file" name="postphoto" class="d-none">
 
                                                 <label class="insertpost btn btn-second mr-2 btn-lg" for="video-input">
-                                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-camera-video" viewBox="0 0 16 16">
+                                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-camera-video" viewBox="0 0 16 16">
                                                         <path fill-rule="evenodd" d="M0 5a2 2 0 0 1 2-2h7.5a2 2 0 0 1 1.983 1.738l3.11-1.382A1 1 0 0 1 16 4.269v7.462a1 1 0 0 1-1.406.913l-3.111-1.382A2 2 0 0 1 9.5 13H2a2 2 0 0 1-2-2V5zm11.5 5.175 3.5 1.556V4.269l-3.5 1.556v4.35zM2 4a1 1 0 0 0-1 1v6a1 1 0 0 0 1 1h7.5a1 1 0 0 0 1-1V5a1 1 0 0 0-1-1H2z" />
                                                     </svg>
                                                 </label>
                                                 <input id="video-input" accept="video/*" type="file" name="postvideo" class="d-none">
                                                 <!-- Botão "X" para remover o vídeo -->
-                                                
+
 
                                                 <input class="insertpost btn btn-primary pl-4 pr-4 no-border p-3 post-btn-confirm" type="submit" name="post" value="Post" id="submit-button">
                                                 </input>
+                                            </div>
+                                            <div class="progress progress-striped active mt-2">
+                                                <div class="progress-bar progress-bar-striped progress-bar-animated active" role="progressbar" aria-valuenow="93" aria-valuemin="0" aria-valuemax="100" style="width: 88%"></div>
                                             </div>
                                         </div>
                                     </form>
@@ -748,7 +804,7 @@ if ($resultsCountry != null) {
                             </div>
                             <div class="card shadow rounded-4 card-post-style  mt-4 produtos-feed-scrollbar">
                                 <h3 class="texto-titulo">&nbsp;&nbsp;Featured Products</h3>
-                                <div class="rowProduct overflow-auto produtos-feed-scrollbar row-produto-card-pro">
+                                <div class="rowProduct overflow-auto produtos-feed-scrollbar row-produto-card-pro" style="margin-bottom: 17px;">
                                     <?php
                                     include_once('../model/classes/tblProducts.php');
                                     $productss = new Products();
@@ -757,9 +813,9 @@ if ($resultsCountry != null) {
 
                                         foreach ($resultsProdutoss as $rowProdutos) { ?>
                                             <div class="card-produto-uni">
-                                                <div class="card-container bcolor-azul-escuro rounded-4">
-                                                    <div class="col-12">
-                                                    <a data-toggle="modal" data-target="#modalViewProduto" data-toggle="modal" data-id="<?php echo $rowProdutos->idProduct; ?>" class="hero-image-container">
+                                                <div class="card-container bcolor-azul-escuro rounded-4" style="width: -webkit-fill-available; height: 274px">
+                                                    <div class="col-12" style="display: flex; flex-direction: column; min-height: 140px; max-height: 140px; padding: 4px; width: -webkit-fill-available;">
+                                                        <a data-toggle="modal" data-target="#modalViewProduto" data-toggle="modal" data-id="<?php echo $rowProdutos->idProduct; ?>" class="hero-image-container">
                                                             <img class="hero-image produtos-img rounded-4" style=" user-drag: none;" src="<?php
                                                                                                                                             include_once('../model/classes/tblProductPictures.php');
                                                                                                                                             $productsPictures = new ProductPictures();
@@ -770,20 +826,19 @@ if ($resultsCountry != null) {
                                                                                                                                                     echo $rowProdutosu->tblProductPicturePath;
                                                                                                                                                 }
                                                                                                                                             } else {
-                                                                                                                                                echo "";
+                                                                                                                                                echo "assets/img/Avatar.png";
                                                                                                                                             }
-                                                                                                                                            ?>" alt="Spinning glass cube" />
+                                                                                                                                            ?>" alt="Spinning glass cube">
                                                         </a>
                                                     </div>
                                                     <div class="col-12" style="padding: 6px;">
                                                         <div class="col-12">
-                                                            <h5 class="mb-0"><a class="text-decoration-none color-branco" href="viewProfile.php?profile=<?php echo $rowProdutos->idClient; ?>"><?php echo $rowProdutos->ProductName; ?></a></h5>
+                                                            <h5 class="mb-0" style="white-space: pre-line;"><a class="text-decoration-none color-branco" href="viewProfile.php?profile=<?php echo $rowProdutos->idClient; ?>"><?php echo $rowProdutos->ProductName; ?></a></h5>
                                                         </div>
-                                                        <div class="col-12 ">
-                                                            <p class="cortardescricao color-cinza-b desc-produto fonte-principal "><?php echo $rowProdutos->ProdcuctDescription; ?></p>
+                                                        <div class="col-12">
+                                                            <p class=" cortardescricao color-cinza-b desc-produto fonte-principal" style=""><?php echo $rowProdutos->ProdcuctDescription; ?></p>
                                                         </div>
                                                     </div>
-
                                                 </div>
                                             </div>
                                     <?php }
@@ -1031,7 +1086,7 @@ if ($resultsCountry != null) {
 
                                                     <div class="col-6 d-flex justify-content-end">
                                                         <a id="btnCommnet" data-toggle="modal" data-target="#modalEditarProduto" data-id="<?php echo $rowfeed->IdFeed;
-                                                                                                                                            ?>" class="btn like-comment-btn pl-4 pr-4 no-border p-3 hero-image-container2"><span class="btn-comment-post">
+                                                                                                                                            ?>" class="btnCommnet btn like-comment-btn pl-4 pr-4 no-border p-3 hero-image-container2"><span class="btn-comment-post">
                                                                 <?php
                                                                 include_once('../model/classes/tbPostComent.php');
                                                                 $tbPostComentcont2 = new PostComent();
@@ -1045,6 +1100,47 @@ if ($resultsCountry != null) {
 
 
                                                     </div>
+                                                </div>
+                                                <hr class="color-preto">
+                                                <div class="row" style="padding: inherit;">
+                                                    <?php
+
+                                                    $viewcomentarios = new PostComent();
+                                                    $viewcomentarios->setidpost($rowfeed->IdFeed);
+                                                    $resultstbPostComentview =  $viewcomentarios->consulta(" WHERE idpost = :idpost ORDER BY datahora DESC LIMIT 1");
+                                                    if ($resultstbPostComentview != null) {
+
+                                                        foreach ($resultstbPostComentview as $rowviewcomentarios) {
+                                                            include_once('../model/classes/tblUserClients.php');
+                                                            $userClientscomentarios = new UserClients();
+
+                                                            $userClientscomentarios->setidClient($rowviewcomentarios->iduser);
+
+                                                            $resultsclientescometarios = $userClientscomentarios->consulta("WHERE idClient = :idClient");
+
+                                                            if ($resultsclientescometarios != null) {
+                                                                foreach ($resultsclientescometarios as $rowucometarios) { ?>
+                                                                    <div class="col-1 d-flex flex-column justify-content-center align-items-center" style="height: auto;">
+                                                                        <img src="<?php if ($rowucometarios->PersonalUserPicturePath != "Avatar.png" && $rowucometarios->PersonalUserPicturePath != "") {
+                                                                                        echo "" . $rowucometarios->PersonalUserPicturePath;
+                                                                                    } else {
+                                                                                        echo "assets/img/Avatar.png";
+                                                                                    } ?>" alt="user" class="nav-profile-img" style="width: 26px;">
+                                                                    </div>
+                                                                    <div class="col-11">
+                                                                        <div class="col-10 d-flex flex-column justify-content-start align-items-start color-preto" style="height: auto;">
+                                                                            <h4 style="font-size: larger;"> <?php echo $rowucometarios->FirstName . " " . $rowucometarios->LastName; ?></h4>
+                                                                        </div>
+                                                                        <div class="col-12 color-preto texto-duas-linhas" style="overflow-wrap: break-word;font-size: larger; ">
+                                                                            <?php echo $rowviewcomentarios->texto; ?>
+                                                                        </div>
+                                                                    </div>
+
+                                                    <?php   }
+                                                            }
+                                                        }
+                                                    }
+                                                    ?>
                                                 </div>
                                             </div>
                                         </div>
@@ -1062,7 +1158,9 @@ if ($resultsCountry != null) {
 
                         <div class="col-12  d-none d-md-block">
                             <h2>Sponsored</h2>
-
+                            <div class="col-12" id="sponsored-container">
+                               
+                            </div>
                             <div class="row" style=" text-align: center;">
                                 <div class="col-sm-12, p_results">
                                     <a href="#" style="
@@ -1185,8 +1283,8 @@ font-size: small;
 
                                                         <div class="col-1 justify-content-center m-0 p-0">
                                                             <a href="viewProfile.php?profile=<?php echo $rowcliente->idClient; ?>">
-                                                                <img src="<?php if ($rowOperation->PersonalUserPicturePath != "Avatar.png" && $rowOperation->PersonalUserPicturePath != "" && file_exists("" . $rowOperation->PersonalUserPicturePath)) {
-                                                                                echo "" . $rowOperation->PersonalUserPicturePath;
+                                                                <img src="<?php if ($rowcliente->PersonalUserPicturePath != "Avatar.png" && $rowcliente->PersonalUserPicturePath != "" && file_exists("" . $rowcliente->PersonalUserPicturePath)) {
+                                                                                echo "" . $rowcliente->PersonalUserPicturePath;
                                                                             } else {
                                                                                 echo "assets/img/Avatar.png";
                                                                             } ?>" alt="user" alt="An unknown user." onerror="this.onerror=null; this.src='assets/img/Avatar.png'" class="nav-profile-img"></a>
@@ -1242,7 +1340,7 @@ font-size: small;
             </div>
         </div>
 
-        <script src="https://kit.fontawesome.com/f51201541f.js" crossorigin="anonymous"></script>
+
 
 
 
@@ -1251,107 +1349,107 @@ font-size: small;
     <!-- footer -->
 
     <div class="modal custom-modal fade" id="exampleModalconect" role="dialog">
-    <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
-      <div class="modal-content">
-        <div class="modal-header">
-          <h5 class="modal-title" id="exampleModalLabel">Want to Connect</h5>
-          <button type="button" class="close rounded-2 border-0 bcolor-azul-escuro m-2" data-dismiss="modal" aria-label="Close" style="width: 25px; height: 25px;">
-                            <span aria-hidden="false" class="color-branco">x</span>
-                        </button>
+        <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Want to Connect</h5>
+                    <button type="button" class="close rounded-2 border-0 bcolor-azul-escuro m-2" data-dismiss="modal" aria-label="Close" style="width: 25px; height: 25px;">
+                        <span aria-hidden="false" class="color-branco">x</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <ul class="m-0 overflow-auto p-1 ul-view">
+                        <?php
+                        include_once('../model/classes/tblConect.php');
+                        $connect = new Conect();
+                        $connect->setidUserReceb($iduser);
+                        $resultsconect = $connect->consulta("WHERE idUserReceb = :idUserReceb AND status = '0'  ORDER BY datapedido DESC");
+
+
+
+                        if ($resultsconect != null) {
+                            foreach ($resultsconect as $rowviews) {
+
+                        ?>
+                                <?php
+                                include_once('../model/classes/tblUserClients.php');
+                                $userClients = new UserClients();
+                                $userClients->setidClient($rowviews->idUserPed);
+                                $resultsUserClients = $userClients->consulta("WHERE idClient = :idClient");
+
+                                if ($resultsUserClients != null) {
+                                    foreach ($resultsUserClients as $rowcliente) {
+
+                                        include_once('../model/classes/tblOperations.php');
+                                        $operations = new Operations();
+                                        $operations->setidOperation($rowcliente->CoreBusinessId);
+                                        $resultsOperation = $operations->consulta("WHERE FlagOperation != '0' AND idOperation = :idOperation");
+
+                                        if ($resultsOperation != null) {
+                                            foreach ($resultsOperation as $rowOperation) { ?>
+
+                                                <li class="recommended-user icone-net" style="margin-bottom: 20px;">
+                                                    <form method="POST" enctype="multipart/form-data" action="../controller/profileController.php" class="w-100 h-100 d-flex">
+                                                        <input class="form-control bordainput" value="<?php echo $rowviews->id; ?>" autocomplete="off" name="idconectar" type="hidden">
+                                                        <input class="form-control bordainput" value="<?php echo $rowviews->idUserPed; ?>" autocomplete="off" name="idperfilpedido" type="hidden">
+                                                        <div class="col-2 justify-content-center m-0 p-0 d-flex justify-content-end align-middle">
+                                                            <a href="viewProfile.php?profile=<?php echo $rowcliente->idClient; ?>">
+                                                                <img src="<?php if ($rowcliente->PersonalUserPicturePath != "Avatar.png" && $rowcliente->PersonalUserPicturePath != "" && file_exists("" . $rowcliente->PersonalUserPicturePath)) {
+                                                                                echo "" . $rowcliente->PersonalUserPicturePath;
+                                                                            } else {
+                                                                                echo "assets/img/Avatar.png";
+                                                                            } ?>" alt="user" alt="An unknown user." onerror="this.onerror=null; this.src='assets/img/Avatar.png'"></a>
+                                                        </div>
+                                                        <div class="col-7 p-0">
+                                                            <p class="mb-0 network-username-text"><b><a href="viewProfile.php?profile=<?php echo $rowcliente->idClient; ?>"><?php echo $rowcliente->FirstName; ?><b> </a></p>
+                                                            <p class="network-operation-text"><a href="viewProfile.php?profile=<?php echo $rowcliente->idClient; ?>"><?php echo $rowOperation->NmOperation; ?></a></p>
+                                                            <p class="network-timeago-text"><?php
+                                                                                            $postDateTime = new DateTime($rowviews->datapedido);
+
+                                                                                            // Obtenha o objeto DateTime da data e hora atual
+                                                                                            $currentTime = new DateTime();
+
+                                                                                            // Calcula a diferença entre a data e hora atual e a da postagem
+                                                                                            $timeDiff = $postDateTime->diff($currentTime);
+
+                                                                                            // Formata o tempo decorrido com base nas unidades (ano, mês, dia, hora, minuto, segundo)
+                                                                                            if ($timeDiff->y > 0) {
+                                                                                                $timeAgo = $timeDiff->y . " ano(s) atrás";
+                                                                                            } elseif ($timeDiff->m > 0) {
+                                                                                                $timeAgo = $timeDiff->m . " mês(es) atrás";
+                                                                                            } elseif ($timeDiff->d > 0) {
+                                                                                                $timeAgo = $timeDiff->d . " dia(s) atrás";
+                                                                                            } elseif ($timeDiff->h > 0) {
+                                                                                                $timeAgo = $timeDiff->h . " hora(s) atrás";
+                                                                                            } elseif ($timeDiff->i > 0) {
+                                                                                                $timeAgo = $timeDiff->i . " minuto(s) atrás";
+                                                                                            } else {
+                                                                                                $timeAgo = "Alguns segundos atrás";
+                                                                                            }
+
+                                                                                            echo $timeAgo; ?></p>
+                                                        </div>
+                                                        <div class="col-2 justify-content-center">
+                                                            <button type="submit" name="conectar" value="conectar" class="btn btn-outline-primary ms-1 m-1"><i class="bi bi-person-check-fill icon-btn-card"></i>&nbsp;Connect</button>
+                                                        </div>
+                                                    </form>
+                                                </li>
+                                                <hr>
+                                <?php }
+                                        }
+                                    }
+                                } ?>
+                        <?php }
+                        } ?>
+                    </ul>
+                </div>
+                <div class="modal-footer">
+
+
+                </div>
+            </div>
         </div>
-        <div class="modal-body">
-          <ul class="m-0 overflow-auto p-1 ul-view">
-            <?php
-            include_once('../model/classes/tblConect.php');
-            $connect = new Conect();
-            $connect->setidUserReceb($iduser);
-            $resultsconect = $connect->consulta("WHERE idUserReceb = :idUserReceb AND status = '0'  ORDER BY datapedido DESC");
-
-
-
-            if ($resultsconect != null) {
-              foreach ($resultsconect as $rowviews) {
-
-            ?>
-                <?php
-                include_once('../model/classes/tblUserClients.php');
-                $userClients = new UserClients();
-                $userClients->setidClient($rowviews->idUserPed);
-                $resultsUserClients = $userClients->consulta("WHERE idClient = :idClient");
-
-                if ($resultsUserClients != null) {
-                  foreach ($resultsUserClients as $rowcliente) {
-
-                    include_once('../model/classes/tblOperations.php');
-                    $operations = new Operations();
-                    $operations->setidOperation($rowcliente->CoreBusinessId);
-                    $resultsOperation = $operations->consulta("WHERE FlagOperation != '0' AND idOperation = :idOperation");
-
-                    if ($resultsOperation != null) {
-                      foreach ($resultsOperation as $rowOperation) { ?>
-
-                        <li class="recommended-user icone-net" style="margin-bottom: 20px;">
-                          <form method="POST" enctype="multipart/form-data" action="../controller/profileController.php" class="w-100 h-100 d-flex">
-                            <input class="form-control bordainput" value="<?php echo $rowviews->id; ?>" autocomplete="off" name="idconectar" type="hidden">
-                            <input class="form-control bordainput" value="<?php echo $rowviews->idUserPed; ?>" autocomplete="off" name="idperfilpedido" type="hidden">
-                            <div class="col-2 justify-content-center m-0 p-0 d-flex justify-content-end align-middle">
-                              <a href="viewProfile.php?profile=<?php echo $rowcliente->idClient; ?>">
-                                <img src="<?php if ($rowOperation->PersonalUserPicturePath != "Avatar.png" && $rowOperation->PersonalUserPicturePath != "" && file_exists("" . $rowOperation->PersonalUserPicturePath)) {
-                                            echo "" . $rowOperation->PersonalUserPicturePath;
-                                          } else {
-                                            echo "assets/img/Avatar.png";
-                                          } ?>" alt="user" alt="An unknown user." onerror="this.onerror=null; this.src='assets/img/Avatar.png'"></a>
-                            </div>
-                            <div class="col-7 p-0">
-                              <p class="mb-0 network-username-text"><b><a href="viewProfile.php?profile=<?php echo $rowcliente->idClient; ?>"><?php echo $rowcliente->FirstName; ?><b> </a></p>
-                              <p class="network-operation-text"><a href="viewProfile.php?profile=<?php echo $rowcliente->idClient; ?>"><?php echo $rowOperation->NmOperation; ?></a></p>
-                              <p class="network-timeago-text"><?php
-                                                              $postDateTime = new DateTime($rowviews->datapedido);
-
-                                                              // Obtenha o objeto DateTime da data e hora atual
-                                                              $currentTime = new DateTime();
-
-                                                              // Calcula a diferença entre a data e hora atual e a da postagem
-                                                              $timeDiff = $postDateTime->diff($currentTime);
-
-                                                              // Formata o tempo decorrido com base nas unidades (ano, mês, dia, hora, minuto, segundo)
-                                                              if ($timeDiff->y > 0) {
-                                                                $timeAgo = $timeDiff->y . " ano(s) atrás";
-                                                              } elseif ($timeDiff->m > 0) {
-                                                                $timeAgo = $timeDiff->m . " mês(es) atrás";
-                                                              } elseif ($timeDiff->d > 0) {
-                                                                $timeAgo = $timeDiff->d . " dia(s) atrás";
-                                                              } elseif ($timeDiff->h > 0) {
-                                                                $timeAgo = $timeDiff->h . " hora(s) atrás";
-                                                              } elseif ($timeDiff->i > 0) {
-                                                                $timeAgo = $timeDiff->i . " minuto(s) atrás";
-                                                              } else {
-                                                                $timeAgo = "Alguns segundos atrás";
-                                                              }
-
-                                                              echo $timeAgo; ?></p>
-                            </div>
-                            <div class="col-2 justify-content-center">
-                              <button type="submit" name="conectar" value="conectar" class="btn btn-outline-primary ms-1 m-1"><i class="bi bi-person-check-fill icon-btn-card"></i>&nbsp;Connect</button>
-                            </div>
-                          </form>
-                        </li>
-                        <hr>
-                <?php }
-                    }
-                  }
-                } ?>
-            <?php }
-            } ?>
-          </ul>
-        </div>
-        <div class="modal-footer">
-
-
-        </div>
-      </div>
     </div>
-  </div>
 
     <div id="modalEditarProduto" class="modal custom-modal fade show comment-modal-primary" role="dialog">
         <div class="modal-dialog modal-dialog-centered modal-lg">
@@ -1366,109 +1464,111 @@ font-size: small;
         </div>
     </div>
     <div id="modalViewProduto" class="modal custom-modal fade" role="dialog">
-    <div class="modal-dialog modal-dialog-centered modal-lg">
-      <div class="modal-content">
+        <div class="modal-dialog modal-dialog-centered modal-lg">
+            <div class="modal-content">
 
-        <div class="modal-body">
-          <h1 id="modalProductName" class="mb-0"></h1>
-          <p id="modalProductDescription" class="color-cinza-b produto-desc-text"></p>
+                <div class="modal-body">
+                    <h1 id="modalProductName" class="mb-0"></h1>
+                    <p id="modalProductDescription" class="color-cinza-b produto-desc-text"></p>
+                </div>
+
+            </div>
         </div>
-
-      </div>
     </div>
-  </div>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.bundle.min.js" integrity="sha384-HwwvtgBNo3bZJJLYd8oVXjrBZt8cqVSpeBNS5n7C8IVInixGAoxmnlMuBnhbgrkm" crossorigin="anonymous"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script>
+        $(document).ready(function() {
+            // Ao clicar em um link de produto
+            $('.hero-image-container').click(function() {
+                // Obtenha o ID do produto associado ao link clicado
+                var idProduto = $(this).data('id');
+                console.log(idProduto);
+                // Use o ID do produto para fazer uma requisição AJAX para buscar os dados do produto no servidor
+                $.ajax({
+                    type: 'GET',
+                    url: 'widget/viewProduto.php', // Substitua pelo caminho correto
+                    data: {
+                        idProduto: idProduto
+                    },
+                    success: function(data) {
+                        // Preencha o conteúdo do modal com as informações do produto
+                        $('#modalViewProduto .modal-content').html(data);
+                        console.log("Teste produto sent");
+                    },
+                    error: function() {
+                        alert('Ocorreu um erro ao carregar os dados do produto.');
+                    }
+                });
 
-$(document).ready(function() {
-      // Ao clicar em um link de produto
-      $('.hero-image-container').click(function() {
-        // Obtenha o ID do produto associado ao link clicado
-        var idProduto = $(this).data('id');
-        console.log(idProduto);
-        // Use o ID do produto para fazer uma requisição AJAX para buscar os dados do produto no servidor
-        $.ajax({
-          type: 'GET',
-          url: 'widget/viewProduto.php', // Substitua pelo caminho correto
-          data: {
-            idProduto: idProduto
-          },
-          success: function(data) {
-            // Preencha o conteúdo do modal com as informações do produto
-            $('#modalViewProduto .modal-content').html(data);
-          },
-          error: function() {
-            alert('Ocorreu um erro ao carregar os dados do produto.');
-          }
+                // Abra o modal correspondente
+                $('#modalViewProduto').fadeIn();
+            });;
+
+            // Feche o modal ao clicar fora dele ou no botão de fechar
+            $('.modal').click(function(event) {
+                if ($(event.target).hasClass('modal')) {
+                    $(this).fadeOut();
+                }
+            });
         });
 
-        // Abra o modal correspondente
-        $('#modalViewProduto').fadeIn();
-      });;
+        document.addEventListener("DOMContentLoaded", function() {
+            const form = document.querySelector("#meuFormulario");
+            const textarea = document.querySelector("#myTextarea");
+            const imageInput = document.querySelector("#file-input");
+            //const imageInputs = document.querySelector("#file-input");
+            const videoInput = document.querySelector("#video-input");
+            const submitButton = document.querySelector("#submit-button");
+            const previewImage = document.querySelector("#preview-image");
+            const previewVideo = document.querySelector("#preview-video");
+            const removeImageButton = document.querySelector("#remove-image-button");
+            const removeVideoButton = document.querySelector("#remove-video-button");
 
-      // Feche o modal ao clicar fora dele ou no botão de fechar
-      $('.modal').click(function(event) {
-        if ($(event.target).hasClass('modal')) {
-          $(this).fadeOut();
-        }
-      });
-    });
-    
-    document.addEventListener("DOMContentLoaded", function() {
-        const form = document.querySelector("#meuFormulario");
-        const textarea = document.querySelector("#myTextarea");
-        const imageInput = document.querySelector("#file-input");
-        const videoInput = document.querySelector("#video-input");
-        const submitButton = document.querySelector("#submit-button");
-        const previewImage = document.querySelector("#preview-image");
-        const previewVideo = document.querySelector("#preview-video");
-        const removeImageButton = document.querySelector("#remove-image-button");
-        const removeVideoButton = document.querySelector("#remove-video-button");
-
-        // Função para mostrar ou ocultar o botão "X" da imagem
-        function toggleRemoveImage() {
-            if (imageInput.files.length > 0) {
-                removeImageButton.style.display = "block"; // Mostrar o botão "X"
-            } else {
-                removeImageButton.style.display = "none"; // Ocultar o botão "X"
+            // Função para mostrar ou ocultar o botão "X" da imagem
+            function toggleRemoveImage() {
+                if (imageInput.files.length > 0) {
+                    removeImageButton.style.display = "block"; // Mostrar o botão "X"
+                } else {
+                    removeImageButton.style.display = "none"; // Ocultar o botão "X"
+                }
             }
-        }
 
-        // Função para mostrar ou ocultar o botão "X" do vídeo
-        function toggleRemoveVideo() {
-            if (videoInput.files.length > 0) {
-                removeVideoButton.style.display = "block"; // Mostrar o botão "X"
-            } else {
-                removeVideoButton.style.display = "none"; // Ocultar o botão "X"
+            // Função para mostrar ou ocultar o botão "X" do vídeo
+            function toggleRemoveVideo() {
+                if (videoInput.files.length > 0) {
+                    removeVideoButton.style.display = "block"; // Mostrar o botão "X"
+                } else {
+                    removeVideoButton.style.display = "none"; // Ocultar o botão "X"
+                }
             }
-        }
 
-        // Adicione ouvintes de eventos para atualizar a exibição dos botões "X"
-        imageInput.addEventListener("change", toggleRemoveImage);
-        videoInput.addEventListener("change", toggleRemoveVideo);
+            // Adicione ouvintes de eventos para atualizar a exibição dos botões "X"
+            imageInput.addEventListener("change", toggleRemoveImage);
+            videoInput.addEventListener("change", toggleRemoveVideo);
 
-        // Adicione ouvintes de eventos para remover a imagem ou o vídeo quando o botão "X" é clicado
-        removeImageButton.addEventListener("click", function() {
-            imageInput.value = ""; // Limpar o campo do arquivo de imagem
-            previewImage.src = ""; // Limpar a visualização da imagem
-            toggleRemoveImage(); // Ocultar o botão "X"
+            // Adicione ouvintes de eventos para remover a imagem ou o vídeo quando o botão "X" é clicado
+            removeImageButton.addEventListener("click", function() {
+                imageInput.value = ""; // Limpar o campo do arquivo de imagem
+                previewImage.src = ""; // Limpar a visualização da imagem
+                toggleRemoveImage(); // Ocultar o botão "X"
+            });
+
+            removeVideoButton.addEventListener("click", function() {
+                videoInput.value = ""; // Limpar o campo do arquivo de vídeo
+                previewVideo.src = ""; // Limpar a visualização do vídeo
+                toggleRemoveVideo(); // Ocultar o botão "X"
+            });
+
+            // Adicione um ouvinte de evento para validar antes de enviar o formulário
+            submitButton.addEventListener("click", function(event) {
+                if (textarea.value.trim() === "" && imageInput.files.length === 0 && videoInput.files.length === 0 && imageInputs.files.length === 0) {
+                    event.preventDefault();
+                    alert("Por favor, adicione texto, imagem ou vídeo antes de postar.");
+                }
+            });
         });
-
-        removeVideoButton.addEventListener("click", function() {
-            videoInput.value = ""; // Limpar o campo do arquivo de vídeo
-            previewVideo.src = ""; // Limpar a visualização do vídeo
-            toggleRemoveVideo(); // Ocultar o botão "X"
-        });
-
-        // Adicione um ouvinte de evento para validar antes de enviar o formulário
-        submitButton.addEventListener("click", function(event) {
-            if (textarea.value.trim() === "" && imageInput.files.length === 0 && videoInput.files.length === 0 && imageInputs.files.length === 0) {
-                event.preventDefault();
-                alert("Por favor, adicione texto, imagem ou vídeo antes de postar.");
-            }
-        });
-    });
-</script>
+    </script>
 
 
 
@@ -1536,39 +1636,7 @@ $(document).ready(function() {
             }
         });
 
-        $(document).ready(function() {
-            // Ao clicar em um link de produto
-            $('.hero-image-container2').click(function() {
-                // Obtenha o ID do produto associado ao link clicado
-                var idFeed = $(this).data('id');
-                console.log(idFeed);
-                // Use o ID do produto para fazer uma requisição AJAX para buscar os dados do produto no servidor
-                $.ajax({
-                    type: 'GET',
-                    url: 'widget/visualizarComent.php', // Substitua pelo caminho correto
-                    data: {
-                        idFeed: idFeed
-                    },
-                    success: function(data) {
-                        // Preencha o conteúdo do modal com as informações do produto
-                        $('#modalEditarProduto .modal-content').html(data);
-                    },
-                    error: function() {
-                        alert('Ocorreu um erro ao carregar os dados do produto.');
-                    }
-                });
 
-                // Abra o modal correspondente
-                $('#modalEditarProduto').fadeIn();
-            });;
-
-            // Feche o modal ao clicar fora dele ou no botão de fechar
-            $('.modal').click(function(event) {
-                if ($(event.target).hasClass('modal')) {
-                    $(this).fadeOut();
-                }
-            });
-        });
 
         document.querySelector('.collapse-chat').addEventListener('click', function() {
             this.classList.toggle('open');
@@ -1754,28 +1822,174 @@ $(document).ready(function() {
             }
         }
 
+
         // Adiciona o evento de scroll para chamar a função
         window.addEventListener('scroll', adicionarFundoComScroll);
+        var loading = false;
+        var loading2 = false;
 
-        /*function atualizarFeed() {
+        function atualizarFeed() {
 
             var xmlhttp = new XMLHttpRequest();
             xmlhttp.onreadystatechange = function() {
                 if (this.readyState == 4 && this.status == 200) {
                     document.getElementById("divFeedUpdate").innerHTML = this.responseText;
+                    loading = false;
+                    $(document).ready(function() {
+                        // Ao clicar em um link de produto
+                        $('.btnCommnet').click(function() {
+                            // Obtenha o ID do produto associado ao link clicado
+                            var idFeedsc = $(this).data('id');
+                            console.log("clique");
+                            console.log(idFeedsc);
+                            // Use o ID do produto para fazer uma requisição AJAX para buscar os dados do produto no servidor
+                            $.ajax({
+                                type: 'GET',
+                                url: 'widget/visualizarComent.php', // Substitua pelo caminho correto
+                                data: {
+                                    idFeed: idFeedsc
+                                },
+                                success: function(data) {
+                                    // Preencha o conteúdo do modal com as informações do produto
+                                    console.log("Success");
+                                    $('#modalEditarProduto .modal-content').html(data);
+                                },
+                                error: function() {
+                                    alert('Ocorreu um erro ao carregar os dados do produto.');
+                                }
+                            });
+
+                            // Abra o modal correspondente
+                            $('#modalEditarProduto').fadeIn();
+                        });
+
+                        // Feche o modal ao clicar fora dele ou no botão de fechar
+                        $('.modal').click(function(event) {
+                            if ($(event.target).hasClass('modal')) {
+                                $(this).fadeOut();
+                            }
+                        });
+                    });
                 }
             }
-            xmlhttp.open("GET", "atualizarFeed.php", true);
+            xmlhttp.open("GET", "widget/atualizarFeed.php", true);
             xmlhttp.send();
-        }*/
+        }
 
         $(document).ready(function() {
             // Detecta o evento de rolagem
             $(window).scroll(function() {
                 // Verifica se chegou ao final da página
-                if ($(window).scrollTop() + $(window).height() >= $(document).height()) {
+                if (!loading && $(window).scrollTop() + $(window).height() >= $(document).height() - 150) {
+                    loading = true; // Marca que uma requisição está em andamento
                     // Chama a função quando o usuário chegar ao final da página
-                    // atualizarFeed();
+                    atualizarFeed();
+                }
+                if (!loading2 && $(window).scrollTop() <= 0) {
+                    verificarNovosPosts();
+                }
+            });
+
+
+
+        });
+
+
+        function verificarNovosPosts() {
+            if (!loading2) {
+                loading2 = true; // Marca que uma requisição está em andamento
+
+                var xmlhttp = new XMLHttpRequest();
+                xmlhttp.onreadystatechange = function() {
+                    if (this.readyState == 4 && this.status == 200) {
+                        document.getElementById("divFeedUpdate").innerHTML = this.responseText;
+                        loading2 = false; // Marca que a requisição foi concluída
+                        console.log("================================");
+                        $(document).ready(function() {
+                            // Ao clicar em um link de produto
+                            $('.btnCommnet').click(function() {
+                                // Obtenha o ID do produto associado ao link clicado
+                                var idFeedsc = $(this).data('id');
+                                console.log("clique");
+                                console.log(idFeedsc);
+                                // Use o ID do produto para fazer uma requisição AJAX para buscar os dados do produto no servidor
+                                $.ajax({
+                                    type: 'GET',
+                                    url: 'widget/visualizarComent.php', // Substitua pelo caminho correto
+                                    data: {
+                                        idFeed: idFeedsc
+                                    },
+                                    success: function(data) {
+                                        // Preencha o conteúdo do modal com as informações do produto
+                                        console.log("Success");
+                                        $('#modalEditarProduto .modal-content').html(data);
+                                    },
+                                    error: function() {
+                                        alert('Ocorreu um erro ao carregar os dados do produto.');
+                                    }
+                                });
+
+                                // Abra o modal correspondente
+                                $('#modalEditarProduto').fadeIn();
+                            });
+
+                            // Feche o modal ao clicar fora dele ou no botão de fechar
+                            $('.modal').click(function(event) {
+                                if ($(event.target).hasClass('modal')) {
+                                    $(this).fadeOut();
+                                }
+                            });
+                        });
+                    }
+                }
+                xmlhttp.open("GET", "widget/atualizarFeednovo.php", true);
+                xmlhttp.send();
+            }
+        }
+
+        document.getElementById('submit-button').addEventListener('click', function() {
+            // 
+            var progressBar = document.querySelector('.progress');
+            progressBar.style.display = 'flex';
+            setTimeout(function() {
+                e.preventDefault();
+                document.getElementById('meuFormulario').submit();
+            }, 3000); //
+        });
+
+
+        $(document).ready(function() {
+            // Ao clicar em um link de produto
+            $('.btnCommnet').click(function() {
+                // Obtenha o ID do produto associado ao link clicado
+                var idFeedsc = $(this).data('id');
+                console.log("clique");
+                console.log(idFeedsc);
+                // Use o ID do produto para fazer uma requisição AJAX para buscar os dados do produto no servidor
+                $.ajax({
+                    type: 'GET',
+                    url: 'widget/visualizarComent.php', // Substitua pelo caminho correto
+                    data: {
+                        idFeed: idFeedsc
+                    },
+                    success: function(data) {
+                        // Preencha o conteúdo do modal com as informações do produto
+                        console.log("Success");
+                        $('#modalEditarProduto .modal-content').html(data);
+                    },
+                    error: function() {
+                        alert('Ocorreu um erro ao carregar os dados do produto.');
+                    }
+                });
+
+                // Abra o modal correspondente
+                $('#modalEditarProduto').fadeIn();
+            });
+
+            // Feche o modal ao clicar fora dele ou no botão de fechar
+            $('.modal').click(function(event) {
+                if ($(event.target).hasClass('modal')) {
+                    $(this).fadeOut();
                 }
             });
         });

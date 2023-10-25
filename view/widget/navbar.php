@@ -490,6 +490,7 @@
 
     </nav>
 </div>
+<!--
 <script>
     function redirectToAnotherPage() {
         var inputValue = document.getElementById("search-input").value;
@@ -506,4 +507,4 @@
             sidebar.classList.toggle('expanded'); // Toggle a classe 'expanded' no elemento sidebar
         });
     });
-</script>
+</script>-->

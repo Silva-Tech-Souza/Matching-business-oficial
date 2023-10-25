@@ -64,8 +64,8 @@ include_once("../../model/classes/tblSearchProfile_Results.php");
 
 $searchProfile = new SearchProfile_Results;
 
-$searchProfile->setidUsuario($idCliente);
-$searchProfile->setidClienteEncontrado($iduser);
+$searchProfile->setidUsuario($iduser);
+$searchProfile->setidClienteEncontrado($idCliente);
 $searchProfile->setpostId($idPost);
 $searchProfile->seturl("viewPost.php?post=" . $idPost);
 $searchProfile->setidTipoNotif("5");

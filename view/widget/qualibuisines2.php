@@ -34,7 +34,7 @@ if ($tblBusiness1 != null) {
 include_once('../../model/classes/tblBusinessCategory.php');
 $tblBusinessCategory = new BusinessCategory();
 $tblBusinessCategory->setidBusiness($idBusiness);
-$resultstblBusinessCategory = $tblBusinessCategory->consulta("WHERE idBusiness = :idBusiness");
+$resultstblBusinessCategory = $tblBusinessCategory->consulta("WHERE idBusiness = :idBusiness ORDER BY NmBusinessCategory ASC");
     
 if ($tblBusinessCategory != null) {
     if (is_array($resultstblBusinessCategory) || is_object($resultstblBusinessCategory)) {

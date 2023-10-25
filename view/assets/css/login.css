@@ -413,10 +413,14 @@ body {
     .titulologin {
         font-size: 25px;
     }
+    .desclogin {
+        font-size: 13px !important;
+    }
 }
 
 .desclogin {
-    font-size: 20px;
+    font-size: 19px;
+    text-align: justify;
 }
 
 .loginfooter {

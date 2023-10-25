@@ -2,6 +2,7 @@
 if ( session_status() !== PHP_SESSION_ACTIVE )
 {
    session_start();
+   $_SESSION["n"] = 8;
 }
 
 if (isset($_COOKIE["remember_me"])) {
@@ -50,12 +51,12 @@ date_default_timezone_set('America/Sao_Paulo');
         <div class="col-lg-6 col-12">
           <div class="mt-5">
             <h1 class="color-branco titulologin">Welcome to <span style="color:#0057e4;">Matching Business Online.</span></h1>
-            <p class="color-branco desclogin ">Discover a new way to accelerate your business in the international market. Matching Business is the platform that proactively brings together supply and demand, providing a powerful digital tool for direct connections.</p>
+            <p class="color-branco desclogin mt-5">Discover a new way to accelerate your business in the international market. Matching Business is the platform that proactively brings together supply and demand, providing a powerful digital tool for direct connections.</p>
           </div>
         </div>
         <div class="col-lg-6 col-12">
           <div id="login" class="login-page section ">
-            <div class="login-page-container justify-content-end">
+            <div class="login-page-container justify-content-center">
               <!-- Login box -->
               <form action="../controller/loginController.php" id="login-form-two" method="POST" enctype="multipart/form-data">
                 <fieldset>

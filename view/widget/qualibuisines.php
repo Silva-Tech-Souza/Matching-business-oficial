@@ -36,7 +36,7 @@ if($FlagOperation  != "D"){
             
                 include_once('../../model/classes/tblBusiness.php');
                 $tblBusiness = new Business();
-                $resultstblBusiness = $tblBusiness->consulta("WHERE FlagOperation = '0'");
+                $resultstblBusiness = $tblBusiness->consulta("WHERE FlagOperation = '0' ORDER BY NmBusiness ASC");
                
                
                 if ($tblBusiness != null) {

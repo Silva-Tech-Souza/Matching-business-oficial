@@ -112,7 +112,9 @@ if ($codigoVerifEmail != "" && $codigoVerifEmail != '0') {
       <div class="modal-content">
         <div class="modal-header" style="color: black;">
           <h5 class="modal-title privacetexttitle" id="exampleModalLongTitle">Our Policy and Terms</h5>
-
+          <button type="button" class="close rounded-2 border-0 bcolor-azul-escuro m-2" data-dismiss="modal" aria-label="Close" style="width: 25px; height: 25px;">
+                            <span aria-hidden="false" data-dismiss="modal" class="color-branco">x</span>
+                        </button>
         </div>
         <div class="modal-body privacetext" style="color: black;">
           <?php
@@ -288,8 +290,15 @@ if ($codigoVerifEmail != "" && $codigoVerifEmail != '0') {
         }
       });
     });
-  </script>
 
+
+  </script>
+ <script>
+        document.querySelector('.close').addEventListener('click', function() {
+            document.querySelector('.modal-backdrop').classList.remove('show');
+            document.querySelector('.modal').style.display = 'none';
+        });
+    </script>
 </body>
 
 </html>

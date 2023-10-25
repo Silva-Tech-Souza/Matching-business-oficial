@@ -42,14 +42,14 @@ date_default_timezone_set('America/Sao_Paulo');
     <br>
     <div class="col-12">
       <div class="row">
-        <div class="col-lg-8 col-12">
+        <div class="col-lg-7 col-12">
           <div class="mt-5">
-            <h1 class="color-branco titulologin" style="font-size: 40px;">Welcome to <span style="color:#0057e4;">Matching Business Online.</span></h1>
-            <p class="color-branco desclogin">Dear user,<br>
+            <h1 class="color-branco titulologin mt-5" style="font-size: 40px;">Welcome to <span style="color:#0057e4;">Matching Business Online.</span></h1>
+            <p class="color-branco desclogin mt-5">Dear user,<br>
 
               Your account is linked to a Legal Entity (PJ). Each PJ account can have up to 5 users. This restriction aims to ensure security and proper control of the company's activities. <br>
 
-              The difference between verified and unverified accounts is simple: verified accounts submit the required documentation to prove their legitimacy, gaining benefits such as increased trust, access to advanced features, and priority support. Unverified accounts have some limitations and may not have full access to all features. <br>
+              The difference between verified and unverified accounts is simple: verified accounts submit the required documentation to prove their legitimacy, gaining benefits such as increased trust, access to advanced features, and priority support. Unverified accounts have some limitations and may not have full access to all features. <br><br>
 
               To make the most of our platform, we recommend verifying your PJ account and enjoying all available benefits.<br>
 
@@ -59,7 +59,7 @@ date_default_timezone_set('America/Sao_Paulo');
           </div>
         </div>
         
-        <div class="col-lg-4 col-12 ">
+        <div class="col-lg-5 col-12 ">
           <div class="cardcadastro">
             <form action="../controller/signupController.php" method="POST" enctype="multipart/form-data">
               <div class="row">
@@ -72,16 +72,19 @@ date_default_timezone_set('America/Sao_Paulo');
                 <div class="col-sm-12">
                   <div class="form-group" style="text-align: start;">
                     <label class="color-branco labelcadastro" for="company-name">Company name </label>
-                    <input type="text" name="nomeEmpresa" class="form-control inputtamanho fonteinput" id="nomeEmpresa" placeholder="ex: Matching Business Online" required><br>
+                    <input type="text" name="nomeEmpresa"  maxlength="110" class="form-control inputtamanho fonteinput" id="nomeEmpresa" placeholder="ex: Matching Business Online" required><br>
                   </div>
                 </div>
-
                 <div class="col-sm-12">
                   <div class="form-group" style="text-align: start;">
                     <label class="color-branco labelcadastro" for="taxid">TAX ID </label>
-                    <input type="text" class="form-control inputtamanho fonteinput" name="taxid" id="taxid" placeholder="ex: 0000.000.00/000" required><br><br>
+                    <input type="text"  maxlength="80" class="form-control inputtamanho fonteinput" name="taxid" id="taxid" placeholder="ex: 0000.000.00/000" required><br><br>
                   </div>
                 </div>
+</div></div>
+<div class="cardcadastro mt-2">
+<div class="row">
+               
 
                 <div class="col-sm-12">
                   <div class="form-group" style="text-align: start;">
@@ -92,34 +95,34 @@ date_default_timezone_set('America/Sao_Paulo');
                 <div class="col-sm-12">
                   <div class="form-group" style="text-align: start;">
                     <label class="color-branco labelcadastro" for="job-tittle">Job tittle</label>
-                    <input type="text" class="form-control inputtamanho fonteinput" name="cargo" id="cargo" placeholder="ex: Devloper" required><br>
+                    <input type="text"  maxlength="80" class="form-control inputtamanho fonteinput" name="cargo" id="cargo" placeholder="ex: CEO" required><br>
                   </div>
                 </div>
 
                 <div class="col-sm-6">
                   <div class="form-group" style="text-align: start;">
                     <label class="color-branco labelcadastro" for="first-name">Name</label>
-                    <input class="inputauto form-control inputtamanho fonteinput" type="text" name="nome" id="nome" placeholder="type here..." required>
+                    <input  maxlength="40" class="inputauto form-control inputtamanho fonteinput" type="text" name="nome" id="nome" placeholder="type here..." required>
                   </div>
                 </div>
 
                 <div class="col-sm-6">
                   <div class="form-group" style="text-align: start;">
                     <label class="color-branco labelcadastro" for="last-name">Last Name</label>
-                    <input class="inputauto form-control inputtamanho fonteinput" type="text" name="sobrenome" id="sobrenome" placeholder="type here..." required><br>
+                    <input   maxlength="40" class="inputauto form-control inputtamanho fonteinput" type="text" name="sobrenome" id="sobrenome" placeholder="type here..." required><br>
                   </div>
                 </div>
 
                 <div class="col-sm-12">
                   <div class="form-group" style="text-align: start;">
                     <label class="color-branco labelcadastro" for="email-address">Email address</label>
-                    <input type="email" class=" form-control inputtamanho inputtamanho fonteinput" name="email" id="email" placeholder="ex: email@email.com" required><br>
+                    <input type="email"  maxlength="120" class=" form-control inputtamanho inputtamanho fonteinput" name="email" id="email" placeholder="ex: email@email.com" required><br>
                   </div>
                 </div>
                 <div class="col-sm-12">
                   <div class="form-group" style="text-align: start;">
                     <label class="color-branco labelcadastro" for="phone">Phone Number </label>
-                    <input class="inputauto form-control inputtamanho fonteinput" type="tel" name="whatsapp" maxlength="20" value="" id="whatsapp" placeholder="Country code - Region code - Number" required><br>
+                    <input maxlength="25" class="inputauto form-control inputtamanho fonteinput" type="tel" name="whatsapp" maxlength="20" value="" id="whatsapp" placeholder="Country code - Region code - Number" required><br>
                   </div>
                 </div>
 
@@ -196,7 +199,7 @@ date_default_timezone_set('America/Sao_Paulo');
         </div>
         <!-- Rodapé do modal -->
         <div class="modal-footer">
-          <button type="button" class="btn btn-danger closes" data-dismiss="modal" aria-label="Close">Close</button>
+          <button type="button" class="btn btn-success closes" data-dismiss="modal" aria-label="Close">OK</button>
         </div>
       </div>
     </div>

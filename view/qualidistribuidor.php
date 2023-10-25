@@ -42,13 +42,14 @@ date_default_timezone_set('America/Sao_Paulo');
     <div class="container m-auto">
         <div class="col-12">
             <div class="row">
-                <div class="col-lg-6 col-12">
+                <div class="col-lg-7 col-12">
                     <div class="mt-5">
                         <h1 class="color-branco titulologin" style="font-size: 40px;">Qualify your profile.</span></h1><br>
-                        <h4 class="color-branco d-none d-md-block">This part is essential for the system to work, in this qualification process we can better understand what our system should show you, thus bringing a relevant profile to your needs.</h4>
+                        <p class="color-branco desclogin">This part is essential for the system to work, in this qualification process we can better understand what our system should show you, thus bringing a relevant profile to your needs.<br></p>
+                        <p class="color-branco desclogin">This step ensures that the distributors we recommend are aligned with your business requirements. By providing specific details about your profile you enable our system to present you with the most relevant and specific options.</p>
                     </div>
                 </div>
-                <div class="col-lg-6 col-12">
+                <div class="col-lg-4 col-12">
                     <div class="cardcadastro">
                         <form action="../controller/distribuidorProfileController.php" method="POST" enctype="multipart/form-data">
                             <div class="row">

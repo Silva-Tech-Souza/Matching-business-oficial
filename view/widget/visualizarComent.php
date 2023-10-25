@@ -2,10 +2,10 @@
 if (session_status() !== PHP_SESSION_ACTIVE) {
     session_start();
 }
-if (isset($_SESSION['error'])) {
+/*if (isset($_SESSION['error'])) {
     error_reporting(0);
 }
-
+*/
 date_default_timezone_set('America/Sao_Paulo');
 
 
@@ -35,8 +35,8 @@ if (isset($_GET["texto"]) && $_GET["texto"] != "") {
     <div class="col-12 d-flex justify-content-end align-items-end">
         <br>
         <button type="button" class="close rounded-2 border-0 bcolor-azul-escuro m-2" data-dismiss="modal" aria-label="Close" style="width: 25px; height: 25px;">
-                            <span aria-hidden="false" class="color-branco">x</span>
-                        </button>
+            <span aria-hidden="false" class="color-branco">x</span>
+        </button>
     </div>
 
     <?php
@@ -178,6 +178,7 @@ if (isset($_GET["texto"]) && $_GET["texto"] != "") {
                 success: function(data) {
                     // Preencha o conteúdo do modal com as informações do produto
                     $('#modalEditarProduto .modal-content').html(data);
+                    verificarNovosPosts();
                 },
                 error: function() {
                     alert('Ocorreu um erro ao carregar os dados do comentrios.');
@@ -189,4 +190,57 @@ if (isset($_GET["texto"]) && $_GET["texto"] != "") {
 
 
     });
+
+    function verificarNovosPosts() {
+            if (!loading2) {
+                loading2 = true; // Marca que uma requisição está em andamento
+
+                var xmlhttp = new XMLHttpRequest();
+                xmlhttp.onreadystatechange = function() {
+                    if (this.readyState == 4 && this.status == 200) {
+                        document.getElementById("divFeedUpdate").innerHTML = this.responseText;
+                        loading2 = false; // Marca que a requisição foi concluída
+                        console.log("================================");
+                        $(document).ready(function() {
+                            // Ao clicar em um link de produto
+                            $('.btnCommnet').click(function() {
+                                // Obtenha o ID do produto associado ao link clicado
+                                var idFeedsc = $(this).data('id');
+                                console.log("clique");
+                                console.log(idFeedsc);
+                                // Use o ID do produto para fazer uma requisição AJAX para buscar os dados do produto no servidor
+                                $.ajax({
+                                    type: 'GET',
+                                    url: 'widget/visualizarComent.php', // Substitua pelo caminho correto
+                                    data: {
+                                        idFeed: idFeedsc
+                                    },
+                                    success: function(data) {
+                                        // Preencha o conteúdo do modal com as informações do produto
+                                        console.log("Success");
+                                        $('#modalEditarProduto .modal-content').html(data);
+                                    },
+                                    error: function() {
+                                        alert('Ocorreu um erro ao carregar os dados do produto.');
+                                    }
+                                });
+
+                                // Abra o modal correspondente
+                                $('#modalEditarProduto').fadeIn();
+                            });
+
+                            // Feche o modal ao clicar fora dele ou no botão de fechar
+                            $('.modal').click(function(event) {
+                                if ($(event.target).hasClass('modal')) {
+                                    $(this).fadeOut();
+                                }
+                            });
+                        });
+                    }
+                }
+                xmlhttp.open("GET", "widget/atualizarFeednovo.php", true);
+                xmlhttp.send();
+            }
+        }
 </script>
+

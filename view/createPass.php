@@ -1,5 +1,5 @@
 <?php
-session_start();
+include_once('../model/classes/conexao.php');
 error_reporting(0);
 date_default_timezone_set('America/Sao_Paulo');
 
@@ -122,7 +122,7 @@ if ($codigoVerifEmail != "" && $codigoVerifEmail != '0') {
 
           include_once('../model/classes/tblContract.php');
 
-          $conect = new Contract();
+          $conect = new Contract($dbh);
 
           $resultscontrato = $conect->consulta("WHERE IdContractType = 1 AND ContractFlagAtive = 1 ORDER BY idContract DESC LIMIT 1 ");
 

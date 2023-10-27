@@ -1,17 +1,18 @@
 <?php
-if ( session_status() !== PHP_SESSION_ACTIVE )
-{
-   session_start();
-}
+
+include_once('../model/classes/conexao.php');
 include_once('../model/ErrorLog.php');
+include_once('../model/classes/tblUserClients.php');
+include_once('../model/classes/tblOperations.php');
+
 date_default_timezone_set('America/Sao_Paulo');
-include('../model/classes/conexao.php');
+
 $_SESSION["FlagOperation"] = 0;
 
 $iduser = $_SESSION["id"];
-include_once('../model/classes/tblUserClients.php');
 
-$userClients = new UserClients();
+
+$userClients = new UserClients($dbh);
 
 $userClients->setidClient($iduser);
 
@@ -23,14 +24,14 @@ if ($results != null) {
         $corebusiness = $row->CoreBusinessId;
         $satBusinessId =  $row->SatBusinessId;
         $imgperfilgeral = $row->PersonalUserPicturePath;
-      $imgperfil = $row->PersonalUserPicturePath;
-    $imgcapa = $row->LogoPicturePath;
+        $imgperfil = $row->PersonalUserPicturePath;
+        $imgcapa = $row->LogoPicturePath;
     }
 }
 
 $idoperation;
-include_once('../model/classes/tblOperations.php');
-$operations = new Operations();
+
+$operations = new Operations($dbh);
 $operations->setidOperation($corebusiness);
 $resultsoperation = $operations->consulta("WHERE idOperation = :idOperation");
 if ($resultsoperation != null) {
@@ -49,7 +50,7 @@ if ($resultsoperation != null) {
     <link rel="stylesheet" href="assets/css/geral.css">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-4bw+/aepP/YC94hEpVNVgiZdgIC5+VKNBQNGCHeKRQN+PtmoHDEXuppvnDJzQIu9" crossorigin="anonymous">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
-    
+
     <link rel='stylesheet' href='https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.0.3/css/font-awesome.css'>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="https://kit.fontawesome.com/f51201541f.js" crossorigin="anonymous"></script>
@@ -75,12 +76,12 @@ if ($resultsoperation != null) {
 <body>
     <script>
         function showcorbusiness(str) {
-          document.getElementById("categorias").innerHTML ="";
+            document.getElementById("categorias").innerHTML = "";
             if (str == "") {
-              document.getElementById("categorias").innerHTML ="";
+                document.getElementById("categorias").innerHTML = "";
                 document.getElementById("especification").innerHTML = "";
                 document.getElementById("corBusiness").innerHTML = "";
-         
+
                 return;
             }
 
@@ -111,10 +112,10 @@ if ($resultsoperation != null) {
             xmlhttpespe.open("GET", "widget/especification.php?q=" + str, true);
             xmlhttpespe.send();
             if (str == "") {
-              document.getElementById("categorias").innerHTML = "";
+                document.getElementById("categorias").innerHTML = "";
                 document.getElementById("especification").innerHTML = "";
                 document.getElementById("corBusiness").innerHTML = "";
-           
+
                 return;
             }
             var xmlhttp = new XMLHttpRequest();
@@ -188,8 +189,8 @@ if ($resultsoperation != null) {
                     <h2 id="heading">Create Search Profiles</h2>
                     <p>Create searches to find the right match</p>
                     <form id="msform" action="../controller/searchPageController.php" method="POST" enctype="multipart/form-data">
-                    <input required type="hidden" name="idClient"  value="<?php echo $iduser;?>" >
-                    <!-- progressbar -->
+                        <input required type="hidden" name="idClient" value="<?php echo $iduser; ?>">
+                        <!-- progressbar -->
                         <ul id="progressbar">
                             <li class="active" id="account"><strong>Operation</strong></li>
                             <li id="specification"><strong>Specification</strong></li>
@@ -216,16 +217,16 @@ if ($resultsoperation != null) {
                                     <div class="col-sm-12">
 
                                         <div class="form-floating">
-                                            <select required class="form-select border-dark inputtamanho" name="corbusiness" onchange="showcorbusiness(this.value)" id="floatingSelectGrid" aria-label="Floating label select example">
+                                            <select required class="form-select border-dark inputtamanho selecttamanho" name="corbusiness" onchange="showcorbusiness(this.value)" id="floatingSelectGrid" aria-label="Floating label select example">
                                                 <option valid="">Select</option>
                                                 <?php
                                                 include_once('../model/classes/tblOperations.php');
-                                                $operations = new Operations();
-                                                $resultsoperation = $operations->consulta("");
+                                                $operations = new Operations($dbh);
+                                                $resultsoperation = $operations->consulta(" WHERE idOperation != '1'");
                                                 if ($resultsoperation != null) {
-                                                  foreach ($resultsoperation as $rowoperation) {
+                                                    foreach ($resultsoperation as $rowoperation) {
                                                 ?>
-                                                
+
                                                         <option value="<?php echo $rowoperation->idOperation; ?>"><?php echo $rowoperation->NmOperation; ?></option>
                                                 <?php }
                                                 } ?>
@@ -265,12 +266,12 @@ if ($resultsoperation != null) {
                                                 <?php
                                                 include('../model/classes/tblCountry.php');
 
-                                                $country = new Country();
-                                                
+                                                $country = new Country($dbh);
+
                                                 $resultsCountry = $country->consulta("");
-                                                
+
                                                 if ($resultsCountry != null) {
-                                                  foreach ($resultsCountry as $rowCountry) {?>
+                                                    foreach ($resultsCountry as $rowCountry) { ?>
                                                         <option value="<?php echo $rowCountry->idCountry; ?>"><?php echo $rowCountry->NmCountry; ?></option>
                                                 <?php  }
                                                 } ?>
@@ -302,9 +303,9 @@ if ($resultsoperation != null) {
                                             <label for="floatingInput">Name ID</label>
                                         </div>
                                     </div>
-                                    
+
                                 </div>
-                            </div> <input type="button" name="next" class="next action-button" value="Create" /> <input type="button" name="previous" class="previous action-button-previous" value="Previous" />
+                            </div> <input type="button" name="next" class="next action-button" value="Create"   onclick="enviarFormulario()"/> <input type="button" name="previous" class="previous action-button-previous" value="Previous" />
                         </fieldset>
                         <fieldset class="p-2">
                             <div class="form-card">
@@ -322,11 +323,11 @@ if ($resultsoperation != null) {
                                     </div>
                                     <div class="col-6 text-center">
 
-                                      <input   type="submit" name="news"   class="btn action-button  fontsizelager" value="Create New" style="float: left">
+                                    <a href="searchPage.php" name="news" class="btn action-button fontsizelager"  style="float: left">Create New</a>
                                     </div>
                                     <div class="col-6 text-center">
-                                    <input   type="submit" name="next"  class="btn action-button  fontsizelager" value="Results" /> 
-                                   
+                                        <a href="listcompani.php?text=mysp"  class="btn action-button  fontsizelager" >Results</a>
+
                                     </div>
                                 </div>
                             </div>
@@ -341,6 +342,21 @@ if ($resultsoperation != null) {
 
     <script src="assets/js/select/jquery.multiselect.js"></script>
     <script>
+        function enviarFormulario() {
+            $.ajax({
+                type: 'POST',
+                url: '../controller/searchPageController.php',
+                data: $('#msform').serialize(),
+                success: function(response) {
+                    console.log('Envio bem-sucedido', response);
+                    // Faça qualquer outra coisa que você precise com a resposta
+                },
+                error: function(error) {
+                    console.error('Erro no envio', error);
+                    // Lide com erros aqui
+                }
+            });
+        }
         var doneButtonHtml = '<button id="doneButton" class="ms-done-button stylobutoninterno">Done</button>';
         optionsWrap.find('.no-result-message').before(doneButtonHtml);
         document.getElementById('doneButton').addEventListener('click', function() {
@@ -475,9 +491,9 @@ if ($resultsoperation != null) {
             $(".next").click(function() {
 
                 var inputField = $(this).parent().find('.inputtamanho');
-
-
-                if (inputField.val() === '' || inputField.val() === null || inputField.val() === "") {
+                var selectField = $(this).parent().find('.selecttamanho');
+                console.log(selectField.val());
+                if (inputField.val() === '' || inputField.val() === null || inputField.val() === "" || selectField.val() == 'Select') {
                     // Se o campo estiver vazio, não avance e mostre uma mensagem de erro
                     alert("Fill in the field before waiting.");
                     return;
@@ -613,7 +629,13 @@ if ($resultsoperation != null) {
 
 
 
+        function redirectToAnotherPage() {
+            var form = document.getElementById('formularionome');
+            var textValue = form.querySelector('[name="text"]').value;
 
+            // Redireciona para listcompani.php com o parâmetro GET "text"
+            window.location.href = 'listcompani.php?text=' + encodeURIComponent(textValue);
+        }
 
 
         $(document).ready(function() {

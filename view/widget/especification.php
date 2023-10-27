@@ -1,4 +1,5 @@
 <?php
+include_once('../../model/classes/conexao.php');
 if ( session_status() !== PHP_SESSION_ACTIVE )
 {
    session_start();
@@ -10,7 +11,7 @@ date_default_timezone_set('America/Sao_Paulo');
 
 $idbusines = $_GET["q"];
 include_once('../../model/classes/tblOperations.php');
-$tblOperations1 = new Operations();
+$tblOperations1 = new Operations($dbh);
 $tblOperations1->setidOperation($idbusines);
 $resultstblOperations = $tblOperations1->consulta("WHERE idOperation = :idOperation");
 if ($tblOperations1 != null) {
@@ -59,7 +60,7 @@ if ($_SESSION["FlagOperation"] == "A" || $_SESSION["FlagOperation"] == "C") {
                 <select required name="numempregados" class=" form-select  border-dark inputtamanho" id="floatingSelectGrid" aria-label="Floating label select example">
                     <?php
                     include_once('../../model/classes/tblNumEmpregados.php');
-                    $tblNumEmpregados = new NumEmpregados();
+                    $tblNumEmpregados = new NumEmpregados($dbh);
                     $resultsNumEmpregados = $tblNumEmpregados->consulta("");
                     if ($tblNumEmpregados != null) {
                         foreach ($resultsNumEmpregados as $rowemply) {
@@ -76,7 +77,7 @@ if ($_SESSION["FlagOperation"] == "A" || $_SESSION["FlagOperation"] == "C") {
                 <select required name="rangevalues" class=" form-select  border-dark inputtamanho" id="floatingSelectGrid" aria-label="Floating label select example">
                     <?php
                     include_once('../../model/classes/tblRangeValues.php');
-                    $tblRangeValues = new RangeValues();
+                    $tblRangeValues = new RangeValues($dbh);
                     $resultsRangeValues = $tblRangeValues->consulta("");
                     if ($tblRangeValues != null) {
                         foreach ($resultsRangeValues as $rowsallers) {
@@ -100,7 +101,7 @@ if ($_SESSION["FlagOperation"] == "A" || $_SESSION["FlagOperation"] == "C") {
                 <select required name="niveloperacao" class=" form-select  border-dark inputtamanho" id="floatingSelectGrid" aria-label="Floating label select example">
                     <?php
                     include_once('../../model/classes/tblNivelOperacao.php');
-                    $tblNivelOperacao = new NivelOperacao();
+                    $tblNivelOperacao = new NivelOperacao($dbh);
                     $resultstblNivelOperacao = $tblNivelOperacao->consulta("");
                     if ($resultstblNivelOperacao != null) {
                         foreach ($resultstblNivelOperacao as $rowoperation) {

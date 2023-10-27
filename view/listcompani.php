@@ -1,36 +1,34 @@
 <?php
-if ( session_status() !== PHP_SESSION_ACTIVE )
-{
-   session_start();
-}
 
-include_once('../model/ErrorLog.php');
+include_once('../model/classes/conexao.php');
+include_once('../model/classes/tblUserClients.php');
+include_once('../model/classes/tblSearchResults.php');
 date_default_timezone_set('America/Sao_Paulo');
 if ($_SESSION["id"] < 0 || $_SESSION["id"] == "") {
   header("Location: login.php");
 }
 $iduser = $_SESSION["id"];
-if(isset($_GET["busines"])){
+if (isset($_GET["busines"])) {
   $busines = $_GET["busines"];
-}else{
+} else {
   $busines = null;
 }
-if(isset($_GET["operation"])){
+if (isset($_GET["operation"])) {
   $operation = $_GET["operation"];
-}else{
+} else {
   $operation = null;
 }
-if(isset($_GET["text"])){
+if (isset($_GET["text"])) {
   $text = $_GET["text"];
-}else{
+} else {
   $text = null;
 }
 
 $_SESSION["n"] = 5;
 
-include_once('../model/classes/tblUserClients.php');
 
-$userClients = new UserClients();
+
+$userClients = new UserClients($dbh);
 
 $userClients->setidClient($iduser);
 
@@ -288,6 +286,19 @@ if ($results != null) {
       color: #333;
     }
 
+    .txthtitulo {
+      padding-left: 25px;
+    }
+
+    .owl-carousel.owl-drag .owl-item {
+      width: 266.12px !important;
+    }
+
+    .owl-carousel .owl-stage {
+      width: max-content;
+      display: flex;
+    }
+
     @media only screen and (max-width: 767.98px) {
       .expanded {
         width: 0 !important;
@@ -298,6 +309,8 @@ if ($results != null) {
     }
 
     @media only screen and (max-width: 767.98px) {
+
+
       .sidebar {
         background-color: #34444c;
         border-right: 1px solid transparent;
@@ -333,11 +346,37 @@ if ($results != null) {
       }
 
       .celularcard {
-        min-width: 370px !important;
+        min-width: 263px !important;
       }
 
       .owl-item {
         min-width: 370px !important;
+      }
+
+      .owl-carousel.owl-drag .owl-item {
+
+        margin-left: 0 !important;
+      }
+
+      .owl-carousel.owl-drag .owl-item {
+        width: 132.12px !important;
+      }
+
+      .owl-stage {
+        width: 1926px;
+        display: flex;
+
+      }
+
+      .owl-carousel .owl-item {
+
+        min-width: -1% !important;
+      }
+
+      .owl-item {
+        min-width: 119px !important;
+        max-width: 117px !important;
+        margin-right: 155px !important;
       }
     }
 
@@ -354,14 +393,14 @@ if ($results != null) {
       -webkit-line-clamp: 2 !important;
       /* Suporte a navegadores WebKit, como o Chrome */
       -webkit-box-orient: vertical !important;
-      text-align: end !important;
+      text-align: left !important;
     }
 
     .pdescricaosp {
       overflow: hidden !important;
       text-overflow: ellipsis !important;
       font-size: small;
-      -webkit-line-clamp: 5 !important;
+      -webkit-line-clamp: 7 !important;
       -webkit-box-orient: vertical !important;
       line-height: 1.2em !important;
       display: -webkit-box;
@@ -375,7 +414,7 @@ if ($results != null) {
 
   <div class="main-wrapper">
     <?php include_once("widget/navbar.php"); ?>
-    <div class="sidebar " id="sidebar" style="background: #002d4b;">
+    <div class="sidebar expandeds1" id="sidebar" style="background: #002d4b;">
       <div class="sidebar-inner slimscroll ">
         <div id="sidebar-menu" class="sidebar-menu">
           <div class="card rounded-4 shadow  treeviewmin panddingardtreeview" style="min-height: 100% !important;height: 100% !important;max-height: 100%  !important; margin-top: 0;">
@@ -385,7 +424,7 @@ if ($results != null) {
                 <ul id="tree1">
                   <?php
                   include_once('../model/classes/tblOperations.php');
-                  $operations = new Operations();
+                  $operations = new Operations($dbh);
                   $resultsOperation = $operations->consulta("WHERE FlagOperation != '0'");
                   if ($resultsOperation != null) {
                     foreach ($resultsOperation as $rowOperation) {
@@ -398,7 +437,7 @@ if ($results != null) {
                           <?php echo trim($rowOperation->NmOperation); ?>
                         </a>
                         <div style="text-align: end; width: 24px;float: right;position: initial;">
-                          <?php $numerouser1 = new UserClients();
+                          <?php $numerouser1 = new UserClients($dbh);
                           $numerouser1->setCoreBusinessId($rowOperation->idOperation);
                           echo $numerouser1->quantidade(" WHERE CoreBusinessId = :CoreBusinessId"); ?>
                         </div>
@@ -406,14 +445,14 @@ if ($results != null) {
                           <ul>
                             <?php
                             include_once('../model/classes/tblBusiness.php');
-                            $business = new Business();
+                            $business = new Business($dbh);
                             $resultsbusiness = $business->consulta("WHERE FlagOperation = '0' ORDER BY NmBusiness ASC");
                             if ($business != null) {
                               foreach ($resultsbusiness as $rowbusiness) {
                             ?>
                                 <li><a class="sizewidgh" href="listcompani.php?busines=<?php echo $rowbusiness->idBusiness; ?>&operation=<?php echo $rowOperation->idOperation; ?>"><?php
                                                                                                                                                                                     echo trim($rowbusiness->NmBusiness); ?> <div style="text-align: end; width: 24px;float: right;position: initial;">
-                                      <?php $numerouser2 = new UserClients();
+                                      <?php $numerouser2 = new UserClients($dbh);
                                       $numerouser2->setCoreBusinessId($rowOperation->idOperation);
                                       $numerouser2->setSatBusinessId($rowbusiness->idBusiness);
                                       echo $numerouser2->quantidade(" WHERE CoreBusinessId = :CoreBusinessId AND SatBusinessId = :SatBusinessId"); ?>
@@ -439,13 +478,16 @@ if ($results != null) {
     </div>
 
     <div class="page-wrapper">
-      <div class="content container-fluid">
+      <div class="content container-fluid" style="margin-left: 0;
+    margin-right: 0;
+    padding-left: 0;
+    padding-right: 0;">
         <div class="row">
           <div class=" col-xl-12">
 
             <section>
               <?php if ($operation != null && $busines == null && $text == null) {
-                $numerousercont = new UserClients();
+                $numerousercont = new UserClients($dbh);
                 $numerousercont->setCoreBusinessId($operation);
                 $contoperationnotresults = $numerousercont->quantidade(" WHERE CoreBusinessId = :CoreBusinessId");
                 if ($contoperationnotresults == 0) {
@@ -456,21 +498,21 @@ if ($results != null) {
               ?>
 
                   <div class="carousel-filmes">
-                    <h2 id="filme" class="titulo2"><?php
+                    <h2 id="filme" class="titulo2 txthtitulo"><?php
 
 
-                                                    $operationsnome = new Operations();
-                                                    $operationsnome->setidOperation($operation);
-                                                    $resultsOperationome = $operationsnome->consulta("WHERE  idOperation = :idOperation");
-                                                    if ($resultsOperationome != null) {
-                                                      foreach ($resultsOperationome as $rowOperationome) {
-                                                        echo $rowOperationome->NmOperation;
-                                                      }
-                                                    }
-                                                    ?> - <?php
-                                                          if (isset($contoperationnotresults)) {
-                                                            echo  $contoperationnotresults;
-                                                          } ?>
+                                                              $operationsnome = new Operations($dbh);
+                                                              $operationsnome->setidOperation($operation);
+                                                              $resultsOperationome = $operationsnome->consulta("WHERE  idOperation = :idOperation");
+                                                              if ($resultsOperationome != null) {
+                                                                foreach ($resultsOperationome as $rowOperationome) {
+                                                                  echo $rowOperationome->NmOperation;
+                                                                }
+                                                              }
+                                                              ?> - <?php
+                                                                    if (isset($contoperationnotresults)) {
+                                                                      echo  $contoperationnotresults;
+                                                                    } ?>
 
 
                     </h2><br>
@@ -478,14 +520,14 @@ if ($results != null) {
                     <div class=" owl-carousel owl-thema ">
                       <?php
 
-                      $Operationselect = new UserClients();
+                      $Operationselect = new UserClients($dbh);
                       $Operationselect->setCoreBusinessId($operation);
                       $resultsOperationselect = $Operationselect->consulta(" WHERE CoreBusinessId = :CoreBusinessId");
                       if ($resultsOperationselect != null) {
                         foreach ($resultsOperationselect as $rowOperationselect) {  ?>
                           <div class="item celularcard">
                             <div class="card rounded-4 shadow celularcard">
-                              <div class="card-body p-0 m-0" style="min-height: 300px !IMPORTANT; max-height: 300px !IMPORTANT; min-width: 250px !IMPORTANT;">
+                              <div class="card-body p-0 m-0" style="min-height: 300px !IMPORTANT;">
                                 <div class="col-12 mh-25">
                                   <img class="mh-25 rounded-top-3" src="<?php if ($rowOperationselect->LogoPicturePath != "Avatar.png" && $rowOperationselect->LogoPicturePath != "") {
                                                                           echo "" . $rowOperationselect->LogoPicturePath;
@@ -501,20 +543,20 @@ if ($results != null) {
                                                   echo "assets/img/Avatar.png";
                                                 } ?>" alt="user" class="border-2 mini-profile-img " onclick="toggleMenu()">
                                   </div>
-                                  <div class="col-6 text-end">
-                                    <h4 class="fonte-titulo cortardescricao text-end mr-1"><?php echo  $rowOperationselect->FirstName . " " . $rowOperationselect->LastName; ?></h4>
-                                    <h6 class="fonte-principal cortardescricao mr-1"><?php echo  $rowOperationselect->JobTitle . ' at ' . $rowOperationselect->CompanyName ?></h6>
+                                  <div class="col-6">
+                                    <h4 class="fonte-titulo cortardescricao mr-1"><?php echo  $rowOperationselect->FirstName . " " . $rowOperationselect->LastName; ?></h4>
+
                                   </div>
                                 </div>
                                 <div class="col-12 m-0 p-0">
                                   <hr class="m-0">
                                 </div>
-                                <div class="row mt-3 pr-2">
-                                  <div class="col-9 m-0 p-0">
+                                <div class="row mt-3 pr-2" style="padding: 5px !important; margin: 0px !important; width: -webkit-fill-available;">
+                                  <div class="col-9 m-0 p-0" style="width: auto;">
+                                    <h5 class="fonte-principal "><i class="fa-solid fa-building icon-notif-zoom mini-profile-icon" style="font-size: 12px;"></i>&nbsp;&nbsp;<?php echo  $rowOperationselect->JobTitle . ' at ' . $rowOperationselect->CompanyName ?></h5>
+                                    <h5 class="fonte-principal"><i class="fa-solid fa-globe icon-notif-zoom mini-profile-icon" style="font-size: 12px;"></i>&nbsp;&nbsp;<?php include_once('../model/classes/tblCountry.php');
 
-                                    <h5 class="fonte-principal">&nbsp;&nbsp;&nbsp;&nbsp;<i class="fa-solid fa-globe icon-notif-zoom mini-profile-icon"></i>&nbsp;&nbsp;<?php include_once('../model/classes/tblCountry.php');
-
-                                                                                                                                                                        $country = new Country();
+                                                                                                                                                                        $country = new Country($dbh);
 
                                                                                                                                                                         $country->setidCountry($rowOperationselect->idCountry);
 
@@ -530,6 +572,7 @@ if ($results != null) {
                                   </div>
 
                                 </div>
+
                                 <div class="row mt-3 pr-2" style="
     padding-left: 6PX;
     padding-right: 6px;
@@ -555,22 +598,22 @@ if ($results != null) {
               if ($operation != null && $busines != null && $text == null) { ?>
 
                 <div class="carousel-filmes">
-                  <h2 id="filme" class="titulo2"><?php
-                                                  $operationsnome = new Operations();
-                                                  $operationsnome->setidOperation($operation);
-                                                  $resultsOperationome = $operationsnome->consulta("WHERE  idOperation = :idOperation");
-                                                  if ($resultsOperationome != null) {
-                                                    foreach ($resultsOperationome as $rowOperationome) {
-                                                      echo $rowOperationome->NmOperation;
-                                                    }
-                                                  }
-                                                  ?> - <?php $numerousercont = new UserClients();
-                                                        $numerousercont->setCoreBusinessId($operation);
-                                                        echo $numerousercont->quantidade(" WHERE CoreBusinessId = :CoreBusinessId"); ?></h2>
+                  <h2 id="filme" class="titulo2 txthtitulo"><?php
+                                                            $operationsnome = new Operations($dbh);
+                                                            $operationsnome->setidOperation($operation);
+                                                            $resultsOperationome = $operationsnome->consulta("WHERE  idOperation = :idOperation");
+                                                            if ($resultsOperationome != null) {
+                                                              foreach ($resultsOperationome as $rowOperationome) {
+                                                                echo $rowOperationome->NmOperation;
+                                                              }
+                                                            }
+                                                            ?> - <?php $numerousercont = new UserClients($dbh);
+                                                                  $numerousercont->setCoreBusinessId($operation);
+                                                                  echo $numerousercont->quantidade(" WHERE CoreBusinessId = :CoreBusinessId"); ?></h2><br>
                   <div class=" owl-carousel owl-thema ">
                     <?php
 
-                    $Operationselect = new UserClients();
+                    $Operationselect = new UserClients($dbh);
                     $Operationselect->setCoreBusinessId($operation);
                     $resultsOperationselect = $Operationselect->consulta(" WHERE CoreBusinessId = :CoreBusinessId");
                     if ($resultsOperationselect != null) {
@@ -595,18 +638,18 @@ if ($results != null) {
                                 </div>
                                 <div class="col-6">
                                   <h4 class="fonte-titulo cortardescricao mr-1"><?php echo  $rowOperationselect->FirstName . " " . $rowOperationselect->LastName; ?></h4>
-                                  <h6 class="fonte-principal cortardescricao mr-1"><?php echo  $rowOperationselect->JobTitle . ' at ' . $rowOperationselect->CompanyName ?></h6>
+
                                 </div>
                               </div>
                               <div class="col-12 m-0 p-0">
                                 <hr class="m-0">
                               </div>
-                              <div class="row mt-3 pr-2">
-                                <div class="col-9 m-0 p-0">
+                              <div class="row mt-3 pr-2" style="padding: 5px !important; margin: 0px !important; width: -webkit-fill-available;">
+                                <div class="col-9 m-0 p-0" style="width: auto;">
+                                  <h5 class="fonte-principal "><i class="fa-solid fa-building icon-notif-zoom mini-profile-icon" style="font-size: 12px;"></i>&nbsp;&nbsp;<?php echo  $rowOperationselect->JobTitle . ' at ' . $rowOperationselect->CompanyName ?></h5>
+                                  <h5 class="fonte-principal"><i class="fa-solid fa-globe icon-notif-zoom mini-profile-icon" style="font-size: 12px;"></i>&nbsp;&nbsp;<?php include_once('../model/classes/tblCountry.php');
 
-                                  <h5 class="fonte-principal">&nbsp;&nbsp;&nbsp;&nbsp;<i class="fa-solid fa-globe icon-notif-zoom mini-profile-icon"></i>&nbsp;&nbsp;<?php include_once('../model/classes/tblCountry.php');
-
-                                                                                                                                                                      $country = new Country();
+                                                                                                                                                                      $country = new Country($dbh);
 
                                                                                                                                                                       $country->setidCountry($rowOperationselect->idCountry);
 
@@ -641,17 +684,17 @@ if ($results != null) {
                     <?php }
                     } ?>
                   </div>
-                </div> <br>
+                </div> <br><br><br>
 
                 <?php
                 include_once('../model/classes/tblBusinessCategory.php');
-                $tblBusinessCategory = new BusinessCategory();
+                $tblBusinessCategory = new BusinessCategory($dbh);
                 $tblBusinessCategory->setidBusiness($busines);
                 $resultstblBusinessCategory = $tblBusinessCategory->consulta(" WHERE idBusiness = :idBusiness");
                 if ($tblBusinessCategory != null) {
 
                   foreach ($resultstblBusinessCategory as $rowBusiness) {
-                    $numerousercont = new UserClients();
+                    $numerousercont = new UserClients($dbh);
                     $numerousercont->setCoreBusinessId($operation);
                     $numerousercont->setIdOperation($rowBusiness->idBusinessCategory);
                     $contcategativos =      $numerousercont->quantidade(" WHERE IdOperation = :IdOperation AND CoreBusinessId = :CoreBusinessId");
@@ -660,18 +703,18 @@ if ($results != null) {
 
                 ?>
                       <div class="carousel-filmes">
-                        <h2 id="filme" class="titulo2"><?php
+                        <h2 id="filme" class="titulo2 txthtitulo"><?php
 
-                                                        echo  $rowBusiness->NmBusinessCategory;
+                                                                  echo  $rowBusiness->NmBusinessCategory;
 
-                                                        ?> - <?php $numerousercont2 = new UserClients();
-                                                              $numerousercont2->setCoreBusinessId($operation);
-                                                              $numerousercont2->setIdOperation($rowBusiness->idBusinessCategory);
-                                                              echo $numerousercont2->quantidade(" WHERE IdOperation = :IdOperation AND CoreBusinessId = :CoreBusinessId"); ?></h2>
+                                                                  ?> - <?php $numerousercont2 = new UserClients($dbh);
+                                                                        $numerousercont2->setCoreBusinessId($operation);
+                                                                        $numerousercont2->setIdOperation($rowBusiness->idBusinessCategory);
+                                                                        echo $numerousercont2->quantidade(" WHERE IdOperation = :IdOperation AND CoreBusinessId = :CoreBusinessId"); ?></h2><br>
                         <div class=" owl-carousel owl-thema ">
                           <?php
 
-                          $Operationselect3 = new UserClients();
+                          $Operationselect3 = new UserClients($dbh);
                           $Operationselect3->setCoreBusinessId($operation);
                           $Operationselect3->setSatBusinessId($busines);
                           $Operationselect3->setIdOperation($rowBusiness->idBusinessCategory);
@@ -698,25 +741,25 @@ if ($results != null) {
                                       </div>
                                       <div class="col-6">
                                         <h4 class="fonte-titulo cortardescricao mr-1"><?php echo  $rowOperationselect->FirstName . " " . $rowOperationselect->LastName; ?></h4>
-                                        <h6 class="fonte-principal cortardescricao mr-1"><?php echo  $rowOperationselect->JobTitle . ' at ' . $rowOperationselect->CompanyName ?></h6>
+
                                       </div>
                                     </div>
                                     <div class="col-12 m-0 p-0">
                                       <hr class="m-0">
                                     </div>
-                                    <div class="row mt-3 pr-2">
-                                      <div class="col-9 m-0 p-0">
+                                    <div class="row mt-3 pr-2" style="padding: 5px !important; margin: 0px !important; width: -webkit-fill-available;">
+                                      <div class="col-9 m-0 p-0" style="width: auto;">
+                                        <h5 class="fonte-principal "><i class="fa-solid fa-building icon-notif-zoom mini-profile-icon" style="font-size: 12px;"></i>&nbsp;&nbsp;<?php echo  $rowOperationselect->JobTitle . ' at ' . $rowOperationselect->CompanyName ?></h5>
+                                        <h5 class="fonte-principal"><i class="fa-solid fa-globe icon-notif-zoom mini-profile-icon" style="font-size: 12px;"></i>&nbsp;&nbsp;<?php include_once('../model/classes/tblCountry.php');
 
-                                        <h5 class="fonte-principal">&nbsp;&nbsp;&nbsp;&nbsp;<i class="fa-solid fa-globe icon-notif-zoom mini-profile-icon"></i>&nbsp;&nbsp;<?php include_once('../model/classes/tblCountry.php');
+                                                                                                                                                                            $country = new Country($dbh);
 
-                                                                                                                                                                            $country1 = new Country();
+                                                                                                                                                                            $country->setidCountry($rowOperationselect->idCountry);
 
-                                                                                                                                                                            $country1->setidCountry($rowOperationselect->idCountry);
+                                                                                                                                                                            $resultsCountry = $country->consulta("WHERE idCountry = :idCountry ");
 
-                                                                                                                                                                            $resultsCountry1 = $country1->consulta("WHERE idCountry = :idCountry ");
-
-                                                                                                                                                                            if ($resultsCountry1 != null) {
-                                                                                                                                                                              foreach ($resultsCountry1 as $rowCountry) {
+                                                                                                                                                                            if ($resultsCountry != null) {
+                                                                                                                                                                              foreach ($resultsCountry as $rowCountry) {
                                                                                                                                                                                 echo $rowCountry->NmCountry;
                                                                                                                                                                               }
                                                                                                                                                                             }
@@ -758,64 +801,208 @@ if ($results != null) {
                   <div class="carousel-filmes">
                     <div class="row">
                       <div class="col-8 d-flex align-middle">
-                        <h1 id="filme" class="titulo2">Results of SEARCH PROFILES</h1>
+                        <h1 id="filme" class="titulo2 txthtitulo">Results of SEARCH PROFILES</h1>
                       </div>
-                      <div class="col-4 d-flex justify-content-end align-middle">
-                        <a href="searchPage.php" type="button" class="btn btn-primary align-middle mt-0">
-                          <h3>+ Create Search</h3>
-                        </a>
-                      </div>
+
                     </div>
                     <br>
 
-                    <div class="card card-body">
-                      <?php
-                      include_once('../model/classes/tblSearch.php');
-                      $Searchcard = new Search();
-                      $Searchcard->setidClient($iduser);
-                      $resultSearchcard = $Searchcard->consulta("WHERE idClient = :idClient");
-                      if ($resultSearchcard != null) {
-                        foreach ($resultSearchcard as $resultConectUnidSearch) { ?>
-                          <div class="row">
-                            <div class="col-10 d-flex ">
-                              <h3 id="filme" class="titulo2"> <?php echo $resultConectUnidSearch->Nome; ?></h3>
+
+                    <?php
+                    include_once('../model/classes/tblSearch.php');
+                    $Searchcard = new Search($dbh);
+                    $Searchcard->setidClient($iduser);
+                    $resultSearchcard = $Searchcard->consulta("WHERE idClient = :idClient");
+                    if ($resultSearchcard != null) {
+                      foreach ($resultSearchcard as $resultConectUnidSearch) { ?>
+                        <div class="carousel-filmes">
+                          <h2 id="filme" class="titulo2 txthtitulo"><?php echo  $resultConectUnidSearch->Nome; ?> </h2><br>
+                          <div class="card col-12" style="height: fit-content;margin-left: 10px;margin-right: 10px;margin-bottom: 10px;">
+                            <div class="row" style="padding: 4px;">
+                              <div style="font-size: small;"><?php include_once('../model/classes/tblOperations.php');
+                                    $operations = new Operations($dbh);
+                                    $operations->setidOperation($resultConectUnidSearch->coreBussinessID);
+                                    $resultsoperation = $operations->consulta("WHERE idOperation = :idOperation");
+                                    if ($resultsoperation != null) {
+                                      foreach ($resultsoperation as $rowoperation) {
+                                        echo "<b>Core Business: </b>" . $rowoperation->NmOperation;
+                                      }
+                                    } ?></div>
+
+                              <div style="font-size: small;"><?php include_once('../model/classes/tblSearchBusiness.php');
+                                    include_once('../model/classes/tblBusiness.php');
+                                    $tblSearchBusiness = new SearchBusiness($dbh);
+                                    $tblSearchBusiness->setidSearch($resultConectUnidSearch->idSearch);
+                                    $resultstblSearchBusiness = $tblSearchBusiness->consulta("WHERE idSearch = :idSearch");
+                                    $resultstblqtdnum = $tblSearchBusiness->quantidade("WHERE idSearch = :idSearch");
+                                    if ($resultstblqtdnum->rowCount() == 10) {
+                                      echo "<b>Business: </b> Todos";
+                                    } else if ($resultstblqtdnum->rowCount() > 0 && $resultstblqtdnum->rowCount() < 10) {
+                                      if ($resultstblSearchBusiness != null) {
+                                        $namesbs = array();
+                                        foreach ($resultstblSearchBusiness as $rowSearchBusiness) {
+
+                                          $business = new Business($dbh);
+                                          $business->setidBusiness($rowSearchBusiness->idBusiness);
+                                          $resultsbusiness = $business->consulta("WHERE idBusiness = :idBusiness");
+                                          if ($resultsbusiness != null) {
+                                            foreach ($resultsbusiness as $rowbusiness) {
+                                              $namesbs[] = $rowbusiness->NmBusiness;
+                                            }
+                                            if (!empty($namesbs)) {
+                                              echo "<b>Business: </b>" . implode(", ", $namesbs);
+                                            }
+                                          }
+                                        }
+                                      }
+                                    }
+                                    ?></div>
+                              <div style="font-size: small;"><?php
+                                    include_once('../model/classes/tblSearchCategory.php');
+                                    include_once('../model/classes/tblBusiness.php');
+                                    $tblSearchCategory = new SearchCategory($dbh);
+                                    $tblSearchCategory->setidSearch($resultConectUnidSearch->idSearch);
+                                    $resultstbltblSearchCategory = $tblSearchCategory->consulta("WHERE idSearch = :idSearch");
+                                    $resultstblqtdnumcaeg = $tblSearchCategory->quantidade("WHERE idSearch = :idSearch");
+                                    if ($resultstblqtdnumcaeg != null) {
+                                      if ($resultstblqtdnumcaeg->rowCount() == 10) {
+                                        echo "<b>Business Category: </b>" . $resultstblqtdnumcaeg->rowCount();
+                                      } else if ($resultstblqtdnumcaeg->rowCount() > 0 && $resultstblqtdnumcaeg->rowCount() < 10) {
+                                        if ($resultstbltblSearchCategory != null) {
+                                          $namesbscateg = array();
+                                          foreach ($resultstbltblSearchCategory as $rowSearchBusinesscateg) {
+                                            include_once('../model/classes/tblBusinessCategory.php');
+                                            $BusinessCategory = new BusinessCategory($dbh);
+                                            $BusinessCategory->setidBusinessCategory($rowSearchBusinesscateg->idCategory);
+                                            $resultsBusinessCategory = $BusinessCategory->consulta("WHERE idBusinessCategory = :idBusinessCategory");
+
+                                            if ($resultsBusinessCategory != null) {
+                                              foreach ($resultsBusinessCategory as $rowbusinesscateg) {
+
+                                                $namesbscateg[] = $rowbusinesscateg->NmBusinessCategory;
+                                              }
+                                              if (!empty($namesbscateg)) {
+                                                echo "<b>Business Category: </b>" . implode(", ", $namesbscateg);
+                                              }
+                                            }
+                                          }
+                                        }
+                                      }
+                                    }
+                                    ?></div>
                             </div>
-
-                            <div class="col-2 d-flex justify-content-center align-content-center align-items-center">
-                              <p>No results</p>
-                            </div>
-
-
-
-
                           </div>
-                          <hr>
+                          <div class=" owl-carousel owl-thema ">
+                            <?php
+                            $idSearchtbl = $resultConectUnidSearch->idSearch;
+                            $tblSearchResults2 = new SearchResults($dbh);
+                            $tblSearchResults2->setidSearch($idSearchtbl);
+                            $tblSearchResults2->setidClientPesquisador($iduser);
+                            $tblSearchResultsresults = $tblSearchResults2->consulta("WHERE idSearch = :idSearch AND idClientPesquisador = :idClientPesquisador");
+                            if ($tblSearchResultsresults != null) {
+                              foreach ($tblSearchResultsresults as $rowsechcliente) {
 
-                      <?php    }
-                      }
+                            ?>
 
-                      ?>
-                    </div>
+                                <?php
+
+                                $Operationselect3 = new UserClients($dbh);
+                                $Operationselect3->setidClient($rowsechcliente->idClientResultado);
+                                $resultsOperationselect3 = $Operationselect3->consulta(" WHERE idClient = :idClient");
+                                if ($resultsOperationselect3 != null) {
+                                  foreach ($resultsOperationselect3 as $rowOperationselect) {  ?>
+                                    <div class="item celularcard">
+                                      <div class="card rounded-4 shadow celularcard">
+                                        <div class="card-body p-0 m-0" style="min-height: 300px !IMPORTANT;">
+                                          <div class="col-12 mh-25">
+                                            <img class="mh-25 rounded-top-3" src="<?php if ($rowOperationselect->LogoPicturePath != "Avatar.png" && $rowOperationselect->LogoPicturePath != "") {
+                                                                                    echo "" . $rowOperationselect->LogoPicturePath;
+                                                                                  } else {
+                                                                                    echo "https://images2.alphacoders.com/131/1317606.jpeg";
+                                                                                  } ?>" alt="Descrição da Imagem" style="max-height: 100px; width: 100%;">
+                                          </div>
+                                          <div class="row p-0 ml-0 m-0">
+                                            <div class="col-6 d-flex justify-content-start p-0 m-0 " style="height: 0px;">
+                                              <img src=" <?php if ($rowOperationselect->PersonalUserPicturePath != "Avatar.png" && $rowOperationselect->PersonalUserPicturePath != "") {
+                                                            echo "" . $rowOperationselect->PersonalUserPicturePath;
+                                                          } else {
+                                                            echo "assets/img/Avatar.png";
+                                                          } ?>" alt="user" class="border-2 mini-profile-img " onclick="toggleMenu()">
+                                            </div>
+                                            <div class="col-6">
+                                              <h4 class="fonte-titulo cortardescricao mr-1"><?php echo  $rowOperationselect->FirstName . " " . $rowOperationselect->LastName; ?></h4>
+
+                                            </div>
+                                          </div>
+                                          <div class="col-12 m-0 p-0">
+                                            <hr class="m-0">
+                                          </div>
+                                          <div class="row mt-3 pr-2" style="padding: 5px !important; margin: 0px !important; width: -webkit-fill-available;">
+                                            <div class="col-9 m-0 p-0" style="width: auto;">
+                                              <h5 class="fonte-principal "><i class="fa-solid fa-building icon-notif-zoom mini-profile-icon" style="font-size: 12px;"></i>&nbsp;&nbsp;<?php echo  $rowOperationselect->JobTitle . ' at ' . $rowOperationselect->CompanyName ?></h5>
+                                              <h5 class="fonte-principal"><i class="fa-solid fa-globe icon-notif-zoom mini-profile-icon" style="font-size: 12px;"></i>&nbsp;&nbsp;<?php include_once('../model/classes/tblCountry.php');
+
+                                                                                                                                                                                  $country = new Country($dbh);
+
+                                                                                                                                                                                  $country->setidCountry($rowOperationselect->idCountry);
+
+                                                                                                                                                                                  $resultsCountry = $country->consulta("WHERE idCountry = :idCountry ");
+
+                                                                                                                                                                                  if ($resultsCountry != null) {
+                                                                                                                                                                                    foreach ($resultsCountry as $rowCountry) {
+                                                                                                                                                                                      echo $rowCountry->NmCountry;
+                                                                                                                                                                                    }
+                                                                                                                                                                                  }
+
+                                                                                                                                                                                  ?> </h5>
+                                            </div>
+
+                                          </div>
+
+                                          <div class="row mt-3 pr-2" style="
+padding-left: 6PX;
+padding-right: 6px;
+">
+                                            <p class="pdescricaosp"><?php
+
+                                                                    echo $rowOperationselect->descricao;
+                                                                    ?></p>
+                                          </div>
+                                          <div class="col-12 p-2 d-flex justify-content-end">
+                                            <a href="viewProfile.php?profile=<?php echo $rowOperationselect->idClient; ?>" type="button" class="btn btn-primary" style="">View Profile</a>
+                                          </div>
+                                        </div>
+                                      </div>
+                                    </div>
+                                <?php }
+                                } ?>
+                            <?php    }
+                            }
+
+                            ?>
+                          </div>
+                        </div><br>
+
+                      <?php      }
+                    }
+                  } else {
 
 
-                    <?php      } else {
-
-
-                    $operationsnomelike = new Operations();
+                    $operationsnomelike = new Operations($dbh);
 
                     $resultsOperationomelike = $operationsnomelike->consulta("WHERE NmOperation LIKE '%" . $text . "%'");
                     if ($resultsOperationomelike != null) {
                       foreach ($resultsOperationomelike as $rowOperationomelike) { ?>
                         <div class="carousel-filmes">
-                          <h2 id="filme" class="titulo2"><?php
+                          <h2 id="filme" class="titulo2 txthtitulo"><?php
 
 
-                                                          echo $rowOperationomelike->NmOperation;
+                                                                    echo $rowOperationomelike->NmOperation;
 
-                                                          ?> - <?php
-                                                                if (isset($contoperationnotresults)) {
-                                                                  echo  $contoperationnotresults;
-                                                                } ?>
+                                                                    ?> - <?php
+                                                                          if (isset($contoperationnotresults)) {
+                                                                            echo  $contoperationnotresults;
+                                                                          } ?>
 
 
                           </h2><br>
@@ -823,7 +1010,7 @@ if ($results != null) {
                           <div class=" owl-carousel owl-thema ">
                             <?php
 
-                            $Operationselect = new UserClients();
+                            $Operationselect = new UserClients($dbh);
                             $Operationselect->setCoreBusinessId($rowOperationomelike->idOperation);
                             $resultsOperationselect = $Operationselect->consulta(" WHERE CoreBusinessId = :CoreBusinessId");
                             if ($resultsOperationselect != null) {
@@ -848,18 +1035,18 @@ if ($results != null) {
                                         </div>
                                         <div class="col-6">
                                           <h4 class="fonte-titulo cortardescricao mr-1"><?php echo  $rowOperationselect->FirstName . " " . $rowOperationselect->LastName; ?></h4>
-                                          <h6 class="fonte-principal cortardescricao mr-1"><?php echo  $rowOperationselect->JobTitle . ' at ' . $rowOperationselect->CompanyName ?></h6>
+
                                         </div>
                                       </div>
                                       <div class="col-12 m-0 p-0">
                                         <hr class="m-0">
                                       </div>
-                                      <div class="row mt-3 pr-2">
-                                        <div class="col-9 m-0 p-0">
+                                      <div class="row mt-3 pr-2" style="padding: 5px !important; margin: 0px !important; width: -webkit-fill-available;">
+                                        <div class="col-9 m-0 p-0" style="width: auto;">
+                                          <h5 class="fonte-principal "><i class="fa-solid fa-building icon-notif-zoom mini-profile-icon" style="font-size: 12px;"></i>&nbsp;&nbsp;<?php echo  $rowOperationselect->JobTitle . ' at ' . $rowOperationselect->CompanyName ?></h5>
+                                          <h5 class="fonte-principal"><i class="fa-solid fa-globe icon-notif-zoom mini-profile-icon" style="font-size: 12px;"></i>&nbsp;&nbsp;<?php include_once('../model/classes/tblCountry.php');
 
-                                          <h5 class="fonte-principal">&nbsp;&nbsp;&nbsp;&nbsp;<i class="fa-solid fa-globe icon-notif-zoom mini-profile-icon"></i>&nbsp;&nbsp;<?php include_once('../model/classes/tblCountry.php');
-
-                                                                                                                                                                              $country = new Country();
+                                                                                                                                                                              $country = new Country($dbh);
 
                                                                                                                                                                               $country->setidCountry($rowOperationselect->idCountry);
 
@@ -875,6 +1062,7 @@ if ($results != null) {
                                         </div>
 
                                       </div>
+
                                       <div class="row mt-3 pr-2" style="
     padding-left: 6PX;
     padding-right: 6px;
@@ -899,20 +1087,20 @@ if ($results != null) {
                     }
 
                     include_once('../model/classes/tblBusiness.php');
-                    $Businesslike = new Business();
+                    $Businesslike = new Business($dbh);
                     $resultsBusinesslike = $Businesslike->consulta("WHERE NmBusiness LIKE '%" . $text . "%'");
                     if ($resultsBusinesslike != null) {
                       foreach ($resultsBusinesslike as $rowBusinesslike) { ?>
                         <div class="carousel-filmes">
-                          <h2 id="filme" class="titulo2"><?php
+                          <h2 id="filme" class="titulo2 txthtitulo"><?php
 
 
-                                                          echo $rowBusinesslike->NmBusiness;
+                                                                    echo $rowBusinesslike->NmBusiness;
 
-                                                          ?> - <?php
-                                                                if (isset($contoperationnotresults)) {
-                                                                  echo  $contoperationnotresults;
-                                                                } ?>
+                                                                    ?> - <?php
+                                                                          if (isset($contoperationnotresults)) {
+                                                                            echo  $contoperationnotresults;
+                                                                          } ?>
 
 
                           </h2><br>
@@ -920,7 +1108,7 @@ if ($results != null) {
                           <div class=" owl-carousel owl-thema ">
                             <?php
 
-                            $Operationselect1 = new UserClients();
+                            $Operationselect1 = new UserClients($dbh);
                             $Operationselect1->setSatBusinessId($rowBusinesslike->idBusiness);
                             $resultsOperationselect1 = $Operationselect1->consulta(" WHERE SatBusinessId = :SatBusinessId");
                             if ($resultsOperationselect1 != null) {
@@ -945,18 +1133,18 @@ if ($results != null) {
                                         </div>
                                         <div class="col-6">
                                           <h4 class="fonte-titulo cortardescricao mr-1"><?php echo  $rowOperationselect->FirstName . " " . $rowOperationselect->LastName; ?></h4>
-                                          <h6 class="fonte-principal cortardescricao mr-1"><?php echo  $rowOperationselect->JobTitle . ' at ' . $rowOperationselect->CompanyName ?></h6>
+
                                         </div>
                                       </div>
                                       <div class="col-12 m-0 p-0">
                                         <hr class="m-0">
                                       </div>
-                                      <div class="row mt-3 pr-2">
-                                        <div class="col-9 m-0 p-0">
+                                      <div class="row mt-3 pr-2" style="padding: 5px !important; margin: 0px !important; width: -webkit-fill-available;">
+                                        <div class="col-9 m-0 p-0" style="width: auto;">
+                                          <h5 class="fonte-principal "><i class="fa-solid fa-building icon-notif-zoom mini-profile-icon" style="font-size: 12px;"></i>&nbsp;&nbsp;<?php echo  $rowOperationselect->JobTitle . ' at ' . $rowOperationselect->CompanyName ?></h5>
+                                          <h5 class="fonte-principal"><i class="fa-solid fa-globe icon-notif-zoom mini-profile-icon" style="font-size: 12px;"></i>&nbsp;&nbsp;<?php include_once('../model/classes/tblCountry.php');
 
-                                          <h5 class="fonte-principal">&nbsp;&nbsp;&nbsp;&nbsp;<i class="fa-solid fa-globe icon-notif-zoom mini-profile-icon"></i>&nbsp;&nbsp;<?php include_once('../model/classes/tblCountry.php');
-
-                                                                                                                                                                              $country = new Country();
+                                                                                                                                                                              $country = new Country($dbh);
 
                                                                                                                                                                               $country->setidCountry($rowOperationselect->idCountry);
 
@@ -972,6 +1160,7 @@ if ($results != null) {
                                         </div>
 
                                       </div>
+
                                       <div class="row mt-3 pr-2" style="
     padding-left: 6PX;
     padding-right: 6px;
@@ -994,20 +1183,20 @@ if ($results != null) {
                       <?php    }
                     }
                     include_once('../model/classes/tblBusinessCategory.php');
-                    $tblBusinessCategorylike = new BusinessCategory();
+                    $tblBusinessCategorylike = new BusinessCategory($dbh);
                     $resultstblBusinessCategorylike = $tblBusinessCategorylike->consulta(" WHERE NmBusinessCategory LIKE '%" . $text . "%'");
                     if ($resultstblBusinessCategorylike != null) {
                       foreach ($resultstblBusinessCategorylike as $rowBusinessCategorylike) { ?>
                         <div class="carousel-filmes">
-                          <h2 id="filme" class="titulo2"><?php
+                          <h2 id="filme" class="titulo2 txthtitulo"><?php
 
 
-                                                          echo $rowBusinessCategorylike->NmBusinessCategory;
+                                                                    echo $rowBusinessCategorylike->NmBusinessCategory;
 
-                                                          ?> - <?php
-                                                                if (isset($contoperationnotresults)) {
-                                                                  echo  $contoperationnotresults;
-                                                                } ?>
+                                                                    ?> - <?php
+                                                                          if (isset($contoperationnotresults)) {
+                                                                            echo  $contoperationnotresults;
+                                                                          } ?>
 
 
                           </h2><br>
@@ -1015,7 +1204,7 @@ if ($results != null) {
                           <div class=" owl-carousel owl-thema ">
                             <?php
 
-                            $Operationselect2 = new UserClients();
+                            $Operationselect2 = new UserClients($dbh);
                             $Operationselect2->setIdOperation($rowBusinessCategorylike->idBusinessCategory);
                             $resultsOperationselect2 = $Operationselect2->consulta(" WHERE IdOperation = :IdOperation");
                             if ($resultsOperationselect2 != null) {
@@ -1040,25 +1229,25 @@ if ($results != null) {
                                         </div>
                                         <div class="col-6">
                                           <h4 class="fonte-titulo cortardescricao mr-1"><?php echo  $rowOperationselect->FirstName . " " . $rowOperationselect->LastName; ?></h4>
-                                          <h6 class="fonte-principal cortardescricao mr-1"><?php echo  $rowOperationselect->JobTitle . ' at ' . $rowOperationselect->CompanyName ?></h6>
+
                                         </div>
                                       </div>
                                       <div class="col-12 m-0 p-0">
                                         <hr class="m-0">
                                       </div>
-                                      <div class="row mt-3 pr-2">
-                                        <div class="col-9 m-0 p-0">
+                                      <div class="row mt-3 pr-2" style="padding: 5px !important; margin: 0px !important; width: -webkit-fill-available;">
+                                        <div class="col-9 m-0 p-0" style="width: auto;">
+                                          <h5 class="fonte-principal "><i class="fa-solid fa-building icon-notif-zoom mini-profile-icon" style="font-size: 12px;"></i>&nbsp;&nbsp;<?php echo  $rowOperationselect->JobTitle . ' at ' . $rowOperationselect->CompanyName ?></h5>
+                                          <h5 class="fonte-principal"><i class="fa-solid fa-globe icon-notif-zoom mini-profile-icon" style="font-size: 12px;"></i>&nbsp;&nbsp;<?php include_once('../model/classes/tblCountry.php');
 
-                                          <h5 class="fonte-principal">&nbsp;&nbsp;&nbsp;&nbsp;<i class="fa-solid fa-globe icon-notif-zoom mini-profile-icon"></i>&nbsp;&nbsp;<?php include_once('../model/classes/tblCountry.php');
+                                                                                                                                                                              $country = new Country($dbh);
 
-                                                                                                                                                                              $country1 = new Country();
+                                                                                                                                                                              $country->setidCountry($rowOperationselect->idCountry);
 
-                                                                                                                                                                              $country1->setidCountry($rowOperationselect->idCountry);
+                                                                                                                                                                              $resultsCountry = $country->consulta("WHERE idCountry = :idCountry ");
 
-                                                                                                                                                                              $resultsCountry1 = $country1->consulta("WHERE idCountry = :idCountry ");
-
-                                                                                                                                                                              if ($resultsCountry1 != null) {
-                                                                                                                                                                                foreach ($resultsCountry1 as $rowCountry) {
+                                                                                                                                                                              if ($resultsCountry != null) {
+                                                                                                                                                                                foreach ($resultsCountry as $rowCountry) {
                                                                                                                                                                                   echo $rowCountry->NmCountry;
                                                                                                                                                                                 }
                                                                                                                                                                               }
@@ -1067,6 +1256,7 @@ if ($results != null) {
                                         </div>
 
                                       </div>
+
                                       <div class="row mt-3 pr-2" style="
     padding-left: 6PX;
     padding-right: 6px;
@@ -1089,18 +1279,14 @@ if ($results != null) {
                       <?php     }
                     }
 
-                    $Operationselectlike = new UserClients();
+                    $Operationselectlike = new UserClients($dbh);
                     $resultsOperationselectlike = $Operationselectlike->consulta(" WHERE FirstName LIKE '%" . $text . "%' OR LastName LIKE '%" . $text . "%' OR FirstName LIKE '%" . $text . "%' OR JobTitle LIKE'%" . $text . "%'  OR CompanyName LIKE'%" . $text . "%'");
                     if ($resultsOperationselectlike != null) { ?>
                       <div class="carousel-filmes">
-                        <h2 id="filme" class="titulo2"><?php echo $text; ?> - <?php if (isset($contoperationnotresults)) {
-                                                                                echo  $contoperationnotresults;
-                                                                              } ?>
-
+                        <h2 id="filme" class="titulo2 txthtitulo"><?php echo $text; ?> - <?php if (isset($contoperationnotresults)) {
+                                                                                            echo  $contoperationnotresults;
+                                                                                          } ?>
                         </h2><br>
-
-
-
                         <div class=" owl-carousel owl-thema ">
                           <?php foreach ($resultsOperationselectlike as $rowOperationselect) { ?>
                             <div class="item celularcard">
@@ -1121,27 +1307,27 @@ if ($results != null) {
                                                     echo "assets/img/Avatar.png";
                                                   } ?>" alt="user" class="border-2 mini-profile-img " onclick="toggleMenu()">
                                     </div>
-                                    <div class="col-6 ">
+                                    <div class="col-6">
                                       <h4 class="fonte-titulo cortardescricao mr-1"><?php echo  $rowOperationselect->FirstName . " " . $rowOperationselect->LastName; ?></h4>
-                                      <h6 class="fonte-principal cortardescricao mr-1"><?php echo  $rowOperationselect->JobTitle . ' at ' . $rowOperationselect->CompanyName ?></h6>
+
                                     </div>
                                   </div>
                                   <div class="col-12 m-0 p-0">
                                     <hr class="m-0">
                                   </div>
-                                  <div class="row mt-3 pr-2">
-                                    <div class="col-9 m-0 p-0">
+                                  <div class="row mt-3 pr-2" style="padding: 5px !important; margin: 0px !important; width: -webkit-fill-available;">
+                                    <div class="col-9 m-0 p-0" style="width: auto;">
+                                      <h5 class="fonte-principal "><i class="fa-solid fa-building icon-notif-zoom mini-profile-icon" style="font-size: 12px;"></i>&nbsp;&nbsp;<?php echo  $rowOperationselect->JobTitle . ' at ' . $rowOperationselect->CompanyName ?></h5>
+                                      <h5 class="fonte-principal"><i class="fa-solid fa-globe icon-notif-zoom mini-profile-icon" style="font-size: 12px;"></i>&nbsp;&nbsp;<?php include_once('../model/classes/tblCountry.php');
 
-                                      <h5 class="fonte-principal">&nbsp;&nbsp;&nbsp;&nbsp;<i class="fa-solid fa-globe icon-notif-zoom mini-profile-icon"></i>&nbsp;&nbsp;<?php include_once('../model/classes/tblCountry.php');
+                                                                                                                                                                          $country = new Country($dbh);
 
-                                                                                                                                                                          $country2 = new Country();
+                                                                                                                                                                          $country->setidCountry($rowOperationselect->idCountry);
 
-                                                                                                                                                                          $country2->setidCountry($rowOperationselect->idCountry);
+                                                                                                                                                                          $resultsCountry = $country->consulta("WHERE idCountry = :idCountry ");
 
-                                                                                                                                                                          $resultsCountry2 = $country2->consulta("WHERE idCountry = :idCountry ");
-
-                                                                                                                                                                          if ($resultsCountry2 != null) {
-                                                                                                                                                                            foreach ($resultsCountry2 as $rowCountry) {
+                                                                                                                                                                          if ($resultsCountry != null) {
+                                                                                                                                                                            foreach ($resultsCountry as $rowCountry) {
                                                                                                                                                                               echo $rowCountry->NmCountry;
                                                                                                                                                                             }
                                                                                                                                                                           }
@@ -1150,6 +1336,7 @@ if ($results != null) {
                                     </div>
 
                                   </div>
+
                                   <div class="row mt-3 pr-2" style="
     padding-left: 6PX;
     padding-right: 6px;
@@ -1173,24 +1360,20 @@ if ($results != null) {
 
                     <?php
                     include_once('../model/classes/tblCountry.php');
-                    $countrylike = new Country();
+                    $countrylike = new Country($dbh);
                     $resultsCountrylike = $countrylike->consulta("WHERE NmCountry LIKE '%" . $text . "%' ");
                     if ($resultsCountrylike != null) {
 
                       foreach ($resultsCountrylike as $rowCountrylike) {
-                        $paisclientepais = new UserClients();
+                        $paisclientepais = new UserClients($dbh);
                         $paisclientepais->setidCountry($rowCountrylike->idCountry);
-                        $resultspaisclientepais = $paisclientepais->consulta(" WHERE idCountry = :idCountry");
-                        if ($resultspaisclientepais != null) { ?>
+                        $resultspaisclientepais1 = $paisclientepais->consulta(" WHERE idCountry = :idCountry");
+                        if ($resultspaisclientepais1 != null) { ?>
                           <div class="carousel-filmes">
-                            <h2 id="filme" class="titulo2"><?php echo $text; ?> - <?php  ?>
-
+                            <h2 id="filme" class="titulo2 txthtitulo"><?php echo $text; ?> -
                             </h2><br>
-
-
-
                             <div class=" owl-carousel owl-thema ">
-                              <?php foreach ($resultspaisclientepais as $rowpaiscliente) { ?>
+                              <?php foreach ($resultspaisclientepais1 as $rowOperationselect) {  ?>
                                 <div class="item celularcard">
                                   <div class="card rounded-4 shadow celularcard">
                                     <div class="card-body p-0 m-0" style="min-height: 300px !IMPORTANT;">
@@ -1203,34 +1386,33 @@ if ($results != null) {
                                       </div>
                                       <div class="row p-0 ml-0 m-0">
                                         <div class="col-6 d-flex justify-content-start p-0 m-0 " style="height: 0px;">
-                                          <img src=" <?php if ($rowpaiscliente->PersonalUserPicturePath != "Avatar.png" && $rowpaiscliente->PersonalUserPicturePath != "") {
-                                                        echo "" . $rowpaiscliente->PersonalUserPicturePath;
+                                          <img src=" <?php if ($rowOperationselect->PersonalUserPicturePath != "Avatar.png" && $rowOperationselect->PersonalUserPicturePath != "") {
+                                                        echo "" . $rowOperationselect->PersonalUserPicturePath;
                                                       } else {
                                                         echo "assets/img/Avatar.png";
                                                       } ?>" alt="user" class="border-2 mini-profile-img " onclick="toggleMenu()">
                                         </div>
                                         <div class="col-6">
-                                          <h4 class="fonte-titulo cortardescricao mr-1"><?php echo  $rowpaiscliente->FirstName . " " . $rowpaiscliente->LastName; ?></h4>
-                                          <h6 class="fonte-principal cortardescricao mr-1"><?php echo  $rowpaiscliente->JobTitle . ' at ' . $rowpaiscliente->CompanyName ?></h6>
+                                          <h4 class="fonte-titulo cortardescricao mr-1"><?php echo  $rowOperationselect->FirstName . " " . $rowOperationselect->LastName; ?></h4>
+
                                         </div>
                                       </div>
                                       <div class="col-12 m-0 p-0">
                                         <hr class="m-0">
                                       </div>
-                                      <div class="row mt-3 pr-2">
-                                        <div class="col-9 m-0 p-0">
+                                      <div class="row mt-3 pr-2" style="padding: 5px !important; margin: 0px !important; width: -webkit-fill-available;">
+                                        <div class="col-9 m-0 p-0" style="width: auto;">
+                                          <h5 class="fonte-principal "><i class="fa-solid fa-building icon-notif-zoom mini-profile-icon" style="font-size: 12px;"></i>&nbsp;&nbsp;<?php echo  $rowOperationselect->JobTitle . ' at ' . $rowOperationselect->CompanyName ?></h5>
+                                          <h5 class="fonte-principal"><i class="fa-solid fa-globe icon-notif-zoom mini-profile-icon" style="font-size: 12px;"></i>&nbsp;&nbsp;<?php include_once('../model/classes/tblCountry.php');
 
-                                          <h5 class="fonte-principal">&nbsp;&nbsp;&nbsp;&nbsp;<i class="fa-solid fa-globe icon-notif-zoom mini-profile-icon"></i>&nbsp;&nbsp;<?php
-                                                                                                                                                                              include_once('../model/classes/tblCountry.php');
-                                                                                                                                                                              $country3 = new Country();
+                                                                                                                                                                              $country = new Country($dbh);
 
-                                                                                                                                                                              $country3->setidCountry($rowpaiscliente->idCountry);
+                                                                                                                                                                              $country->setidCountry($rowOperationselect->idCountry);
 
-                                                                                                                                                                              $resultsCountry3 = $country3->consulta("WHERE idCountry = :idCountry ");
+                                                                                                                                                                              $resultsCountry = $country->consulta("WHERE idCountry = :idCountry ");
 
-                                                                                                                                                                              if ($resultsCountry3 != null) {
-                                                                                                                                                                                foreach ($resultsCountry3
-                                                                                                                                                                                  as $rowCountry) {
+                                                                                                                                                                              if ($resultsCountry != null) {
+                                                                                                                                                                                foreach ($resultsCountry as $rowCountry) {
                                                                                                                                                                                   echo $rowCountry->NmCountry;
                                                                                                                                                                                 }
                                                                                                                                                                               }
@@ -1239,18 +1421,23 @@ if ($results != null) {
                                         </div>
 
                                       </div>
-                                      <div class="row mt-3 pr-2" style="padding-left: 6PX; padding-right: 6px;">
+
+                                      <div class="row mt-3 pr-2" style="
+    padding-left: 6PX;
+    padding-right: 6px;
+">
                                         <p class="pdescricaosp"><?php
 
-                                                                echo $rowpaiscliente->descricao;
+                                                                echo $rowOperationselect->descricao;
                                                                 ?></p>
-                                      </div> 
+                                      </div>
                                       <div class="col-12 p-2 d-flex justify-content-end">
                                         <a href="viewProfile.php?profile=<?php echo $rowOperationselect->idClient; ?>" type="button" class="btn btn-primary" style="">View Profile</a>
                                       </div>
                                     </div>
                                   </div>
                                 </div>
+
                           <?php }
                             }
                           } ?>
@@ -1280,7 +1467,21 @@ if ($results != null) {
   <script src="assets/js/owl/owl.carousel.min.js"></script>
   <script src="assets/js/owl/index.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.bundle.min.js" integrity="sha384-HwwvtgBNo3bZJJLYd8oVXjrBZt8cqVSpeBNS5n7C8IVInixGAoxmnlMuBnhbgrkm" crossorigin="anonymous"></script>
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+
+
   <script>
+    var $wrapper = $('.main-wrapper');
+    $('body').append('<div class="sidebar-overlay"></div>');
+    $('#mobile_btn').on('click', function() {
+      if ($('#sidebar').hasClass('expandeds1')) {
+        closeNav();
+      } else {
+        openNav();
+      }
+
+    });
     $.fn.extend({
       treed: function(o) {
 
@@ -1433,17 +1634,29 @@ if ($results != null) {
 
 
 
+    function redirectToAnotherPage() {
+      var form = document.getElementById('formularionome');
+      var textValue = form.querySelector('[name="text"]').value;
 
+      // Redireciona para listcompani.php com o parâmetro GET "text"
+      window.location.href = 'listcompani.php?text=' + encodeURIComponent(textValue);
+    }
 
 
     /* Set the width of the sidebar to 250px (show it) */
     function openNav() {
-      document.getElementById("mySidepanel").style.width = "250px";
+      document.getElementById("sidebar").classList.add("expandeds1");
+      document.getElementById("sidebar").style.width = "250px";
+      document.getElementById("sidebar").style.display = "flex";
+      document.getElementById("sidebar").style.left = "0px";
     }
 
     /* Set the width of the sidebar to 0 (hide it) */
     function closeNav() {
-      document.getElementById("mySidepanel").style.width = "0";
+      document.getElementById("sidebar").classList.remove("expandeds1");
+      document.getElementById("sidebar").style.width = "0";
+      document.getElementById("sidebar").style.display = "none";
+      document.getElementById("sidebar").style.left = "-50px";
     }
 
 
@@ -1509,7 +1722,7 @@ if ($results != null) {
     // Scroll Left button
     btnLeft.addEventListener("click", (e) => {
       let movieWidth = document.querySelector(".movie").getBoundingClientRect().width;
-      let scrollDistance = movieWidth * 6; // Scroll the length of 6 movies. TODO: make work for mobile because (4 movies/page instead of 6)
+      let scrollDistance = movieWidth * 1; // 
 
       slider.scrollBy({
         top: 0,

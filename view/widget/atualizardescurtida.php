@@ -1,4 +1,5 @@
 <?php
+include_once('../../model/classes/conexao.php');
 if ( session_status() !== PHP_SESSION_ACTIVE )
 {
    session_start();
@@ -14,14 +15,14 @@ $idpost = $_GET['id'];
 
 //parte 1
 include_once("../../model/classes/tblCurtidas.php");
-$tblcurtidadelete = new Curtidas;
+$tblcurtidadelete = new Curtidas($dbh);;
 $tblcurtidadelete->setidpost($idpost);
 $tblcurtidadelete->setidusuario($iduser);
 $tblcurtidadelete->deletar("WHERE idpost = :idpost AND idusuario = :idusuario");
 
 
 
-$tbcurtidaSe = new Curtidas;
+$tbcurtidaSe = new Curtidas($dbh);;
 $tbcurtidaSe->setidpost($idpost);
 $tbcurtidaSeResults = $tbcurtidaSe->consulta("WHERE idpost = :idpost");
 

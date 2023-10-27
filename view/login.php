@@ -1,10 +1,10 @@
 <?php
 if ( session_status() !== PHP_SESSION_ACTIVE )
 {
-   session_start();
+   
    $_SESSION["n"] = 8;
 }
-
+include_once('../model/classes/conexao.php');
 if (isset($_COOKIE["remember_me"])) {
   header("Location: ../controller/loginController.php");
 }

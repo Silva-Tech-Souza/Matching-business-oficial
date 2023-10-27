@@ -1,4 +1,5 @@
 <?php
+include_once('../../model/classes/conexao.php');
 if ( session_status() !== PHP_SESSION_ACTIVE )
 {
    session_start();
@@ -13,7 +14,7 @@ header("Access-Control-Allow-Origin: *");
 $idbusines2 = $_GET["q"];
 
 include_once('../../model/classes/tblBusiness.php');
-$tblBusiness = new Business();
+$tblBusiness = new Business($dbh);
 $tblBusiness ->setidBusiness($idbusines2);
 $resultstblBusiness = $tblBusiness->consulta(" WHERE idBusiness = :idBusiness");
 if ($tblBusiness != null) {
@@ -34,11 +35,11 @@ if ($tblBusiness != null) {
   </div>
 <div class="col-sm-12">
     <div class="form-floating">
-    <select name="category[]" onchange="liberarNotaoNext()" class=" form-select categmulti border-dark inputtamanho" multiple  id="floatingSelectGrid" aria-label="Floating label select example">
+    <select name="category[]"  class=" form-select categmulti border-dark inputtamanho selecttamanho" multiple  id="floatingSelectGrid" aria-label="Floating label select example">
     <option>Select</option>
             <?php
             include_once('../../model/classes/tblBusinessCategory.php');
-            $tblBusinessCategory = new BusinessCategory();
+            $tblBusinessCategory = new BusinessCategory($dbh);
             $tblBusinessCategory->setidBusiness($idBusiness);
             $resultstblBusinessCategory = $tblBusinessCategory->consulta(" WHERE idBusiness = :idBusiness");
             if ($tblBusinessCategory != null) {

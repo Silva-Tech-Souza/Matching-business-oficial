@@ -1,11 +1,8 @@
 <?php
-if ( session_status() !== PHP_SESSION_ACTIVE )
-{
-    session_start();
-}
 
-    include('../model/classes/tblUserClients.php');
-    include('../model/classes/tblEmpresas.php');
+include_once('../model/classes/conexao.php');
+    include_once('../model/classes/tblUserClients.php');
+    include_once('../model/classes/tblEmpresas.php');
     if ($_POST["signupsubmitcoolab"] != "") {
         $_POST["signupsubmitcoolab"]=="";
 
@@ -23,7 +20,7 @@ if ( session_status() !== PHP_SESSION_ACTIVE )
         $senhaCodificada = md5($senha);
 
 
-        $userClients = new UserClients();
+        $userClients = new UserClients($dbh);
         $userClients->setemail($email);
 
         $results = $userClients->consulta("WHERE email = :email");
@@ -35,7 +32,7 @@ if ( session_status() !== PHP_SESSION_ACTIVE )
 
         if($results == null){
 
-            $Empresas = new Empresas();
+            $Empresas = new Empresasview($dbh);
             $Empresas->setTaxid($taxid);
 
             $resultEmpresas = $Empresas->consulta("WHERE taxid = :taxid");
@@ -44,7 +41,7 @@ if ( session_status() !== PHP_SESSION_ACTIVE )
 
                 foreach($resultEmpresas as $resultEmpresasUnid){
 
-                    $userClients = new UserClients();
+                    $userClients = new UserClients($dbh);
 
                     $userClients->setFirstName($name);
                     $userClients->setLastName($lastname);
@@ -57,7 +54,7 @@ if ( session_status() !== PHP_SESSION_ACTIVE )
                     //$userClients->setidEmpresa($resultEmpresasUnid->nome);
                     $userClients->cadastrar();
 
-                    $userClients = new UserClients();
+                    $userClients = new UserClients($dbh);
 
                     $userClients->setPassword($senhaCodificada);
                     $userClients->setemail($email);
@@ -66,7 +63,7 @@ if ( session_status() !== PHP_SESSION_ACTIVE )
 
                     $_POST["signupsubmitcoolab"]=="";
 
-                    $userClients = new UserClients();
+                    $userClients = new UserClients($dbh);
                     $userClients->setemail($email);
 
                     $results2 = $userClients->consulta("WHERE email = :email");

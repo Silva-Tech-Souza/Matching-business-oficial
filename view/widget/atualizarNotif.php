@@ -1,8 +1,6 @@
 <?php
-if ( session_status() !== PHP_SESSION_ACTIVE )
-{
-   session_start();
-}
+include_once('../../model/classes/conexao.php');
+
 if(isset($_SESSION['error'])){
     error_reporting(0);
 }
@@ -23,7 +21,7 @@ $iduser = $_SESSION["id"];
 
 
     include_once('../../model/classes/tblSearchProfile_Results.php');
-    $searchProfileResults = new SearchProfile_Results();
+    $searchProfileResults = new SearchProfile_Results($dbh);
     $searchProfileResults->setidClienteEncontrado($iduser);
     $resultsSearchProfile = $searchProfileResults->consulta("WHERE idClienteEncontrado = :idClienteEncontrado ORDER BY datahora DESC");
 
@@ -34,7 +32,7 @@ $iduser = $_SESSION["id"];
 
 
             include_once('../../model/classes/tblUserClients.php');
-            $userClients = new UserClients();
+            $userClients = new UserClients($dbh);
             $userClients->setidClient($idCliente);
             $resultsUserClients = $userClients->consulta("WHERE idClient = :idClient");
 
@@ -56,10 +54,12 @@ $iduser = $_SESSION["id"];
                 $textNotif = "<p  class='d-inline' style='color: white; font-size: 11px;'>" . $usernamepost . " </p><p class='d-inline' style='color: #f2f2f2;'></p> <p class='d-inline' style='color: #62B7D8;'>viewed </p><p class='d-inline' style='color: #f2f2f2;'>  your profile!</p><br>";
             } else if ($idTipoNotif == 4) {
                 $textNotif = "<p  class='d-inline' style='color: white; font-size: 11px;'>" . $usernamepost . " </p><p class='d-inline' style='color: #f2f2f2;'></p> <p class='d-inline' style='color: #62B7D8;'>invited  </p><p class='d-inline' style='color: #f2f2f2;'>  you to be part of his network!</p><br>";
-            } else  if ($idTipoNotif == 6) {
+            } else  if ($idTipoNotif == 8) {
                 $textNotif = "<p  class='d-inline' style='color: white; font-size: 11px;'>" . $usernamepost . " </p><p class='d-inline' style='color: #f2f2f2;'></p> <p class='d-inline' style='color: #62B7D8;'>accepted </p><p class='d-inline' style='color: #f2f2f2;'> your connection!</p><br>";
             } else if ($idTipoNotif == 7) {
                 $textNotif = "<p  class='d-inline' style='color: white; font-size: 11px;'>" . $usernamepost . " </p><p class='d-inline' style='color: #f2f2f2;'></p> <p class='d-inline' style='color: #62B7D8;'>commented  </p><p class='d-inline' style='color: #f2f2f2;'>  on your post!</p><br>";
+            } else if ($idTipoNotif == 6) {
+                $textNotif = "<p  class='d-inline' style='color: white; font-size: 11px;'>" . $usernamepost . " </p><p class='d-inline' style='color: #f2f2f2;'></p> <p class='d-inline' style='color: #62B7D8;'>was found in  </p><p class='d-inline' style='color: #f2f2f2;'>  your search profile!</p><br>";
             }
             $postDateTime = new DateTime($rownotif->datahora);
 
@@ -89,10 +89,6 @@ $iduser = $_SESSION["id"];
             } else {
             }
 
-            //                    $searchProfileResults = new SearchProfile_Results();
-            //                    $searchProfileResults->setid($rownotif->id);
-
-            //                    $searchProfileResults->atualizar('estadoNotif = 1 WHERE id = :id');
 
     ?>
 

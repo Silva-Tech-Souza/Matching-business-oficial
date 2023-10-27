@@ -1,6 +1,6 @@
 <?php
-session_start();
-include('../model/classes/tblUserClients.php');
+include_once('../model/classes/conexao.php');
+include_once('../model/classes/tblUserClients.php');
 
 if ($_POST["create"] != "") {
     $senha = $_POST["password"];
@@ -14,7 +14,7 @@ if ($_POST["create"] != "") {
 
         //$resultschekflag = retornarDadostblUserClients($email,$dbh);//
 
-        $tblUserClients = new UserClients();
+        $tblUserClients = new UserClients($dbh);
         $tblUserClients->setemail($email);
 
         $resultschekflag = $tblUserClients->consulta("WHERE email = :email AND idFlagStatusCadastro != '1'");
@@ -23,7 +23,7 @@ if ($_POST["create"] != "") {
 
             //$resultslogin = atualizarSenha($email,$senhaCodificada,$dbh);//
 
-            $tblUserClients = new UserClients();
+            $tblUserClients = new UserClients($dbh);
             $tblUserClients->setemail($email);
             $tblUserClients->setPassword($senhaCodificada);
 

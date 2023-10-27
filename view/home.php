@@ -1,9 +1,20 @@
 <?php
-if (session_status() !== PHP_SESSION_ACTIVE) {
-    session_start();
-}
 
-include_once('../model/ErrorLog.php');
+//error_reporting(0);
+include_once('../model/classes/conexao.php');
+include_once("../model/classes/tblEmpresas.php");
+include_once('../model/classes/tblUserClients.php');
+include_once('../model/classes/tblOperations.php');
+include_once('../model/classes/tblBusiness.php');
+include_once('../model/classes/tblViews.php');
+include_once('../model/classes/tblConect.php');
+include_once('../model/classes/tblSearch.php');
+include_once('../model/classes/tblProducts.php');
+include_once('../model/classes/tblProductPictures.php');
+include_once('../model/classes/tblFeeds.php');
+include_once('../model/classes/tblCurtidas.php');
+include_once('../model/classes/tbPostComent.php');
+
 
 date_default_timezone_set('America/Sao_Paulo');
 if ($_SESSION["id"] < 0 || $_SESSION["id"] == "") {
@@ -18,10 +29,9 @@ $_SESSION["n"] = 8;
 //$query->bindParam(':idClient', $iduser, PDO::PARAM_INT);
 //$query->execute();
 //$results = $query->fetchAll(PDO::FETCH_OBJ);
-include_once("../model/classes/tblEmpresas.php");
-include_once('../model/classes/tblUserClients.php');
 
-$userClients = new UserClients();
+
+$userClients = new UserClients($dbh);
 
 $userClients->setidClient($iduser);
 
@@ -48,7 +58,7 @@ if ($results != null) {
 
 include('../model/classes/tblCountry.php');
 
-$country = new Country();
+$country = new Country($dbh);
 
 $country->setidCountry($idcountry);
 
@@ -93,6 +103,7 @@ if ($resultsCountry != null) {
     <script type="text/javascript" src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/autosize.js/4.0.2/autosize.min.js"></script>
+    <link rel="stylesheet" href="assets/css/cssprodutos.css">
     <script>
         function showCurtida(iddiv) {
             if (iddiv == "") {
@@ -124,7 +135,6 @@ if ($resultsCountry != null) {
             xmlhttp.send();
         }
     </script>
-
     <script>
         setInterval(function() {
 
@@ -137,10 +147,6 @@ if ($resultsCountry != null) {
             xmlhttp.open("GET", "widget/atualizarNotif.php", true);
             xmlhttp.send();
         }, 5000);
-   
-        
-
-        
     </script>
     <script>
         document.addEventListener("DOMContentLoaded", function() {
@@ -152,25 +158,25 @@ if ($resultsCountry != null) {
                 if (this.readyState == 4 && this.status == 200) {
                     document.getElementById("sponsored-container").innerHTML = this.responseText;
                     $(document).ready(function() {
-        var $sponsoredItems = $('.sponsored-item');
-        var currentIndex = 0;
-        var numItems = $sponsoredItems.length;
-        var showInterval = 20000; // Tempo (em milissegundos) entre cada troca
+                        var $sponsoredItems = $('.sponsored-item');
+                        var currentIndex = 0;
+                        var numItems = $sponsoredItems.length;
+                        var showInterval = 20000; // Tempo (em milissegundos) entre cada troca
 
-        function showNextGroup() {
-            $sponsoredItems.hide(); // Oculta todas as empresas
-            var endIndex = currentIndex + 3;
-            if (endIndex >= numItems) {
-                endIndex = numItems;
-            }
-            $sponsoredItems.slice(currentIndex, endIndex).fadeIn(1000);
-            currentIndex = endIndex % numItems; // Atualiza o índice atual
-        }
+                        function showNextGroup() {
+                            $sponsoredItems.hide(); // Oculta todas as empresas
+                            var endIndex = currentIndex + 3;
+                            if (endIndex >= numItems) {
+                                endIndex = numItems;
+                            }
+                            $sponsoredItems.slice(currentIndex, endIndex).fadeIn(1000);
+                            currentIndex = endIndex % numItems; // Atualiza o índice atual
+                        }
 
-        showNextGroup(); // Exibe o primeiro grupo
+                        showNextGroup(); // Exibe o primeiro grupo
 
-        setInterval(showNextGroup, showInterval); // Altere o intervalo (em milissegundos) conforme desejado
-    });
+                        setInterval(showNextGroup, showInterval); // Altere o intervalo (em milissegundos) conforme desejado
+                    });
                 }
             }
             xmlhttp5.open("GET", "widget/propagandas.php", true);
@@ -255,12 +261,6 @@ if ($resultsCountry != null) {
 
         });
     </script>
-
-<script>
-   
-</script>
-
-
     <style>
         /*-----------------
        9. Sidebar
@@ -503,8 +503,13 @@ if ($resultsCountry != null) {
         .progress {
             display: none;
         }
-    </style>
 
+        .expandeds1{
+            display: none;
+            width: 0;
+            left: -50px;
+        }
+    </style>
 </head>
 
 <body class="funcolinhas">
@@ -513,7 +518,7 @@ if ($resultsCountry != null) {
 
     <!-- Header -->
     <?php include_once("widget/navbar.php"); ?>
-    <div class="sidebar expanded " id="sidebar" style="background: #002d4b;">
+    <div class="sidebar expandeds1 " id="sidebar" style="background: #002d4b;">
         <div class="sidebar-inner slimscroll ">
             <div id="sidebar-menu" class="sidebar-menu">
                 <div class="card rounded-4 shadow  treeviewmin panddingardtreeview" style="min-height: 100% !important;height: 100% !important;max-height: 100%  !important; margin-top: 0;">
@@ -522,8 +527,8 @@ if ($resultsCountry != null) {
                         <div class="row p-2 ml-0">
                             <ul id="tree2">
                                 <?php
-                                include_once('../model/classes/tblOperations.php');
-                                $operations1 = new Operations();
+
+                                $operations1 = new Operations($dbh);
                                 $resultsOperation1 = $operations1->consulta("WHERE FlagOperation != '0'");
                                 if ($resultsOperation1 != null) {
                                     foreach ($resultsOperation1 as $rowOperation) {
@@ -536,22 +541,22 @@ if ($resultsCountry != null) {
                                                 <?php echo trim($rowOperation->NmOperation); ?>
                                             </a>
                                             <div style="text-align: end; width: 24px;float: right;position: initial;">
-                                                <?php $numerouser22 = new UserClients();
+                                                <?php $numerouser22 = new UserClients($dbh);
                                                 $numerouser22->setCoreBusinessId($rowOperation->idOperation);
                                                 echo $numerouser22->quantidade(" WHERE CoreBusinessId = :CoreBusinessId"); ?>
                                             </div>
                                             <?php if ($rowOperation->FlagOperation != "D") { ?>
                                                 <ul>
                                                     <?php
-                                                    include_once('../model/classes/tblBusiness.php');
-                                                    $business1 = new Business();
+
+                                                    $business1 = new Business($dbh);
                                                     $resultsbusiness1 = $business1->consulta("WHERE FlagOperation = '0' ORDER BY NmBusiness ASC");
                                                     if ($resultsbusiness1 != null) {
                                                         foreach ($resultsbusiness1 as $rowbusiness) {
                                                     ?>
                                                             <li><a class="sizewidgh" href="listcompani.php?busines=<?php echo $rowbusiness->idBusiness; ?>&operation=<?php echo $rowOperation->idOperation; ?>"><?php
                                                                                                                                                                                                                 echo trim($rowbusiness->NmBusiness); ?> <div style="text-align: end; width: 24px;float: right;position: initial;">
-                                                                        <?php $numerouser3 = new UserClients();
+                                                                        <?php $numerouser3 = new UserClients($dbh);
                                                                         $numerouser3->setCoreBusinessId($rowOperation->idOperation);
                                                                         $numerouser3->setSatBusinessId($rowbusiness->idBusiness);
                                                                         echo $numerouser3->quantidade(" WHERE CoreBusinessId = :CoreBusinessId AND SatBusinessId = :SatBusinessId"); ?>
@@ -617,8 +622,8 @@ if ($resultsCountry != null) {
                                 </div>
                                 <div class="col-3 m-0 p-0">
                                     <h5 class="fonte-principal text-left"><?php
-                                                                            include_once('../model/classes/tblViews.php');
-                                                                            $views = new Views();
+
+                                                                            $views = new Views($dbh);
                                                                             $views->setidView($iduser);
                                                                             $resultviews = $views->consulta(" WHERE idView = :idView ");
                                                                             $numView = 0;
@@ -638,8 +643,8 @@ if ($resultsCountry != null) {
                                     </a>
                                 </div>
                                 <div class="col-3 m-0 p-0">
-                                    <h5 class="fonte-principal text-left"><?php include_once('../model/classes/tblConect.php');
-                                                                            $conect = new Conect();
+                                    <h5 class="fonte-principal text-left"><?php
+                                                                            $conect = new Conect($dbh);
                                                                             $conect->setidUserReceb($iduser);
                                                                             $resultConect = $conect->consulta("WHERE idUserReceb = :idUserReceb AND status = '0'");
                                                                             $numView = 0;
@@ -660,8 +665,8 @@ if ($resultsCountry != null) {
                                     </a>
                                 </div>
                                 <div class="col-3 m-0 p-0">
-                                    <h5 class="fonte-principal text-left"><?php include_once('../model/classes/tblSearch.php');
-                                                                            $Search = new Search();
+                                    <h5 class="fonte-principal text-left"><?php
+                                                                            $Search = new Search($dbh);
                                                                             $Search->setidClient($iduser);
                                                                             $resultSearch = $Search->consulta("WHERE idClient = :idClient");
                                                                             $numSearch = 0;
@@ -679,7 +684,7 @@ if ($resultsCountry != null) {
                     <div class="card rounded-4 shadow  treeviewmin panddingardtreeview" style="margin-bottom: 100px !important;">
                         <div class="card-body p-0">
                             <div class="col-12 mh-25">
-                                <h3 class="color-branco">Matching Business Online <div style="text-align: end; width: 24px;float: right;position: initial;    color: #62b1ff;"><?php $numerouser2 = new UserClients();
+                                <h3 class="color-branco">Matching Business Online <div style="text-align: end; width: 24px;float: right;position: initial;    color: #62b1ff;"><?php $numerouser2 = new UserClients($dbh);
                                                                                                                                                                                 echo $numerouser2->quantidade(""); ?></div>
                                 </h3>
                                 <hr>
@@ -687,9 +692,9 @@ if ($resultsCountry != null) {
                             <div class="row p-2 ml-0">
                                 <ul id="tree1">
                                     <?php
-                                    include_once('../model/classes/tblOperations.php');
 
-                                    $operations = new Operations();
+
+                                    $operations = new Operations($dbh);
                                     $resultsOperation = $operations->consulta("WHERE FlagOperation != '0'");
                                     if ($resultsOperation != null) {
                                         foreach ($resultsOperation as $rowOperation) {
@@ -702,22 +707,22 @@ if ($resultsCountry != null) {
                                                     <?php echo trim($rowOperation->NmOperation); ?>
                                                 </a>
                                                 <div style="text-align: end; width: 24px;float: right;position: initial;">
-                                                    <?php $numerouser1 = new UserClients();
+                                                    <?php $numerouser1 = new UserClients($dbh);
                                                     $numerouser1->setCoreBusinessId($rowOperation->idOperation);
                                                     echo $numerouser1->quantidade(" WHERE CoreBusinessId = :CoreBusinessId"); ?>
                                                 </div>
                                                 <?php if ($rowOperation->FlagOperation != "D") { ?>
                                                     <ul>
                                                         <?php
-                                                        include_once('../model/classes/tblBusiness.php');
-                                                        $business = new Business();
+
+                                                        $business = new Business($dbh);
                                                         $resultsbusiness = $business->consulta("WHERE FlagOperation = '0' ORDER BY NmBusiness ASC");
                                                         if ($business != null) {
                                                             foreach ($resultsbusiness as $rowbusiness) {
                                                         ?>
                                                                 <li><a class="sizewidgh" href="listcompani.php?busines=<?php echo $rowbusiness->idBusiness; ?>&operation=<?php echo $rowOperation->idOperation; ?>"><?php
                                                                                                                                                                                                                     echo trim($rowbusiness->NmBusiness); ?> <div style="text-align: end; width: 24px;float: right;position: initial;">
-                                                                            <?php $numerouser2 = new UserClients();
+                                                                            <?php $numerouser2 = new UserClients($dbh);
                                                                             $numerouser2->setCoreBusinessId($rowOperation->idOperation);
                                                                             $numerouser2->setSatBusinessId($rowbusiness->idBusiness);
                                                                             echo $numerouser2->quantidade(" WHERE CoreBusinessId = :CoreBusinessId AND SatBusinessId = :SatBusinessId"); ?>
@@ -803,11 +808,11 @@ if ($resultsCountry != null) {
                                 </div>
                             </div>
                             <div class="card shadow rounded-4 card-post-style  mt-4 produtos-feed-scrollbar">
-                                <h3 class="texto-titulo">&nbsp;&nbsp;Featured Products</h3>
-                                <div class="rowProduct overflow-auto produtos-feed-scrollbar row-produto-card-pro" style="margin-bottom: 17px;">
+                                <h3 class="texto-titulo" style="margin: inherit;"> &nbsp;&nbsp;Featured Products</h3>
+                                <div class="rowProduct overflow-auto produtos-feed-scrollbar row-produto-card-pro" style="margin-bottom: 17px;padding: 10px;">
                                     <?php
-                                    include_once('../model/classes/tblProducts.php');
-                                    $productss = new Products();
+
+                                    $productss = new Products($dbh);
                                     $resultsProdutoss = $productss->consulta("ORDER BY idProduct ASC");
                                     if ($resultsProdutoss != null) {
 
@@ -817,8 +822,8 @@ if ($resultsCountry != null) {
                                                     <div class="col-12" style="display: flex; flex-direction: column; min-height: 140px; max-height: 140px; padding: 4px; width: -webkit-fill-available;">
                                                         <a data-toggle="modal" data-target="#modalViewProduto" data-toggle="modal" data-id="<?php echo $rowProdutos->idProduct; ?>" class="hero-image-container">
                                                             <img class="hero-image produtos-img rounded-4" style=" user-drag: none;" src="<?php
-                                                                                                                                            include_once('../model/classes/tblProductPictures.php');
-                                                                                                                                            $productsPictures = new ProductPictures();
+
+                                                                                                                                            $productsPictures = new ProductPictures($dbh);
                                                                                                                                             $productsPictures->setidProduct($rowProdutos->idProduct);
                                                                                                                                             $resultsProdutos1 = $productsPictures->consulta("WHERE idProduct = :idProduct");
                                                                                                                                             if ($resultsProdutos1 != null) {
@@ -833,10 +838,14 @@ if ($resultsCountry != null) {
                                                     </div>
                                                     <div class="col-12" style="padding: 6px;">
                                                         <div class="col-12">
-                                                            <h5 class="mb-0" style="white-space: pre-line;"><a class="text-decoration-none color-branco" href="viewProfile.php?profile=<?php echo $rowProdutos->idClient; ?>"><?php echo $rowProdutos->ProductName; ?></a></h5>
+                                                            <a data-toggle="modal" data-target="#modalViewProduto" data-toggle="modal" data-id="<?php echo $rowProdutos->idProduct; ?>" class="hero-image-container">
+                                                                <h5 class="mb-0" style="white-space: pre-line;"><?php echo $rowProdutos->ProductName; ?></h5>
+                                                            </a>
                                                         </div>
                                                         <div class="col-12">
-                                                            <p class=" cortardescricao color-cinza-b desc-produto fonte-principal" style=""><?php echo $rowProdutos->ProdcuctDescription; ?></p>
+                                                            <a data-toggle="modal" data-target="#modalViewProduto" data-toggle="modal" data-id="<?php echo $rowProdutos->idProduct; ?>" class="hero-image-container">
+                                                                <p class=" cortardescricao color-cinza-b desc-produto fonte-principal" style=""><?php echo $rowProdutos->ProdcuctDescription; ?></p>
+                                                            </a>
                                                         </div>
                                                     </div>
                                                 </div>
@@ -854,9 +863,9 @@ if ($resultsCountry != null) {
                                 //$queryfeed->execute();
                                 //$resultsfeed = $queryfeed->fetchAll(PDO::FETCH_OBJ);
 
-                                include_once('../model/classes/tblFeeds.php');
 
-                                $feeds = new Feeds();
+
+                                $feeds = new Feeds($dbh);
 
                                 $resultsfeed = $feeds->consulta("ORDER BY Published_at DESC LIMIT 8");
 
@@ -891,9 +900,9 @@ if ($resultsCountry != null) {
                                         //$queryuserpost->execute();
                                         //$resultsuserpost = $queryuserpost->fetchAll(PDO::FETCH_OBJ);
 
-                                        include_once("../model/classes/tblUserClients.php");
 
-                                        $userClients = new UserClients();
+
+                                        $userClients = new UserClients($dbh);
 
                                         $userClients->setidClient($rowfeed->IdClient);
 
@@ -936,9 +945,9 @@ if ($resultsCountry != null) {
                                                             //$queryOperationpost->execute();
                                                             //$resultsOperationpost = $queryOperationpost->fetchAll(PDO::FETCH_OBJ);
 
-                                                            include_once("../model/classes/tblOperations.php");
 
-                                                            $operations = new Operations();
+
+                                                            $operations = new Operations($dbh);
 
                                                             $operations->setidOperation($idpostoperation);
                                                             $operations->setFlagOperation('0');
@@ -1012,9 +1021,9 @@ if ($resultsCountry != null) {
                                                     //$queryOperationpost->execute();
                                                     //$resultsOperationpost = $queryOperationpost->fetchAll(PDO::FETCH_OBJ);
 
-                                                    include_once('../model/classes/tblCurtidas.php');
 
-                                                    $curtidas = new Curtidas();
+
+                                                    $curtidas = new Curtidas($dbh);
 
                                                     $curtidas->setidpost($rowfeed->IdFeed);
 
@@ -1035,9 +1044,9 @@ if ($resultsCountry != null) {
                                                     //$queryOperationpost->execute();
                                                     //$resultsOperationpost = $queryOperationpost->fetchAll(PDO::FETCH_OBJ);
 
-                                                    include_once('../model/classes/tblCurtidas.php');
 
-                                                    $curtidas = new Curtidas();
+
+                                                    $curtidas = new Curtidas($dbh);
 
                                                     $curtidas->setidpost($rowfeed->IdFeed);
                                                     $curtidas->setidusuario($iduser);
@@ -1088,8 +1097,8 @@ if ($resultsCountry != null) {
                                                         <a id="btnCommnet" data-toggle="modal" data-target="#modalEditarProduto" data-id="<?php echo $rowfeed->IdFeed;
                                                                                                                                             ?>" class="btnCommnet btn like-comment-btn pl-4 pr-4 no-border p-3 hero-image-container2"><span class="btn-comment-post">
                                                                 <?php
-                                                                include_once('../model/classes/tbPostComent.php');
-                                                                $tbPostComentcont2 = new PostComent();
+
+                                                                $tbPostComentcont2 = new PostComent($dbh);
                                                                 $tbPostComentcont2->setidpost($rowfeed->IdFeed);
                                                                 echo  $tbPostComentcont2->quantidade(" WHERE idpost = :idpost");
                                                                 ?> &nbsp;&nbsp; <i class="fa fa-comment">
@@ -1105,14 +1114,14 @@ if ($resultsCountry != null) {
                                                 <div class="row" style="padding: inherit;">
                                                     <?php
 
-                                                    $viewcomentarios = new PostComent();
+                                                    $viewcomentarios = new PostComent($dbh);
                                                     $viewcomentarios->setidpost($rowfeed->IdFeed);
                                                     $resultstbPostComentview =  $viewcomentarios->consulta(" WHERE idpost = :idpost ORDER BY datahora DESC LIMIT 1");
                                                     if ($resultstbPostComentview != null) {
 
                                                         foreach ($resultstbPostComentview as $rowviewcomentarios) {
-                                                            include_once('../model/classes/tblUserClients.php');
-                                                            $userClientscomentarios = new UserClients();
+
+                                                            $userClientscomentarios = new UserClients($dbh);
 
                                                             $userClientscomentarios->setidClient($rowviewcomentarios->iduser);
 
@@ -1159,7 +1168,7 @@ if ($resultsCountry != null) {
                         <div class="col-12  d-none d-md-block">
                             <h2>Sponsored</h2>
                             <div class="col-12" id="sponsored-container">
-                               
+
                             </div>
                             <div class="row" style=" text-align: center;">
                                 <div class="col-sm-12, p_results">
@@ -1205,9 +1214,9 @@ font-size: small;
                 //$queryOperation->execute();
                 //$resultsOperation = $queryOperation->fetchAll(PDO::FETCH_OBJ);
 
-                include_once("../model/classes/tblOperations.php");
 
-                $operations = new Operations();
+
+                $operations = new Operations($dbh);
 
                 $resultsOperation = $operations->consulta("WHERE FlagOperation != '0' limit 10");
 
@@ -1246,9 +1255,9 @@ font-size: small;
                         <ul class="m-0 overflow-y p-1 ul-view">
                             <?php
 
-                            include_once('../model/classes/tblViews.php');
 
-                            $views = new Views();
+
+                            $views = new Views($dbh);
                             $views->setidView($iduser);
                             $resultsview = $views->consulta("WHERE idView = :idView ORDER BY datacriacao DESC");
 
@@ -1258,8 +1267,8 @@ font-size: small;
                             ?>
                                     <?php
 
-                                    include_once('../model/classes/tblConect.php');
-                                    $userClients = new UserClients();
+
+                                    $userClients = new UserClients($dbh);
                                     $userClients->setidClient($rowviews->idUser);
                                     $resultsUserClients = $userClients->consulta("WHERE idClient = :idClient");
 
@@ -1267,8 +1276,8 @@ font-size: small;
                                     if ($resultsUserClients != null) {
                                         foreach ($resultsUserClients as $rowcliente) {
 
-                                            include_once('../model/classes/tblOperations.php');
-                                            $operations = new Operations();
+
+                                            $operations = new Operations($dbh);
                                             $operations->setidOperation($rowcliente->CoreBusinessId);
                                             $resultsOperation = $operations->consulta("WHERE FlagOperation != '0' AND idOperation = :idOperation");
 
@@ -1360,8 +1369,8 @@ font-size: small;
                 <div class="modal-body">
                     <ul class="m-0 overflow-auto p-1 ul-view">
                         <?php
-                        include_once('../model/classes/tblConect.php');
-                        $connect = new Conect();
+
+                        $connect = new Conect($dbh);
                         $connect->setidUserReceb($iduser);
                         $resultsconect = $connect->consulta("WHERE idUserReceb = :idUserReceb AND status = '0'  ORDER BY datapedido DESC");
 
@@ -1372,16 +1381,16 @@ font-size: small;
 
                         ?>
                                 <?php
-                                include_once('../model/classes/tblUserClients.php');
-                                $userClients = new UserClients();
+
+                                $userClients = new UserClients($dbh);
                                 $userClients->setidClient($rowviews->idUserPed);
                                 $resultsUserClients = $userClients->consulta("WHERE idClient = :idClient");
 
                                 if ($resultsUserClients != null) {
                                     foreach ($resultsUserClients as $rowcliente) {
 
-                                        include_once('../model/classes/tblOperations.php');
-                                        $operations = new Operations();
+
+                                        $operations = new Operations($dbh);
                                         $operations->setidOperation($rowcliente->CoreBusinessId);
                                         $resultsOperation = $operations->consulta("WHERE FlagOperation != '0' AND idOperation = :idOperation");
 
@@ -1477,7 +1486,56 @@ font-size: small;
     </div>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.bundle.min.js" integrity="sha384-HwwvtgBNo3bZJJLYd8oVXjrBZt8cqVSpeBNS5n7C8IVInixGAoxmnlMuBnhbgrkm" crossorigin="anonymous"></script>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
     <script>
+        var $wrapper = $('.main-wrapper');
+        $('body').append('<div class="sidebar-overlay"></div>');
+        $('#mobile_btn').on('click', function() {
+            if ($('#sidebar').hasClass('expandeds1')) {
+                openNav();
+            } else {
+                closeNav();
+               
+            }
+
+        });
+
+        function updateNotificationCount() {
+            var xmlhttpnf = new XMLHttpRequest();
+            xmlhttpnf.onreadystatechange = function() {
+                if (this.readyState == 4 && this.status == 200) {
+
+
+                    var badgeElement = document.getElementById('notificationCount');
+                    var responseHtml = this.responseText.trim(); // Remove espaços em branco extras
+
+                    if (responseHtml != "" || responseHtml != undefined) {
+                        console.log("response");
+                        badgeElement.innerHTML = responseHtml; // Insere o HTML retornado pelo PHP
+                        responseHtml = '';
+                    } else {
+                        console.log("response NULL");
+                        badgeElement.innerHTML = ''; // Limpa o conteúdo do elemento
+                    }
+                } else {
+                    var badgeElement = document.getElementById('notificationCount');
+                    badgeElement.innerHTML = '';
+                    responseHtml = '';
+                }
+            };
+            xmlhttpnf.open("GET", "widget/atualizar_notificacoes.php", true);
+            xmlhttpnf.send();
+        }
+        updateNotificationCount()
+        setInterval(updateNotificationCount, 6000);
+
+        function redirectToAnotherPage() {
+            var form = document.getElementById('formularionome');
+            var textValue = form.querySelector('[name="text"]').value;
+
+            // Redireciona para listcompani.php com o parâmetro GET "text"
+            window.location.href = 'listcompani.php?text=' + encodeURIComponent(textValue);
+        }
         $(document).ready(function() {
             // Ao clicar em um link de produto
             $('.hero-image-container').click(function() {
@@ -1493,8 +1551,10 @@ font-size: small;
                     },
                     success: function(data) {
                         // Preencha o conteúdo do modal com as informações do produto
+
                         $('#modalViewProduto .modal-content').html(data);
                         console.log("Teste produto sent");
+                        initSlider();
                     },
                     error: function() {
                         alert('Ocorreu um erro ao carregar os dados do produto.');
@@ -1667,15 +1727,21 @@ font-size: small;
 
 
 
-        /* Set the width of the sidebar to 250px (show it) */
         function openNav() {
-            document.getElementById("mySidepanel").style.width = "250px";
-        }
+            document.getElementById("sidebar").classList.remove("expandeds1");
+      document.getElementById("sidebar").style.width = "250px";
+      document.getElementById("sidebar").style.display = "flex";
+      document.getElementById("sidebar").style.left = "0px";
+    }
 
-        /* Set the width of the sidebar to 0 (hide it) */
-        function closeNav() {
-            document.getElementById("mySidepanel").style.width = "0";
-        }
+    /* Set the width of the sidebar to 0 (hide it) */
+    function closeNav() {
+        document.getElementById("sidebar").classList.add("expandeds1");
+      
+      document.getElementById("sidebar").style.width = "0";
+      document.getElementById("sidebar").style.display = "none";
+      document.getElementById("sidebar").style.left = "-50px";
+    }
 
 
 
@@ -1993,7 +2059,81 @@ font-size: small;
                 }
             });
         });
+
+        function initSlider() {
+            var slider1 = document.getElementsByClassName("sliderBlock_items");
+            var slides1 = document.getElementsByClassName("sliderBlockitemsitemPhoto");
+            var next1 = document.getElementsByClassName("sliderBlockcontrolsarrowForward")[0];
+            var previous1 = document.getElementsByClassName("sliderBlockcontrolsarrowBackward")[0];
+            var items1 = document.getElementsByClassName("sliderBlock_positionControls")[0];
+            var currentSlideItem1 = document.getElementsByClassName("sliderBlock_positionControls__paginatorItem");
+            var currentSlide1 = 0;
+            var slideInterval1 = setInterval(nextSlide, 5000); /// Delay time of slides
+            function nextSlide() {
+                goToSlide(currentSlide1 + 1);
+            }
+
+            function previousSlide() {
+                goToSlide(currentSlide1 - 1);
+            }
+
+            function goToSlide(n) {
+                slides1[currentSlide1].className = 'sliderBlockitemsitemPhoto';
+                items1.children[currentSlide1].className = 'sliderBlock_positionControls__paginatorItem';
+                currentSlide1 = (n + slides1.length) % slides1.length;
+                slides1[currentSlide1].className = 'sliderBlockitemsitemPhoto sliderBlock_items__showing';
+                items1.children[currentSlide1].className = 'sliderBlock_positionControls__paginatorItem sliderBlock_positionControls__active';
+            }
+            next1.onclick = function() {
+                nextSlide();
+            };
+            previous1.onclick = function() {
+                previousSlide();
+            };
+
+            function goToSlideAfterPushTheMiniBlock() {
+                for (var i = 0; i < currentSlideItem1.length; i++) {
+                    currentSlideItem1[i].onclick = function(i) {
+                        var index1 = Array.prototype.indexOf.call(currentSlideItem1, this);
+                        goToSlide(index1);
+                    }
+                }
+            }
+            goToSlideAfterPushTheMiniBlock();
+            var buttonFullSpecification1 = document.getElementsByClassName("block_specification")[0];
+            var buttonSpecification1 = document.getElementsByClassName("block_specification__specificationShow")[0];
+            var buttonInformation1 = document.getElementsByClassName("block_specification__informationShow")[0];
+            var blockCharacteristiic1 = document.querySelector(".block_descriptionCharacteristic");
+            var activeCharacteristic1 = document.querySelector(".block_descriptionCharacteristic__active");
+
+            buttonFullSpecification1.onclick = function() {
+                console.log("OK");
+                buttonSpecification1.classList.toggle("hide");
+                buttonInformation1.classList.toggle("hide");
+                blockCharacteristiic1.classList.toggle("block_descriptionCharacteristic__active");
+            };
+            var up1 = document.getElementsByClassName('block_quantity__up')[0],
+                down1 = document.getElementsByClassName('block_quantity__down')[0],
+                input1 = document.getElementsByClassName('block_quantity__number')[0];
+
+            function getValue() {
+                return parseInt(input1.value);
+            }
+            up1.onclick = function(event) {
+                input1.value = getValue() + 1;
+            };
+            down1.onclick = function(event) {
+                if (input1.value <= 1) {
+                    return 1;
+                } else {
+                    input1.value = getValue() - 1;
+                }
+            }
+
+        };
     </script>
+
+
 </body>
 
 </html>

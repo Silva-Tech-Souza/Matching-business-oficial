@@ -11,15 +11,11 @@ class SearchProfile_Results2{
     protected $idTypeNotifcation = null;
     protected $dbh = null;
 
-    function __construct()
+    function __construct($dbh)
     {
-        
-        include_once('conexao.php');
-        $conexao = new Conexao();
-        $conexao->abrirConexao();
-        $this->dbh = $conexao->getConexao();
-
+        $this->dbh = $dbh;
     }
+
 
 
     public function setSearchProfile_ResultsID($param){$this->SearchProfile_ResultsID = $param;}

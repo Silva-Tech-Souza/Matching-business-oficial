@@ -1,5 +1,5 @@
 <?php 
-session_start();
+include_once('../model/classes/conexao.php');
  include('../model/classes/tblUserClients.php');
     include('../model/classes/tblEmpresas.php');
   if ($_POST["enviaremail"] != "") {
@@ -17,5 +17,4 @@ echo "\n". $emailcolab =  trim($_POST["emailcolab"]);
             $headers = "From:" . $from;
             mail($to, $subject, $message, $headers);
            header("Location: ../view/profile.php");
-  }     
-?>
+  }

@@ -1,7 +1,7 @@
 <?php
+include_once('../model/classes/conexao.php');
+include_once('../model/classes/tblFeeds.php');
 
-include('../model/classes/tblFeeds.php');
-session_start();
 date_default_timezone_set('America/Sao_Paulo');
 
 if ($_POST["post"] != "") {
@@ -199,7 +199,7 @@ if ($_POST["post"] != "") {
     }
     $_POST["post"] = "";
  
-    $feeds = new Feeds();
+    $feeds = new Feeds($dbh);
     $feeds->setidClient($iduser);
     $feeds->setTitle($txtpos);
     $feeds->setText($txtpos);
@@ -209,7 +209,7 @@ if ($_POST["post"] != "") {
 
     include_once("../model/classes/tblUserClients.php");
     
-    $user = new UserClients();
+    $user = new UserClients($dbh);
     $user->setidClient($_SESSION["id"]);
     $user->setPontos(500);
     $user->atualizar("Pontos = Pontos + :Pontos WHERE idClient = :idClient");

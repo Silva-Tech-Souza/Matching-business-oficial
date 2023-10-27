@@ -1,7 +1,7 @@
 <?php
 
-session_start();
-include('../model/classes/tblUserClients.php');
+include_once('../model/classes/conexao.php');
+include_once('../model/classes/tblUserClients.php');
 date_default_timezone_set('America/Sao_Paulo');
 
 if(isset($_COOKIE["remember_me"])){
@@ -11,7 +11,7 @@ if(isset($_COOKIE["remember_me"])){
         $passwordCripto = $renemberMeArray['senha'];
         $remember_me = true;
 
-        $UserClients = new UserClients();
+        $UserClients = new UserClients($dbh);
 
         $UserClients->setemail($username);
         $UserClients->setPassword($passwordCripto);
@@ -37,8 +37,7 @@ if(isset($_COOKIE["remember_me"])){
                 $_SESSION['lName'] = $row->LastName; 
 
                 include_once('../model/classes/tblEmpresas.php');
-                $empresas = new Empresas();
-
+                $empresas = new Empresasview($dbh); 
                 $empresas->setidClient($row->idClient);
                 $empresas->setTaxid($row->taxid);
 
@@ -76,7 +75,7 @@ if(isset($_COOKIE["remember_me"])){
         //$query->execute();
         //$results = $query->fetchAll(PDO::FETCH_OBJ);
 
-        $UserClients = new UserClients();
+        $UserClients = new UserClients($dbh);
 
         $UserClients->setemail($username);
         $UserClients->setPassword($passwordCripto);
@@ -125,7 +124,7 @@ if(isset($_COOKIE["remember_me"])){
     //$query->execute();
     //$results = $query->fetchAll(PDO::FETCH_OBJ);
 
-    $UserClients = new UserClients();
+    $UserClients = new UserClients($dbh);
 
     $UserClients->setemail($username);
     $UserClients->setPassword($passwordCripto);

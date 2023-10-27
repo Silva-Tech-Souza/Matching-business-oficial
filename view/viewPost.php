@@ -3,7 +3,7 @@ if ( session_status() !== PHP_SESSION_ACTIVE )
 {
    session_start();
 }
-
+include_once('../model/classes/conexao.php');
 include_once('../model/ErrorLog.php');
 
 date_default_timezone_set('America/Sao_Paulo');
@@ -22,7 +22,7 @@ $_SESSION["n"] = 5;
 
 include_once('../model/classes/tblUserClients.php');
 
-$userClients = new UserClients();
+$userClients = new UserClients($dbh);
 
 $userClients->setidClient($iduser);
 
@@ -49,7 +49,7 @@ if ($results != null) {
 
 include('../model/classes/tblCountry.php');
 
-$country = new Country();
+$country = new Country($dbh);
 
 $country->setidCountry($idcountry);
 
@@ -474,7 +474,7 @@ if ($resultsCountry != null) {
                             <ul id="tree2">
                                 <?php
                                 include_once('../model/classes/tblOperations.php');
-                                $operations1 = new Operations();
+                                $operations1 = new Operations($dbh);
                                 $resultsOperation1 = $operations1->consulta("WHERE FlagOperation != '0'");
                                 if ($resultsOperation1 != null) {
                                     foreach ($resultsOperation1 as $rowOperation) {
@@ -487,7 +487,7 @@ if ($resultsCountry != null) {
                                                 <?php echo trim($rowOperation->NmOperation); ?>
                                             </a>
                                             <div style="text-align: end; width: 24px;float: right;position: initial;">
-                                                <?php $numerouser22 = new UserClients();
+                                                <?php $numerouser22 = new UserClients($dbh);
                                                 $numerouser22->setCoreBusinessId($rowOperation->idOperation);
                                                 echo $numerouser22->quantidade(" WHERE CoreBusinessId = :CoreBusinessId"); ?>
                                             </div>
@@ -495,14 +495,14 @@ if ($resultsCountry != null) {
                                                 <ul>
                                                     <?php
                                                     include_once('../model/classes/tblBusiness.php');
-                                                    $business1 = new Business();
+                                                    $business1 = new Business($dbh);
                                                     $resultsbusiness1 = $business1->consulta("WHERE FlagOperation = '0' ORDER BY NmBusiness ASC");
                                                     if ($resultsbusiness1 != null) {
                                                         foreach ($resultsbusiness1 as $rowbusiness) {
                                                     ?>
                                                             <li><a class="sizewidgh" href="listcompani.php?busines=<?php echo $rowbusiness->idBusiness; ?>&operation=<?php echo $rowOperation->idOperation; ?>"><?php
                                                                                                                                                                                                                 echo trim($rowbusiness->NmBusiness); ?> <div style="text-align: end; width: 24px;float: right;position: initial;">
-                                                                        <?php $numerouser3 = new UserClients();
+                                                                        <?php $numerouser3 = new UserClients($dbh);
                                                                         $numerouser3->setCoreBusinessId($rowOperation->idOperation);
                                                                         $numerouser3->setSatBusinessId($rowbusiness->idBusiness);
                                                                         echo $numerouser3->quantidade(" WHERE CoreBusinessId = :CoreBusinessId AND SatBusinessId = :SatBusinessId"); ?>
@@ -569,7 +569,7 @@ if ($resultsCountry != null) {
                                 <div class="col-3 m-0 p-0">
                                     <h5 class="fonte-principal text-left"><?php
                                                                             include_once('../model/classes/tblViews.php');
-                                                                            $views = new Views();
+                                                                            $views = new Views($dbh);
                                                                             $views->setidView($iduser);
                                                                             $resultviews = $views->consulta(" WHERE idView = :idView ");
                                                                             $numView = 0;
@@ -590,7 +590,7 @@ if ($resultsCountry != null) {
                                 </div>
                                 <div class="col-3 m-0 p-0">
                                     <h5 class="fonte-principal text-left"><?php include_once('../model/classes/tblConect.php');
-                                                                            $conect = new Conect();
+                                                                            $conect = new Conect($dbh);
                                                                             $conect->setidUserReceb($iduser);
                                                                             $resultConect = $conect->consulta("WHERE idUserReceb = :idUserReceb AND status = '0'");
                                                                             $numView = 0;
@@ -612,7 +612,7 @@ if ($resultsCountry != null) {
                                 </div>
                                 <div class="col-3 m-0 p-0">
                                     <h5 class="fonte-principal text-left"><?php include_once('../model/classes/tblSearch.php');
-                                                                            $Search = new Search();
+                                                                            $Search = new Search($dbh);
                                                                             $Search->setidClient($iduser);
                                                                             $resultSearch = $Search->consulta("WHERE idClient = :idClient");
                                                                             $numSearch = 0;
@@ -630,7 +630,7 @@ if ($resultsCountry != null) {
                     <div class="card rounded-4 shadow  treeviewmin panddingardtreeview" style="margin-bottom: 100px !important;">
                         <div class="card-body p-0">
                             <div class="col-12 mh-25">
-                                <h3 class="color-branco">Matching Business Online <div style="text-align: end; width: 24px;float: right;position: initial;    color: #62b1ff;"><?php $numerouser2 = new UserClients();
+                                <h3 class="color-branco">Matching Business Online <div style="text-align: end; width: 24px;float: right;position: initial;    color: #62b1ff;"><?php $numerouser2 = new UserClients($dbh);
                                                                                                                                                                                 echo $numerouser2->quantidade(""); ?></div>
                                 </h3>
                                 <hr>
@@ -640,7 +640,7 @@ if ($resultsCountry != null) {
                                     <?php
                                     include_once('../model/classes/tblOperations.php');
 
-                                    $operations = new Operations();
+                                    $operations = new Operations($dbh);
                                     $resultsOperation = $operations->consulta("WHERE FlagOperation != '0'");
                                     if ($resultsOperation != null) {
                                         foreach ($resultsOperation as $rowOperation) {
@@ -653,7 +653,7 @@ if ($resultsCountry != null) {
                                                     <?php echo trim($rowOperation->NmOperation); ?>
                                                 </a>
                                                 <div style="text-align: end; width: 24px;float: right;position: initial;">
-                                                    <?php $numerouser1 = new UserClients();
+                                                    <?php $numerouser1 = new UserClients($dbh);
                                                     $numerouser1->setCoreBusinessId($rowOperation->idOperation);
                                                     echo $numerouser1->quantidade(" WHERE CoreBusinessId = :CoreBusinessId"); ?>
                                                 </div>
@@ -661,14 +661,14 @@ if ($resultsCountry != null) {
                                                     <ul>
                                                         <?php
                                                         include_once('../model/classes/tblBusiness.php');
-                                                        $business = new Business();
+                                                        $business = new Business($dbh);
                                                         $resultsbusiness = $business->consulta("WHERE FlagOperation = '0' ORDER BY NmBusiness ASC");
                                                         if ($business != null) {
                                                             foreach ($resultsbusiness as $rowbusiness) {
                                                         ?>
                                                                 <li><a class="sizewidgh" href="listcompani.php?busines=<?php echo $rowbusiness->idBusiness; ?>&operation=<?php echo $rowOperation->idOperation; ?>"><?php
                                                                                                                                                                                                                     echo trim($rowbusiness->NmBusiness); ?> <div style="text-align: end; width: 24px;float: right;position: initial;">
-                                                                            <?php $numerouser2 = new UserClients();
+                                                                            <?php $numerouser2 = new UserClients($dbh);
                                                                             $numerouser2->setCoreBusinessId($rowOperation->idOperation);
                                                                             $numerouser2->setSatBusinessId($rowbusiness->idBusiness);
                                                                             echo $numerouser2->quantidade(" WHERE CoreBusinessId = :CoreBusinessId AND SatBusinessId = :SatBusinessId"); ?>
@@ -755,7 +755,7 @@ if ($resultsCountry != null) {
                                 <div class="rowProduct overflow-auto produtos-feed-scrollbar row-produto-card-pro">
                                     <?php
                                     include_once('../model/classes/tblProducts.php');
-                                    $productss = new Products();
+                                    $productss = new Products($dbh);
                                     $resultsProdutoss = $productss->consulta("ORDER BY idProduct ASC");
                                     if ($resultsProdutoss != null) {
 
@@ -766,7 +766,7 @@ if ($resultsCountry != null) {
                                                     <a data-toggle="modal" data-target="#modalViewProduto" data-toggle="modal" data-id="<?php echo $rowProdutos->idProduct; ?>" class="hero-image-container">
                                                             <img class="hero-image produtos-img rounded-4" style=" user-drag: none;" src="<?php
                                                                                                                                             include_once('../model/classes/tblProductPictures.php');
-                                                                                                                                            $productsPictures = new ProductPictures();
+                                                                                                                                            $productsPictures = new ProductPictures($dbh);
                                                                                                                                             $productsPictures->setidProduct($rowProdutos->idProduct);
                                                                                                                                             $resultsProdutos1 = $productsPictures->consulta("WHERE idProduct = :idProduct");
                                                                                                                                             if ($resultsProdutos1 != null) {
@@ -805,7 +805,7 @@ if ($resultsCountry != null) {
 
                                 include_once('../model/classes/tblFeeds.php');
 
-                                $feeds = new Feeds();
+                                $feeds = new Feeds($dbh);
 
                                 $resultsfeed = $feeds->consulta("ORDER BY Published_at DESC LIMIT 8");
 
@@ -842,7 +842,7 @@ if ($resultsCountry != null) {
 
                                         include_once("../model/classes/tblUserClients.php");
 
-                                        $userClients = new UserClients();
+                                        $userClients = new UserClients($dbh);
 
                                         $userClients->setidClient($rowfeed->IdClient);
 
@@ -887,7 +887,7 @@ if ($resultsCountry != null) {
 
                                                             include_once("../model/classes/tblOperations.php");
 
-                                                            $operations = new Operations();
+                                                            $operations = new Operations($dbh);
 
                                                             $operations->setidOperation($idpostoperation);
                                                             $operations->setFlagOperation('0');
@@ -963,7 +963,7 @@ if ($resultsCountry != null) {
 
                                                     include_once('../model/classes/tblCurtidas.php');
 
-                                                    $curtidas = new Curtidas();
+                                                    $curtidas = new Curtidas($dbh);
 
                                                     $curtidas->setidpost($rowfeed->IdFeed);
 
@@ -986,7 +986,7 @@ if ($resultsCountry != null) {
 
                                                     include_once('../model/classes/tblCurtidas.php');
 
-                                                    $curtidas = new Curtidas();
+                                                    $curtidas = new Curtidas($dbh);
 
                                                     $curtidas->setidpost($rowfeed->IdFeed);
                                                     $curtidas->setidusuario($iduser);
@@ -1038,7 +1038,7 @@ if ($resultsCountry != null) {
                                                                                                                                             ?>" class="btn like-comment-btn pl-4 pr-4 no-border p-3 hero-image-container2"><span class="btn-comment-post">
                                                                 <?php
                                                                 include_once('../model/classes/tbPostComent.php');
-                                                                $tbPostComentcont2 = new PostComent();
+                                                                $tbPostComentcont2 = new PostComent($dbh);
                                                                 $tbPostComentcont2->setidpost($rowfeed->IdFeed);
                                                                 echo  $tbPostComentcont2->quantidade(" WHERE idpost = :idpost");
                                                                 ?> &nbsp;&nbsp; <i class="fa fa-comment">
@@ -1113,7 +1113,7 @@ font-size: small;
 
                 include_once("../model/classes/tblOperations.php");
 
-                $operations = new Operations();
+                $operations = new Operations($dbh);
 
                 $resultsOperation = $operations->consulta("WHERE FlagOperation != '0' limit 10");
 
@@ -1154,7 +1154,7 @@ font-size: small;
 
                             include_once('../model/classes/tblViews.php');
 
-                            $views = new Views();
+                            $views = new Views($dbh);
                             $views->setidView($iduser);
                             $resultsview = $views->consulta("WHERE idView = :idView ORDER BY datacriacao DESC");
 
@@ -1165,7 +1165,7 @@ font-size: small;
                                     <?php
 
                                     include_once('../model/classes/tblConect.php');
-                                    $userClients = new UserClients();
+                                    $userClients = new UserClients($dbh);
                                     $userClients->setidClient($rowviews->idUser);
                                     $resultsUserClients = $userClients->consulta("WHERE idClient = :idClient");
 
@@ -1174,7 +1174,7 @@ font-size: small;
                                         foreach ($resultsUserClients as $rowcliente) {
 
                                             include_once('../model/classes/tblOperations.php');
-                                            $operations = new Operations();
+                                            $operations = new Operations($dbh);
                                             $operations->setidOperation($rowcliente->CoreBusinessId);
                                             $resultsOperation = $operations->consulta("WHERE FlagOperation != '0' AND idOperation = :idOperation");
 
@@ -1267,7 +1267,7 @@ font-size: small;
           <ul class="m-0 overflow-auto p-1 ul-view">
             <?php
             include_once('../model/classes/tblConect.php');
-            $connect = new Conect();
+            $connect = new Conect($dbh);
             $connect->setidUserReceb($iduser);
             $resultsconect = $connect->consulta("WHERE idUserReceb = :idUserReceb AND status = '0'  ORDER BY datapedido DESC");
 
@@ -1279,7 +1279,7 @@ font-size: small;
             ?>
                 <?php
                 include_once('../model/classes/tblUserClients.php');
-                $userClients = new UserClients();
+                $userClients = new UserClients($dbh);
                 $userClients->setidClient($rowviews->idUserPed);
                 $resultsUserClients = $userClients->consulta("WHERE idClient = :idClient");
 
@@ -1287,7 +1287,7 @@ font-size: small;
                   foreach ($resultsUserClients as $rowcliente) {
 
                     include_once('../model/classes/tblOperations.php');
-                    $operations = new Operations();
+                    $operations = new Operations($dbh);
                     $operations->setidOperation($rowcliente->CoreBusinessId);
                     $resultsOperation = $operations->consulta("WHERE FlagOperation != '0' AND idOperation = :idOperation");
 

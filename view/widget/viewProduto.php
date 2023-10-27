@@ -1,5 +1,5 @@
 <?php
-
+include_once('../../model/classes/conexao.php');
 header("Access-Control-Allow-Origin: *");
 $idProduto = $_GET['idProduto'];
 
@@ -7,7 +7,7 @@ $idProduto = $_GET['idProduto'];
 
 include_once("../../model/classes/tblProducts.php");
 
-$products = new Products();
+$products = new Products($dbh);
 $products->setidProduct($idProduto);
 $produtoResults = $products->consulta("WHERE idProduct = :idProduct");
 
@@ -31,7 +31,7 @@ if ($produtoResults != null) {
 
 <div class="modal-header">
     <h5 class="modal-title txtnomeperfil">View Product</h5>
-    <button type="button" class="close rounded-2 border-0" data-dismiss="modal" aria-label="Close">
+    <button type="button" class="close rounded-2 border-0 bcolor-azul-escuro m-2" data-dismiss="modal" aria-label="Close" style="color:white;width: 25px; height: 25px;">
         <span aria-hidden="true">&times;</span>
     </button>
 </div>
@@ -39,53 +39,83 @@ if ($produtoResults != null) {
 
 <div class="modal-body">
     <div class="row">
-        <div class="col-6">
-            <img class="hero-image produto-img w-100" src="<?php
+        <div class="column small-centered">
+            <div class="productCard_block">
+                <div class="row" style="margin: 0px !important;">
+                    <div class="small-12 large-6 columns imagensmobile" style="flex: 1; height: 450px; padding: 0; margin: 0;">
+                        <div class="productCard_leftSide clearfix">
 
-                                                        include_once('../../model/classes/tblProductPictures.php');
-                                                        $productsPicture = new ProductPictures();
-                                                        $productsPicture->setidProduct($idProduct);
+                            <div class="sliderBlock" style="width: -webkit-fill-available;height: 450px;">
+                                <ul class="sliderBlock_items" style="width: -webkit-fill-available;height: -webkit-fill-available;">
+                                    <li class="sliderBlockitemsitemPhoto sliderBlock_items__showing">
+                                        <img src="https://github.com/BlackStar1991/CardProduct/blob/master/app/img/goods/item1/phones1.png?raw=true" alt="headphones" class="imgproduto">
+                                    </li>
+                                    <li class="sliderBlockitemsitemPhoto">
+                                        <img src="https://github.com/BlackStar1991/CardProduct/blob/master/app/img/goods/item1/phones2.png?raw=true" alt="headphones" class="imgproduto">
+                                    </li>
+                                    <li class="sliderBlockitemsitemPhoto">
+                                        <img src="https://github.com/BlackStar1991/CardProduct/blob/master/app/img/goods/item1/phones5.png?raw=true" alt="headphones" class="imgproduto">
+                                    </li>
 
-                                                        $resultsProductsPicture = $productsPicture->consulta("WHERE idProduct = :idProduct");
+                                </ul>
 
 
-                                                        if ($resultsProductsPicture != null) {
-                                                            foreach ($resultsProductsPicture as $rowProdutos1) {
-                                                                echo $rowProdutos1->tblProductPicturePath;
-                                                            }
-                                                        } else {
-                                                            echo "https://images.unsplash.com/photo-1507608158173-1dcec673a2e5?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1470&q=80";
-                                                        }
-                                                        ?>" alt="Spinning glass cube" />
-        </div>
-        <div class="col-6">
-            <div class="col-12 d-flex justify-content-start">
-                <h1 class="modal-title txtnomeperfil ttend color-preto"><?php echo $ProductName; ?></h1>
-                
-            </div>
-            <hr>
-            <div class="col-12 d-flex justify-content-start">
-                <h3 class="ttend color-preto">Description</h3>
+                                <div class="sliderBlock_controls" style="z-index: 100000000;position: relative;    top: -19%;">
+                                    <div class="sliderBlock_controls__navigatin">
+                                        <div class="sliderBlock_controls__wrapper">
+                                            <div class="sliderBlock_controls__arrow sliderBlockcontrolsarrowBackward">
+                                                <i class="fa fa-angle-left" aria-hidden="true"></i>
+                                            </div>
+                                            <div class="sliderBlock_controls__arrow sliderBlockcontrolsarrowForward">
+                                                <i class="fa fa-angle-right" aria-hidden="true"></i>
+                                            </div>
+                                        </div>
+                                    </div>
 
-            </div>
-            <div class="col-12 d-flex justify-content-start">
-                <h4 class="ttend "><?php echo $ProdcuctDescription; ?></h4>
-                <hr>
-            </div>
-            <hr>
-            <div class="col-12 d-flex justify-content-start">
-                <h3 class="ttend color-preto">Especification</h3>
+                                    <ul class="sliderBlock_positionControls">
+                                        <li class="sliderBlockpositionControlspaginatorItem sliderBlock_positionControls__active">
+                                        </li>
+                                        <li class="sliderBlockpositionControlspaginatorItem">
+                                        </li>
+                                        <li class="sliderBlockpositionControlspaginatorItem">
+                                        </li>
 
-            </div>
-            <div class="col-12 d-flex justify-content-start">
-                <h4 class="ttend "><?php echo $ProdcuctEspecification; ?></h4>
-                <hr>
-            </div>
-            <div class="col-12 d-flex justify-content-start mt-4">
-                
-            <a href="viewProfile.php?profile=<?php echo $idClient; ?>" type="button" class="btn btn-primary" style="">View Profile</a>
-                
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="small-12 large-6 columns txtmobile" style="flex: 1;     z-index: 31;">
+                        <div class="productCard_rightSide">
+                            <div class="block_product">
+                                <h2 class="block_name block_name__mainName"><?php echo $ProductName; ?></h2>
+
+
+
+                                <div class="block_informationAboutDevice" style="display: contents;">
+
+
+
+
+                                    <div class="block_descriptionInformation">
+                                        <span><?php echo $ProdcuctDescription; ?>
+                                        </span>
+                                    </div>
+
+
+
+                                </div>
+                                <div class="large-6 small-12 column end" style="margin-top: 14px;">
+
+                                    <a href="viewProfile.php?profile=<?php echo $idClient; ?>" type="button" class="btn btn-primary" style="">View Profile</a>
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
+
 </div>

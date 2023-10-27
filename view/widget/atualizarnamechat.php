@@ -1,5 +1,6 @@
 
 <?php
+include_once('../../model/classes/conexao.php');
 header('Content-Type: application/json');
 header("Access-Control-Allow-Origin: *");
 
@@ -7,7 +8,7 @@ include('../../model/classes/tblUserClients.php');
 
 $idClientConversa = $_POST['idClientConversa'];
 
-$userClients = new UserClients();
+$userClients = new UserClients($dbh);
 
 $userClients->setidClient($idClientConversa);
 

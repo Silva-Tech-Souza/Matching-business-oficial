@@ -1,8 +1,9 @@
 <?php
+include_once('../../model/classes/conexao.php');
 include_once("../../model/classes/tblEmpresas.php");
-echo "teste";
-$empresas = new Empresas();
-$resultsempresas = $empresas->consulta("LIMIT 3");
+
+$empresas = new Empresasview($dbh);
+$resultsempresas = $empresas->consulta("LIMIT 12");
 if ($resultsempresas != null) {
     foreach ($resultsempresas as $rowempresas) {
 ?>

@@ -1,10 +1,10 @@
 <?php
-if (session_status() !== PHP_SESSION_ACTIVE) {
-    session_start();
-}
-if (isset($_SESSION['error'])) {
+include_once('../../model/classes/conexao.php');
+include_once('../../model/classes/tblFeeds.php');
+include_once('../../model/classes/tblUserClients.php');
+
     error_reporting(0);
-}
+
 date_default_timezone_set('America/Sao_Paulo');
 header("Access-Control-Allow-Origin: *");
 $iduser = $_SESSION["id"];
@@ -14,21 +14,11 @@ $iduser = $_SESSION["id"];
 
 
     <?php
-    if ($_GET["novos"] != 1) {
-        $n = $_SESSION["n"];
-    } else {
+   
+    $feeds = new Feeds($dbh);
+   
         $n  = 8;
-    }
-
-
-    include_once('../../model/classes/tblFeeds.php');
-
-    $feeds = new Feeds();
-    if ($_GET["novos"] != 1) {
-        $n =  $_SESSION["n"] ;
-    } else {
-        $n  = 8;
-    }
+    
     $resultsfeed = $feeds->consulta("ORDER BY Published_at DESC LIMIT $n");
 
     if ($resultsfeed != null) {
@@ -64,7 +54,7 @@ $iduser = $_SESSION["id"];
 
             include_once("../../model/classes/tblUserClients.php");
 
-            $userClients = new UserClients();
+            $userClients = new UserClients($dbh);
 
             $userClients->setidClient($rowfeed->IdClient);
 
@@ -109,7 +99,7 @@ $iduser = $_SESSION["id"];
 
                                 include_once("../../model/classes/tblOperations.php");
 
-                                $operations = new Operations();
+                                $operations = new Operations($dbh);
 
                                 $operations->setidOperation($idpostoperation);
                                 $operations->setFlagOperation('0');
@@ -185,7 +175,7 @@ $iduser = $_SESSION["id"];
 
                         include_once('../../model/classes/tblCurtidas.php');
 
-                        $curtidas = new Curtidas();
+                        $curtidas = new Curtidas($dbh);
 
                         $curtidas->setidpost($rowfeed->IdFeed);
 
@@ -208,7 +198,7 @@ $iduser = $_SESSION["id"];
 
                         include_once('../../model/classes/tblCurtidas.php');
 
-                        $curtidas = new Curtidas();
+                        $curtidas = new Curtidas($dbh);
 
                         $curtidas->setidpost($rowfeed->IdFeed);
                         $curtidas->setidusuario($iduser);
@@ -260,7 +250,7 @@ $iduser = $_SESSION["id"];
                                                                                                                 ?>" class="btnCommnet  btn like-comment-btn pl-4 pr-4 no-border p-3 hero-image-container2"><span class="  btn-comment-post">
                                     <?php
                                     include_once('../../model/classes/tbPostComent.php');
-                                    $tbPostComentcont2 = new PostComent();
+                                    $tbPostComentcont2 = new PostComent($dbh);
                                     $tbPostComentcont2->setidpost($rowfeed->IdFeed);
                                     echo  $tbPostComentcont2->quantidade(" WHERE idpost = :idpost");
                                     ?> &nbsp;&nbsp; <i class="fa fa-comment">
@@ -272,14 +262,14 @@ $iduser = $_SESSION["id"];
                                                 <div class="row">
                                                     <?php
 
-                                                    $viewcomentarios = new PostComent();
+                                                    $viewcomentarios = new PostComent($dbh);
                                                     $viewcomentarios->setidpost($rowfeed->IdFeed);
                                                     $resultstbPostComentview =  $viewcomentarios->consulta(" WHERE idpost = :idpost ORDER BY datahora DESC LIMIT 1");
                                                     if ($resultstbPostComentview != null) {
 
                                                         foreach ($resultstbPostComentview as $rowviewcomentarios) {
-                                                            include_once('../model/classes/tblUserClients.php');
-                                                            $userClientscomentarios = new UserClients();
+                                                          
+                                                            $userClientscomentarios = new UserClients($dbh);
 
                                                             $userClientscomentarios->setidClient($rowviewcomentarios->iduser);
 
@@ -292,7 +282,7 @@ $iduser = $_SESSION["id"];
                                                                                         echo "" . $rowucometarios->PersonalUserPicturePath;
                                                                                     } else {
                                                                                         echo "assets/img/Avatar.png";
-                                                                                    } ?>" alt="user" class="nav-profile-img" style="width: 26px;">
+                                                                                    } ?>" alt="user" class="nav-profile-img" style="width: 33px;">
                                                                     </div>
                                                                     <div class="col-11">
                                                                         <div class="col-10 d-flex flex-column justify-content-start align-items-start color-preto" style="height: auto;">

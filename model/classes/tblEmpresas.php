@@ -1,6 +1,6 @@
 <?php
 
-class Empresas{
+class Empresasview{
 
     protected $id = null;
     protected $nome = null;
@@ -8,15 +8,11 @@ class Empresas{
     protected $idClient = null;
     protected $dbh = null;
 
-    function __construct()
+    function __construct($dbh)
     {
-        
-        include_once('conexao.php');
-        $conexao = new Conexao();
-        $conexao->abrirConexao();
-        $this->dbh = $conexao->getConexao();
-
+        $this->dbh = $dbh;
     }
+
     
     public function setId($param){$this->id = $param;}
 
@@ -35,8 +31,8 @@ class Empresas{
     public function getidClient(){return $this->idClient;}
 
     public function cadastrar(){
-
-        $sql = "INSERT INTO tblEmpresas (nome, taxid,idClient) VALUES (:nome, :taxid,:idClient)";
+ 
+        $sql = "INSERT INTO tblEmpresas (nome, taxid, idClient) VALUES (:nome, :taxid,:idClient)";
         $query = $this->dbh->prepare($sql);
         
         if($this->nome != null){
@@ -57,7 +53,7 @@ class Empresas{
 
     public function consulta($paramsExtra){
 
-        //$sql = "SELECT * from tblUserClients WHERE idClient = :idClient ";
+      
         $sql = "SELECT * from tblEmpresas ".$paramsExtra;
         $query = $this->dbh->prepare($sql);
         

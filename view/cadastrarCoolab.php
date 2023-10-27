@@ -1,5 +1,5 @@
 <?php
-error_reporting(0);
+include_once('../model/classes/conexao.php');
 if ( session_status() !== PHP_SESSION_ACTIVE )
 {
    session_start();
@@ -9,8 +9,20 @@ if ( session_status() !== PHP_SESSION_ACTIVE )
   }
 }
 
+$txaid = $_GET["taxid"];
 date_default_timezone_set('America/Sao_Paulo');
+include_once('../model/classes/tblEmpresas.php');
+$NOMEEMRPESA = "";
+$empresas = new Empresasview($dbh); 
 
+$empresas->setTaxid($txaid);
+
+$resultsempresas = $empresas->consulta("WHERE taxid = :taxid");
+if ($resultsempresas != null && is_array($resultsempresas)) {
+  foreach ($resultsempresas as $rowempresa) {
+    $NOMEEMRPESA = $rowempresa->nome;
+  }
+}
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -107,7 +119,8 @@ date_default_timezone_set('America/Sao_Paulo');
                 <div class="col-sm-12">
                   <div class="form-group" style="text-align: start;">
                     <label class="color-branco labelcadastro" for="company-name">Company name </label>
-                    <input type="text" name="nomeEmpresa" class="form-control inputtamanho" id="nomeEmpresa" placeholder="ex: Devloper" required><br>
+                    <input type="hidden" class="form-control inputtamanho" value="<?PHP echo $NOMEEMRPESA;?>" name="nomeEmpresa" id="nomeEmpresa" placeholder="ex: Devloper" required><br><br>
+                    <input type="text" disabled name="nomeEmpresa" value="<?PHP echo $NOMEEMRPESA;?>" class="form-control inputtamanho" id="nomeEmpresa" placeholder="ex: Devloper" required><br>
                   </div>
                 </div>
 
@@ -115,6 +128,7 @@ date_default_timezone_set('America/Sao_Paulo');
                   <div class="form-group" style="text-align: start;">
                     <label class="color-branco labelcadastro" for="taxid">TAX ID </label>
                     <input type="hidden" class="form-control inputtamanho" value="<?PHP if(isset($_GET["taxid"])){ echo $_GET["taxid"]; }?>" name="taxid" id="taxid" placeholder="ex: Devloper" required><br><br>
+                    <input type="text" disabled class="form-control inputtamanho" value="<?PHP if(isset($_GET["taxid"])){ echo $_GET["taxid"]; }?>" name="taxid" id="taxid" placeholder="ex: Devloper" required><br><br>
                   </div>
                 </div>
 
@@ -173,7 +187,7 @@ date_default_timezone_set('America/Sao_Paulo');
                       <?php
                       include_once('../model/classes/tblCountry.php');
 
-                      $tblCountry = new Country();
+                      $tblCountry = new Country($dbh);
 
                       $resultstblCountry = $tblCountry->consulta("ORDER BY NmCountry ASC");
 

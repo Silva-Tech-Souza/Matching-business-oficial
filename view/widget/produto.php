@@ -36,7 +36,7 @@
                                     <?php
 
                                     include_once('../model/classes/tblOperations.php');
-                                    $operations = new Operations();
+                                    $operations = new Operations($dbh);
 
                                     $resultsOperation = $operations->consulta("WHERE FlagOperation = '0'");
 
@@ -57,7 +57,7 @@
                                    
                                     <?php
 
-                                    $operations = new Operations();
+                                    $operations = new Operations($dbh);
 
                                     $results = $operations->consulta("");
 

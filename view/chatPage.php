@@ -1,8 +1,9 @@
 <?php
-session_start();
 
+include_once('../model/classes/conexao.php');
+include_once('../model/classes/tblLogErrorCode.php');
 include_once('../model/ErrorLog.php');
-
+error_reporting(0);
 date_default_timezone_set('America/Sao_Paulo');
 if ($_SESSION["id"] < 0 || $_SESSION["id"] == "") {
   header("Location: login.php");
@@ -20,7 +21,7 @@ if (isset($_GET["idClientConversa"])) {
 
 include_once('../model/classes/tblUserClients.php');
 
-$userClients = new UserClients();
+$userClients = new UserClients($dbh);
 
 $userClients->setidClient($iduser);
 
@@ -40,7 +41,7 @@ if ($results != null) {
 }
 
 include_once('../model/classes/tblOperations.php');
-$operations = new Operations();
+$operations = new Operations($dbh);
 
 $operations->setidOperation($idoperation);
 $resultsoperation = $operations->consulta("WHERE idOperation = :idOperation");
@@ -118,7 +119,7 @@ if ($resultsoperation != null) {
                           <!-- chat-list -->
                           <div class="chat-list"><?php
                                                   include_once('../model/classes/tblConect.php');
-                                                  $conects = new Conect();
+                                                  $conects = new Conect($dbh);
                                                   $conects->setidUserPed($iduser);
                                                   $conects->setidUserReceb($iduser);
                                                   $resultsConect = $conects->consulta("WHERE (idUserPed = :idUserPed) AND status = '1' OR (idUserReceb = :idUserReceb) AND status = '1' ");
@@ -130,21 +131,21 @@ if ($resultsoperation != null) {
                                                         $idconectado = $row->idUserReceb;
                                                       }
                                                       include_once('../model/classes/tblUserClients.php');
-                                                      $userClients = new UserClients();
+                                                      $userClients = new UserClients($dbh);
                                                       $userClients->setidClient($idconectado);
                                                       $resultsUserClients = $userClients->consulta("WHERE idClient = :idClient");
                                                       if ($resultsUserClients != null) {
                                                         foreach ($resultsUserClients as $rowCon) {
-                                                            
-                                                             $imgchatuserS = $rowCon->PersonalUserPicturePath;
+
+                                                          $imgchatuserS = $rowCon->PersonalUserPicturePath;
                                                   ?>
-                                    <a href="#" class="d-flex align-items-center" onclick="atualizarMensagens(<?php echo $idconectado; ?>)">
+                                    <a href="#" class="d-flex align-items-center" onclick="atualizarMensagens(<?php echo $idconectado; ?>);ativarDiv()">
                                       <div class="flex-shrink-0">
                                         <img class="imgavatar" src="<?php if ($imgchatuserS != "Avatar.png" && $imgchatuserS != "" && file_exists("" . $imgchatuserS)) {
-                                                                            echo "" . $imgchatuserS;
-                                                                        } else {
-                                                                            echo "assets/img/Avatar.png";
-                                                                        } ?>" alt="user img">
+                                                                      echo "" . $imgchatuserS;
+                                                                    } else {
+                                                                      echo "assets/img/Avatar.png";
+                                                                    } ?>" alt="user img">
                                         <span class="active"></span>
                                       </div>
                                       <div class="flex-grow-1 ms-3">
@@ -152,7 +153,7 @@ if ($resultsoperation != null) {
                                         <p><?php
                                                           include_once('../model/classes/tblOperations.php');
 
-                                                          $Operations = new Operations();
+                                                          $Operations = new Operations($dbh);
                                                           $Operations->setidOperation($rowCon->CoreBusinessId);
                                                           $resultsbusiness = $Operations->consulta("WHERE idOperation = :idOperation");
 
@@ -190,24 +191,30 @@ if ($resultsoperation != null) {
               <div class="modal-dialog-scrollable" style="min-height: -webkit-fill-available;">
                 <div class="modal-content modal-content-display">
                   <div class="msg-head henderchat " id="henderchat">
-                   
+
                   </div>
 
 
                   <div class="modal-body modal-body-height">
                     <div class="msg-body tamanhochatlist" style="padding: 11px;overflow-y: auto;">
+                      <div id="minhaDiv"  style="display: flex;flex-direction: column;flex-wrap: nowrap;align-content: center;justify-content: center;align-items: center;height: 63%;">
+
+                        <img src="assets/img/logo.png" alt="logo" style="max-width: 71px; border-radius: 10px;">
+                        <h1>Your messages</h1>
+                        <p style="    font-size: medium;">Click on a profile to view messages</p>
+                      </div>
                       <ul id="messageList">
 
                       </ul>
                     </div>
-                    <div class="col-12 col-md-12 col-lg-12 send-box" style=" bottom: 0; right: 0;background: #fff;">
+                    <div id="minhaDiv2" class="col-12 col-md-12 col-lg-12 send-box" style="justify-content: center;flex-direction: column; display: none; bottom: 0; right: 0;background: #fff;">
                       <form id="sendMessageForm" method="POST" enctype="multipart/form-data" onsubmit="limparTextarea()">
                         <input required type="text" class="form-control" aria-label="message…" placeholder="Write message…" id="txtarea" name="Texto">
                         <input type="hidden" value="<?php echo $iduser; ?>" name="iduser">
                         <input type="hidden" value="<?php echo $idClientConversa; ?>" name="idClientConversa">
 
                         <input type="hidden" value="cadastrar" name="acao">
-                        <button type="submit"  name="envarmsg" value="Send"><i class="fa fa-paper-plane" aria-hidden="true"></i> Send</button>
+                        <button type="submit" name="envarmsg" value="Send"><i class="fa fa-paper-plane" aria-hidden="true"></i> Send</button>
                       </form>
                     </div>
                   </div>
@@ -216,8 +223,6 @@ if ($resultsoperation != null) {
             </div>
           </div>
           <!-- chatbox -->
-
-
         </div>
       </div>
     </div>
@@ -232,17 +237,29 @@ if ($resultsoperation != null) {
   <script src="assets/plugins/summernote/dist/summernote-bs4.min.js"></script>
   <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
   <script>
-  <?php if($_POST["envarmsg"] != ""){
+    <?php if ($_POST["envarmsg"] != "") {
       $_POST["envarmsg"] != "";
       echo "<script>scrollToBottom();</script>";
-  
-  } ?>
-  function limparTextarea() {
- setTimeout(function() {
+    } ?>
+
+    function limparTextarea() {
+      scrollToBottom();
+      setTimeout(function() {
         document.getElementById('txtarea').value = '';
-    }, 2);
-}var idConversaAtiva ="";
+      }, 2);
+    }
+
+    var idConversaAtiva = "";
+    function ativarDiv() {
+    var minhaDiv = document.getElementById('minhaDiv');
+    minhaDiv.style.display = 'none';
+    
+    var minhaDiv = document.getElementById('minhaDiv2');
+    minhaDiv.style.display = 'flex';
+}
     function atualizarMensagens(idconectado) {
+
+      //aqui: 
       var iduser = <?php echo $iduser; ?>;
       idConversaAtiva = idconectado;
       if (idconectado == null || idconectado == "") {
@@ -251,6 +268,7 @@ if ($resultsoperation != null) {
         var idClientConversa = idconectado;
 
       }
+      scrollToBottom();
       $.ajax({
         url: 'widget/atualizarnamechat.php',
         type: 'POST',
@@ -259,39 +277,40 @@ if ($resultsoperation != null) {
           idClientConversa: idClientConversa
         },
         success: function(data) {
-         
+          scrollToBottom();
           var henderchat = $('#henderchat');
           henderchat.empty();
           console.log(data);
           if (data.messages) {
-           
+
             data.messages.forEach(function(message) {
-            henderchat.append(
-              '<div class="row">' +
-              '<div class="col-8">' +
-              '<div class="d-flex align-items-center">' +
-              '<span class="chat-icon"><img class="img-fluid" src="https://mehedihtml.com/chatbox/assets/img/arroleftt.svg" alt="image title"></span>' +
-              '<div class="flex-shrink-0">' +
-              '<img class="imgavatar" src="'+message.img+'" alt="user img">' +
-              '</div>' +
-              '<div class="flex-grow-1 ms-3">' +
-              '<h3>'+message.name+'</h3>' +
-              '<p>'+message.core+'</p>' +
-              '</div>' +
-              '</div>' +
-              '</div>' +
-              '<div class="col-4">' +
-              '<ul class="moreoption">' +
-              '<li class="navbar nav-item dropdown">' +
-              '<a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false"><i class="fa fa-ellipsis-v" aria-hidden="true"></i></a>' +
-              '<ul class="dropdown-menu">' +
-              '<li><a class="dropdown-item" href="viewProfile.php?profile=' + idClientConversa + '">View Profile</a></li>' +
-              '</ul>' +
-              '</li>' +
-              '</ul>' +
-              '</div>' +
-              '</div>');
+              henderchat.append(
+                '<div class="row">' +
+                '<div class="col-8">' +
+                '<div class="d-flex align-items-center">' +
+                '<span class="chat-icon"><img class="img-fluid" src="https://mehedihtml.com/chatbox/assets/img/arroleftt.svg" alt="image title"></span>' +
+                '<div class="flex-shrink-0">' +
+                '<img class="imgavatar" src="' + message.img + '" alt="user img">' +
+                '</div>' +
+                '<div class="flex-grow-1 ms-3">' +
+                '<h3>' + message.name + '</h3>' +
+                '<p>' + message.core + '</p>' +
+                '</div>' +
+                '</div>' +
+                '</div>' +
+                '<div class="col-4">' +
+                '<ul class="moreoption">' +
+                '<li class="navbar nav-item dropdown">' +
+                '<a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false"><i class="fa fa-ellipsis-v" aria-hidden="true"></i></a>' +
+                '<ul class="dropdown-menu">' +
+                '<li><a class="dropdown-item" href="viewProfile.php?profile=' + idClientConversa + '">View Profile</a></li>' +
+                '</ul>' +
+                '</li>' +
+                '</ul>' +
+                '</div>' +
+                '</div>');
             });
+            scrollToBottom();
           }
         }
       });
@@ -308,32 +327,35 @@ if ($resultsoperation != null) {
           var txtarea = document.getElementById('txtarea');
 
           var msgContainer = $('#messageList');
-      
+
           msgContainer.empty(); // Limpa a lista de mensagens
-        
+
           if (data.messages) {
-            
+
             data.messages.forEach(function(message) {
               var messageClass = message.type === 'repaly' ? 'repaly' : 'sender';
               msgContainer.append('<li class="' + messageClass + '"><p>' + message.text + '</p><span class="time">' + message.date + '</span></li>');
-             
-             // 
+
+              // 
             });
           }
         }
       });
     }
-function chamarAtualizarMensagens() {
-    atualizarMensagens(idConversaAtiva);
-}
-setInterval(chamarAtualizarMensagens, 1000);
-   
+
+    function chamarAtualizarMensagens() {
+      scrollToBottom();
+      atualizarMensagens(idConversaAtiva);
+      scrollToBottom();
+    }
+    setInterval(chamarAtualizarMensagens, 1000);
+
     $(document).ready(function() {
 
 
       $('#sendMessageForm').submit(function(event) {
         event.preventDefault();
-
+        scrollToBottom();
         var formData = new FormData(this);
         if (idConversaAtiva != null || idConversaAtiva != "") {
           formData.append('idClientConversa', idConversaAtiva);
@@ -346,6 +368,7 @@ setInterval(chamarAtualizarMensagens, 1000);
           processData: false,
           contentType: false,
           success: function(data) {
+            scrollToBottom();
             if (data.success) {
               if (idConversaAtiva != null || idConversaAtiva != "") {
                 atualizarMensagens(idConversaAtiva); // Atualiza as mensagens
@@ -359,9 +382,11 @@ setInterval(chamarAtualizarMensagens, 1000);
             }
           }
         });
+        scrollToBottom();
       });
-
+      scrollToBottom();
       atualizarMensagens(); // Chama a função ao carregar a página
+
     });
   </script>
 
@@ -374,78 +399,12 @@ setInterval(chamarAtualizarMensagens, 1000);
   </script>
 
   <script>
-    // JavaScript / jQuery
-    // JavaScript / jQuery
-    $(document).ready(function() {
-      // Ao clicar em um link de produto
-      $('.hero-image-container').click(function() {
-        // Obtenha o ID do produto associado ao link clicado
-        var idProduto = $(this).data('id');
-        console.log(idProduto);
-        // Use o ID do produto para fazer uma requisição AJAX para buscar os dados do produto no servidor
-        $.ajax({
-          type: 'GET',
-          url: 'modal/getproduto.php', // Substitua pelo caminho correto
-          data: {
-            idProduto: idProduto
-          },
-          success: function(data) {
-            // Preencha o conteúdo do modal com as informações do produto
-            $('#modalEditarProduto .modal-content').html(data);
-          },
-          error: function() {
-            alert('Ocorreu um erro ao carregar os dados do produto.');
-          }
-        });
-
-        // Abra o modal correspondente
-        $('#modalEditarProduto').fadeIn();
-      });;
-
-      // Feche o modal ao clicar fora dele ou no botão de fechar
-      $('.modal').click(function(event) {
-        if ($(event.target).hasClass('modal')) {
-          $(this).fadeOut();
-        }
-      });
-    });
-
     function likeColor(element) {
       var likeIcon = element.previousElementSibling;
       likeIcon.classList.add("red-like"); // Adiciona a classe CSS "red-like" ao ícone de like
     }
 
 
-    $(document).ready(function() {
-      function readURL(input) {
-        if (input.files && input.files[0]) {
-          var reader = new FileReader();
-          reader.onload = function(e) {
-            if (input.id === 'file-input') {
-              $('#preview-image').attr('src', e.target.result).show();
-              $('#preview-video').hide();
-            } else if (input.id === 'video-input') {
-              $('#preview-video').attr('src', e.target.result).show();
-              $('#preview-image').hide();
-            }
-          };
-          reader.readAsDataURL(input.files[0]);
-        } else {
-          var img = input.value;
-          $('#preview-image').attr('src', '').hide();
-          $('#preview-video').attr('src', '').hide();
-        }
-      }
-
-      // Event listeners para os inputs de imagem e vídeo
-      $('#file-input').on('change', function() {
-        readURL(this);
-      });
-
-      $('#video-input').on('change', function() {
-        readURL(this);
-      });
-    });
     document.querySelector('.collapse-chat').addEventListener('click', function() {
       this.classList.toggle('open');
     });
@@ -453,7 +412,13 @@ setInterval(chamarAtualizarMensagens, 1000);
 
 
 
+    function redirectToAnotherPage() {
+            var form = document.getElementById('formularionome');
+            var textValue = form.querySelector('[name="text"]').value;
 
+            // Redireciona para listcompani.php com o parâmetro GET "text"
+            window.location.href = 'listcompani.php?text=' + encodeURIComponent(textValue);
+        }
     window.addEventListener('scroll', function() {
       var navbar = document.getElementById('navbar');
       if (window.pageYOffset > 0) {
@@ -650,7 +615,8 @@ setInterval(chamarAtualizarMensagens, 1000);
 
 
     });
-     function scrollToBottom() {
+
+    function scrollToBottom() {
       var msgBody = document.querySelector('.msg-body');
       msgBody.scrollTop = msgBody.scrollHeight;
     }

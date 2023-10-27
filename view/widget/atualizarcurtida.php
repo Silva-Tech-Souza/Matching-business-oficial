@@ -1,4 +1,5 @@
 <?php
+include_once('../../model/classes/conexao.php');
 if ( session_status() !== PHP_SESSION_ACTIVE )
 {
    session_start();
@@ -18,14 +19,14 @@ include_once("../../model/classes/tblCurtidas.php");
 
 include_once("../../model/classes/tblUserClients.php");
 
-$tbcurtida = new Curtidas;
+$tbcurtida = new Curtidas($dbh);
 $tbcurtida->setidusuario($iduser);
 $tbcurtida->setidpost($idPost);
 $tbcurtida->setdata($dataAtual);
 $tbcurtida->sethora($horaAtual);
 $tbcurtida->cadastrar();
 
-$user = new UserClients();
+$user = new UserClients($dbh);
 $user->setidClient($iduser);
 $user->setPontos(10);
 $user->atualizar("Pontos = Pontos + :Pontos WHERE idClient = :idClient");
@@ -33,7 +34,7 @@ $user->atualizar("Pontos = Pontos + :Pontos WHERE idClient = :idClient");
 
 
 //parte 2
-$tbcurtidaSe = new Curtidas;
+$tbcurtidaSe = new Curtidas($dbh);
 $tbcurtidaSe->setidpost($idPost);
 $tbcurtidaSeResults = $tbcurtidaSe->consulta("WHERE idpost = :idpost");
 
@@ -51,7 +52,7 @@ if ($tbcurtidaSeResults != null) {
 
 include_once("../../model/classes/tblFeeds.php");
 
-$tblfeedsNotif = new Feeds;
+$tblfeedsNotif = new Feeds($dbh);;
 $tblfeedsNotif->setidIdFeed($idPost);
 $tblfeedsNotifResults = $tblfeedsNotif->consulta("WHERE IdFeed = :IdFeed");
 if ($tblfeedsNotifResults != null) {
@@ -62,7 +63,7 @@ if ($tblfeedsNotifResults != null) {
 
 include_once("../../model/classes/tblSearchProfile_Results.php");
 
-$searchProfile = new SearchProfile_Results;
+$searchProfile = new SearchProfile_Results($dbh);;
 
 $searchProfile->setidUsuario($iduser);
 $searchProfile->setidClienteEncontrado($idCliente);

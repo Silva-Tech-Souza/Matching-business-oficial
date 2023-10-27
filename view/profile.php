@@ -1,11 +1,9 @@
 <?php
-if ( session_status() !== PHP_SESSION_ACTIVE )
-{
-   session_start();
-}
+
 if(isset($_SESSION['error'])){
-    error_reporting(0);
+   // error_reporting(0);
 }
+include_once('../model/classes/conexao.php');
 include_once('../model/ErrorLog.php');
 date_default_timezone_set('America/Sao_Paulo');
 if ($_SESSION["id"] < 0 || $_SESSION["id"] == "") {
@@ -18,7 +16,7 @@ $_SESSION["n"] = 5;
 
 include_once('../model/classes/tblUserClients.php');
 
-$userClients = new UserClients();
+$userClients = new UserClients($dbh);
 
 $userClients->setidClient($iduser);
 
@@ -44,7 +42,7 @@ if ($results != null) {
 
 include('../model/classes/tblCountry.php');
 
-$country = new Country();
+$country = new Country($dbh);
 
 $country->setidCountry($idcountry);
 
@@ -56,7 +54,7 @@ if ($resultsCountry != null) {
   }
 }
 include_once('../model/classes/tblOperations.php');
-$operations = new Operations();
+$operations = new Operations($dbh);
 $operations->setidOperation($corebusiness);
 $resultsoperation = $operations->consulta("WHERE idOperation = :idOperation");
 if ($resultsoperation != null) {
@@ -67,7 +65,7 @@ if ($resultsoperation != null) {
 
 
 include_once('../model/classes/tblBusiness.php');
-$business = new Business();
+$business = new Business($dbh);
 $business->setidBusiness($satBusinessId);
 $resultsbusiness = $business->consulta("WHERE idBusiness = :idBusiness");
 if ($resultsbusiness != null) {
@@ -79,7 +77,7 @@ if ($resultsbusiness != null) {
 
 $NmBusinessCategory = "";
 include_once('../model/classes/tblBusinessCategory.php');
-$BusinessCategory = new BusinessCategory();
+$BusinessCategory = new BusinessCategory($dbh);
 $BusinessCategory->setidBusinessCategory($idoperation);
 $resultsBusinessCategory = $BusinessCategory->consulta("WHERE idBusinessCategory = :idBusinessCategory");
 
@@ -184,6 +182,13 @@ if ($resultsBusinessCategory != null) {
       xmlhttp.open("GET", "widget/atualizardescurtida.php?id=" + iddiv, true);
       xmlhttp.send();
     }
+    function redirectToAnotherPage() {
+            var form = document.getElementById('formularionome');
+            var textValue = form.querySelector('[name="text"]').value;
+
+            // Redireciona para listcompani.php com o parâmetro GET "text"
+            window.location.href = 'listcompani.php?text=' + encodeURIComponent(textValue);
+        }
   </script>
 
   <!-- Header -->
@@ -230,7 +235,7 @@ if ($resultsBusinessCategory != null) {
                   </div>
                   <div class="col-4 d-flex justify-content-end align-middle">
                     <p class="d-inline m-0"><b><?php include_once('../model/classes/tblSearch.php');
-                                                $Search = new Search();
+                                                $Search = new Search($dbh);
                                                 $Search->setidClient($iduser);
                                                 $resultSearch = $Search->consulta("WHERE idClient = :idClient");
                                                 $numSearch = 0;
@@ -259,7 +264,7 @@ if ($resultsBusinessCategory != null) {
                   <div class="col-4 d-flex justify-content-end align-middle">
                     <p class="d-inline m-0"><b><?php include_once('../model/classes/tblConect.php');
 
-                                                $conect = new Conect();
+                                                $conect = new Conect($dbh);
 
                                                 $conect->setidUserReceb($iduser);
 
@@ -301,7 +306,7 @@ if ($resultsBusinessCategory != null) {
 
                                                 include_once('../model/classes/tblConect.php');
 
-                                                $conect = new Conect();
+                                                $conect = new Conect($dbh);
 
                                                 $conect->setidUserReceb($iduser);
 
@@ -338,7 +343,7 @@ if ($resultsBusinessCategory != null) {
 
                                                 include_once('../model/classes/tblViews.php');
 
-                                                $views = new Views();
+                                                $views = new Views($dbh);
 
                                                 $views->setidView($iduser);
 
@@ -401,7 +406,7 @@ if ($resultsBusinessCategory != null) {
               <?php if ($corebusiness == "3" || $corebusiness == "4") {
                 include_once('../model/classes/tblDistributorProfile.php');
 
-                $distributorProfile = new DistributorProfile();
+                $distributorProfile = new DistributorProfile($dbh);
                 $distributorProfile->setidClient($iduser);
                 $resultsdistributor = $distributorProfile->consulta("WHERE idClient = :idClient");
 
@@ -411,7 +416,7 @@ if ($resultsBusinessCategory != null) {
 
                     $numEmpregadosid = $row->NumEmpregados;
                     include_once('../model/classes/tblNumEmpregados.php');
-                    $nEmpre = new NumEmpregados();
+                    $nEmpre = new NumEmpregados($dbh);
                     $nEmpre->setidNumEmpregados($numEmpregadosid);
                     $resultsnEmpre = $nEmpre->consulta("WHERE idNumEmpregados = :idNumEmpregados");
                     if ($resultsnEmpre != null) {
@@ -424,7 +429,7 @@ if ($resultsBusinessCategory != null) {
                     $numNivelOperacao = $row->NivelOperacao;
 
                     include_once('../model/classes/tblNivelOperacao.php');
-                    $nOperacao = new NivelOperacao();
+                    $nOperacao = new NivelOperacao($dbh);
                     $nOperacao->setidNivelOperacao($numNivelOperacao);
                     $resultsnOperacao = $nOperacao->consulta("WHERE idNivelOperacao = :idNivelOperacao");
                     if ($resultsnOperacao != null) {
@@ -440,7 +445,7 @@ if ($resultsBusinessCategory != null) {
 
                     $Fob3 = $row->Fob_3Y;
                     $nVol3 = $row->Vol_3Y;
-                    $tblRangeValues = new RangeValues();
+                    $tblRangeValues = new RangeValues($dbh);
                     $tblRangeValues->setidlRangeValue($nVol3);
                     $resultstblRangeValues = $tblRangeValues->consulta("WHERE idlRangeValue = :idlRangeValue");
                     if ($resultstblRangeValues != null) {
@@ -451,7 +456,7 @@ if ($resultsBusinessCategory != null) {
 
                     $Fob2 = $row->Fob_2Y;
                     $nVol2 = $row->Vol_2Y;
-                    $tblRangeValues = new RangeValues();
+                    $tblRangeValues = new RangeValues($dbh);
                     $tblRangeValues->setidlRangeValue($nVol2);
                     $resultstblRangeValues = $tblRangeValues->consulta("WHERE idlRangeValue = :idlRangeValue");
                     if ($resultstblRangeValues != null) {
@@ -461,7 +466,7 @@ if ($resultsBusinessCategory != null) {
                     }
                     $Fob1 = $row->Fob_1Y;
                     $nVol1 = $row->Vol_1Y;
-                    $tblRangeValues = new RangeValues();
+                    $tblRangeValues = new RangeValues($dbh);
                     $tblRangeValues->setidlRangeValue($nVol1);
                     $resultstblRangeValues = $tblRangeValues->consulta("WHERE idlRangeValue = :idlRangeValue");
                     if ($resultstblRangeValues != null) {
@@ -658,7 +663,7 @@ if ($resultsBusinessCategory != null) {
             <div class="row rowProduct overflow-auto">
               <?php
               include_once('../model/classes/tblProducts.php');
-              $products = new Products();
+              $products = new Products($dbh);
               $products->setidClient($iduser);
               $resultsProdutos = $products->consulta("WHERE idClient = :idClient  ORDER BY idProduct ASC ");
               if ($resultsProdutos != null) {
@@ -671,7 +676,7 @@ if ($resultsBusinessCategory != null) {
                           <img class="hero-image produto-img" src="<?php
 
                                                                     include_once('../model/classes/tblProductPictures.php');
-                                                                    $productsPicture = new ProductPictures();
+                                                                    $productsPicture = new ProductPictures($dbh);
                                                                     $productsPicture->setidProduct($rowProdutos->idProduct);
 
                                                                     $resultsProductsPicture = $productsPicture->consulta("WHERE idProduct = :idProduct");
@@ -718,7 +723,7 @@ if ($resultsBusinessCategory != null) {
 
           include_once('../model/classes/tblFeeds.php');
 
-          $feeds = new Feeds();
+          $feeds = new Feeds($dbh);
           $feeds->setidClient($iduser);
 
           $resultsfeed = $feeds->consulta("WHERE idClient = :idClient ORDER BY Published_at DESC LIMIT 8");
@@ -757,7 +762,7 @@ if ($resultsBusinessCategory != null) {
 
               include_once("../model/classes/tblUserClients.php");
 
-              $userClients = new UserClients();
+              $userClients = new UserClients($dbh);
 
               $userClients->setidClient($rowfeed->IdClient);
 
@@ -802,7 +807,7 @@ if ($resultsBusinessCategory != null) {
 
                         include_once("../model/classes/tblOperations.php");
 
-                        $operations = new Operations();
+                        $operations = new Operations($dbh);
 
                         $operations->setidOperation($idpostoperation);
                         $operations->setFlagOperation('0');
@@ -878,7 +883,7 @@ if ($resultsBusinessCategory != null) {
 
                     include_once('../model/classes/tblCurtidas.php');
 
-                    $curtidas = new Curtidas();
+                    $curtidas = new Curtidas($dbh);
 
                     $curtidas->setidpost($rowfeed->IdFeed);
 
@@ -901,7 +906,7 @@ if ($resultsBusinessCategory != null) {
 
                     include_once('../model/classes/tblCurtidas.php');
 
-                    $curtidas = new Curtidas();
+                    $curtidas = new Curtidas($dbh);
 
                     $curtidas->setidpost($rowfeed->IdFeed);
                     $curtidas->setidusuario($iduser);
@@ -986,7 +991,7 @@ if ($resultsBusinessCategory != null) {
           <ul class="m-0 overflow-auto p-1 ul-view">
             <?php
             include_once('../model/classes/tblConect.php');
-            $connect = new Conect();
+            $connect = new Conect($dbh);
             $connect->setidUserReceb($iduser);
             $resultsconect = $connect->consulta("WHERE idUserReceb = :idUserReceb AND status = '0'  ORDER BY datapedido DESC");
 
@@ -998,7 +1003,7 @@ if ($resultsBusinessCategory != null) {
             ?>
                 <?php
                 include_once('../model/classes/tblUserClients.php');
-                $userClients = new UserClients();
+                $userClients = new UserClients($dbh);
                 $userClients->setidClient($rowviews->idUserPed);
                 $resultsUserClients = $userClients->consulta("WHERE idClient = :idClient");
 
@@ -1006,7 +1011,7 @@ if ($resultsBusinessCategory != null) {
                   foreach ($resultsUserClients as $rowcliente) {
 
                     include_once('../model/classes/tblOperations.php');
-                    $operations = new Operations();
+                    $operations = new Operations($dbh);
                     $operations->setidOperation($rowcliente->CoreBusinessId);
                     $resultsOperation = $operations->consulta("WHERE FlagOperation != '0' AND idOperation = :idOperation");
 
@@ -1089,7 +1094,7 @@ if ($resultsBusinessCategory != null) {
           <ul class="m-0 overflow-auto p-1 ul-view">
             <?php
             include_once('../model/classes/tblConect.php');
-            $connect = new Conect();
+            $connect = new Conect($dbh);
             $connect->setidUserReceb($iduser);
             $resultsconect = $connect->consulta("WHERE idUserReceb = :idUserReceb AND status = '1'  ORDER BY datapedido DESC");
 
@@ -1101,7 +1106,7 @@ if ($resultsBusinessCategory != null) {
             ?>
                 <?php
                 include_once('../model/classes/tblUserClients.php');
-                $userClients = new UserClients();
+                $userClients = new UserClients($dbh);
                 $userClients->setidClient($rowviews->idUserPed);
                 $resultsUserClients = $userClients->consulta("WHERE idClient = :idClient");
 
@@ -1109,7 +1114,7 @@ if ($resultsBusinessCategory != null) {
                   foreach ($resultsUserClients as $rowcliente) {
 
                     include_once('../model/classes/tblOperations.php');
-                    $operations = new Operations();
+                    $operations = new Operations($dbh);
                     $operations->setidOperation($rowcliente->CoreBusinessId);
                     $resultsOperation = $operations->consulta("WHERE FlagOperation != '0' AND idOperation = :idOperation");
 
@@ -1198,7 +1203,7 @@ if ($resultsBusinessCategory != null) {
 
             include_once('../model/classes/tblViews.php');
 
-            $views = new Views();
+            $views = new Views($dbh);
             $views->setidView($iduser);
             $resultsview = $views->consulta("WHERE idView = :idView ORDER BY datacriacao DESC");
 
@@ -1209,7 +1214,7 @@ if ($resultsBusinessCategory != null) {
                 <?php
 
                 include_once('../model/classes/tblConect.php');
-                $userClients = new UserClients();
+                $userClients = new UserClients($dbh);
                 $userClients->setidClient($rowviews->idUser);
                 $resultsUserClients = $userClients->consulta("WHERE idClient = :idClient");
 
@@ -1218,7 +1223,7 @@ if ($resultsBusinessCategory != null) {
                   foreach ($resultsUserClients as $rowcliente) {
 
                     include_once('../model/classes/tblOperations.php');
-                    $operations = new Operations();
+                    $operations = new Operations($dbh);
                     $operations->setidOperation($rowcliente->CoreBusinessId);
                     $resultsOperation = $operations->consulta("WHERE FlagOperation != '0' AND idOperation = :idOperation");
 
@@ -1346,6 +1351,7 @@ if ($resultsBusinessCategory != null) {
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
 
   <script>
+     
     $(document).ready(function() {
       function readURL(input) {
         if (input.files && input.files[0]) {
@@ -1528,7 +1534,7 @@ if ($resultsBusinessCategory != null) {
       var likeIcon = element.previousElementSibling;
       likeIcon.classList.add("red-like"); // Adiciona a classe CSS "red-like" ao ícone de like
     }
-
+   
 
     $(document).ready(function() {
       function readURL(input) {

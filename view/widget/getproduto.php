@@ -1,5 +1,5 @@
 <?php
-
+include_once('../../model/classes/conexao.php');
 header("Access-Control-Allow-Origin: *");
 $idProduto = $_GET['idProduto'];
 
@@ -7,7 +7,7 @@ $idProduto = $_GET['idProduto'];
 
 include_once("../../model/classes/tblProducts.php");
 
-$products = new Products();
+$products = new Products($dbh);
 $products->setidProduct($idProduto);
 $produtoResults = $products->consulta("WHERE idProduct = :idProduct");
 

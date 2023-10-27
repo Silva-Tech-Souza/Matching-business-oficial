@@ -1,5 +1,5 @@
 <?php
-session_start();
+include_once('../model/classes/conexao.php');
     if ($_POST["create"] != "") {
         
 
@@ -15,7 +15,7 @@ session_start();
       
         include_once('../model/classes/tblUserClients.php');
       
-        $userClients = new UserClients();
+        $userClients = new UserClients($dbh);
         $userClients-> setidClient($id);
 
         $userClients-> setCoreBusinessId($CoreBusinessIdpost);
@@ -44,7 +44,7 @@ session_start();
         //$results = $query->fetchAll(PDO::FETCH_OBJ);
         //if ($query->rowCount() > 0) {return $results;}else{return null;}
 
-        $userClients3 = new UserClients();
+        $userClients3 = new UserClients($dbh);
 
         $userClients3->setidClient($id);
 

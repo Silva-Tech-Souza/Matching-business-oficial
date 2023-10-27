@@ -1,5 +1,5 @@
 <?php 
-session_start();
+include_once('../model/classes/conexao.php');
 if ($_POST["savedistribuidor"] != "") {
 
      $id =  $_SESSION["id"]."<br>";
@@ -14,7 +14,7 @@ if ($_POST["savedistribuidor"] != "") {
     $ano3 = $_POST["ano3"];
 
     include_once('../model/classes/tblUserClients.php');
-    $distributorProfile = new UserClients();
+    $distributorProfile = new UserClients($dbh);
   
     $distributorProfile->setAnoFundacao($year);
     $distributorProfile->setNumEmpregados($numEmpregados);
@@ -32,5 +32,5 @@ if ($_POST["savedistribuidor"] != "") {
    $resultsdistributorProfile = $distributorProfile->atualizar("AnoFundacao = :AnoFundacao, NumEmpregados = :NumEmpregados, NumVendedores = :NumVendedores, NivelOperacao = :NivelOperacao, Fob_3Y = :Fob_3Y, Vol_3Y = :Vol_3Y, Fob_2Y = :Fob_2Y, Vol_2Y = :Vol_2Y, Fob_1Y = :Fob_1Y, Vol_1Y = :Vol_1Y WHERE idClient = :idClient");
     header("Location: ../view/profile.php");
 }else{
-    echo "teste";
+
 }

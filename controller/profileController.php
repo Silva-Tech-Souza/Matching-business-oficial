@@ -1,6 +1,6 @@
 <?php
 
-session_start();
+include_once('../model/classes/conexao.php');
 $iduser = $_SESSION["id"];
 
 
@@ -10,7 +10,7 @@ if (isset($_POST["AdicionarProdutos"])) {
 
   include_once('../model/classes/tblUserClients.php');
 
-  $userClients = new UserClients();
+  $userClients = new UserClients($dbh);
 
   $userClients->setidClient($iduser);
 
@@ -34,7 +34,7 @@ if (isset($_POST["AdicionarProdutos"])) {
   //$queryprodutos->execute();
 
   include_once('../model/classes/tblProducts.php');
-  $Produtos = new Products();
+  $Produtos = new Products($dbh);
 
   $Produtos->setidClient($iduser);
   $Produtos->setidBusinessCategory($corebusiness);
@@ -54,7 +54,7 @@ if (isset($_POST["AdicionarProdutos"])) {
 
   $lastInsertedId = $Produtos->cadastrar();  
 
-  $Produtos = new Products();
+  $Produtos = new Products($dbh);
   $Produtos->setidProduct($lastInsertedId);
   $Produtos->atualizar('ProdcuctEspecification = "" WHERE idProduct = :idProduct'); 
 
@@ -81,7 +81,7 @@ if (isset($_POST["AdicionarProdutos"])) {
 
           include_once('../model/classes/tblProductPictures.php');
 
-          $ProductPictures = new ProductPictures();
+          $ProductPictures = new ProductPictures($dbh);
 
           $ProductPictures->settblProductPicturePath($caminho);
           $ProductPictures->setidProduct($lastInsertedId);
@@ -118,7 +118,7 @@ if (isset($_POST["AdicionarProdutos"])) {
 
           include_once('../model/classes/tblProductPictures.php');
 
-          $ProductPictures = new ProductPictures();
+          $ProductPictures = new ProductPictures($dbh);
 
           $ProductPictures->settblProductPicturePath($caminho);
           $ProductPictures->setidProduct($lastInsertedId);
@@ -137,7 +137,7 @@ if (isset($_POST["AdicionarProdutos"])) {
   $_POST["AdicionarProdutos"] = "";
 
   include_once("../model/classes/tblUserClients.php");
-  $user = new UserClients();
+  $user = new UserClients($dbh);
   $user->setidClient($_SESSION["id"]);
   $user->setPontos(1000);
   $user->atualizar("Pontos = Pontos + :Pontos WHERE idClient = :idClient");
@@ -167,7 +167,7 @@ if (isset($_POST["AdicionarProdutos"])) {
 
           include_once('../model/classes/tblUserClients.php');
 
-          $userClients = new UserClients();
+          $userClients = new UserClients($dbh);
           $userClients-> setPersonalUserPicturePath($caminho);
           $userClients-> setidClient($iduser);
 
@@ -202,7 +202,7 @@ if (isset($_POST["AdicionarProdutos"])) {
 
           include_once('../model/classes/tblUserClients.php');
 
-          $userClients = new UserClients();
+          $userClients = new UserClients($dbh);
           $userClients-> setPersonalUserPicturePath($caminho);
           $userClients-> setidClient($iduser);
 
@@ -246,7 +246,7 @@ if (isset($_POST["AdicionarProdutos"])) {
 
           include_once('../model/classes/tblUserClients.php');
 
-          $userClients = new UserClients();
+          $userClients = new UserClients($dbh);
 
           $userClients->setLogoPicturePath($caminho);
           $userClients->setidClient($iduser);
@@ -277,7 +277,7 @@ if (isset($_POST["AdicionarProdutos"])) {
 
           include_once('../model/classes/tblUserClients.php');
 
-          $userClients = new UserClients();
+          $userClients = new UserClients($dbh);
 
           $userClients->setLogoPicturePath($caminho);
           $userClients->setidClient($iduser);
@@ -310,7 +310,7 @@ if (isset($_POST["AdicionarProdutos"])) {
 
   include_once('../model/classes/tblUserClients.php');
 
-  $userClients = new UserClients();
+  $userClients = new UserClients($dbh);
   $userClients-> setidClient($iduser);
   $userClients-> setFirstName($POSTFirstName);
   $userClients-> setLastName($POSTLastName);
@@ -381,7 +381,7 @@ if (isset($_POST["AdicionarProdutos"])) {
 
           include_once('../model/classes/tblUserClients.php');
 
-          $userClients = new UserClients();
+          $userClients = new UserClients($dbh);
 
           $userClients->setPersonalUserPicturePath($caminho);
           $userClients->setidClient($iduser);
@@ -423,7 +423,7 @@ if (isset($_POST["AdicionarProdutos"])) {
         
           include_once('../model/classes/tblUserClients.php');
 
-          $userClients = new UserClients();
+          $userClients = new UserClients($dbh);
 
           $userClients->setPersonalUserPicturePath($caminho);
           $userClients->setidClient($iduser);
@@ -462,7 +462,7 @@ if (isset($_POST["AdicionarProdutos"])) {
 
           include_once('../model/classes/tblUserClients.php');
 
-          $userClients = new UserClients();
+          $userClients = new UserClients($dbh);
 
           $userClients->setLogoPicturePath($caminho);
           $userClients->setidClient($iduser);
@@ -493,7 +493,7 @@ if (isset($_POST["AdicionarProdutos"])) {
 
           include_once('../model/classes/tblUserClients.php');
 
-          $userClients = new UserClients();
+          $userClients = new UserClients($dbh);
 
           $userClients->setLogoPicturePath($caminho);
           $userClients->setidClient($iduser);
@@ -512,7 +512,7 @@ if (isset($_POST["AdicionarProdutos"])) {
   $_POST["salvar"] = "";
 
   include_once("../model/classes/tblUserClients.php");
-  $user = new UserClients();
+  $user = new UserClients($dbh);
   $user->setidClient($_SESSION["id"]);
   $user->setPontos(200);
   $user->atualizar("Pontos = Pontos + :Pontos WHERE idClient = :idClient");
@@ -523,7 +523,7 @@ if (isset($_POST["AdicionarProdutos"])) {
 
   include_once('../model/classes/tblProducts.php');
 
-  $Product = new Products();
+  $Product = new Products($dbh);
 
   $Product->setidProduct($idproduto);
 
@@ -538,7 +538,7 @@ if (isset($_POST["AdicionarProdutos"])) {
 
   include_once('../model/classes/tblUserClients.php');
 
-  $userClients = new UserClients();
+  $userClients = new UserClients($dbh);
 
   $userClients->setidClient($iduser);
 
@@ -569,7 +569,7 @@ if (isset($_POST["AdicionarProdutos"])) {
 
   include_once('../model/classes/tblProducts.php');
 
-  $Product = new Products();
+  $Product = new Products($dbh);
 
   if(isset($_POST["specification"]) && $_POST["specification"] != null){
     
@@ -619,7 +619,7 @@ if (isset($_POST["AdicionarProdutos"])) {
 
           include_once('../model/classes/tblProductPictures.php');
 
-          $ProductPictures = new ProductPictures();
+          $ProductPictures = new ProductPictures($dbh);
 
           $ProductPictures->settblProductPicturePath($caminho);
           $ProductPictures->setidProduct($lastInsertedId);
@@ -661,7 +661,7 @@ if (isset($_POST["AdicionarProdutos"])) {
 
           include_once('../model/classes/tblProductPictures.php');
 
-          $ProductPictures = new ProductPictures();
+          $ProductPictures = new ProductPictures($dbh);
 
           $ProductPictures->settblProductPicturePath($caminho);
           $ProductPictures->setidProduct($lastInsertedId);
@@ -685,7 +685,7 @@ if (isset($_POST["AdicionarProdutos"])) {
 
   include_once('../model/classes/tblConect.php');
 
-  $conect = new Conect();
+  $conect = new Conect($dbh);
 
   $conect->setid($idconect);
   $conect->setstatus('1');
@@ -701,11 +701,11 @@ if (isset($_POST["AdicionarProdutos"])) {
 
   include_once('../model/classes/tblSearchProfile_Results.php');
 
-  $tblsearchprofile_results = new SearchProfile_Results();
+  $tblsearchprofile_results = new SearchProfile_Results($dbh);
 
   $tblsearchprofile_results->setidUsuario($iduser);
   $tblsearchprofile_results->setidClienteEncontrado($idperfilpedido);
-  $tblsearchprofile_results->setidTipoNotif('6');
+  $tblsearchprofile_results->setidTipoNotif('8');
   $tblsearchprofile_results->setestadoNotif('0');
   $tblsearchprofile_results->setpostId('0');
   $tblsearchprofile_results->seturl("viewProfile.php?profile=".$iduser);
@@ -713,7 +713,7 @@ if (isset($_POST["AdicionarProdutos"])) {
   $tblsearchprofile_results->cadastrar();
 
   include_once("../model/classes/tblUserClients.php");
-  $user = new UserClients();
+  $user = new UserClients($dbh);
   $user->setidClient($_SESSION["id"]);
   $user->setPontos(1000);
   $user->atualizar("Pontos = Pontos + :Pontos WHERE idClient = :idClient");
@@ -725,7 +725,7 @@ if (isset($_POST["AdicionarProdutos"])) {
 
   include_once('../model/classes/tblConect.php');
 
-  $conect = new Conect();
+  $conect = new Conect($dbh);
 
   $conect->setid($idconect);
 
@@ -737,7 +737,7 @@ if (isset($_POST["AdicionarProdutos"])) {
   //$queryconectdelet->execute();
 
   include_once("../model/classes/tblUserClients.php");
-  $user = new UserClients();
+  $user = new UserClients($dbh);
   $user->setidClient($_SESSION["id"]);
   $user->setPontos(500);
   $user->atualizar("Pontos = Pontos - :Pontos WHERE idClient = :idClient");
@@ -759,7 +759,7 @@ if (isset($_POST["AdicionarProdutos"])) {
 
   include_once("../model/classes/tblUserClients.php");
 
-  $user = new UserClients();
+  $user = new UserClients($dbh);
   $user->setidClient($_SESSION["id"]);
   $user->setPontos(1000);
   $user->atualizar("Pontos = Pontos + :Pontos WHERE idClient = :idClient");
@@ -781,7 +781,7 @@ if (isset($_POST["AdicionarProdutos"])) {
   $Vol_3Y = $_POST["ano3"];
 
   include_once('../model/classes/tblUserClients.php');
-  $distributorProfile = new UserClients();
+  $distributorProfile = new UserClients($dbh);
 
   $distributorProfile->setAnoFundacao($anoFundacao);
   $distributorProfile->setNumEmpregados($numEmpregados);

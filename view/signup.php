@@ -8,7 +8,7 @@ if ( session_status() !== PHP_SESSION_ACTIVE )
     header("Location: home.php");
   }
 }
-
+include_once('../model/classes/conexao.php');
 date_default_timezone_set('America/Sao_Paulo');
 
 ?>
@@ -134,7 +134,7 @@ date_default_timezone_set('America/Sao_Paulo');
                       <?php
                       include_once('../model/classes/tblCountry.php');
 
-                      $tblCountry = new Country();
+                      $tblCountry = new Country($dbh);
 
                       $resultstblCountry = $tblCountry->consulta("ORDER BY NmCountry ASC");
 

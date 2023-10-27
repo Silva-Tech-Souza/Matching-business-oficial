@@ -1,4 +1,5 @@
 <?
+include_once('../../model/classes/conexao.php');
 header("Access-Control-Allow-Origin: *");
 ?>
 <div id="edit_dist" class="modal custom-modal fade mt-1" role="dialog">
@@ -19,7 +20,7 @@ header("Access-Control-Allow-Origin: *");
                                         <select style="font-size: small;height: 4rem !important;" required name="numEmpregados" class=" form-select  border-dark inputtamanho" id="floatingSelectGrid" aria-label="Floating label select example">
                                             <?php
                                             include_once('../model/classes/tblNumEmpregados.php');
-                                            $tblNumEmpregados = new NumEmpregados();
+                                            $tblNumEmpregados = new NumEmpregados($dbh);
                                             $resultsNumEmpregados = $tblNumEmpregados->consulta("");
                                             if ($resultsNumEmpregados != null) {
                                                 foreach ($resultsNumEmpregados as $rowemply) {
@@ -36,7 +37,7 @@ header("Access-Control-Allow-Origin: *");
                                         <select style="font-size: small;height: 4rem !important;" required name="rangeValues" class=" form-select  border-dark inputtamanho" id="floatingSelectGrid" aria-label="Floating label select example">
                                             <?php
                                           /*  include_once('../model/classes/tblRangeValues.php');
-                                            $tblRangeValues = new RangeValues();
+                                            $tblRangeValues = new RangeValues($dbh);
                                             $resultstblRangeValues = $tblRangeValues->consulta("");
                                             if ($resultstblRangeValues != null) {
                                                 foreach ($resultstblRangeValues as $rowsallers) {
@@ -60,7 +61,7 @@ header("Access-Control-Allow-Origin: *");
                                         <select style="font-size: small;height: 4rem !important;" required name="nivelOperacao" class=" form-select  border-dark inputtamanho" id="floatingSelectGrid" aria-label="Floating label select example">
                                             <?php
                                             include_once('../model/classes/tblNivelOperacao.php');
-                                            $tblNivelOperacao = new NivelOperacao();
+                                            $tblNivelOperacao = new NivelOperacao($dbh);
                                             $resultstblNivelOperacao = $tblNivelOperacao->consulta("");
                                             if ($resultstblNivelOperacao != null) {
                                                 foreach ($resultstblNivelOperacao as $rowoperation) {
@@ -84,7 +85,7 @@ header("Access-Control-Allow-Origin: *");
                                         <select style="font-size: small;height: 4rem !important;" required name="ano1" class=" form-select  border-dark inputtamanho" id="floatingSelectGrid" aria-label="Floating label select example">
                                             <?php
                                             include_once('../model/classes/tblRangeValues.php');
-                                            $tblRangeValues = new RangeValues();
+                                            $tblRangeValues = new RangeValues($dbh);
                                             $resultstblRangeValues = $tblRangeValues->consulta("");
                                             if ($resultstblRangeValues != null) {
                                                 foreach ($resultstblRangeValues as $rowsallers) {
@@ -101,7 +102,7 @@ header("Access-Control-Allow-Origin: *");
                                         <select style="font-size: small;height: 4rem !important;" required name="ano2" class=" form-select  border-dark inputtamanho" id="floatingSelectGrid" aria-label="Floating label select example">
                                             <?php
                                             include_once('../model/classes/tblRangeValues.php');
-                                            $tblRangeValues = new RangeValues();
+                                            $tblRangeValues = new RangeValues($dbh);
                                             $resultstblRangeValues = $tblRangeValues->consulta("");
                                             if ($resultstblRangeValues != null) {
                                                 foreach ($resultstblRangeValues as $rowsallers) {
@@ -118,7 +119,7 @@ header("Access-Control-Allow-Origin: *");
                                         <select style="font-size: small;height: 4rem !important;" required name="ano3" class=" form-select  border-dark inputtamanho" id="floatingSelectGrid" aria-label="Floating label select example">
                                             <?php
                                             include_once('../model/classes/tblRangeValues.php');
-                                            $tblRangeValues = new RangeValues();
+                                            $tblRangeValues = new RangeValues($dbh);
                                             $resultstblRangeValues = $tblRangeValues->consulta("");
                                             if ($resultstblRangeValues != null) {
                                                 foreach ($resultstblRangeValues as $rowsallers) {

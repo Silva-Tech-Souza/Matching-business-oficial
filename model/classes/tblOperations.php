@@ -7,15 +7,11 @@ class Operations{
     protected $FlagOperation = null;
     protected $dbh = null;
 
-    function __construct()
+    function __construct($dbh)
     {
-        
-        include_once('conexao.php');
-        $conexao = new Conexao();
-        $conexao->abrirConexao();
-        $this->dbh = $conexao->getConexao();
-
+        $this->dbh = $dbh;
     }
+
 
 
     public function setidOperation($param){$this->idOperation = $param;}

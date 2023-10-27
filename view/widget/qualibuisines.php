@@ -1,4 +1,5 @@
 <?php 
+include_once('../../model/classes/conexao.php');
 if ( session_status() !== PHP_SESSION_ACTIVE )
 {
    session_start();
@@ -14,7 +15,7 @@ $idbusines = $_GET["q"];
 
 include_once('../../model/classes/tblOperations.php');
 
-$tblOperations1 = new Operations();
+$tblOperations1 = new Operations($dbh);
 $tblOperations1->setidOperation($idbusines);
 $resultstblOperations = $tblOperations1->consulta("WHERE idOperation = :idOperation");
 
@@ -35,7 +36,7 @@ if($FlagOperation  != "D"){
             <?php 
             
                 include_once('../../model/classes/tblBusiness.php');
-                $tblBusiness = new Business();
+                $tblBusiness = new Business($dbh);
                 $resultstblBusiness = $tblBusiness->consulta("WHERE FlagOperation = '0' ORDER BY NmBusiness ASC");
                
                

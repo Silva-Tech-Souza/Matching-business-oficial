@@ -1,4 +1,5 @@
 <?
+include_once('../../model/classes/conexao.php');
 header("Access-Control-Allow-Origin: *");
 ?>
 <div id="add_perfil" class="modal custom-modal fade mt-1" role="dialog">
@@ -83,7 +84,7 @@ header("Access-Control-Allow-Origin: *");
                                     
 
                                     include_once('../model/classes/tblOperations.php');
-                                    $operations = new Operations();
+                                    $operations = new Operations($dbh);
                                     $resultsoperation = $operations->consulta("");
 
                                     if ($operations != null) {
@@ -104,7 +105,7 @@ header("Access-Control-Allow-Origin: *");
                                     <select onchange="showbusines2(this.value)" class="form-control bordainput sizeinputedit" id="satellite" name="satellite">
                                         <?php
                                         include_once('../model/classes/tblBusiness.php');
-                                        $bussiness = new Business();
+                                        $bussiness = new Business($dbh);
 
                                         $resultsbusiness = $bussiness->consulta("WHERE FlagOperation = '0' AND FlagOperation != 'D'");
 
@@ -127,7 +128,7 @@ header("Access-Control-Allow-Origin: *");
                                     <?php
                                     
                                     include_once('../model/classes/tblBusiness.php');
-                                    $bussinesscategory = new BusinessCategory;
+                                    $bussinesscategory = new BusinessCategory($dbh);
                                     $bussinesscategory->setidBusinessCategory($idoperation);
                                     $resultsbussinesscategory = $bussinesscategory->consulta("WHERE idBusinessCategory = :idBusinessCategory");
 

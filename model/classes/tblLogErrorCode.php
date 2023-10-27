@@ -6,15 +6,13 @@ class LogErrorCode{
     protected $DescLogError = null;
     protected $dbh = null;
 
-    function __construct()
-    {
-        
-        include_once('conexao.php');
-        $conexao = new Conexao();
-        $conexao->abrirConexao();
-        $this->dbh = $conexao->getConexao();
 
+    
+    function __construct($dbh)
+    {
+        $this->dbh = $dbh;
     }
+
 
 
     public function setidLogErrorCode($param){$this->idLogErrorCode = $param;}

@@ -3,12 +3,14 @@
     <nav id="navbar" class="bg-light-alt container-fluid position-fixed" style="z-index: 9999999; padding-top: 10px;">
 
         <script>
+           
+
             function toggleMenuNetwork() {
                 const networkMenu = document.getElementById('networkMenu');
                 const notifyMenu = document.getElementById('notifyMenu');
                 const profileMenu = document.getElementById('profileMenu');
 
-                console.log('Entrou aqui');
+
 
                 // Feche os outros menus
                 notifyMenu.classList.remove("open-menu");
@@ -22,7 +24,7 @@
                 const networkMenu = document.getElementById('networkMenu');
                 const notifyMenu = document.getElementById('notifyMenu');
                 const profileMenu = document.getElementById('profileMenu');
-
+                updateNotificationCount();
                 // Feche os outros menus
                 networkMenu.classList.remove("open-menu");
                 profileMenu.classList.remove("open-menu");
@@ -59,14 +61,14 @@
                 <div class="col-5 p-0">
                     <div class="d-flex card card-body mb-0 rounded-5" style="max-height: 70px;min-height: 46px;padding: 16px;">
                         <div class="">
-                            <form method="POST" enctype="multipart/form-data" onsubmit="redirectToAnotherPage(); return false;">
+                            <form method="POST" enctype="multipart/form-data" id="formularionome" onsubmit="redirectToAnotherPage(); return false;">
                                 <i class="fas fa-search"></i>
-                                <input style="width: 93%; height: 100%;" type="text" id="search-input" list="search-list" placeholder="What are you looking for?" onfocus="showSearchIdeas()" onblur="hideSearchIdeas()">
+                                <input style="width: 93%; height: 100%;" type="text" id="search-input" name="text" list="search-list" placeholder="What are you looking for?" onfocus="showSearchIdeas()" onblur="hideSearchIdeas()">
                                 <datalist id="search-list">
                                     <?php
 
                                     include_once('../model/classes/tblOperations.php');
-                                    $operations = new Operations();
+                                    $operations = new Operations($dbh);
                                     $resultsOperation = $operations->consulta("WHERE FlagOperation != '0'");
                                     if ($resultsOperation != null) {
                                         foreach ($resultsOperation as $rowOperation) { ?>
@@ -88,22 +90,11 @@
                                 <li><a href="searchPage.php"><i class="fa-solid fa-address-card icon-screen-navbar"></i><span style="font-size: 12px;">&nbsp;Search&nbsp;Profile</span></a></li>
                                 <li><a href="#" onclick="toggleMenuNetwork();"><i class="fa-solid fa-globe icon-screen-navbar"></i><span style="font-size: 12px;">&nbsp;Network</span></a></li>
                                 <li><a href="chatPage.php"><i class="fa-solid fa-comment icon-screen-navbar"></i><span style="font-size: 12px;">&nbsp;Messaging</span></a></li>
-                                <li><a href="#" onclick="toggleNotifyMenu()"><i class="fa-solid fa-bell icon-screen-navbar"></i><span style="font-size: 12px;">&nbsp;Notifications&nbsp;
-                                        </span> <?php
-
-                                                include_once('../model/classes/tblSearchProfile_Results.php');
-                                                $tblSearchProfile = new SearchProfile_Results();
-                                                $tblSearchProfile->setidClienteEncontrado($iduser);
-                                                $resultsSearchProfile = $tblSearchProfile->quantidade("WHERE idClienteEncontrado = :idClienteEncontrado AND estadoNotif = '0' ORDER BY datahora DESC");
-
-                                                if ($resultsSearchProfile != "0") {
-
-
-
-                                                    echo '<span class="badge rounded-pill badge-notification bg-danger">' . $resultsSearchProfile . '</span>';
-                                                }
-
-                                                ?></a>
+                                <li> <a href="#" onclick="toggleNotifyMenu()">
+                                        <i class="fa-solid fa-bell icon-screen-navbar"></i>
+                                        <span style="font-size: 12px;">&nbsp;Notifications&nbsp;</span>
+                                        <span id="notificationCount" class="badge rounded-pill badge-notification bg-danger"></span>
+                                    </a>
                                 </li>
                                 <li><img src=" <?php if ($imgperfil != "Avatar.png" && $imgperfil != "") {
                                                     echo "" . $imgperfil;
@@ -132,7 +123,7 @@
                 <div class="col-8 p-0">
                     <div class="d-flex card card-body mb-0 rounded-5" style="max-height: 42px;">
                         <div class="">
-                            <form method="POST" enctype="multipart/form-data" onsubmit="redirectToAnotherPage(); return false;">
+                            <form method="POST" action="../listcompani.php" enctype="multipart/form-data" onsubmit="redirectToAnotherPage(); return false;">
                                 <i class="fas fa-search"></i>
                                 <input style="width: 90%; height: 100%;" type="text" id="search-input" list="search-list" placeholder="What are you looking for?" onfocus="showSearchIdeas()" onblur="hideSearchIdeas()">
 
@@ -140,7 +131,7 @@
                                     <?php
                                     include_once('../model/classes/tblOperations.php');
 
-                                    $operations = new Operations();
+                                    $operations = new Operations($dbh);
                                     $resultsOperation = $operations->consulta("WHERE FlagOperation != '0' LIMIT 8");
 
 
@@ -173,7 +164,7 @@
                             <li><a href="#"><i class="fa-solid fa-crown icon-small-screen-navbar"></i><span style="font-size: 12px;">&nbsp;Premium&nbsp;Plan</span></a></li>&nbsp;&nbsp;
                             <li><a href="searchPage.php"><i class="fa-solid  fa-address-card icon-small-screen-navbar"></i><span style="font-size: 12px;">&nbsp;Search&nbsp;Profile</span></a></li>&nbsp;&nbsp;
                             <li><a href="#" onclick="toggleMenuNetwork();"><i class="fa-solid fa-globe icon-small-screen-navbar"></i><span style="font-size: 12px;">&nbsp;Network</span></a></li>&nbsp;&nbsp;
-
+                            </li>
 
                         </ul>
                     </div>
@@ -186,20 +177,7 @@
                         <ul class="p-0">
                             <li><a href="chatPage.php"><i class="fa-solid fa-comment icon-small-screen-navbar"></i><span style="font-size: 12px;">&nbsp;Messaging</span></a></li>
                             <li><a href="#" onclick="toggleNotifyMenu()"><i class="fa-solid fa-bell icon-small-screen-navbar"></i><span style="font-size: 20px;">&nbsp;Notifications&nbsp;&nbsp;&nbsp;
-                                    </span> <?php
-
-                                            include_once('../model/classes/tblSearchProfile_Results.php');
-                                            $tblSearchProfile = new SearchProfile_Results();
-                                            $tblSearchProfile->setidClienteEncontrado($iduser);
-                                            $resultsSearchProfile = $tblSearchProfile->quantidade("WHERE idClienteEncontrado = :idClienteEncontrado AND estadoNotif = '0' ORDER BY datahora DESC");
-
-                                            if ($resultsSearchProfile != "0") {
-
-
-
-                                                echo '<span class="badge rounded-pill badge-notification bg-danger">' . $resultsSearchProfile . '</span>';
-                                            }
-                                            ?></a>
+                                        <span id="notificationCount" class="badge rounded-pill badge-notification bg-danger"></span></a>
                             </li>&nbsp;&nbsp;&nbsp;&nbsp;
 
                         </ul>
@@ -223,7 +201,7 @@
 
 
                 include_once('../model/classes/tblSearchProfile_Results.php');
-                $searchProfileResults = new SearchProfile_Results();
+                $searchProfileResults = new SearchProfile_Results($dbh);
                 $searchProfileResults->setidClienteEncontrado($iduser);
                 $resultsSearchProfile = $searchProfileResults->consulta("WHERE idClienteEncontrado = :idClienteEncontrado ORDER BY datahora DESC");
 
@@ -235,13 +213,13 @@
                         $idCliente = $rownotif->idUsuario;
                         $estadoNotif = $rownotif->estadoNotif;
 
-                        $searchProfileResultsUpdate = new SearchProfile_Results();
+                        $searchProfileResultsUpdate = new SearchProfile_Results($dbh);
                         $searchProfileResultsUpdate->setid($rownotif->id);
                         $resultsSearchProfileUpdate = $searchProfileResultsUpdate->atualizar("estadoNotif = '1' WHERE id = :id");
 
 
                         include_once('../model/classes/tblUserClients.php');
-                        $userClients = new UserClients();
+                        $userClients = new UserClients($dbh);
                         $userClients->setidClient($idCliente);
                         $resultsUserClients = $userClients->consulta("WHERE idClient = :idClient");
 
@@ -263,10 +241,12 @@
                             $textNotif = "<p  class='d-inline' style='color: white; font-size: 11px;'>" . $usernamepost . " </p><p class='d-inline' style='color: #f2f2f2;'></p> <p class='d-inline' style='color: #62B7D8;'>viewed </p><p class='d-inline' style='color: #f2f2f2;'>  your profile!</p><br>";
                         } else if ($idTipoNotif == 4) {
                             $textNotif = "<p  class='d-inline' style='color: white; font-size: 11px;'>" . $usernamepost . " </p><p class='d-inline' style='color: #f2f2f2;'></p> <p class='d-inline' style='color: #62B7D8;'>invited  </p><p class='d-inline' style='color: #f2f2f2;'>  you to be part of his network!</p><br>";
-                        } else  if ($idTipoNotif == 6) {
+                        } else  if ($idTipoNotif == 8) {
                             $textNotif = "<p  class='d-inline' style='color: white; font-size: 11px;'>" . $usernamepost . " </p><p class='d-inline' style='color: #f2f2f2;'></p> <p class='d-inline' style='color: #62B7D8;'>accepted </p><p class='d-inline' style='color: #f2f2f2;'> your connection!</p><br>";
                         } else if ($idTipoNotif == 7) {
                             $textNotif = "<p  class='d-inline' style='color: white; font-size: 11px;'>" . $usernamepost . " </p><p class='d-inline' style='color: #f2f2f2;'></p> <p class='d-inline' style='color: #62B7D8;'>commented  </p><p class='d-inline' style='color: #f2f2f2;'>  on your post!</p><br>";
+                        } else if ($idTipoNotif == 6) {
+                            $textNotif = "<p  class='d-inline' style='color: white; font-size: 11px;'>" . $usernamepost . " </p><p class='d-inline' style='color: #f2f2f2;'></p> <p class='d-inline' style='color: #62B7D8;'>was found in  </p><p class='d-inline' style='color: #f2f2f2;'>  your search profile!</p><br>";
                         }
                         $postDateTime = new DateTime($rownotif->datahora);
 
@@ -296,7 +276,7 @@
                         } else {
                         }
 
-                        //                    $searchProfileResults = new SearchProfile_Results();
+                        //                    $searchProfileResults = new SearchProfile_Results($dbh);
                         //                    $searchProfileResults->setid($rownotif->id);
 
                         //                    $searchProfileResults->atualizar('estadoNotif = 1 WHERE id = :id');
@@ -357,7 +337,7 @@
 
                             include_once('../model/classes/tblUserClients.php');
 
-                            $userClientsAtual = new UserClients();
+                            $userClientsAtual = new UserClients($dbh);
                             $userClientsAtual->setidClient($_SESSION["id"]);
                             $resultsUsuarioAtual = $userClientsAtual->consulta("WHERE idClient = :idClient");
 
@@ -366,7 +346,7 @@
                                 $Flag = $resultsUsuarioAtualUnid->CoreBusinessId;
                             }
 
-                            $userClients = new UserClients();
+                            $userClients = new UserClients($dbh);
 
                             if ($Flag == 2) {
                                 //Flag A
@@ -392,7 +372,7 @@
 
                                     include_once('../model/classes/tblOperations.php');
 
-                                    $operations = new Operations();
+                                    $operations = new Operations($dbh);
                                     $operations->setidOperation($rowcliente->CoreBusinessId);
                                     $resultsOperation = $operations->consulta("WHERE FlagOperation != '0' AND idOperation = :idOperation");
 
@@ -415,8 +395,12 @@
                                                                     } ?>" alt="user" alt="An unknown user."></a>
                                                 </div>
                                                 <div class="col-8 ">
-                                                    <p class="text-name-network"><?php echo $rowcliente->FirstName; ?></p>
-                                                    <p class="text-operation-network"><?php echo $rowOperation->NmOperation; ?></p>
+                                                    <a href="viewProfile.php?profile=<?php echo $rowcliente->idClient; ?>">
+                                                        <p class="text-name-network"><?php echo $rowcliente->FirstName; ?></p>
+                                                    </a>
+                                                    <a href="viewProfile.php?profile=<?php echo $rowcliente->idClient; ?>">
+                                                        <p class="text-operation-network"><?php echo $rowOperation->NmOperation; ?></p>
+                                                    </a>
 
                                                 </div>
                                                 <div class="col-2 justify-content-center">
@@ -490,21 +474,3 @@
 
     </nav>
 </div>
-<!--
-<script>
-    function redirectToAnotherPage() {
-        var inputValue = document.getElementById("search-input").value;
-        // Aqui você pode personalizar a URL de redirecionamento com base no valor do campo de entrada
-        var redirectTo = "listcompani.php?text=" + inputValue;
-        window.location.href = redirectTo;
-    }
-
-    document.addEventListener('DOMContentLoaded', function() {
-        var mobileBtn = document.getElementById('mobile_btn');
-        var sidebar = document.getElementById('sidebar');
-
-        mobileBtn.addEventListener('click', function() {
-            sidebar.classList.toggle('expanded'); // Toggle a classe 'expanded' no elemento sidebar
-        });
-    });
-</script>-->

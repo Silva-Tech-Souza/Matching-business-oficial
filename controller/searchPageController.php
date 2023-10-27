@@ -1,12 +1,12 @@
 <?php
-
+include_once('../model/classes/conexao.php');
 include_once('../model/classes/tblSearch.php');
 include_once('../model/classes/tblSearchBusiness.php');
 include_once('../model/classes/tblSearchCategory.php');
 include_once('../model/classes/tblSearchCountry.php');
 include_once('../model/classes/tblSearchEspecificationTag.php');
 include_once('../model/classes/tblSearchSpecification.php');
-session_start();
+
 
 $corbusiness = $_POST["corbusiness"];
 //echo "corbusiness: " . $corbusiness . "<br>";
@@ -72,13 +72,13 @@ try {
    // echo "erro na parte final da step";
 }
 
-$search = new Search();
+$search = new Search($dbh);
 
-$searchBussiness = new SearchBusiness();
+$searchBussiness = new SearchBusiness($dbh);
 
-$searchCategory = new SearchCategory();
+$searchCategory = new SearchCategory($dbh);
 
-$searchCountry = new SearchCountry(); 
+$searchCountry = new SearchCountry($dbh); 
 
 if($_POST["flagtipo"] == "A"){
 
@@ -122,7 +122,7 @@ if($_POST["flagtipo"] == "A"){
 
             if($produtostagsUnid != '' && $produtostagsUnid != null){
                 
-                $searchEspecificationTag = new SearchEspecificationTag();
+                $searchEspecificationTag = new SearchEspecificationTag($dbh);
 
                 $searchEspecificationTag->setidSearch($idSearch);
                 //idTagKeys = 1 é produto
@@ -136,19 +136,19 @@ if($_POST["flagtipo"] == "A"){
         }
 
         include_once("../model/classes/tblUserClients.php");
-        $user = new UserClients();
+        $user = new UserClients($dbh);
         $user->setidClient($_SESSION["id"]);
         $user->setPontos(200);
         $user->atualizar("Pontos = Pontos + :Pontos WHERE idClient = :idClient");
 
         //    echo 'Cadastro Realizado com sucesso';
         if(!isset($news)){
-            header("Location: ../view/searchPage.php");
+          //  header("Location: ../view/searchPage.php");
         }else{
             if($news != "" || $news != null){
-                header("Location: ../view/searchPage.php");
+              //  header("Location: ../view/searchPage.php");
             }else{
-                header("Location: ../view/listcompani.php?text=mysp");
+             //   header("Location: ../view/listcompani.php?text=mysp");
             }
         }        
     }
@@ -199,7 +199,7 @@ if($_POST["flagtipo"] == "A"){
         echo "niveloperacao: " . $_POST["niveloperacao"] . "<br>";
         */
 
-        $searchspecification = new SearchSpecification();
+        $searchspecification = new SearchSpecification($dbh);
 
         $searchspecification->setidSearch($idSearch);
         $searchspecification->setidNumEmpregados($_POST["numempregados"]);
@@ -214,19 +214,19 @@ if($_POST["flagtipo"] == "A"){
         $searchspecification->cadastrar();
 
         include_once("../model/classes/tblUserClients.php");
-        $user = new UserClients();
+        $user = new UserClients($dbh);
         $user->setidClient($_SESSION["id"]);
         $user->setPontos(200);
         $user->atualizar("Pontos = Pontos + :Pontos WHERE idClient = :idClient");
 
         //    echo 'Cadastro Realizado com sucesso';
         if(!isset($news)){
-            header("Location: ../view/searchPage.php");
+           // header("Location: ../view/searchPage.php");
         }else{
             if($news != "" || $news != null){
-                header("Location: ../view/searchPage.php");
+              //  header("Location: ../view/searchPage.php");
             }else{
-                header("Location: ../view/listcompani.php?text=mysp");
+              //  header("Location: ../view/listcompani.php?text=mysp");
             }
         }  
     }
@@ -274,7 +274,7 @@ if($_POST["flagtipo"] == "A"){
 
             if($produtostagsUnid != '' && $produtostagsUnid != null){
                 
-                $searchEspecificationTag = new SearchEspecificationTag();
+                $searchEspecificationTag = new SearchEspecificationTag($dbh);
 
                 $searchEspecificationTag->setidSearch($idSearch);
                 //idTagKeys = 1 é produto
@@ -288,19 +288,19 @@ if($_POST["flagtipo"] == "A"){
         }
 
         include_once("../model/classes/tblUserClients.php");
-        $user = new UserClients();
+        $user = new UserClients($dbh);
         $user->setidClient($_SESSION["id"]);
         $user->setPontos(200);
         $user->atualizar("Pontos = Pontos + :Pontos WHERE idClient = :idClient");
 
         //    echo 'Cadastro Realizado com sucesso';
         if(!isset($news)){
-            header("Location: ../view/searchPage.php");
+           // header("Location: ../view/searchPage.php");
         }else{
             if($news != "" || $news != null){
-                header("Location: ../view/searchPage.php");
+              //  header("Location: ../view/searchPage.php");
             }else{
-                header("Location: ../view/listcompani.php?text=mysp");
+               // header("Location: ../view/listcompani.php?text=mysp");
             }
         }  
     }
@@ -336,7 +336,7 @@ if($_POST["flagtipo"] == "A"){
 
             if($servicosUnid != '' && $servicosUnid != null){
                 
-                $searchEspecificationTag = new SearchEspecificationTag();
+                $searchEspecificationTag = new SearchEspecificationTag($dbh);
     
                 $searchEspecificationTag->setidSearch($idSearch);
                 //idTagKeys = 2 é serviço
@@ -350,7 +350,7 @@ if($_POST["flagtipo"] == "A"){
         }
 
         include_once("../model/classes/tblUserClients.php");
-        $user = new UserClients();
+        $user = new UserClients($dbh);
         $user->setidClient($_SESSION["id"]);
         $user->setPontos(200);
         $user->atualizar("Pontos = Pontos + :Pontos WHERE idClient = :idClient");
@@ -360,9 +360,9 @@ if($_POST["flagtipo"] == "A"){
             header("Location: ../view/searchPage.php");
         }else{
             if($news != "" || $news != null){
-                header("Location: ../view/searchPage.php");
+              //  header("Location: ../view/searchPage.php");
             }else{
-                header("Location: ../view/listcompani.php?text=mysp");
+              //  header("Location: ../view/listcompani.php?text=mysp");
             }
         }  
 

@@ -1,7 +1,7 @@
 <?php
-    session_start();
-    include('../model/classes/tblUserClients.php');
-    include('../model/classes/tblEmpresas.php');
+include_once('../model/classes/conexao.php');
+    include_once('../model/classes/tblUserClients.php');
+    include_once('../model/classes/tblEmpresas.php');
     if ($_POST["signupsubmit"] != "") {
         $_POST["signupsubmit"]=="";
 
@@ -17,7 +17,7 @@
         $taxid =  htmlspecialchars($_POST["taxid"]);
 
 
-        $userClients = new UserClients();
+        $userClients = new UserClients($dbh);
         $userClients->setemail($email);
 
         $results = $userClients->consulta("WHERE email = :email");
@@ -27,7 +27,7 @@
             header("Location: ../view/signup.php");
         }
 
-        $userClients2 = new UserClients();
+        $userClients2 = new UserClients($dbh);
         $userClients2->settaxid($taxid);
         
         $results2 = $userClients2->consulta("WHERE taxid = :taxid");
@@ -39,7 +39,7 @@
 
         if($results == null && $results2 == null){
 
-            $userClients = new UserClients();
+            $userClients = new UserClients($dbh);
 
             $userClients->setFirstName($name);
             $userClients->setLastName($lastname);
@@ -51,7 +51,7 @@
             $userClients->settaxid($taxid);
             $resultCadastro = $userClients->cadastrar();
 
-            $cadastrarEmpresas = new Empresas();
+            $cadastrarEmpresas = new Empresasview($dbh);
             $cadastrarEmpresas->setNome($companyname);
             $cadastrarEmpresas->setTaxid($taxid);
             $cadastrarEmpresas->setidClient($resultCadastro);

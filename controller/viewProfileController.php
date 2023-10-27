@@ -1,19 +1,20 @@
 <?php
-include('../model/classes/tblConect.php');
-include('../model/classes/tblSearchProfile_Results.php');
+include_once('../model/classes/conexao.php');
+include_once('../model/classes/tblConect.php');
+include_once('../model/classes/tblSearchProfile_Results.php');
 
 if ($_POST["conectar"] != "") {
 
     $geral= $_POST["geral"];
     $iduser =$_POST["iduser"];;
-    $conect = new Conect();
+    $conect = new Conect($dbh);
     $conect->setidUserPed($geral);
     $conect->setidUserReceb($iduser);
     $conect->cadastrar();
   
   
     $url = "viewProfile.php?profile=$iduser";
-    $searchProfile_results = new SearchProfile_Results();
+    $searchProfile_results = new SearchProfile_Results($dbh);
     $searchProfile_results->setidUsuario($geral);
     $searchProfile_results->setidClienteEncontrado($iduser); 
     $searchProfile_results->seturl($url);
@@ -38,7 +39,7 @@ if ($_POST["desconectar"] != "") {
     //$queryconectdelet->bindParam(':id', $idconect, PDO::PARAM_INT);
     //$queryconectdelet->execute();
 
-    $conect = new Conect();
+    $conect = new Conect($dbh);
 
     $conect->setid($idconect);
 

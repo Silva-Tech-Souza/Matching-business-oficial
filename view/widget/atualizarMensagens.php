@@ -1,5 +1,6 @@
 
 <?php
+include_once('../../model/classes/conexao.php');
 header('Content-Type: application/json');
 header("Access-Control-Allow-Origin: *");
 
@@ -7,7 +8,7 @@ include_once('../../model/classes/tblChat.php');
 $iduser = $_POST['iduser'];
 $idClientConversa = $_POST['idClientConversa'];
 
-$Message_Results = new Chat();
+$Message_Results = new Chat($dbh);
 $Message_Results->setidClient($iduser);
 $Message_Results->setidClientEnviado($idClientConversa);
 

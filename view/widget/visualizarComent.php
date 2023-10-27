@@ -1,4 +1,5 @@
 <?php
+include_once('../../model/classes/conexao.php');
 if (session_status() !== PHP_SESSION_ACTIVE) {
     session_start();
 }
@@ -17,7 +18,7 @@ if (isset($_GET["texto"]) && $_GET["texto"] != "") {
     $idFeed = $_GET["idFeed"];
     $texto = $_GET["texto"];
 
-    $tbPostComent = new PostComent();
+    $tbPostComent = new PostComent($dbh);
     $tbPostComent->setidpost($idFeed);
     $tbPostComent->setiduser($iduser);
     $tbPostComent->settexto($texto);
@@ -40,7 +41,7 @@ if (isset($_GET["texto"]) && $_GET["texto"] != "") {
     </div>
 
     <?php
-    $tbPostComent1 = new PostComent();
+    $tbPostComent1 = new PostComent($dbh);
     $tbPostComent1->setidpost($idPost);
     $resultstbPostComent = $tbPostComent1->consulta(" WHERE idpost = :idpost ORDER BY datahora DESC");
 
@@ -71,7 +72,7 @@ if (isset($_GET["texto"]) && $_GET["texto"] != "") {
                 $timeAgoC = "A few seconds ago";
             }
             include_once('../../model/classes/tblUserClients.php');
-            $userClients2 = new UserClients();
+            $userClients2 = new UserClients($dbh);
 
             $userClients2->setidClient($rowfeed->iduser);
 
@@ -104,7 +105,7 @@ if (isset($_GET["texto"]) && $_GET["texto"] != "") {
                             </a>
                             <?php
                             include_once('../../model/classes/tblOperations.php');
-                            $operations = new Operations();
+                            $operations = new Operations($dbh);
                             $operations->setidOperation($idpostoperation);
                             $resultsoperation = $operations->consulta("WHERE FlagOperation != '0' AND idOperation = :idOperation");
                             if ($resultsoperation != null) {

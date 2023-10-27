@@ -1,4 +1,5 @@
 <?php
+
 if ( session_status() !== PHP_SESSION_ACTIVE )
 {
   session_start();
@@ -12,9 +13,9 @@ function myLog()
         extract( $error , EXTR_SKIP );
 
         include_once('../model/classes/tblLogError.php');
-        include_once('../model/classes/tblLogErrorCode.php');
+        
 
-        $logErrorCode = new LogErrorCode();
+        $logErrorCode = new LogErrorCode($dbh);
 
         $logErrorCode->setDescLogError($message.
                                         "\nArquivo: ". $file.
@@ -104,9 +105,9 @@ function log_error( $code , $error , $file , $line )
     if( error_reporting() === 0 ) return;
 
     include_once('../model/classes/tblLogError.php');
-    include_once('../model/classes/tblLogErrorCode.php');
+    
 
-    $logErrorCode = new LogErrorCode();
+    $logErrorCode = new LogErrorCode($dbh);
 
     $logErrorCode->setDescLogError($error.
                                     "\nArquivo: ". $file.

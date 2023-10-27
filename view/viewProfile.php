@@ -3,7 +3,8 @@ if ( session_status() !== PHP_SESSION_ACTIVE )
 {
    session_start();
 }
-
+error_reporting(0);
+include_once('../model/classes/conexao.php');
 include_once('../model/ErrorLog.php');
 date_default_timezone_set('America/Sao_Paulo');
 
@@ -12,9 +13,7 @@ if ($_SESSION["id"] < 0 || $_SESSION["id"] == "") {
 }
 
 if($_GET["profile"] == null || !isset($_GET["profile"])){
-
   header("Location: ../view/login.php");
-
 }
 $iduser = $_SESSION["id"];
 $idusers = $_GET["profile"];
@@ -33,7 +32,7 @@ $geral = $_SESSION["id"];
 //}
 include_once('../model/classes/tblUserClients.php');
 
-$UserClient = new UserClients();
+$UserClient = new UserClients($dbh);
 $UserClient->setidClient($idusers);
 $resultsgeral = $UserClient->consulta("WHERE idClient = :idClient");
 
@@ -66,7 +65,7 @@ $_SESSION["n"] = 5;
 //  }
 //}
 
-$UserClient = new UserClients();
+$UserClient = new UserClients($dbh);
 $UserClient->setidClient($idusers);
 $results = $UserClient->consulta("WHERE idClient = :idClient");
 
@@ -90,7 +89,7 @@ if ($results != null) {
   }
 }
 
-$UserClientreal = new UserClients();
+$UserClientreal = new UserClients($dbh);
 $UserClientreal->setidClient($iduser);
 $resultsreal = $UserClientreal->consulta("WHERE idClient = :idClient");
 if ($resultsreal != null) {
@@ -112,7 +111,7 @@ if ($resultsreal != null) {
 
 include_once('../model/classes/tblCountry.php');
 
-$Country = new Country();
+$Country = new Country($dbh);
 $Country->setidCountry($idcountry);
 $resultsCountry = $Country->consulta("WHERE idCountry = :idCountry");
 
@@ -135,7 +134,7 @@ if ($resultsCountry != null) {
 
 include_once('../model/classes/tblOperations.php');
 
-$Operations = new Operations();
+$Operations = new Operations($dbh);
 $Operations->setidOperation($corebusiness);
 $resultsbusiness = $Operations->consulta("WHERE idOperation = :idOperation");
 
@@ -160,7 +159,7 @@ if ($resultsbusiness != null) {
 if ($satBusinessId != null) {
   include_once('../model/classes/tblBusiness.php');
 
-  $Business = new Business();
+  $Business = new Business($dbh);
   $Business->setidBusiness($satBusinessId);
   $resultsbusinesscor = $Business->consulta("WHERE `idBusiness` = :idBusiness");
 
@@ -185,7 +184,7 @@ if ($satBusinessId != null) {
 
 include_once('../model/classes/tblBusinessCategory.php');
 
-$BusinessCategory = new BusinessCategory();
+$BusinessCategory = new BusinessCategory($dbh);
 $BusinessCategory->setidBusinessCategory($idoperation);
 $resultsbusinesscateg = $BusinessCategory->consulta("WHERE idBusinessCategory = :idBusinessCategory");
 
@@ -205,7 +204,7 @@ if ($resultsbusinesscateg != null) {
 
 include_once('../model/classes/tblViews.php');
 
-$Views = new Views();
+$Views = new Views($dbh);
 $Views->setidUser($geral);
 $Views->setidView($idusers);
 $resultView = $Views->consulta("WHERE idUser = :idUser AND idView = :idView AND  DATE(datacriacao) = CURDATE()");
@@ -220,7 +219,7 @@ if ($resultView == null) {
 
   include_once('../model/classes/tblViews.php');
 
-  $Views = new Views();
+  $Views = new Views($dbh);
   $Views->setidUser($geral);
   $Views->setidView($idusers);
   $Views->setdatacriacao(date("Y/m/d"));
@@ -235,7 +234,7 @@ if ($resultView == null) {
 
   include_once('../model/classes/tblSearchProfile_Results.php');
 
-  $searchprofile_results = new SearchProfile_Results();
+  $searchprofile_results = new SearchProfile_Results($dbh);
 
   $searchprofile_results->setidUsuario($geral);
   $searchprofile_results->setidClienteEncontrado($idusers);
@@ -262,7 +261,7 @@ if ($resultView == null) {
 
 include_once('../model/classes/tblConect.php');
 
-$connecttem = new Conect();
+$connecttem = new Conect($dbh);
 
 $connecttem->setidUserPed($geral);
 $connecttem->setidUserReceb($idusers);
@@ -690,7 +689,7 @@ if ($respoconect != null) {
               <ul id="tree2">
                 <?php
                 include_once('../model/classes/tblOperations.php');
-                $operations1 = new Operations();
+                $operations1 = new Operations($dbh);
                 $resultsOperation1 = $operations1->consulta("WHERE FlagOperation != '0'");
                 if ($resultsOperation1 != null) {
                   foreach ($resultsOperation1 as $rowOperation) {
@@ -703,7 +702,7 @@ if ($respoconect != null) {
                         <?php echo trim($rowOperation->NmOperation); ?>
                       </a>
                       <div style="text-align: end; width: 24px;float: right;position: initial;">
-                        <?php $numerouser22 = new UserClients();
+                        <?php $numerouser22 = new UserClients($dbh);
                         $numerouser22->setCoreBusinessId($rowOperation->idOperation);
                         echo $numerouser22->quantidade(" WHERE CoreBusinessId = :CoreBusinessId"); ?>
                       </div>
@@ -711,14 +710,14 @@ if ($respoconect != null) {
                         <ul>
                           <?php
                           include_once('../model/classes/tblBusiness.php');
-                          $business1 = new Business();
+                          $business1 = new Business($dbh);
                           $resultsbusiness1 = $business1->consulta("WHERE FlagOperation = '0' ORDER BY NmBusiness ASC");
                           if ($resultsbusiness1 != null) {
                             foreach ($resultsbusiness1 as $rowbusiness) {
                           ?>
                               <li><a class="sizewidgh" href="listcompani.php?busines=<?php echo $rowbusiness->idBusiness; ?>&operation=<?php echo $rowOperation->idOperation; ?>"><?php
                                                                                                                                                                                   echo trim($rowbusiness->NmBusiness); ?> <div style="text-align: end; width: 24px;float: right;position: initial;">
-                                    <?php $numerouser3 = new UserClients();
+                                    <?php $numerouser3 = new UserClients($dbh);
                                     $numerouser3->setCoreBusinessId($rowOperation->idOperation);
                                     $numerouser3->setSatBusinessId($rowbusiness->idBusiness);
                                     echo $numerouser3->quantidade(" WHERE CoreBusinessId = :CoreBusinessId AND SatBusinessId = :SatBusinessId"); ?>
@@ -895,7 +894,7 @@ if ($respoconect != null) {
                       <div class="row rowProduct overflow-auto">
                         <?php
                         include_once('../model/classes/tblProducts.php');
-                        $products = new Products();
+                        $products = new Products($dbh);
                         $products->setidClient($idusers);
                         $resultsProdutos = $products->consulta("WHERE idClient = :idClient  ORDER BY idProduct ASC ");
                         if ($resultsProdutos != null) {
@@ -908,7 +907,7 @@ if ($respoconect != null) {
                                     <img class="hero-image produto-img" src="<?php
 
                                                                               include_once('../model/classes/tblProductPictures.php');
-                                                                              $productsPicture = new ProductPictures();
+                                                                              $productsPicture = new ProductPictures($dbh);
                                                                               $productsPicture->setidProduct($rowProdutos->idProduct);
 
                                                                               $resultsProductsPicture = $productsPicture->consulta("WHERE idProduct = :idProduct");
@@ -955,7 +954,7 @@ if ($respoconect != null) {
 
                 include_once('../model/classes/tblFeeds.php');
 
-                $feeds = new Feeds();
+                $feeds = new Feeds($dbh);
                 $feeds->setidClient($idusers);
                 $resultsfeed = $feeds->consulta("WHERE idClient = :idClient ORDER BY Published_at DESC LIMIT 8");
 
@@ -992,7 +991,7 @@ if ($respoconect != null) {
 
                     include_once("../model/classes/tblUserClients.php");
 
-                    $userClients = new UserClients();
+                    $userClients = new UserClients($dbh);
 
                     $userClients->setidClient($rowfeed->IdClient);
 
@@ -1037,7 +1036,7 @@ if ($respoconect != null) {
 
                               include_once("../model/classes/tblOperations.php");
 
-                              $operations = new Operations();
+                              $operations = new Operations($dbh);
 
                               $operations->setidOperation($idpostoperation);
                               $operations->setFlagOperation('0');
@@ -1113,7 +1112,7 @@ if ($respoconect != null) {
 
                           include_once('../model/classes/tblCurtidas.php');
 
-                          $curtidas = new Curtidas();
+                          $curtidas = new Curtidas($dbh);
 
                           $curtidas->setidpost($rowfeed->IdFeed);
 
@@ -1136,7 +1135,7 @@ if ($respoconect != null) {
 
                           include_once('../model/classes/tblCurtidas.php');
 
-                          $curtidas = new Curtidas();
+                          $curtidas = new Curtidas($dbh);
 
                           $curtidas->setidpost($rowfeed->IdFeed);
                           $curtidas->setidusuario($idusers);
@@ -1188,7 +1187,7 @@ if ($respoconect != null) {
                                                                                                               ?>" class="btn like-comment-btn pl-4 pr-4 no-border p-3 hero-image-container2"><span class="btn-comment-post">
                                 <?php
                                 include_once('../model/classes/tbPostComent.php');
-                                $tbPostComentcont2 = new PostComent();
+                                $tbPostComentcont2 = new PostComent($dbh);
                                 $tbPostComentcont2->setidpost($rowfeed->IdFeed);
                                 echo  $tbPostComentcont2->quantidade(" WHERE idpost = :idpost");
                                 ?> &nbsp;&nbsp; <i class="fa fa-comment">
@@ -1241,6 +1240,13 @@ if ($respoconect != null) {
   </div>
 
   <script>
+     function redirectToAnotherPage() {
+            var form = document.getElementById('formularionome');
+            var textValue = form.querySelector('[name="text"]').value;
+
+            // Redireciona para listcompani.php com o parâmetro GET "text"
+            window.location.href = 'listcompani.php?text=' + encodeURIComponent(textValue);
+        }
     $(document).ready(function() {
       // Ao clicar em um link de produto
       $('.hero-image-container').click(function() {

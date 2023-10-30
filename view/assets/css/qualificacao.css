@@ -1,0 +1,30 @@
+form {
+    display: flex;
+    align-items: start;
+    justify-content: center;
+    flex-direction: column;
+    text-align: center;
+}
+
+fieldset {
+    height: auto;
+    margin-bottom: 2rem;
+    border: 1px solid #ffffff;
+    padding: 2rem;
+    border-radius: 1rem;
+}
+
+.olhosenha {
+    position: inherit;
+    background: #d7d7d7;
+    color: black;
+    height: 100%;
+}
+
+.txtqualisize {
+    font-size: 20px !important;
+}
+
+.selectsize {
+    font-size: 15px !important;
+}

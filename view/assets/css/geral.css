@@ -1,0 +1,144 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;1,100;1,200;1,300;1,400;1,500;1,600;1,700&display=swap');
+:root {
+    --cor-branco: #ffffff;
+    --cor-cinza: #EAEAEA;
+    --cor-cinza-b: #888888;
+    --cor-azul-claro: #3D79D9;
+    --cor-azul-escuro: #002D4B;
+    --cor-azul-escuro-b: #14253D;
+    --cor-preto: #000000;
+}
+
+.color-branco {
+    color: var(--cor-branco) !important;
+}
+
+.color-cinza {
+    color: var(--cor-cinza) !important;
+}
+
+.color-cinza-b {
+    color: var(--cor-cinza-b) !important;
+}
+
+.color-azul-claro {
+    color: var(--cor-azul-claro) !important;
+}
+
+.color-azul-escuro {
+    color: var(--cor-azul-escuro) !important;
+}
+
+.color-azul-escuro-b {
+    color: var(--cor-azul-escuro-b) !important;
+}
+
+.color-preto {
+    color: var(--cor-preto) !important;
+}
+
+.bcolor-branco {
+    background-color: var(--cor-branco) !important;
+}
+
+.bcolor-cinza {
+    background-color: var(--cor-cinza) !important;
+}
+
+.bcolor-cinza-b {
+    background-color: var(--cor-cinza-b) !important;
+}
+
+.bcolor-azul-claro {
+    background-color: var(--cor-azul-claro) !important;
+}
+
+.bcolor-azul-escuro {
+    background-color: var(--cor-azul-escuro) !important;
+}
+
+.bcolor-azul-escuro-b {
+    background-color: var(--cor-azul-escuro-b) !important;
+}
+
+.bcolor-preto {
+    background-color: var(--cor-preto) !important;
+}
+
+.fonte-titulo {
+    font-family: 'Poppins', sans-serif !important;
+    font-weight: 500;
+}
+
+.fonte-principal {
+    font-family: 'Poppins', sans-serif !important;
+    font-weight: 300;
+}
+
+body {
+    background: var(--cor-branco);
+    color: #5f5f5f;
+}
+
+.scrolling-container {
+    /* Define a altura dos cards */
+    height: 100%;
+    /* Cria um scroll lateral caso o conteúdo seja maior que a largura do container */
+    overflow-x: auto;
+    /* Remove a barra de rolagem horizontal padrão */
+    scrollbar-width: none;
+    /* Firefox */
+    -ms-overflow-style: none;
+    /* Internet Explorer e Edge */
+}
+
+.scrolling-container::-webkit-scrollbar {
+    /* Remove a barra de rolagem horizontal no Chrome e Safari */
+    display: none;
+}
+
+::-webkit-scrollbar {
+    width: 8px;
+    /* Largura da barra de rolagem vertical */
+}
+
+
+/* Cor de fundo da barra de rolagem */
+
+ ::-webkit-scrollbar-track {
+    background: #f1f1f100;
+}
+
+
+/* Estilizando o "polegar" (o indicador de posição) da barra de rolagem */
+
+ ::-webkit-scrollbar-thumb {
+    border-radius: 10px;
+    background: #888;
+}
+
+
+/* Estilizando a barra de rolagem horizontal */
+
+ ::-webkit-scrollbar-horizontal {
+    height: 10px;
+    /* Altura da barra de rolagem horizontal */
+}
+
+
+/* Estilizando a barra de rolagem vertical */
+
+ ::-webkit-scrollbar-vertical {
+    width: 10px;
+    /* Largura da barra de rolagem vertical */
+}
+
+.margemmnavbar {
+    margin-top: 125px !important;
+}
+
+@media (min-width: 767px) {
+    .margemmnavbar {
+        margin-top: 75px !important;
+    }
+}

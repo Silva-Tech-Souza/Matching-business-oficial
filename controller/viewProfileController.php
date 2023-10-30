@@ -1,2 +1,0 @@
-
-    $geral= $_POST["geral"];

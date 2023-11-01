@@ -37,9 +37,15 @@ if ($codigoVerifEmail != "" && $codigoVerifEmail != '0') {
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
   <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
 
-
+<style>
+    .input-low{
+        text-transform: none !important;
+    }
+</style>
 
 </head>
+
+
 
 <body class="hero">
   <div class="container m-auto">
@@ -53,7 +59,7 @@ if ($codigoVerifEmail != "" && $codigoVerifEmail != '0') {
               <label class="color-branco" for="password">Password </label>
               <div class="input-group mb-2" id="input1">
                 <div class="password-container" style="width: -webkit-fill-available;">
-                  <input autocomplete="off" class="form-control inputtamanho fonteinputpass" id="psw" pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}" maxlength="20" minlength="6" type="password" name="password" required placeholder="type here...">
+                  <input autocomplete="off" class="form-control inputtamanho fonteinputpass input-low" id="psw" pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}" maxlength="20" minlength="6" type="password" name="password" required placeholder="type here...">
                   <div class="input-group-text" id="togglePassword">
                     <i class="fas fa-eye"></i>
                   </div>
@@ -63,8 +69,8 @@ if ($codigoVerifEmail != "" && $codigoVerifEmail != '0') {
             <div class="col-12" style="text-align: initial; font-size: large;">
               <label class="color-branco" for="password-confirm">Confirm password </label>
               <div class="input-group mb-2">
-                <div class="password-container" style="width: -webkit-fill-available;">
-                  <input autocomplete="off" class="form-control inputtamanho fonteinputpass" id="psw2" pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}" maxlength="20" minlength="6" type="password" name="password-confirm" required placeholder="repeat the password typed above">
+                <div class="password-container" style="width: -webkit-fill-available;"> 
+                  <input autocomplete="off" class="form-control inputtamanho fonteinputpass input-low" id="psw2" pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}" maxlength="20" minlength="6" type="password" name="password-confirm" required placeholder="repeat the password typed above" >
                   <div class="input-group-text" id="togglePassword2">
                     <i class="fas fa-eye"></i>
                   </div>

@@ -1,7 +1,10 @@
 <div class="header">
 
     <nav id="navbar" class="bg-light-alt container-fluid position-fixed" style="z-index: 9999999; padding-top: 10px;">
-
+            <!-- char-area -->
+  <script src="assets/js/jquery-3.2.1.min.js"></script>
+  <script src="assets/js/popper.min.js"></script>
+  <script src="assets/js/bootstrap.min.js"></script>
         <script>
            
 
@@ -224,7 +227,7 @@
                         $resultsUserClients = $userClients->consulta("WHERE idClient = :idClient");
 
 
-
+                        $usernamepost ="";
 
                         if ($resultsUserClients != null) {
                             foreach ($resultsUserClients as $rowusernotif) {
@@ -235,6 +238,7 @@
                         }
 
                         $idTipoNotif = $rownotif->idTipoNotif;
+                      
                         if ($idTipoNotif == 5) {
                             $textNotif = "<p  class='d-inline' style='color: white; font-size: 11px;'>" . $usernamepost . " </p><p class='d-inline' style='color: #f2f2f2;'></p> <p class='d-inline' style='color: #62B7D8;'>liked</p><p class='d-inline' style='color: #f2f2f2;'> your post !</p><br>";
                         } else if ($idTipoNotif == 2) {
@@ -332,7 +336,7 @@
                     <div class="non-connections-container">
                         <br>
                         <p class="color-branco text-center text-recommend-conect">Recommended connections</p><br>
-                        <ul>
+                        <ul style="padding-left: 19px;">
                             <?php
 
                             include_once('../model/classes/tblUserClients.php');
@@ -384,7 +388,7 @@
                             ?>
 
 
-                                            <li class="recommended-user icone-net mb-2">
+                                            <li class="recommended-user  mb-2" >
 
                                                 <div class="col-2 justify-content-center m-0 p-0">
                                                     <a href="viewProfile.php?profile=<?php echo $rowcliente->idClient; ?>">
@@ -474,3 +478,34 @@
 
     </nav>
 </div>
+
+<script>
+    function updateNotificationCount() {
+            var xmlhttpnf = new XMLHttpRequest();
+            xmlhttpnf.onreadystatechange = function() {
+                if (this.readyState == 4 && this.status == 200) {
+
+
+                    var badgeElement = document.getElementById('notificationCount');
+                    var responseHtml = this.responseText.trim(); // Remove espaços em branco extras
+
+                    if (responseHtml != "" || responseHtml != undefined) {
+                        console.log("response");
+                        badgeElement.innerHTML = responseHtml; // Insere o HTML retornado pelo PHP
+                        responseHtml = '';
+                    } else {
+                        console.log("response NULL");
+                        badgeElement.innerHTML = ''; // Limpa o conteúdo do elemento
+                    }
+                } else {
+                    var badgeElement = document.getElementById('notificationCount');
+                    badgeElement.innerHTML = '';
+                    responseHtml = '';
+                }
+            };
+            xmlhttpnf.open("GET", "widget/atualizar_notificacoes.php", true);
+            xmlhttpnf.send();
+        }
+        updateNotificationCount()
+        setInterval(updateNotificationCount, 6000);
+</script>

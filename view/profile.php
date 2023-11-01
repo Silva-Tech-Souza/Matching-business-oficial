@@ -1,10 +1,8 @@
 <?php
 
-if(isset($_SESSION['error'])){
-   // error_reporting(0);
-}
 include_once('../model/classes/conexao.php');
-include_once('../model/ErrorLog.php');
+
+//include_once('../model/ErrorLog.php');
 date_default_timezone_set('America/Sao_Paulo');
 if ($_SESSION["id"] < 0 || $_SESSION["id"] == "") {
   header("Location: login.php");
@@ -15,7 +13,9 @@ $_SESSION["n"] = 5;
 
 
 include_once('../model/classes/tblUserClients.php');
-
+include_once('../model/classes/tblFeeds.php');
+include_once('../model/classes/tblCurtidas.php');
+include_once('../model/classes/tbPostComent.php');
 $userClients = new UserClients($dbh);
 
 $userClients->setidClient($iduser);
@@ -28,6 +28,8 @@ if ($results != null) {
     $FirstName = $row->FirstName;
     $LastName = $row->LastName;
     $jobtitle = $row->JobTitle;
+    $email = $row->email;
+    $numberfone  = $row->WhatsAppNumber;
     $idcountry = $row->idCountry;
     $idoperation = $row->IdOperation;
     $corebusiness = $row->CoreBusinessId;
@@ -37,6 +39,17 @@ if ($results != null) {
     $imgcapa = $row->LogoPicturePath;
     $descricao =  $row->descricao;
     $taxidempresa =  $row->taxid;
+    $AnoFundacao = $row->AnoFundacao;
+    $numEmpregadosid = $row->NumEmpregados;
+    $numVendedores = $row->NumVendedores;
+    $numNivelOperacao = $row->NivelOperacao;
+    $DetalheRegiao = $row->DetalheRegiao;
+    $Fob3 = $row->Fob_3Y;
+    $nVol3 = $row->Vol_3Y;
+    $Fob2 = $row->Fob_2Y;
+    $nVol2 = $row->Vol_2Y;
+    $Fob1 = $row->Fob_1Y;
+    $nVol1 = $row->Vol_1Y;
   }
 }
 
@@ -98,23 +111,53 @@ if ($resultsBusinessCategory != null) {
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Perfil</title>
 
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-4bw+/aepP/YC94hEpVNVgiZdgIC5+VKNBQNGCHeKRQN+PtmoHDEXuppvnDJzQIu9" crossorigin="anonymous">
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
-
-  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-  <script src="https://kit.fontawesome.com/f51201541f.js" crossorigin="anonymous"></script>
-  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/autosize.js/4.0.2/autosize.min.js"></script>
-
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
-  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
-  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
-  <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
-  <link rel="stylesheet" href="assets/css/feed.css">
   <link rel="stylesheet" href="assets/css/geral.css">
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-4bw+/aepP/YC94hEpVNVgiZdgIC5+VKNBQNGCHeKRQN+PtmoHDEXuppvnDJzQIu9" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://kit.fontawesome.com/f51201541f.js" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/autosize.js/4.0.2/autosize.min.js"></script>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+    <link rel="stylesheet" href="assets/css/navbar.css">
+
   <link rel="stylesheet" href="assets/css/profile.css">
-  <link rel="stylesheet" href="assets/css/navbar.css">
+  <link rel="stylesheet" href="assets/css/feed.css">
+
+  <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick.css" />
+    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick-theme.css" />
+    <script type="text/javascript" src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/autosize.js/4.0.2/autosize.min.js"></script>
+    <link rel="stylesheet" href="assets/css/cssprodutos.css">
+    <style>
+        #refHint label {
+            color: black !important;
+            font-size: 15px;
+        }
+        
+         #refHint select {
+           height: 30px !important;
+           font-size: 17px !important;
+         }
+          #refHint2 label {
+            color: black !important;
+            font-size: 15px;
+        }
+        
+         #refHint2 select {
+           height: 30px !important;
+           font-size: 17px !important;
+         }
+         
+    </style>
 </head>
 
 <body class="funcolinhas">
@@ -153,6 +196,7 @@ if ($resultsBusinessCategory != null) {
   </script>
 
   <script>
+  
     function showCurtida(iddiv) {
       if (iddiv == "") {
         document.getElementById("div-" + iddiv).innerHTML = "";
@@ -182,743 +226,746 @@ if ($resultsBusinessCategory != null) {
       xmlhttp.open("GET", "widget/atualizardescurtida.php?id=" + iddiv, true);
       xmlhttp.send();
     }
-    function redirectToAnotherPage() {
-            var form = document.getElementById('formularionome');
-            var textValue = form.querySelector('[name="text"]').value;
 
-            // Redireciona para listcompani.php com o parâmetro GET "text"
-            window.location.href = 'listcompani.php?text=' + encodeURIComponent(textValue);
-        }
+    function redirectToAnotherPage() {
+      var form = document.getElementById('formularionome');
+      var textValue = form.querySelector('[name="text"]').value;
+
+      // Redireciona para listcompani.php com o parâmetro GET "text"
+      window.location.href = 'listcompani.php?text=' + encodeURIComponent(textValue);
+    }
   </script>
 
   <!-- Header -->
-  <?php include_once("widget/navbar.php"); ?><br><br><br><br><br>
+  <?php include_once("widget/navbar.php"); ?>
   <!-- Body -->
-  <div class="col-12 p-3 ">
-    <div class="row ">
-      <!-- Card Perfil -->
-      <div class="col-12 col-md-4 p-3">
-        <div class="col-12">
-          <div class="card card-body p-0 shadow">
-            <div class="col-12">
-              <img src="<?php if ($imgcapa != "Avatar.png" && $imgcapa != "") {
-                          echo "" . $imgcapa;
-                        } else {
-                          echo "https://images2.alphacoders.com/131/1317606.jpeg";
-                        } ?>" alt="" style="width: 100%; height: 120px;">
-              <img src="<?php if ($imgperfil != "Avatar.png" && $imgperfil != "") {
-                          echo $imgperfil;
-                        } else {
-                          echo "assets/img/Avatar.png";
-                        } ?>" alt="avatar" class="rounded-circle img-fluid img-profile-card position-absolute" style="top: 40px; left: 20px;">
-            </div>
-            <div class="col-12 d-flex justify-content-end">
-              <h5 class="my-3 txtnomeperfil" style="padding-right: 10px;"><?php echo $username; ?> </h5>
 
-            </div>
-            <div class="col-12 d-flex justify-content-end mb-4">
+  <div class="telacheia">
+    <div class="col-md-12 p-2 m-0">
+      <div class="row telacheia margemmnavbar">
 
-              <p class="text-muted mb-1 txttipoperfil" style="padding-right: 10px;"> <?php echo $jobtitle . " at " . $companyname; ?></p>
-            </div>
-            <div class="col-12 d-flex justify-content-end mb-4 mr-4 p-4">
-              <a href="#" class="btn btn-outline-primary ms-1" data-toggle="modal" data-target="#add_perfil"><i class="bi bi-pen icon-btn-card"></i>&nbsp;Edit</a>
-            </div>
-          </div>
-        </div>
-        <div class="col-12 mt-4">
-          <div class="row">
-            <div class="col-6">
-              <div class="card card-body shadow">
-                <div class="row">
-                  <div class="col-8 d-flex justify-content-start">
-                    <p class="d-inline m-0 color-preto"><a href="listcompani.php?text=mysp" class="nav-link">My saved search</a></p>
-                  </div>
-                  <div class="col-4 d-flex justify-content-end align-middle">
-                    <p class="d-inline m-0"><b><?php include_once('../model/classes/tblSearch.php');
-                                                $Search = new Search($dbh);
-                                                $Search->setidClient($iduser);
-                                                $resultSearch = $Search->consulta("WHERE idClient = :idClient");
-                                                $numSearch = 0;
-                                                if ($resultSearch != null) {
-                                                  foreach ($resultSearch as $resultConectUnidSearch) {
-                                                    $numSearch += 1;
-                                                  }
-                                                }
-                                                echo $numSearch;
-                                                ?></b></p>
-                  </div>
+        <!-- Esquerda -->
+        <div id="profile-column" class="shadow col-12 col-md-12 col-lg-3 justify-content-start overflow-auto scrollable-column fixed-on-desktop" >
+          <div class="card rounded-4 shadow">
+            <div class="card-body p-0 m-0">
+              <div class="col-12 mh-25">
+                <img class="mh-25 rounded-top-3" src="<?php if ($imgcapa != "Avatar.png" && $imgcapa != "" && $imgcapa != null) {
+                                                        echo "" . $imgcapa;
+                                                      } else {
+                                                        echo "https://images2.alphacoders.com/131/1317606.jpeg";
+                                                      } ?>" alt="Descrição da Imagem" style="max-height: 100px; width: 100%;" style="box-shadow: 0px -17px 10px -10px rgb(0 0 0 / 52%);">
+              </div>
+              <div class="row p-0 ml-0">
+                <div class="col-5 d-flex justify-content-start p-0 m-0 " style="height: 0px;">
+                  <img src=" <?php if ($imgperfil != "Avatar.png" && $imgperfil != "") {
+                                echo "" . $imgperfil;
+                              } else {
+                                echo "assets/img/Avatar.png";
+                              } ?>" alt="user" class="border-2 mini-profile-img " onclick="toggleMenu()">
+                </div>
+                <div class="col-5 p-0 m-0">
+                  <h3 class="fonte-titulo"><?php echo $username; ?></h3>
+                  <h6 class="fonte-principal"><?php echo $jobtitle . ' at ' . $companyname ?></h6>
+                </div>
+              </div>
+              <div class="col-12 m-0 p-0">
+                <hr class="m-0">
+              </div>
+              <div class="row m-0 p-0">
+                <div class="col-12 m-0 p-0">
 
+                  <h4 class="fonte-principal">&nbsp;&nbsp;&nbsp;&nbsp;<i class="fa-solid fa-globe "></i>&nbsp;&nbsp;<?php echo $pais; ?></h4>
 
                 </div>
-
-
-
-              </div>
-            </div>
-            <div class="col-6">
-              <div class="card card-body shadow">
-                <div class="row">
-                  <div class="col-8 d-flex justify-content-start">
-                    <p class="d-inline m-0 color-preto"><a href="#" data-toggle="modal" data-target="#exampleModalconect" class="nav-link">Want to Connect</a></p>
-                  </div>
-                  <div class="col-4 d-flex justify-content-end align-middle">
-                    <p class="d-inline m-0"><b><?php include_once('../model/classes/tblConect.php');
-
-                                                $conect = new Conect($dbh);
-
-                                                $conect->setidUserReceb($iduser);
-
-                                                $resultConect = $conect->consulta("WHERE idUserReceb = :idUserReceb AND status = '0'");
-
-                                                $numView = 0;
-
-                                                if ($resultConect != null) {
-                                                  foreach ($resultConect as $resultConectUnid) {
-                                                    $numView += 1;
-                                                  }
-                                                }
-
-                                                echo $numView; ?></b></p>
-                  </div>
-
+                <div class="col-3 m-0 p-0">
 
                 </div>
-
-
-
               </div>
-            </div>
-          </div>
+              <div class="row m-0 p-0">
+                <div class="col-12 m-0 p-0 mr-2">
+                  <div class="col-12 m-0 p-0">
 
-        </div>
+                    <h4 class="fonte-principal">&nbsp;&nbsp;&nbsp;&nbsp;<i class="fa-solid fa-envelope "></i>&nbsp;&nbsp;<?php echo $email; ?></h4>
 
-        <div class="col-12 mt-4">
-          <div class="row">
-            <div class="col-6">
-              <div class="card card-body shadow">
-                <div class="row">
-                  <div class="col-8 d-flex justify-content-start">
-                    <p class="d-inline m-0 color-preto"><a href="#" data-toggle="modal" data-target="#modalNetwork" class="nav-link color-preto">My Network</a></p>
                   </div>
-                  <div class="col-4 d-flex justify-content-end align-middle">
-                    <p class="d-inline m-0"><b><?php
-
-
-                                                include_once('../model/classes/tblConect.php');
-
-                                                $conect = new Conect($dbh);
-
-                                                $conect->setidUserReceb($iduser);
-
-                                                $resultConect = $conect->consulta("WHERE idUserReceb = :idUserReceb AND status = '1'");
-
-                                                $numView = 0;
-
-                                                if ($resultConect != null) {
-                                                  foreach ($resultConect as $resultConectUnid) {
-                                                    $numView += 1;
-                                                  }
-                                                }
-
-                                                echo $numView;
-                                                ?></b></p>
-                  </div>
-
-
                 </div>
 
-
-
               </div>
-            </div>
-            <div class="col-6">
-              <div class="card card-body shadow">
-                <div class="row">
-                  <div class="col-8 d-flex justify-content-start">
-                    <p class="d-inline m-0 color-preto"><a href="#" data-toggle="modal" data-target="#exampleModal" class="nav-link">Views</a></p>
-                  </div>
-                  <div class="col-4 d-flex justify-content-end align-middle">
-                    <p class="d-inline m-0"><b><?php
+              <div class="row m-0 p-0">
+                <div class="col-12 m-0 p-0 mr-2">
 
-
-                                                include_once('../model/classes/tblViews.php');
-
-                                                $views = new Views($dbh);
-
-                                                $views->setidView($iduser);
-
-                                                $resultviews = $views->consulta(" WHERE idView = :idView ");
-
-                                                $numView = 0;
-
-                                                if ($resultviews != null) {
-                                                  foreach ($resultviews as $resultviewsUnid) {
-                                                    $numView += 1;
-                                                  }
-                                                }
-
-                                                echo $numView;
-
-                                                ?></b></p>
-                  </div>
-
-
+                  <h4 class="fonte-principal">&nbsp;&nbsp;&nbsp;&nbsp;<i class="fa-solid fa-phone-square "></i>&nbsp;&nbsp;<?php echo $numberfone; ?></h4>
                 </div>
-
-
-
+                <div class="col-3 m-0 p-0">
+                  <h5 class="fonte-principal text-left"></h5>
+                </div>
               </div>
-            </div>
-          </div>
+              <div class="row m-0 p-0">
+                <div class="col-12 m-0 p-0 mr-2">
 
-        </div>
-      </div>
-      <div class="col-12 col-md-4 p-3">
-        <div class="card card-body shadow bcolor-azul-escuro">
-          <div class="col-12">
-            <div class="row">
-              <div class="col-7 d-flex justify-content-start">
-                <p class="mb-0 textmeiosize color-branco"><b>Core Business:</b></p>
-
-              </div>
-              <div class="col-5 d-flex justify-content-end align-middle">
-                <p class="mb-0 textmeiosize color-branco"> <?php echo $NmBusiness; ?></p>
+                  <h4 class="fonte-principal">&nbsp;&nbsp;&nbsp;&nbsp;<i class="fa-solid fa-building "></i>&nbsp;&nbsp;<?php echo  $NmBusiness; ?></h4>
+                </div>
+                <div class="col-3 m-0 p-0">
+                  <h5 class="fonte-principal text-left"></h5>
+                </div>
               </div>
               <?php if ($corebusiness == "1" || $corebusiness == "2" || $corebusiness == "3" || $corebusiness == "4" || $corebusiness == "5") {
               ?>
-                <hr>
-                <div class="col-7 d-flex justify-content-start">
-                  <p class="mb-0 textmeiosize color-branco"><b>Business:</b></p>
+                <div class="row m-0 p-0">
+                  <div class="col-12 m-0 p-0 mr-2">
 
+                    <h4 class="fonte-principal">&nbsp;&nbsp;&nbsp;&nbsp;<i class="fa-solid fa-briefcase "></i>&nbsp;&nbsp;<?php if (isset($NmBusinesscor)) {
+                                                                                                                            echo  $NmBusinesscor;
+                                                                                                                          } ?></h4>
+                  </div>
+                  <div class="col-3 m-0 p-0">
+                    <h5 class="fonte-principal text-left"></h5>
+                  </div>
                 </div>
-                <div class="col-5 d-flex justify-content-end align-middle">
-                  <p class="mb-0 textmeiosize color-branco"> <?php echo $NmBusinesscor; ?></p>
-                </div>
-                <hr>
-                <div class="col-7 d-flex justify-content-start">
-                  <p class="mb-0 textmeiosize color-branco"><b>Business Category:</b></p>
+                <div class="row m-0 p-0">
+                  <div class="col-12 m-0 p-0 mr-2">
 
-                </div>
-                <div class="col-5 d-flex justify-content-end align-middle">
-                  <p class="mb-0 textmeiosize color-branco"> <?php echo $NmBusinessCategory; ?></p>
-                </div>
-              <?php }  ?>
-              <?php if ($corebusiness == "3" || $corebusiness == "4") {
-                include_once('../model/classes/tblDistributorProfile.php');
-
-                $distributorProfile = new DistributorProfile($dbh);
-                $distributorProfile->setidClient($iduser);
-                $resultsdistributor = $distributorProfile->consulta("WHERE idClient = :idClient");
-
-                if ($resultsdistributor != null) {
-                  foreach ($resultsdistributor as $row) {
-                    $AnoFundacao = $row->AnoFundacao;
-
-                    $numEmpregadosid = $row->NumEmpregados;
-                    include_once('../model/classes/tblNumEmpregados.php');
-                    $nEmpre = new NumEmpregados($dbh);
-                    $nEmpre->setidNumEmpregados($numEmpregadosid);
-                    $resultsnEmpre = $nEmpre->consulta("WHERE idNumEmpregados = :idNumEmpregados");
-                    if ($resultsnEmpre != null) {
-                      foreach ($resultsnEmpre as $rowEm) {
-                        $numEmpregados = $rowEm->DescNumEmpregados;
-                      }
-                    }
-
-                    $numVendedores = $row->NumVendedores;
-                    $numNivelOperacao = $row->NivelOperacao;
-
-                    include_once('../model/classes/tblNivelOperacao.php');
-                    $nOperacao = new NivelOperacao($dbh);
-                    $nOperacao->setidNivelOperacao($numNivelOperacao);
-                    $resultsnOperacao = $nOperacao->consulta("WHERE idNivelOperacao = :idNivelOperacao");
-                    if ($resultsnOperacao != null) {
-                      foreach ($resultsnOperacao as $rowEm) {
-                        $NivelOperacao = $rowEm->DescNivelOperacao;
-                      }
-                    }
-
-                    $DetalheRegiao = $row->DetalheRegiao;
-
-                    include_once('../model/classes/tblRangeValues.php');
-
-
-                    $Fob3 = $row->Fob_3Y;
-                    $nVol3 = $row->Vol_3Y;
-                    $tblRangeValues = new RangeValues($dbh);
-                    $tblRangeValues->setidlRangeValue($nVol3);
-                    $resultstblRangeValues = $tblRangeValues->consulta("WHERE idlRangeValue = :idlRangeValue");
-                    if ($resultstblRangeValues != null) {
-                      foreach ($resultstblRangeValues as $rowsallers) {
-                        $Vol3 = $rowsallers->DescricaoRangeValue;
-                      }
-                    }
-
-                    $Fob2 = $row->Fob_2Y;
-                    $nVol2 = $row->Vol_2Y;
-                    $tblRangeValues = new RangeValues($dbh);
-                    $tblRangeValues->setidlRangeValue($nVol2);
-                    $resultstblRangeValues = $tblRangeValues->consulta("WHERE idlRangeValue = :idlRangeValue");
-                    if ($resultstblRangeValues != null) {
-                      foreach ($resultstblRangeValues as $rowsallers) {
-                        $Vol2 = $rowsallers->DescricaoRangeValue;
-                      }
-                    }
-                    $Fob1 = $row->Fob_1Y;
-                    $nVol1 = $row->Vol_1Y;
-                    $tblRangeValues = new RangeValues($dbh);
-                    $tblRangeValues->setidlRangeValue($nVol1);
-                    $resultstblRangeValues = $tblRangeValues->consulta("WHERE idlRangeValue = :idlRangeValue");
-                    if ($resultstblRangeValues != null) {
-                      foreach ($resultstblRangeValues as $rowsallers) {
-                        $Vol1 = $rowsallers->DescricaoRangeValue;
-                      }
-                    }
-                  }
-                }
-
-              ?>
-                <hr>
-                <div class="col-7 d-flex justify-content-start">
-                  <p class="mb-0 textmeiosize color-branco"><b>Founded in:</b></p>
-
-                </div>
-                <div class="col-5 d-flex justify-content-end align-middle">
-                  <p class="mb-0 textmeiosize color-branco"> <?php echo $AnoFundacao; ?></p>
-                </div>
-                <hr>
-                <div class="col-7 d-flex justify-content-start">
-                  <p class="mb-0 textmeiosize color-branco"><b>Number of Employees:</b></p>
-
-                </div>
-                <div class="col-5 d-flex justify-content-end align-middle">
-                  <p class="mb-0 textmeiosize color-branco"> <?php echo $numEmpregados; ?></p>
-                </div>
-                <hr>
-                <div class="col-7 d-flex justify-content-start">
-                  <p class="mb-0 textmeiosize color-branco"><b>Number of Sellers:</b></p>
-
-                </div>
-                <div class="col-5 d-flex justify-content-end align-middle">
-                  <p class="mb-0 textmeiosize color-branco"> <?php echo $numVendedores; ?></p>
-                </div>
-                <hr>
-                <div class="col-7 d-flex justify-content-start">
-                  <p class="mb-0 textmeiosize color-branco"><b>Operation Level:</b></p>
-
-                </div>
-                <div class="col-5 d-flex justify-content-end align-middle">
-                  <p class="mb-0 textmeiosize color-branco"> <?php echo $NivelOperacao; ?></p>
-                </div>
-                <hr>
-                <div class="col-7 d-flex justify-content-start">
-                  <p class="mb-0 textmeiosize color-branco"><b>Region Details:</b></p>
-
-                </div>
-                <div class="col-5 d-flex justify-content-end align-middle">
-                  <p class="mb-0 textmeiosize color-branco"> <?php echo $DetalheRegiao; ?></p>
-                </div>
-                <hr>
-                <div class="col-7 d-flex justify-content-start">
-                  <p class="mb-0 textmeiosize color-branco"><b>Fob <?php echo $Fob3; ?>:</b></p>
-
-                </div>
-                <div class="col-5 d-flex justify-content-end align-middle">
-                  <p class="mb-0 textmeiosize color-branco"> <?php echo $Vol3; ?></p>
-                </div>
-                <div class="col-7 d-flex justify-content-start">
-                  <p class="mb-0 textmeiosize color-branco"><b>Fob <?php echo $Fob2; ?>:</b></p>
-
-                </div>
-                <div class="col-5 d-flex justify-content-end align-middle">
-                  <p class="mb-0 textmeiosize color-branco"> <?php echo $Vol2; ?></p>
-                </div>
-                <div class="col-7 d-flex justify-content-start">
-                  <p class="mb-0 textmeiosize color-branco"><b>Fob <?php echo $Fob1; ?>:</b></p>
-
-                </div>
-                <div class="col-5 d-flex justify-content-end align-middle">
-                  <p class="mb-0 textmeiosize color-branco"> <?php echo $Vol1; ?></p>
-                </div>
-                
-                <div  class="col-12 d-flex justify-content-end align-middle">
-       
-                  <a href="#" class="btn btn-outline-primary ms-1 color-branco editdistribtn" data-toggle="modal" data-target="#edit_dist"><i class="bi bi-pen icon-btn-card "></i>&nbsp;Edit</a>
+                    <h4 class="fonte-principal">&nbsp;&nbsp;&nbsp;&nbsp;<i class="fa-solid fa-briefcase "></i>&nbsp;&nbsp;<?php echo  $NmBusinessCategory; ?></h4>
+                  </div>
+                  <div class="col-3 m-0 p-0">
+                    <h5 class="fonte-principal text-left"></h5>
+                  </div>
                 </div>
               <?php } ?>
-            </div>
-          </div>
-        </div>
-        <div class="card card-body mt-3 shadow" style="height:auto;">
-          <div class="col-12">
-            <p class="mb-0" style="font-size:large;"><b>Description</b></p>
-          </div>
-          <div class="col-12">
-            <p class="text-muted textmeiosize"><?php echo $descricao; ?></p>
-          </div>
-        </div>
-      </div>
-      <!-- Body -->
-      <div class="col-12 col-md-4 p-3 ">
-        <div class="card card-body shadow bcolor-azul-escuro">
-          <div class="row">
-            <div class="col-2 d-flex justify-content-start">
-              <img src="<?php if ($imgperfil != "Avatar.png" && $imgperfil != "") {
-                          echo $imgperfil;
-                        } else {
-                          echo "assets/img/Avatar.png";
-                        } ?>" alt="user" class="nav-profile-img" onerror="this.onerror=null; this.src='assets/img/Avatar.png'">
-
-            </div>
-            <div class="col-6 d-flex justify-content-start d-flex align-items-center">
-              <p class="mb-0 text-center align-middle color-branco" style="font-size:larger"><b><?php echo $username; ?></b></p>
-
-            </div>
-            <div class="col-4 d-flex justify-content-end d-flex align-items-center">
-              <input class="insertpost btn btn-warning pl-4 pr-4 no-border p-3 post-btn-confirm" type="submit" name="post" value="+ Edit">
-              <input class="insertpost btn btn-danger pl-4 pr-4 no-border p-3 post-btn-confirm" disabled type="submit" name="post" value=" Delet">
-            </div>
-          </div>
-          <hr>
-          <div class="row">
-            <div class="col-2 d-flex justify-content-start">
-              <img src="assets/img/Avatar.png" alt="user" class="nav-profile-img" onerror="this.onerror=null; this.src='assets/img/Avatar.png'">
-
-            </div>
-            <div class="col-6 d-flex justify-content-start d-flex align-items-center">
-              <p class="mb-0 text-center align-middle color-branco" style="font-size:larger"><b>Collaborator 2</b></p>
-
-            </div>
-            <div class="col-4 d-flex justify-content-end d-flex align-items-center">
-              <a class="insertpost btn btn-primary pl-4 pr-4 no-border p-3 post-btn-confirm" data-toggle="modal" data-target="#emailcolab" >
-                    + Add"
-              </a>
-            </div>
-          </div>
-          <hr>
-          <div class="row">
-            <div class="col-2 d-flex justify-content-start">
-              <img src="assets/img/Avatar.png" alt="user" class="nav-profile-img" onerror="this.onerror=null; this.src='assets/img/Avatar.png'">
-
-            </div>
-            <div class="col-6 d-flex justify-content-start d-flex align-items-center">
-              <p class="mb-0 text-center align-middle color-branco" style="font-size:larger"><b>Collaborator 3</b></p>
-
-            </div>
-            <div class="col-4 d-flex justify-content-end d-flex align-items-center">
-               <a class="insertpost btn btn-primary pl-4 pr-4 no-border p-3 post-btn-confirm" data-toggle="modal" data-target="#emailcolab" >
-                    + Add"
-              </a>
-            </div>
-          </div>
-          <hr>
-          <div class="row">
-            <div class="col-2 d-flex justify-content-start">
-              <img src="assets/img/Avatar.png" alt="user" class="nav-profile-img" onerror="this.onerror=null; this.src='assets/img/Avatar.png'">
-
-            </div>
-            <div class="col-6 d-flex justify-content-start d-flex align-items-center">
-              <p class="mb-0 text-center align-middle color-branco" style="font-size:larger"><b>Collaborator 4</b></p>
-
-            </div>
-            <div class="col-4 d-flex justify-content-end d-flex align-items-center">
-                <a class="insertpost btn btn-primary pl-4 pr-4 no-border p-3 post-btn-confirm" data-toggle="modal" data-target="#emailcolab" >
-                    + Add"
-              </a>
-            </div>
-          </div>
-          <hr>
-          <div class="row">
-            <div class="col-2 d-flex justify-content-start">
-              <img src="assets/img/Avatar.png" alt="user" class="nav-profile-img" onerror="this.onerror=null; this.src='assets/img/Avatar.png'">
-
-            </div>
-            <div class="col-6 d-flex justify-content-start d-flex align-items-center">
-              <p class="mb-0 text-center align-middle color-branco" style="font-size:larger"><b>Collaborator 5</b></p>
-
-            </div>
-            <div class="col-4 d-flex justify-content-end d-flex align-items-center">
-               <a class="insertpost btn btn-primary pl-4 pr-4 no-border p-3 post-btn-confirm" data-toggle="modal" data-target="#emailcolab" >
-                    + Add"
-              </a>
-            </div>
-          </div>
-        </div>
-      </div>
-
-    </div>
-    <?php if ($corebusiness != "3" && $corebusiness != "4") {
-    ?>
-      <div class="row">
-        <div class="col-12">
-          <div class="card card-body shadow">
-            <div class="row">
-              <div class="col-sm-11">
-                <h2 class="text-muted valoresinsi"><b>Products</b></h2>
-              </div>
-              <div class="col-sm-1">
-                <p class="text-muted mb-0"><a href="#" class="btn btn-outline-primary ms-1 m-1" data-toggle="modal" data-target="#add_produto"><i class="bi bi-plus-circle-fill" style="font-size: 14px;"></i>+ Add</a></p>
+              <div class="row mb-2" style="padding: 9px;margin: auto;">
+                <a href="#" class="btn btn-outline-primary ms-1" style="width: 100px;" data-toggle="modal" data-target="#add_perfil"><i class="bi bi-pen icon-btn-card"></i>&nbsp;Edit</a>
+                <a href="empresa.php" class="btn btn-outline-primary ms-1" style="width: 100px;" ><i class="bi bi-pen icon-btn-card"></i>&nbsp;Company Profile</a>
               </div>
             </div>
-            <div class="row rowProduct overflow-auto">
-              <?php
-              include_once('../model/classes/tblProducts.php');
-              $products = new Products($dbh);
-              $products->setidClient($iduser);
-              $resultsProdutos = $products->consulta("WHERE idClient = :idClient  ORDER BY idProduct ASC ");
-              if ($resultsProdutos != null) {
-                if (is_array($resultsProdutos) || is_object($resultsProdutos)) {
-                  foreach ($resultsProdutos as $rowProdutos) {
-              ?>
-                    <div class="mb-4 " style="width: auto;">
-                      <div class="card-container">
-                        <a data-toggle="modal" data-target="#modalEditarProduto" data-toggle="modal" data-target="#add_produto" data-id="<?php echo $rowProdutos->idProduct; ?>" class="hero-image-container">
-                          <img class="hero-image produto-img" src="<?php
+          </div>
+          <div class="card rounded-4 shadow mt-2 margemdesck" >
+            <div class="card-body p-0 m-0" style="overflow-y: auto !important;
+    max-height: 312px !important;
+    overflow-x: hidden !important;
+    min-height: 312px !important;">
+              <div class="row ">
+                <div class="col-12 ">
 
-                                                                    include_once('../model/classes/tblProductPictures.php');
-                                                                    $productsPicture = new ProductPictures($dbh);
-                                                                    $productsPicture->setidProduct($rowProdutos->idProduct);
+                  <p class="fonte-titulo" style="padding: 7px; font-size: 17px;">Description</p>
 
-                                                                    $resultsProductsPicture = $productsPicture->consulta("WHERE idProduct = :idProduct");
+                </div>
+                <div class="col-12 ">
+
+                  <p class="fonte-principal" style="padding: 7px; font-size: 14px;" id="descricao"><?php echo $descricao; ?></p>
 
 
-                                                                    if ($resultsProductsPicture != null) {
-                                                                      foreach ($resultsProductsPicture as $rowProdutos1) {
-                                                                        echo $rowProdutos1->tblProductPicturePath;
-                                                                      }
-                                                                    } else {
-                                                                      echo "https://images.unsplash.com/photo-1507608158173-1dcec673a2e5?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1470&q=80";
-                                                                    }
-                                                                    ?>" alt="Spinning glass cube" />
-                        </a>
-                        <div class="col-12 mt-0 ">
-                          <h1 class="mb-0"><a class="cortardescricao color-branco desc-perfil-text" href="#"><?php echo $rowProdutos->ProductName; ?></a></h1>
-                          <p class="cortardescricao color-cinza-b produto-desc-text texto-desc"><?php echo $rowProdutos->ProdcuctDescription; ?></p>
-                        </div>
-                      </div>
-                    </div>
-
-              <?php }
-                }
-              } ?>
+                </div>
+                <div class="col-3 m-0 p-0">
+                </div>
+              </div>
             </div>
           </div>
         </div>
-      </div>
-    <?php } else {  ?>
-
-    <?php } ?>
-    <div class="row">
-      <div class="col-3">
-
-      </div>
-      <div class="col-12 col-md-6">
-        <div id="divFeedUpdate">
-          <?php
-
-          //$sqlFeed = "SELECT * from tblFeeds ORDER BY Published_at DESC LIMIT 5";
-          //$queryfeed = $dbh->prepare($sqlFeed);
-          //$queryfeed->execute();
-          //$resultsfeed = $queryfeed->fetchAll(PDO::FETCH_OBJ);
-
-          include_once('../model/classes/tblFeeds.php');
-
-          $feeds = new Feeds($dbh);
-          $feeds->setidClient($iduser);
-
-          $resultsfeed = $feeds->consulta("WHERE idClient = :idClient ORDER BY Published_at DESC LIMIT 8");
-
-          if ($resultsfeed != null) {
-            foreach ($resultsfeed as $rowfeed) {
-              // Obtenha a data e hora da postagem no formato DATETIME do banco de dados
-              $postDateTime = new DateTime($rowfeed->Published_at);
-
-              // Obtenha o objeto DateTime da data e hora atual
-              $currentTime = new DateTime();
-
-              // Calcula a diferença entre a data e hora atual e a da postagem
-              $timeDiff = $postDateTime->diff($currentTime);
-
-              // Formata o tempo decorrido com base nas unidades (ano, mês, dia, hora, minuto, segundo)
-              if ($timeDiff->y > 0) {
-                $timeAgo = $timeDiff->y . " ano(s) atrás";
-              } elseif ($timeDiff->m > 0) {
-                $timeAgo = $timeDiff->m . " mês(es) atrás";
-              } elseif ($timeDiff->d > 0) {
-                $timeAgo = $timeDiff->d . " dia(s) atrás";
-              } elseif ($timeDiff->h > 0) {
-                $timeAgo = $timeDiff->h . " hora(s) atrás";
-              } elseif ($timeDiff->i > 0) {
-                $timeAgo = $timeDiff->i . " minuto(s) atrás";
-              } else {
-                $timeAgo = "Alguns segundos atrás";
-              }
-
-              //$sqluserpost = "SELECT * from tblUserClients WHERE idClient = :idClient";
-              //$queryuserpost = $dbh->prepare($sqluserpost);
-              //$queryuserpost->bindParam(':idClient', $rowfeed->IdClient, PDO::PARAM_INT);
-              //$queryuserpost->execute();
-              //$resultsuserpost = $queryuserpost->fetchAll(PDO::FETCH_OBJ);
-
-              include_once("../model/classes/tblUserClients.php");
-
-              $userClients = new UserClients($dbh);
-
-              $userClients->setidClient($rowfeed->IdClient);
-
-              $resultsuserpost = $userClients->consulta("WHERE idClient = :idClient");
-
-              if ($resultsuserpost != null) {
-                foreach ($resultsuserpost as $rowuserpost) {
-                  $usernamepost = $rowuserpost->FirstName . " " . $rowuserpost->LastName;
-                  $idpostoperation = $rowuserpost->CoreBusinessId;
-                  $imgpostuser = $rowuserpost->PersonalUserPicturePath;
-                }
-              }
-          ?>
-              <div class="card shadow p-0 bcolor rounded-4 mt-4 mb-4">
-                <div class="card-body shadow d-flex flex-column rounded-4 color-cinza">
-
-                  <div class=" row align-content-center">
-                    <div class="row">
-                      <div class="col-1">
-                        <img src="<?php if ($imgpostuser != "Avatar.png" && $imgpostuser != "" && file_exists("" . $imgpostuser)) {
-                                    echo "" . $imgpostuser;
-                                  } else {
-                                    echo "/assets/img/Avatar.png";
-                                  } ?>" alt="user" class="nav-profile-img  " onerror="this.onerror=null; this.src='/assets/img/Avatar.png'">
-
+        <div class="col-3 "></div>
+        <!-- direita -->
+        <div class="col-lg-9 col-12 justify-content-center">
+          <div class="col-md-12  justify-content-center">
+            <?php if ($corebusiness == "3" || $corebusiness == "4") {
+              echo "<div class='row col-12'> ";
+            } ?>
+            <?php if ($corebusiness == "3" || $corebusiness == "4") {
+              echo "<div class='col-12 col-md-12 col-lg-6'> ";
+            } ?>
+            <?php if ($corebusiness != "3" || $corebusiness != "4") {
+              echo "<div class='row col-12'><div class='col-12 col-md-12 col-lg-6'>";
+            } ?>
+                
+            <div class="col-12 mt-4">
+              <div class="row">
+        
+                <div class="col-6">
+                  <div class="card card-body shadow">
+                    <div class="row" style="font-size: larger;">
+                      <div class="col-8 d-flex justify-content-start">
+                        <p class="d-inline m-0 color-preto"><a href="listcompani.php?text=mysp" class="nav-link">My saved search</a></p>
                       </div>
-                      <div class="col-8 p-2 color-preto">
-                        <a href="viewProfile.php?profile=<?php echo $rowfeed->IdClient; ?>" class="color-preto text-decoration-none">
-                          <h3 class="fonte-titulo text-decoration-none">
-                            <?php
-                            echo $usernamepost;
-                            ?>
-                          </h3>
-                        </a>
-                        <?php
-
-                        //$sqlOperationpost = "SELECT * from tblOperations WHERE FlagOperation != '0' AND idOperation = :idOperation";
-                        //$queryOperationpost = $dbh->prepare($sqlOperationpost);
-                        //$queryOperationpost->bindParam(':idOperation', $idpostoperation, PDO::PARAM_INT);
-                        //$queryOperationpost->execute();
-                        //$resultsOperationpost = $queryOperationpost->fetchAll(PDO::FETCH_OBJ);
-
-                        include_once("../model/classes/tblOperations.php");
-
-                        $operations = new Operations($dbh);
-
-                        $operations->setidOperation($idpostoperation);
-                        $operations->setFlagOperation('0');
-
-                        $resultsOperationpost = $operations->consulta("WHERE FlagOperation != :FlagOperation AND idOperation = :idOperation");
-
-                        if ($resultsOperationpost != null) {
-                          foreach ($resultsOperationpost as $rowOperationpost) {
-                            echo $rowOperationpost->NmOperation;
-                          }
-                        }
-                        ?><br>
-
+                      <div class="col-4 d-flex justify-content-end align-middle">
+                        <p class="d-inline m-0"><b><?php include_once('../model/classes/tblSearch.php');
+                                                    $Search = new Search($dbh);
+                                                    $Search->setidClient($iduser);
+                                                    $resultSearch = $Search->consulta("WHERE idClient = :idClient");
+                                                    $numSearch = 0;
+                                                    if ($resultSearch != null) {
+                                                      foreach ($resultSearch as $resultConectUnidSearch) {
+                                                        $numSearch += 1;
+                                                      }
+                                                    }
+                                                    echo $numSearch;
+                                                    ?></b></p>
                       </div>
-                      <div class="col-3 d-flex text-right color-preto justify-content-end">
 
-                        <?php echo $timeAgo; ?>
 
-                      </div>
                     </div>
 
 
 
                   </div>
-                  <div class="col-12" style="padding: inherit;">
+                </div>
+                <div class="col-6">
+                  <div class="card card-body shadow">
+                    <div class="row" style="font-size: larger;">
+                      <div class="col-8 d-flex justify-content-start">
+                        <p class="d-inline m-0 color-preto"><a href="#" data-toggle="modal" data-target="#exampleModalconect" class="nav-link">Want to Connect</a></p>
+                      </div>
+                      <div class="col-4 d-flex justify-content-end align-middle">
+                        <p class="d-inline m-0"><b><?php include_once('../model/classes/tblConect.php');
 
-                    <?php
-                    $numeroCaracteres = strlen($rowfeed->Text);
-                   if ($numeroCaracteres > 200) {
-                                                        echo "
+                                                    $conect = new Conect($dbh);
+
+                                                    $conect->setidUserReceb($iduser);
+
+                                                    $resultConect = $conect->consulta("WHERE idUserReceb = :idUserReceb AND status = '0'");
+
+                                                    $numView = 0;
+
+                                                    if ($resultConect != null) {
+                                                      foreach ($resultConect as $resultConectUnid) {
+                                                        $numView += 1;
+                                                      }
+                                                    }
+
+                                                    echo $numView; ?></b></p>
+                      </div>
+
+
+                    </div>
+
+
+
+                  </div>
+                </div>
+              </div>
+
+            </div>
+            <div class="col-12  mt-4">
+              <div class="row" style="font-size: larger;">
+                <div class="col-6">
+                  <div class="card card-body shadow">
+                    <div class="row" style="font-size: larger;">
+                      <div class="col-8 d-flex justify-content-start">
+                        <p class="d-inline m-0 color-preto"><a href="#" data-toggle="modal" data-target="#modalNetwork" class="nav-link color-preto">My Network</a></p>
+                      </div>
+                      <div class="col-4 d-flex justify-content-end align-middle">
+                        <p class="d-inline m-0"><b><?php
+
+
+                                                    include_once('../model/classes/tblConect.php');
+
+                                                    $conect = new Conect($dbh);
+
+                                                    $conect->setidUserReceb($iduser);
+
+                                                    $resultConect = $conect->consulta("WHERE idUserReceb = :idUserReceb AND status = '1'");
+
+                                                    $numView = 0;
+
+                                                    if ($resultConect != null) {
+                                                      foreach ($resultConect as $resultConectUnid) {
+                                                        $numView += 1;
+                                                      }
+                                                    }
+
+                                                    echo $numView;
+                                                    ?></b></p>
+                      </div>
+
+
+                    </div>
+
+
+
+                  </div>
+                </div>
+                <div class="col-6">
+                  <div class="card card-body shadow">
+                    <div class="row" style="font-size: larger;">
+                      <div class="col-8 d-flex justify-content-start">
+                        <p class="d-inline m-0 color-preto"><a href="#" data-toggle="modal" data-target="#exampleModal" class="nav-link">Views</a></p>
+                      </div>
+                      <div class="col-4 d-flex justify-content-end align-middle">
+                        <p class="d-inline m-0"><b><?php
+
+
+                                                    include_once('../model/classes/tblViews.php');
+
+                                                    $views = new Views($dbh);
+
+                                                    $views->setidView($iduser);
+
+                                                    $resultviews = $views->consulta(" WHERE idView = :idView ");
+
+                                                    $numView = 0;
+
+                                                    if ($resultviews != null) {
+                                                      foreach ($resultviews as $resultviewsUnid) {
+                                                        $numView += 1;
+                                                      }
+                                                    }
+
+                                                    echo $numView;
+
+                                                    ?></b></p>
+                      </div>
+
+
+                    </div>
+
+
+
+                  </div>
+                </div>
+              </div>
+
+            </div>
+            <?php if ($corebusiness != "3" || $corebusiness != "4") {
+              echo "</div>";
+            } ?>
+            <div class="col-12 col-md-12 col-lg-6 mt-4">
+              <div class="card card-body shadow">
+                <div class="row" style="font-size: larger;">
+                  <div class="col-12 d-flex justify-content-start">
+                    <h3 class="d-inline m-0 color-preto">Discover the premium plan</h3>
+
+                  </div>
+                  <div class="col-12 d-flex justify-content-start mt-3">
+                    <p>With the premium plan you have several new features and improvements to those you already have.</p>
+                  </div>
+                  <div class="col-12 d-flex justify-content-start mt-3">
+                    <a href="#" class=" ms-1" style="width: 100px;text-decoration: underline;color: black;">Premium Plan</a>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <?php if ($corebusiness != "3" || $corebusiness != "4") {
+              echo "</div>";
+            } ?>
+
+            <?php if ($corebusiness == "3" || $corebusiness == "4") {
+              echo "</div> ";
+            } ?>
+            <?php if ($corebusiness == "3" || $corebusiness == "4") { ?>
+              <div class="col-12 col-md-12 col-lg-6  mt-4">
+                <div class="card card-body shadow bcolor-azul-escuro">
+                  <div class="col-12">
+                    <div class="row" style="font-size: larger;">
+                      <?php
+                    
+
+                   
+
+                          
+                          include_once('../model/classes/tblNumEmpregados.php');
+                          $nEmpre = new NumEmpregados($dbh);
+                          $nEmpre->setidNumEmpregados($numEmpregadosid);
+                          $resultsnEmpre = $nEmpre->consulta("WHERE idNumEmpregados = :idNumEmpregados");
+                          if ($resultsnEmpre != null) {
+                            foreach ($resultsnEmpre as $rowEm) {
+                              $numEmpregados = $rowEm->DescNumEmpregados;
+                            }
+                          }
+
+                          include_once('../model/classes/tblNumEmpregados.php');
+                          $nEmpresales = new NumEmpregados($dbh);
+                          $nEmpresales->setidNumEmpregados($numVendedores);
+                          $resultsnEmpresales = $nEmpresales->consulta("WHERE idNumEmpregados = :idNumEmpregados");
+                          if ($resultsnEmpresales != null) {
+                            foreach ($resultsnEmpresales as $rowEmsales) {
+                              $numVendedoresr = $rowEmsales->DescNumEmpregados;
+                            }
+                          }
+
+                          include_once('../model/classes/tblNivelOperacao.php');
+                          $nOperacao = new NivelOperacao($dbh);
+                          $nOperacao->setidNivelOperacao($numNivelOperacao);
+                          $resultsnOperacao = $nOperacao->consulta("WHERE idNivelOperacao = :idNivelOperacao");
+                          if ($resultsnOperacao != null) {
+                            foreach ($resultsnOperacao as $rowEm) {
+                              $NivelOperacao = $rowEm->DescNivelOperacao;
+                            }
+                          }
+
+                         
+
+                          include_once('../model/classes/tblRangeValues.php');
+
+
+
+                          $tblRangeValues = new RangeValues($dbh);
+                          $tblRangeValues->setidlRangeValue($nVol3);
+                          $resultstblRangeValues = $tblRangeValues->consulta("WHERE idlRangeValue = :idlRangeValue");
+                          if ($resultstblRangeValues != null) {
+                            foreach ($resultstblRangeValues as $rowsallers) {
+                              $Vol3 = $rowsallers->DescricaoRangeValue;
+                            }
+                          }
+
+                         
+                          $tblRangeValues = new RangeValues($dbh);
+                          $tblRangeValues->setidlRangeValue($nVol2);
+                          $resultstblRangeValues = $tblRangeValues->consulta("WHERE idlRangeValue = :idlRangeValue");
+                          if ($resultstblRangeValues != null) {
+                            foreach ($resultstblRangeValues as $rowsallers) {
+                              $Vol2 = $rowsallers->DescricaoRangeValue;
+                            }
+                          }
+                         
+                          $tblRangeValues = new RangeValues($dbh);
+                          $tblRangeValues->setidlRangeValue($nVol1);
+                          $resultstblRangeValues = $tblRangeValues->consulta("WHERE idlRangeValue = :idlRangeValue");
+                          if ($resultstblRangeValues != null) {
+                            foreach ($resultstblRangeValues as $rowsallers) {
+                              $Vol1 = $rowsallers->DescricaoRangeValue;
+                            }
+                          }
+                       
+
+                      ?>
+                      <h2 class="color-branco">Distributor Information</h2>
+                      <hr>
+                      <div class="col-7 d-flex justify-content-start">
+                        <p class="mb-0  color-branco">Founded in:</p>
+
+                      </div>
+                      <div class="col-5 d-flex justify-content-end align-middle">
+                        <p class="mb-0  color-branco"> <b><?php echo $AnoFundacao; ?></b></p>
+                      </div>
+                      <hr>
+                      <div class="col-7 d-flex justify-content-start">
+                        <p class="mb-0  color-branco">Number of Employees:</p>
+
+                      </div>
+                      <div class="col-5 d-flex justify-content-end align-middle">
+                        <p class="mb-0  color-branco"> <b><?php echo $numEmpregados; ?></b></p>
+                      </div>
+                      <hr>
+                      <div class="col-7 d-flex justify-content-start">
+                        <p class="mb-0  color-branco">Number of Sellers:</p>
+
+                      </div>
+                      <div class="col-5 d-flex justify-content-end align-middle">
+                        <p class="mb-0  color-branco"> <b><?php echo $numVendedoresr ; ?></b></p>
+                      </div>
+                      <hr>
+                      <div class="col-7 d-flex justify-content-start">
+                        <p class="mb-0  color-branco">Operation Level:</p>
+
+                      </div>
+                      <div class="col-5 d-flex justify-content-end align-middle">
+                        <p class="mb-0  color-branco"> <b><?php echo $NivelOperacao; ?></b></p>
+                      </div>
+                      <hr>
+                      
+                      <div class="col-7 d-flex justify-content-start">
+                        <p class="mb-0  color-branco">Fob <?php echo $Fob3; ?>:</p>
+
+                      </div>
+                      <div class="col-5 d-flex justify-content-end align-middle">
+                        <p class="mb-0  color-branco"><b> <?php echo $Vol3; ?></b></p>
+                      </div>
+                      <hr>
+                      <div class="col-7 d-flex justify-content-start">
+                        <p class="mb-0  color-branco">Fob <?php echo $Fob2; ?>:</p>
+
+                      </div>
+                      <div class="col-5 d-flex justify-content-end align-middle">
+                        <p class="mb-0  color-branco"> <b><?php echo $Vol2; ?></b></p>
+                      </div>
+                      <hr>
+                      <div class="col-7 d-flex justify-content-start">
+                        <p class="mb-0  color-branco">Fob <?php echo $Fob1; ?>:</p>
+
+                      </div>
+                      <div class="col-5 d-flex justify-content-end align-middle">
+                        <p class="mb-0  color-branco"> <b><?php echo $Vol1; ?></b></p>
+                      </div>
+                      <hr>
+                      <div class="col-12 d-flex justify-content-end align-middle">
+
+                        <a href="#" style="width: 100px;" class="btn btn-outline-primary ms-1 color-branco editdistribtn" data-toggle="modal" data-target="#edit_dist"><i class="bi bi-pen icon-btn-card "></i>&nbsp;Edit</a>
+                      </div>
+
+                    </div>
+                  </div>
+                </div>
+              </div>
+            <?php } ?>
+            <?php if ($corebusiness == "3" || $corebusiness == "4") {
+              echo "</div>";
+            } ?>
+            <div class="col-md-12">
+              <?php if ($corebusiness != "3" && $corebusiness != "4") {
+              ?>
+                <div class="row">
+                  <div class="col-12 mt-4">
+                    <div class="card card-body shadow">
+                      <div class="row">
+                        <div class="col-9">
+                          <h2 class="text-muted valoresinsi"><b>Products</b></h2>
+                        </div>
+                        <div class="col-3">
+                    <p class="text-muted mb-0"><a href="#" class="btn btn-outline-primary ms-1 m-1" data-toggle="modal" data-target="#add_produto"><i class="bi bi-plus-circle-fill" style="font-size: 14px;"></i>+ Add</a></p>
+                  </div>
+                      </div>
+                      <div class="row rowProduct overflow-auto">
+                        <?php
+                        include_once('../model/classes/tblProducts.php');
+                        $products = new Products($dbh);
+                        $products->setidClient($iduser);
+                        $resultsProdutos = $products->consulta("WHERE idClient = :idClient  ORDER BY idProduct ASC ");
+                        if ($resultsProdutos != null) {
+                          if (is_array($resultsProdutos) || is_object($resultsProdutos)) {
+                            foreach ($resultsProdutos as $rowProdutos) {
+                        ?>
+                              <div class="mb-4 " style="width: auto;">
+                                <div class="card-container">
+                                <a data-toggle="modal" data-target="#modalEditarProduto" data-toggle="modal" data-target="#add_produto" data-id="<?php echo $rowProdutos->idProduct; ?>" class="hero-image-container">
+                                    <img class="hero-image produto-img" src="<?php
+
+                                                                              include_once('../model/classes/tblProductPictures.php');
+                                                                              $productsPicture = new ProductPictures($dbh);
+                                                                              $productsPicture->setidProduct($rowProdutos->idProduct);
+
+                                                                              $resultsProductsPicture = $productsPicture->consulta("WHERE idProduct = :idProduct");
+
+
+                                                                              if ($resultsProductsPicture != null) {
+                                                                                foreach ($resultsProductsPicture as $rowProdutos1) {
+                                                                                  echo $rowProdutos1->tblProductPicturePath;
+                                                                                  break;
+                                                                                }
+                                                                              } else {
+                                                                                echo "https://images.unsplash.com/photo-1507608158173-1dcec673a2e5?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1470&q=80";
+                                                                              }
+                                                                              ?>" alt="Spinning glass cube" />
+                                  </a>
+                                  <div class="col-12 mt-0 ">
+                                    <h1 class="mb-0"><a data-toggle="modal" data-target="#modalEditarProduto" data-toggle="modal" data-target="#add_produto" data-id="<?php echo $rowProdutos->idProduct; ?>" ><?php echo $rowProdutos->ProductName; ?></a></h1>
+                                    <p class="cortardescricao color-cinza-b produto-desc-text texto-desc"><a data-toggle="modal" data-target="#modalEditarProduto" data-toggle="modal" data-target="#add_produto" data-id="<?php echo $rowProdutos->idProduct; ?>" ><?php echo $rowProdutos->ProdcuctDescription; ?></a></p>
+                                  </div>
+                                </div>
+                              </div>
+
+                        <?php }
+                          }
+                        } ?>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              <?php } else {  ?>
+
+              <?php } ?>
+            </div>
+            <div class="col-md-12">
+              <div id="divFeedUpdate">
+                <?php
+
+                //$sqlFeed = "SELECT * from tblFeeds ORDER BY Published_at DESC LIMIT 5";
+                //$queryfeed = $dbh->prepare($sqlFeed);
+                //$queryfeed->execute();
+                //$resultsfeed = $queryfeed->fetchAll(PDO::FETCH_OBJ);
+
+
+
+                $feeds = new Feeds($dbh);
+                $feeds->setidClient($iduser);
+                $resultsfeed = $feeds->consulta("WHERE idClient = :idClient ORDER BY Published_at DESC LIMIT 8");
+
+                if ($resultsfeed != null) {
+                  foreach ($resultsfeed as $rowfeed) {
+                    // Obtenha a data e hora da postagem no formato DATETIME do banco de dados
+                    $postDateTime = new DateTime($rowfeed->Published_at);
+
+                    // Obtenha o objeto DateTime da data e hora atual
+                    $currentTime = new DateTime();
+
+                    // Calcula a diferença entre a data e hora atual e a da postagem
+                    $timeDiff = $postDateTime->diff($currentTime);
+
+                    // Formata o tempo decorrido com base nas unidades (ano, mês, dia, hora, minuto, segundo)
+                    if ($timeDiff->y > 0) {
+                      $timeAgo = $timeDiff->y . " year(s) ago";
+                    } elseif ($timeDiff->m > 0) {
+                      $timeAgo = $timeDiff->m . " month(s) ago";
+                    } elseif ($timeDiff->d > 0) {
+                      $timeAgo = $timeDiff->d . " day(s) ago";
+                    } elseif ($timeDiff->h > 0) {
+                      $timeAgo = $timeDiff->h . " hour(s) ago";
+                    } elseif ($timeDiff->i > 0) {
+                      $timeAgo = $timeDiff->i . " minute(s) ago";
+                    } else {
+                      $timeAgo = "A few seconds ago";
+                    }
+                    //$sqluserpost = "SELECT * from tblUserClients WHERE idClient = :idClient";
+                    //$queryuserpost = $dbh->prepare($sqluserpost);
+                    //$queryuserpost->bindParam(':idClient', $rowfeed->IdClient, PDO::PARAM_INT);
+                    //$queryuserpost->execute();
+                    //$resultsuserpost = $queryuserpost->fetchAll(PDO::FETCH_OBJ);
+
+
+
+                    $userClients = new UserClients($dbh);
+
+                    $userClients->setidClient($rowfeed->IdClient);
+
+                    $resultsuserpost = $userClients->consulta("WHERE idClient = :idClient");
+
+                    if ($resultsuserpost != null) {
+                      foreach ($resultsuserpost as $rowuserpost) {
+                        $usernamepost = $rowuserpost->FirstName . " " . $rowuserpost->LastName;
+                        $idpostoperation = $rowuserpost->CoreBusinessId;
+                        $imgpostuser = $rowuserpost->PersonalUserPicturePath;
+                      }
+                    }
+                ?>
+                    <div class="card shadow p-0 bcolor rounded-4 mt-4 mb-4">
+                      <div class="card-body shadow d-flex flex-column rounded-4 color-cinza">
+
+                        <div class=" row align-content-center">
+                          <div class="row">
+                            <div class="col-1">
+                              <img src="<?php if ($imgpostuser != "Avatar.png" && $imgpostuser != "" && file_exists("" . $imgpostuser)) {
+                                          echo "" . $imgpostuser;
+                                        } else {
+                                          echo "assets/img/Avatar.png";
+                                        } ?>" alt="user" class="nav-profile-img  " onerror="this.onerror=null; this.src='/assets/img/Avatar.png'">
+
+                            </div>
+                            <div class="col-8 p-2 color-preto" style="padding-left: 26px !important;">
+                              <a href="viewProfile.php?profile=<?php echo $rowfeed->IdClient; ?>" class="color-preto text-decoration-none">
+                                <h3 class="fonte-titulo text-decoration-none">
+                                  <?php
+                                  echo $usernamepost;
+                                  ?>
+                                </h3>
+                              </a>
+                              <?php
+
+                              //$sqlOperationpost = "SELECT * from tblOperations WHERE FlagOperation != '0' AND idOperation = :idOperation";
+                              //$queryOperationpost = $dbh->prepare($sqlOperationpost);
+                              //$queryOperationpost->bindParam(':idOperation', $idpostoperation, PDO::PARAM_INT);
+                              //$queryOperationpost->execute();
+                              //$resultsOperationpost = $queryOperationpost->fetchAll(PDO::FETCH_OBJ);
+
+
+
+                              $operations = new Operations($dbh);
+
+                              $operations->setidOperation($idpostoperation);
+                              $operations->setFlagOperation('0');
+
+                              $resultsOperationpost = $operations->consulta("WHERE FlagOperation != :FlagOperation AND idOperation = :idOperation");
+
+                              if ($resultsOperationpost != null) {
+                                foreach ($resultsOperationpost as $rowOperationpost) {
+                                  echo $rowOperationpost->NmOperation;
+                                }
+                              }
+                              ?><br>
+
+                            </div>
+                            <div class="col-3 d-flex text-right color-preto justify-content-end">
+
+                              <?php echo $timeAgo; ?>
+
+                            </div>
+                          </div>
+
+
+
+                        </div>
+                        <div class="col-12" style="padding: inherit;">
+
+                          <?php
+                          $numeroCaracteres = strlen($rowfeed->Text);
+                          if ($numeroCaracteres > 200) {
+                            echo "
                                                         <div id='textoEx" . $rowfeed->IdFeed . "' style='height: 8em; overflow: hidden;'>
                                                             <h3 class='fonte-principal color-preto'>
                                                                 <br>
                                                                 " . $rowfeed->Text . "
                                                             </h3>
                                                         </div>";
-                                                        echo "<a href='javascript:void(0)' id='btn-vm" . $rowfeed->IdFeed . "' onClick='alterarLimite(" . $rowfeed->IdFeed . ")'>Ver mais</a>";
-                                                    } else {
-                                                        echo "
+                            echo "<a href='javascript:void(0)' id='btn-vm" . $rowfeed->IdFeed . "' onClick='alterarLimite(" . $rowfeed->IdFeed . ")'>Ver mais</a>";
+                          } else {
+                            echo "
                                                         <div id='textoEx" . $rowfeed->IdFeed . "'>
                                                             <h3 class='fonte-principal color-preto'>
                                                                 <br>
                                                                 " . $rowfeed->Text . "
                                                             </h3>
                                                         </div>";
-                                                    }
-                    ?>
-                    <br>
+                          }
+                          ?>
+                          <br>
 
 
 
-                  </div>
+                        </div>
 
-                  <div class="row col-12 align-content-center">
-                    <?php if ($rowfeed->Image != "") { ?>
-                      <img class="img-feed-styleset" src="<?php echo $rowfeed->Image; ?>" alt="" width="100%">
-                    <?php } else if ($rowfeed->Video != "") { ?>
-                      <video class="img-feed-styleset" src="<?php echo $rowfeed->Video; ?>" controls alt="" width="50%"></video>
-                    <?php } ?>
-                  </div>
-                  <br>
+                        <div class="row col-12 align-content-center justify-content-center">
+                          <?php if ($rowfeed->Image != "") { ?>
+                            <img class="img-feed-styleset" src="<?php echo $rowfeed->Image; ?>" alt="" width="100%">
+                          <?php } else if ($rowfeed->Video != "") { ?>
+                            <video class="img-feed-styleset" src="<?php echo $rowfeed->Video; ?>" controls alt="" width="50%"></video>
+                          <?php } ?>
+                        </div>
+                        <br>
 
-                  <hr class="color-preto">
+                        <hr class="color-preto">
 
-                  <div class="row">
+                        <div class="row">
 
-                    <?php
-                    //$sqlOperationpost = "SELECT * from tbcurtidas WHERE idpost = :idpost";
-                    //$queryOperationpost = $dbh->prepare($sqlOperationpost);
-                    //$queryOperationpost->bindParam(':idpost', $rowfeed->IdFeed, PDO::PARAM_INT);
-                    //$queryOperationpost->execute();
-                    //$resultsOperationpost = $queryOperationpost->fetchAll(PDO::FETCH_OBJ);
-
-                    include_once('../model/classes/tblCurtidas.php');
-
-                    $curtidas = new Curtidas($dbh);
-
-                    $curtidas->setidpost($rowfeed->IdFeed);
-
-                    $resultsOperationpost = $curtidas->consulta("WHERE idpost = :idpost");
-
-                    $numeroCurtidas = 0;
-                    if ($resultsOperationpost != null) {
-                      foreach ($resultsOperationpost as $rowOperationpost) {
-                        $numeroCurtidas += 1;
-                      }
-                    }
-                    ?>
-                    <?php
-                    //$sqlOperationpost = "SELECT * from tbcurtidas WHERE idpost = :idpost AND idusuario = :idusuario";
-                    //$queryOperationpost = $dbh->prepare($sqlOperationpost);
-                    //$queryOperationpost->bindParam(':idpost', $rowfeed->IdFeed, PDO::PARAM_INT);
-                    //$queryOperationpost->bindParam(':idusuario', $iduser, PDO::PARAM_INT);
-                    //$queryOperationpost->execute();
-                    //$resultsOperationpost = $queryOperationpost->fetchAll(PDO::FETCH_OBJ);
-
-                    include_once('../model/classes/tblCurtidas.php');
-
-                    $curtidas = new Curtidas($dbh);
-
-                    $curtidas->setidpost($rowfeed->IdFeed);
-                    $curtidas->setidusuario($iduser);
-
-                    $resultsOperationpost = $curtidas->consulta("WHERE idpost = :idpost AND idusuario = :idusuario");
-
-                    if ($resultsOperationpost != null) {
+                          <?php
+                          //$sqlOperationpost = "SELECT * from tbcurtidas WHERE idpost = :idpost";
+                          //$queryOperationpost = $dbh->prepare($sqlOperationpost);
+                          //$queryOperationpost->bindParam(':idpost', $rowfeed->IdFeed, PDO::PARAM_INT);
+                          //$queryOperationpost->execute();
+                          //$resultsOperationpost = $queryOperationpost->fetchAll(PDO::FETCH_OBJ);
 
 
 
+                          $curtidas = new Curtidas($dbh);
 
-                      echo "<div class='col-6 fonte-principal'  id='div-" . $rowfeed->IdFeed . "'>
+                          $curtidas->setidpost($rowfeed->IdFeed);
+
+                          $resultsOperationpost = $curtidas->consulta("WHERE idpost = :idpost");
+
+                          $numeroCurtidas = 0;
+                          if ($resultsOperationpost != null) {
+                            foreach ($resultsOperationpost as $rowOperationpost) {
+                              $numeroCurtidas += 1;
+                            }
+                          }
+                          ?>
+                          <?php
+                          //$sqlOperationpost = "SELECT * from tbcurtidas WHERE idpost = :idpost AND idusuario = :idusuario";
+                          //$queryOperationpost = $dbh->prepare($sqlOperationpost);
+                          //$queryOperationpost->bindParam(':idpost', $rowfeed->IdFeed, PDO::PARAM_INT);
+                          //$queryOperationpost->bindParam(':idusuario', $iduser, PDO::PARAM_INT);
+                          //$queryOperationpost->execute();
+                          //$resultsOperationpost = $queryOperationpost->fetchAll(PDO::FETCH_OBJ);
+
+
+
+                          $curtidas = new Curtidas($dbh);
+
+                          $curtidas->setidpost($rowfeed->IdFeed);
+                          $curtidas->setidusuario($iduser);
+
+                          $resultsOperationpost = $curtidas->consulta("WHERE idpost = :idpost AND idusuario = :idusuario");
+
+                          if ($resultsOperationpost != null) {
+
+
+
+
+                            echo "<div class='col-6 fonte-principal'  id='div-" . $rowfeed->IdFeed . "'>
 
                                                            
                                                                 <input hidden type='text' name='idpost' value='" . $rowfeed->IdFeed . "'>
@@ -932,9 +979,9 @@ if ($resultsBusinessCategory != null) {
                                                             
     
                                                         </div>";
-                    } else {
+                          } else {
 
-                      echo "<div class='col-6 fonte-principal' id='div-" . $rowfeed->IdFeed . "'>
+                            echo "<div class='col-6 fonte-principal' id='div-" . $rowfeed->IdFeed . "'>
 
                                                        
                                                             <input hidden type='text' name='idpost' value='" . $rowfeed->IdFeed . "'>
@@ -948,44 +995,89 @@ if ($resultsBusinessCategory != null) {
                                                        
 
                                                     </div>";
-                    }
-                    ?>
+                          }
+                          ?>
 
 
 
-                    <div class="col-6 d-flex justify-content-end">
-                      <a id="btnCommnet" data-toggle="modal" data-target="#modalEditarProduto" data-id="<?php echo $rowfeed->IdFeed;
-                                                                                                        ?>" class="btn like-comment-btn pl-4 pr-4 no-border p-3 hero-image-container2"><span class="btn-comment-post">
-                          0 &nbsp;&nbsp; <i class="fa fa-comment">
-                            Comments</i>
-                        </span></a>
+                          <div class="col-6 d-flex justify-content-end">
+                            <a id="btnCommnet" data-toggle="modal" data-target="#modalEditarProduto" data-id="<?php echo $rowfeed->IdFeed;
+                                                                                                              ?>" class="btnCommnet btn like-comment-btn pl-4 pr-4 no-border p-3 hero-image-container2"><span class="btn-comment-post">
+                                <?php
+
+                                $tbPostComentcont2 = new PostComent($dbh);
+                                $tbPostComentcont2->setidpost($rowfeed->IdFeed);
+                                echo  $tbPostComentcont2->quantidade(" WHERE idpost = :idpost");
+                                ?> &nbsp;&nbsp; <i class="fa fa-comment">
+                                  Comments</i>
+                              </span></a>
 
 
 
 
+                          </div>
+                        </div>
+                        <hr class="color-preto">
+                        <div class="row" style="padding: inherit;">
+                          <?php
+
+                          $viewcomentarios = new PostComent($dbh);
+                          $viewcomentarios->setidpost($rowfeed->IdFeed);
+                          $resultstbPostComentview =  $viewcomentarios->consulta(" WHERE idpost = :idpost ORDER BY datahora DESC LIMIT 1");
+                          if ($resultstbPostComentview != null) {
+
+                            foreach ($resultstbPostComentview as $rowviewcomentarios) {
+
+                              $userClientscomentarios = new UserClients($dbh);
+
+                              $userClientscomentarios->setidClient($rowviewcomentarios->iduser);
+
+                              $resultsclientescometarios = $userClientscomentarios->consulta("WHERE idClient = :idClient");
+
+                              if ($resultsclientescometarios != null) {
+                                foreach ($resultsclientescometarios as $rowucometarios) { ?>
+                                  <div class="col-1 d-flex flex-column justify-content-center align-items-center" style="height: auto;">
+                                    <img src="<?php if ($rowucometarios->PersonalUserPicturePath != "Avatar.png" && $rowucometarios->PersonalUserPicturePath != "") {
+                                                echo "" . $rowucometarios->PersonalUserPicturePath;
+                                              } else {
+                                                echo "assets/img/Avatar.png";
+                                              } ?>" alt="user" class="nav-profile-img" style="width: 26px;">
+                                  </div>
+                                  <div class="col-11">
+                                    <div class="col-10 d-flex flex-column justify-content-start align-items-start color-preto" style="height: auto;">
+                                      <h4 style="font-size: larger;"> <?php echo $rowucometarios->FirstName . " " . $rowucometarios->LastName; ?></h4>
+                                    </div>
+                                    <div class="col-12 color-preto texto-duas-linhas" style="overflow-wrap: break-word;font-size: larger; ">
+                                      <?php echo $rowviewcomentarios->texto; ?>
+                                    </div>
+                                  </div>
+
+                          <?php   }
+                              }
+                            }
+                          }
+                          ?>
+                        </div>
+                      </div>
                     </div>
-                  </div>
-                </div>
+                <?php $numeroCurtidas = 0;
+                  }
+                } ?>
               </div>
-          <?php $numeroCurtidas = 0;
-            }
-          } ?>
+            </div>
+          </div>
         </div>
-      </div>
-      <div class="col-3">
-
       </div>
     </div>
   </div>
-
   <div class="modal custom-modal fade" id="exampleModalconect" role="dialog">
     <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
       <div class="modal-content">
         <div class="modal-header">
           <h5 class="modal-title" id="exampleModalLabel">Want to Connect</h5>
-                <button type="button" class="close rounded-2 border-0 bcolor-azul-escuro " data-dismiss="modal" aria-label="Close" style="width: 25px; height: 25px;">
-                            <span aria-hidden="false" class="color-branco">x</span>
-                        </button>
+          <button type="button" class="close rounded-2 border-0 bcolor-azul-escuro " data-dismiss="modal" aria-label="Close" style="width: 25px; height: 25px;">
+            <span aria-hidden="false" class="color-branco">x</span>
+          </button>
         </div>
         <div class="modal-body">
           <ul class="m-0 overflow-auto p-1 ul-view">
@@ -1087,8 +1179,8 @@ if ($resultsBusinessCategory != null) {
         <div class="modal-header">
           <h5 class="modal-title" id="exampleModalLabel">Network</h5>
           <button type="button" class="close rounded-2 border-0 bcolor-azul-escuro " data-dismiss="modal" aria-label="Close" style="width: 25px; height: 25px;">
-                            <span aria-hidden="false" class="color-branco">x</span>
-                        </button>
+            <span aria-hidden="false" class="color-branco">x</span>
+          </button>
         </div>
         <div class="modal-body">
           <ul class="m-0 overflow-auto p-1 ul-view">
@@ -1189,13 +1281,13 @@ if ($resultsBusinessCategory != null) {
   </div>
 
   <div class="modal custom-modal fade" id="exampleModal" role="dialog">
-    <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable" >
+    <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
       <div class="modal-content" style="max-height: 400px !important;">
         <div class="modal-header">
           <h5 class="modal-title" id="exampleModalLabel">Views</h5>
-                <button type="button" class="close rounded-2 border-0 bcolor-azul-escuro " data-dismiss="modal" aria-label="Close" style="width: 25px; height: 25px;">
-                            <span aria-hidden="false" class="color-branco">x</span>
-                        </button>
+          <button type="button" class="close rounded-2 border-0 bcolor-azul-escuro " data-dismiss="modal" aria-label="Close" style="width: 25px; height: 25px;">
+            <span aria-hidden="false" class="color-branco">x</span>
+          </button>
         </div>
         <div class="modal-body">
           <ul class="m-0 overflow-y p-1 ul-view">
@@ -1320,19 +1412,15 @@ if ($resultsBusinessCategory != null) {
       </div>
     </div>
   </div>
+
+
   <?php include_once("widget/editdist.php"); ?>
   <?php include_once("widget/editarperfil.php"); ?>
   <?php include_once("widget/produto.php"); ?>
   <?php include_once("widget/enviaremail.php"); ?>
-
-
-
-
-
   <script src="../../assets/js/jquery.slimscroll.min.js"></script>
   <script src="../../assets/js/select2.min.js"></script>
   <script src="../../assets/plugins/summernote/dist/summernote-bs4.min.js"></script>
-
   <script src="../../assets/js/jquery-3.2.1.min.js"></script>
   <script src="../../assets/js/popper.min.js"></script>
   <script src="../../assets/js/bootstrap.min.js"></script>
@@ -1347,11 +1435,24 @@ if ($resultsBusinessCategory != null) {
   <script src="https://cdnjs.cloudflare.com/ajax/libs/autosize.js/4.0.2/autosize.min.js"></script>
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
   <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
-
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
 
   <script>
-     
+    function toggleDescription() {
+      var descricaoElement = document.getElementById('descricao');
+      var descricaoContainer = document.querySelector('.descricao-container');
+      var button = document.querySelector('button');
+
+      if (descricaoContainer.style.maxHeight) {
+        descricaoContainer.style.maxHeight = null;
+        button.textContent = 'Ver Mais';
+      } else {
+        descricaoContainer.style.maxHeight = descricaoElement.scrollHeight + 'px';
+        button.textContent = 'Ver Menos';
+      }
+    }
+  </script>
+  <script>
     $(document).ready(function() {
       function readURL(input) {
         if (input.files && input.files[0]) {
@@ -1430,7 +1531,6 @@ if ($resultsBusinessCategory != null) {
       }
     });
   </script>
-
   <script>
     $(document).ready(function() {
       function readURL(input) {
@@ -1464,14 +1564,7 @@ if ($resultsBusinessCategory != null) {
       });
     });
   </script>
-
-  <script>
-    let profileMenu = document.getElementById("profileMenu");
-
-    function toggleMenu() {
-      profileMenu.classList.toggle("open-menu");
-    }
-  </script>
+  
   <script>
     $(document).ready(function() {
       // Activate the tab when the link is clicked
@@ -1534,7 +1627,7 @@ if ($resultsBusinessCategory != null) {
       var likeIcon = element.previousElementSibling;
       likeIcon.classList.add("red-like"); // Adiciona a classe CSS "red-like" ao ícone de like
     }
-   
+
 
     $(document).ready(function() {
       function readURL(input) {
@@ -1596,10 +1689,7 @@ if ($resultsBusinessCategory != null) {
     }
 
 
-    function toggleNotifyMenu() {
-      const notifyMenu = document.getElementById('notifyMenu')
-      notifyMenu.classList.toggle("open-menu");
-    }
+
 
     document.addEventListener('DOMContentLoaded', function() {
       var dropdownToggle = document.querySelector('.notify-dropdown-toggle');
@@ -1681,13 +1771,9 @@ if ($resultsBusinessCategory != null) {
       updateIndicators(activeIndex);
     });
   </script>
-
   <script>
     autosize(document.getElementById('myTextarea'));
   </script>
-
-
-
   <script>
     var limiteAtual = 3; // O limite inicial é de 3 linhas
     var alturaOriginal; // Variável para armazenar a altura original da div
@@ -1711,7 +1797,6 @@ if ($resultsBusinessCategory != null) {
       return false;
     }
   </script>
-
   <script>
     // Função para adicionar a classe de fundo quando o scroll ocorre
     function adicionarFundoComScroll() {
@@ -1755,6 +1840,34 @@ if ($resultsBusinessCategory != null) {
         }
       });
     });
+     function updateNotificationCount() {
+            var xmlhttpnf = new XMLHttpRequest();
+            xmlhttpnf.onreadystatechange = function() {
+                if (this.readyState == 4 && this.status == 200) {
+
+
+                    var badgeElement = document.getElementById('notificationCount');
+                    var responseHtml = this.responseText.trim(); // Remove espaços em branco extras
+
+                    if (responseHtml != "" || responseHtml != undefined) {
+                        console.log("response");
+                        badgeElement.innerHTML = responseHtml; // Insere o HTML retornado pelo PHP
+                        responseHtml = '';
+                    } else {
+                        console.log("response NULL");
+                        badgeElement.innerHTML = ''; // Limpa o conteúdo do elemento
+                    }
+                } else {
+                    var badgeElement = document.getElementById('notificationCount');
+                    badgeElement.innerHTML = '';
+                    responseHtml = '';
+                }
+            };
+            xmlhttpnf.open("GET", "widget/atualizar_notificacoes.php", true);
+            xmlhttpnf.send();
+        }
+        updateNotificationCount()
+        setInterval(updateNotificationCount, 6000);
   </script>
 </body>
 

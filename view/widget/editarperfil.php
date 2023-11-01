@@ -7,8 +7,8 @@ header("Access-Control-Allow-Origin: *");
         <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title txtnomeperfil">Edit profile</h5>
-                <button type="button" class="close rounded-2 border-0" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
+                <button type="button" class="close rounded-2 border-0 bcolor-azul-escuro" data-dismiss="modal" aria-label="Close">
+                    <span class="color-branco" aria-hidden="true">&times;</span>
                 </button>
             </div>
             <div class="modal-body">
@@ -141,13 +141,24 @@ header("Access-Control-Allow-Origin: *");
                                     ?>
                                 </select>
                             </div>
-
-
-                        <?php }  ?>
+                        <?php }else{?>
+                        
+                          <div class="col-sm-6 mt-4">
+                                    <div class="form-group" style="text-align: start;">
+                                        
+                                        <div class="col" id="refHint"></div>
+                                    </div>
+                                </div>
+                                <div class="col mt-4">
+                                    <div class="form-group" style="text-align: start;">
+                                        <div class="col" id="refHint2"></div>
+                                    </div>
+                                </div>
+                        <? }?>
                         <div class="col-sm-12  mt-4">
                             <div class="form-group">
                                 <label class="txtinput sizetituloedit">Description:</label>
-                                <textarea class="form-control bordainput sizeinputedit" name="descricao" type="text"><?php echo $descricao; ?></textarea>
+                                <textarea class="form-control bordainput"  maxlength="1000" name="descricao" type="text" style="font-size: larger; min-height: 109px;"><?php echo $descricao; ?></textarea>
                             </div>
                         </div>
                     </div>

@@ -70,7 +70,7 @@ date_default_timezone_set('America/Sao_Paulo');
                     <div class="form-group" style="text-align: start;">
                       <label class="color-branco" for="password">Password</label>
                       <div class="password-container">
-                        <input class="inputlogin form-control" type="password" id="password" name="password" required placeholder="Type your password">
+                        <input class="inputlogin form-control input-low" type="password" id="password" name="password" required placeholder="Type your password">
                         <div class="input-group-text" id="togglePassword">
                           <i class="fas fa-eye"></i>
                         </div>

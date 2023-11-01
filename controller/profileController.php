@@ -59,11 +59,17 @@ if (isset($_POST["AdicionarProdutos"])) {
   $Produtos->atualizar('ProdcuctEspecification = "" WHERE idProduct = :idProduct'); 
 
 
+$total = count($_FILES['user-produto']['name']);
+
+for( $num=0 ; $num < $total ; $num++ ) {
+
   $arquivoUser = $_FILES['user-produto'];
+  
   if ($arquivoUser != "" && $arquivoUser != 0) {
+      
     if (file_exists("../view/assets/img/$iduser")) {
-      $userfile = $arquivoUser['name'];
-      $file_temp = $arquivoUser['tmp_name'];
+      $userfile = $arquivoUser['name'][$num];
+      $file_temp = $arquivoUser['tmp_name'][$num];
 
       $file_type = $userfile;
       $file_type_length = strlen($file_type) - 3;
@@ -75,7 +81,7 @@ if (isset($_POST["AdicionarProdutos"])) {
       }
       if ($file_type != 'peg' and $file_type != 'jpg' and $file_type != 'gif' and $file_type != 'png') {
       } else {
-        $nomeArquivoMaisTipo = "Produto_" . $lastInsertedId . "_" . $iduser . "." . $file_type;
+        $nomeArquivoMaisTipo = "Produto_" . $lastInsertedId . "_" . $iduser . "_" . $num . "." . $file_type;
         if (move_uploaded_file($file_temp, "../view/assets/img/$iduser/" . $nomeArquivoMaisTipo)) {
           $caminho = "assets/img/$iduser/$nomeArquivoMaisTipo";
 
@@ -112,7 +118,7 @@ if (isset($_POST["AdicionarProdutos"])) {
       }
       if ($file_type != 'peg' and $file_type != 'jpg' and $file_type != 'gif' and $file_type != 'png') {
       } else {
-        $nomeArquivoMaisTipo = "Produto_" . $lastInsertedId . "_" . $iduser . "." . $file_type;
+        $nomeArquivoMaisTipo = "Produto_" . $lastInsertedId . "_" . $iduser . "_" . $num . "." . $file_type;
         if (move_uploaded_file($file_temp, "../view/assets/img/$iduser/" . $nomeArquivoMaisTipo)) {
           $caminho = "assets/img/$iduser/$nomeArquivoMaisTipo";
 
@@ -133,16 +139,23 @@ if (isset($_POST["AdicionarProdutos"])) {
         }
       }
     }
+    
+    
   }
-  $_POST["AdicionarProdutos"] = "";
+  
+}
+  
+  
+$_POST["AdicionarProdutos"] = "";
 
-  include_once("../model/classes/tblUserClients.php");
-  $user = new UserClients($dbh);
-  $user->setidClient($_SESSION["id"]);
-  $user->setPontos(1000);
-  $user->atualizar("Pontos = Pontos + :Pontos WHERE idClient = :idClient");
+include_once("../model/classes/tblUserClients.php");
+$user = new UserClients($dbh);
+$user->setidClient($_SESSION["id"]);
+$user->setPontos(1000);
+$user->atualizar("Pontos = Pontos + :Pontos WHERE idClient = :idClient");
 
   header("Location: ../view/profile.php");
+  
 }else if (isset($_POST["editarPerfil"] )) {
   $arquivoUser = $_FILES['user-image'];
   $arquivoCompany = $_FILES['banner-image'];
@@ -300,6 +313,7 @@ if (isset($_POST["AdicionarProdutos"])) {
   $POSTJobTitle = $_POST["jobtitle"];
   $POSTCompanyName = $_POST["conpany"];
   $POSTdescricao = $_POST["descricao"];
+
   $CoreBusinessIdpost = $_POST["coreBusiness"];
 
   if($_POST["coreBusiness"] >= 6){
@@ -317,11 +331,7 @@ if (isset($_POST["AdicionarProdutos"])) {
   $userClients-> setJobTitle($POSTJobTitle);
   
   $userClients-> setCompanyName($POSTCompanyName);
-  if($POSTdescricao == null){
-    $userClients-> setdescricao("");
-  }else{
-    $userClients-> setdescricao($POSTdescricao);
-  }
+  $userClients-> setdescricao($POSTdescricao);
   $userClients-> setCoreBusinessId($CoreBusinessIdpost);
   
   if(isset($_POST["satellite"])){
@@ -331,29 +341,40 @@ if (isset($_POST["AdicionarProdutos"])) {
     $userClients-> setIdOperation($_POST["category"]);
   }
 
-  if(isset($_POST["category"])){
+  if($POSTdescricao != ""){
+    if(isset($_POST["category"])){
 
-    $userClients->atualizar("FirstName =:FirstName, LastName =:LastName, JobTitle = :JobTitle, CompanyName = :CompanyName, descricao = :descricao, CoreBusinessId = :CoreBusinessId, IdOperation = :IdOperation, SatBusinessId = :SatBusinessId WHERE idClient = :idClient");
-    header("Location: ../view/profile.php");
+      $userClients->atualizar("FirstName =:FirstName, LastName =:LastName, JobTitle = :JobTitle, CompanyName = :CompanyName, descricao = :descricao, CoreBusinessId = :CoreBusinessId, IdOperation = :IdOperation, SatBusinessId = :SatBusinessId WHERE idClient = :idClient");
+    }else{
+
+      $userClients->atualizar("FirstName =:FirstName, LastName =:LastName, JobTitle = :JobTitle, CompanyName = :CompanyName, descricao = :descricao, CoreBusinessId = :CoreBusinessId, IdOperation = NULL, SatBusinessId = :SatBusinessId WHERE idClient = :idClient");
+
+    }
   }else{
 
-    $userClients->atualizar("FirstName =:FirstName, LastName =:LastName, JobTitle = :JobTitle, CompanyName = :CompanyName, descricao = :descricao, CoreBusinessId = :CoreBusinessId, IdOperation = NULL, SatBusinessId = :SatBusinessId WHERE idClient = :idClient");
-    header("Location: ../view/profile.php");
+    $userClients-> setdescricao(null);
+
+    if(isset($_POST["category"])){
+
+      $userClients->atualizar("FirstName =:FirstName, LastName =:LastName, JobTitle = :JobTitle, CompanyName = :CompanyName, descricao = NULL, CoreBusinessId = :CoreBusinessId, IdOperation = :IdOperation, SatBusinessId = :SatBusinessId WHERE idClient = :idClient");
+
+    }else{
+
+      $userClients->atualizar("FirstName =:FirstName, LastName =:LastName, JobTitle = :JobTitle, CompanyName = :CompanyName, descricao = NULL, CoreBusinessId = :CoreBusinessId, IdOperation = NULL, SatBusinessId = :SatBusinessId WHERE idClient = :idClient");
+
+    }
+
   }
 
-  //$sqleditperfil = "UPDATE tblUserClients SET FirstName =:FirstName, LastName =:LastName, JobTitle = :JobTitle, CompanyName = :CompanyName, descricao = :descricao, CoreBusinessId = :CoreBusinessId, IdOperation = :IdOperation, SatBusinessId = :SatBusinessId WHERE idClient = :idClient";
-  //$queryeditperfil = $dbh->prepare($sqleditperfil);
-  //$queryeditperfil->bindParam(':idClient', $iduser, PDO::PARAM_INT);
-  //$queryeditperfil->bindParam(':FirstName', $POSTFirstName, PDO::PARAM_STR);
-  //$queryeditperfil->bindParam(':LastName', $POSTLastName, PDO::PARAM_STR);
-  //$queryeditperfil->bindParam(':JobTitle', $POSTJobTitle, PDO::PARAM_STR);
-  //$queryeditperfil->bindParam(':CompanyName', $POSTCompanyName, PDO::PARAM_STR);
-  //$queryeditperfil->bindParam(':descricao', $POSTdescricao, PDO::PARAM_STR);
-  //$queryeditperfil->bindParam(':CoreBusinessId', $CoreBusinessIdpost, PDO::PARAM_INT);
-  //$queryeditperfil->bindParam(':SatBusinessId', $BusinessIdpost, PDO::PARAM_INT);
-  //$queryeditperfil->bindParam(':IdOperation', $BusinessCategIdpost, PDO::PARAM_INT);
-  //$queryeditperfil->execute();
-  //$queryeditperfil->fetchAll(PDO::FETCH_OBJ);
+  if( $CoreBusinessIdpost == "3" || $CoreBusinessIdpost == "4"){
+
+    header("Location: ../view/qualidistribuidor.php");
+
+  }else{
+
+    header("Location: ../view/profile.php");
+
+  }
   
 }else if (isset($_POST["salvar"] )) {
 
@@ -595,13 +616,19 @@ if (isset($_POST["AdicionarProdutos"])) {
   
 
   }
+  
+$total = count($_FILES['imgproduto']['name']);
 
-  $lastInsertedId = $idproduto;
-  $arquivoUser = $_FILES['imgproduto'];
+$lastInsertedId = $idproduto;
+$arquivoUser = $_FILES['imgproduto'];
+
+for( $num=0 ; $num < $total ; $num++ ) {
+  
   if ($arquivoUser != "" && $arquivoUser != 0) {
     if (file_exists("../view/assets/img/$iduser")) {
-      $userfile = $arquivoUser['name'];
-      $file_temp = $arquivoUser['tmp_name'];
+      $userfile = $arquivoUser['name'][$num];
+      $file_temp = $arquivoUser['tmp_name'][$num];
+      
 
       $file_type = $userfile;
       $file_type_length = strlen($file_type) - 3;
@@ -613,7 +640,7 @@ if (isset($_POST["AdicionarProdutos"])) {
       }
       if ($file_type != 'peg' and $file_type != 'jpg' and $file_type != 'gif' and $file_type != 'png') {
       } else {
-        $nomeArquivoMaisTipo = "Produto_" . $lastInsertedId . "_" . $iduser . "." . $file_type;
+        $nomeArquivoMaisTipo = "Produto_" . $lastInsertedId . "_" . $iduser . "_" . $num . "." . $file_type;
         if (move_uploaded_file($file_temp, "../view/assets/img/$iduser/" . $nomeArquivoMaisTipo)) {
           $caminho = "assets/img/$iduser/$nomeArquivoMaisTipo";
 
@@ -633,11 +660,11 @@ if (isset($_POST["AdicionarProdutos"])) {
           //$queryupimg->execute();
         }
       }
-      header("Location: ../view/profile.php");
     } else {
+        
       mkdir("../view/assets/img/$iduser", 0755);
-      $userfile = $arquivoUser['name'];
-      $file_temp = $arquivoUser['tmp_name'];
+      $userfile = $arquivoUser['name'][$num];
+      $file_temp = $arquivoUser['tmp_name'][$num];
 
       $file_type = $userfile;
       $file_type_length = strlen($file_type) - 3;
@@ -650,7 +677,7 @@ if (isset($_POST["AdicionarProdutos"])) {
       }
       if ($file_type != 'peg' and $file_type != 'jpg' and $file_type != 'gif' and $file_type != 'png') {
       } else {
-        $nomeArquivoMaisTipo = "Produto_" . $lastInsertedId . "_" . $iduser . "." . $file_type;
+        $nomeArquivoMaisTipo = "Produto_" . $lastInsertedId . "_" . $iduser . "_" . $num . "." . $file_type;
         if (move_uploaded_file($file_temp, "../view/assets/img/$iduser/" . $nomeArquivoMaisTipo)) {
           $caminho = "assets/img/$iduser/$nomeArquivoMaisTipo";
           //$sqlupimg = "UPDATE tblProductPictures SET tblProductPicturePath = :tblProductPicturePath WHERE idProduct  = :idProduct ";
@@ -671,9 +698,15 @@ if (isset($_POST["AdicionarProdutos"])) {
         }
       }
     }
-    header("Location: ../view/profile.php");
+    
   }
+}
+  
+  
+  
+  
   header("Location: ../view/profile.php");
+  
 }else if (isset($_POST["conectar"])) {
   $idconect = $_POST["idconectar"];
   $idperfilpedido = $_POST["idperfilpedido"];
@@ -753,8 +786,11 @@ if (isset($_POST["AdicionarProdutos"])) {
   $from = "noreplay@matchingbusiness.online";
   $to = $email;
   $subject = "Teste cadastro coolab";//"Matching Business Online - Confirmation Link";
-  $message = "https://visual.matchingbusiness.online/view/cadastrarCoolab.php?email=".$codigoCadastroIncompleto."&taxid=".urlencode($_POST["taxid"]);//"Dear User," . "\n" . "Thank you for registering with us!" . "\n" . "We are excited to have you join Matching Business Online. This email serves as confirmation of your successful registration. We appreciate your interest and look forward to providing you with a fantastic experience." . "\n" . "Please click on the link below to enter your password and complete your registration." . "\n" . "https://visual.matchingbusiness.online/view/createPass.php?codigoCadastroIncompleto=" . $codigoCadastroIncompleto;
-  $headers = "From:" . $from;
+  $message = "Dear User," . "\n" . "Thank you for registering with us!" . "\n" . "We are excited to have you join Matching Business Online. This email serves as confirmation of your successful registration. We appreciate your interest and look forward to providing you with a fantastic experience." . "\n" . "Please click on the link below to enter your password and complete your registration." . "\n" . "https://visual.matchingbusiness.online/view/cadastrarCoolab.php?email=".$codigoCadastroIncompleto."&taxid=".urlencode($_POST["taxid"]);
+
+  
+  
+    $headers = "From:" . $from;
   mail($to, $subject, $message, $headers);
 
   include_once("../model/classes/tblUserClients.php");
@@ -764,7 +800,7 @@ if (isset($_POST["AdicionarProdutos"])) {
   $user->setPontos(1000);
   $user->atualizar("Pontos = Pontos + :Pontos WHERE idClient = :idClient");
 
-  header("Location: ../view/cadastrarCoolab.php?email=".$codigoCadastroIncompleto."&taxid=".urlencode($_POST["taxid"]));
+  header("Location: ../view/profile.php");
 
 }else if(isset($_POST["EditDistribuidor"])){
 
@@ -801,7 +837,7 @@ if (isset($_POST["AdicionarProdutos"])) {
 
 }else{
 
-  //header("Location: ../view/profile.php");
+  header("Location: ../view/profile.php");
 
 }
 

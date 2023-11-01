@@ -2,6 +2,7 @@
 
 //error_reporting(0);
 include_once('../model/classes/conexao.php');
+
 include_once("../model/classes/tblEmpresas.php");
 include_once('../model/classes/tblUserClients.php');
 include_once('../model/classes/tblOperations.php');
@@ -829,6 +830,7 @@ if ($resultsCountry != null) {
                                                                                                                                             if ($resultsProdutos1 != null) {
                                                                                                                                                 foreach ($resultsProdutos1 as $rowProdutosu) {
                                                                                                                                                     echo $rowProdutosu->tblProductPicturePath;
+                                                                                                                                                    break;
                                                                                                                                                 }
                                                                                                                                             } else {
                                                                                                                                                 echo "assets/img/Avatar.png";
@@ -871,51 +873,51 @@ if ($resultsCountry != null) {
 
                                 if ($resultsfeed != null) {
                                     foreach ($resultsfeed as $rowfeed) {
-                                        // Obtenha a data e hora da postagem no formato DATETIME do banco de dados
-                                        $postDateTime = new DateTime($rowfeed->Published_at);
-
-                                        // Obtenha o objeto DateTime da data e hora atual
-                                        $currentTime = new DateTime();
-
-                                        // Calcula a diferença entre a data e hora atual e a da postagem
-                                        $timeDiff = $postDateTime->diff($currentTime);
-
-                                        // Formata o tempo decorrido com base nas unidades (ano, mês, dia, hora, minuto, segundo)
-                                        if ($timeDiff->y > 0) {
-                                            $timeAgo = $timeDiff->y . " year(s) ago";
-                                        } elseif ($timeDiff->m > 0) {
-                                            $timeAgo = $timeDiff->m . " month(s) ago";
-                                        } elseif ($timeDiff->d > 0) {
-                                            $timeAgo = $timeDiff->d . " day(s) ago";
-                                        } elseif ($timeDiff->h > 0) {
-                                            $timeAgo = $timeDiff->h . " hour(s) ago";
-                                        } elseif ($timeDiff->i > 0) {
-                                            $timeAgo = $timeDiff->i . " minute(s) ago";
-                                        } else {
-                                            $timeAgo = "A few seconds ago";
-                                        }
-                                        //$sqluserpost = "SELECT * from tblUserClients WHERE idClient = :idClient";
-                                        //$queryuserpost = $dbh->prepare($sqluserpost);
-                                        //$queryuserpost->bindParam(':idClient', $rowfeed->IdClient, PDO::PARAM_INT);
-                                        //$queryuserpost->execute();
-                                        //$resultsuserpost = $queryuserpost->fetchAll(PDO::FETCH_OBJ);
-
-
-
-                                        $userClients = new UserClients($dbh);
-
-                                        $userClients->setidClient($rowfeed->IdClient);
-
-                                        $resultsuserpost = $userClients->consulta("WHERE idClient = :idClient");
-
-                                        if ($resultsuserpost != null) {
-                                            foreach ($resultsuserpost as $rowuserpost) {
-                                                $usernamepost = $rowuserpost->FirstName . " " . $rowuserpost->LastName;
-                                                $idpostoperation = $rowuserpost->CoreBusinessId;
-                                                $imgpostuser = $rowuserpost->PersonalUserPicturePath;
+                                            // Obtenha a data e hora da postagem no formato DATETIME do banco de dados
+                                            $postDateTime = new DateTime($rowfeed->Published_at);
+    
+                                            // Obtenha o objeto DateTime da data e hora atual
+                                            $currentTime = new DateTime();
+    
+                                            // Calcula a diferença entre a data e hora atual e a da postagem
+                                            $timeDiff = $postDateTime->diff($currentTime);
+    
+                                            // Formata o tempo decorrido com base nas unidades (ano, mês, dia, hora, minuto, segundo)
+                                            if ($timeDiff->y > 0) {
+                                                $timeAgo = $timeDiff->y . " year(s) ago";
+                                            } elseif ($timeDiff->m > 0) {
+                                                $timeAgo = $timeDiff->m . " month(s) ago";
+                                            } elseif ($timeDiff->d > 0) {
+                                                $timeAgo = $timeDiff->d . " day(s) ago";
+                                            } elseif ($timeDiff->h > 0) {
+                                                $timeAgo = $timeDiff->h . " hour(s) ago";
+                                            } elseif ($timeDiff->i > 0) {
+                                                $timeAgo = $timeDiff->i . " minute(s) ago";
+                                            } else {
+                                                $timeAgo = "A few seconds ago";
                                             }
-                                        }
-                                ?>
+                                            //$sqluserpost = "SELECT * from tblUserClients WHERE idClient = :idClient";
+                                            //$queryuserpost = $dbh->prepare($sqluserpost);
+                                            //$queryuserpost->bindParam(':idClient', $rowfeed->IdClient, PDO::PARAM_INT);
+                                            //$queryuserpost->execute();
+                                            //$resultsuserpost = $queryuserpost->fetchAll(PDO::FETCH_OBJ);
+    
+    
+    
+                                            $userClients = new UserClients($dbh);
+    
+                                            $userClients->setidClient($rowfeed->IdClient);
+    
+                                            $resultsuserpost = $userClients->consulta("WHERE idClient = :idClient");
+    
+                                            if ($resultsuserpost != null) {
+                                                foreach ($resultsuserpost as $rowuserpost) {
+                                                    $usernamepost = $rowuserpost->FirstName . " " . $rowuserpost->LastName;
+                                                    $idpostoperation = $rowuserpost->CoreBusinessId;
+                                                    $imgpostuser = $rowuserpost->PersonalUserPicturePath;
+                                                }
+                                            }
+                                    ?>
                                         <div class="card shadow p-0 bcolor rounded-4 mt-4 mb-4">
                                             <div class="card-body shadow d-flex flex-column rounded-4 color-cinza">
 
@@ -1154,7 +1156,10 @@ if ($resultsCountry != null) {
                                             </div>
                                         </div>
                                 <?php $numeroCurtidas = 0;
-                                    }
+                                    
+                                        }
+                        
+                                    
                                 } ?>
                             </div>
                         </div>
@@ -1500,34 +1505,7 @@ font-size: small;
 
         });
 
-        function updateNotificationCount() {
-            var xmlhttpnf = new XMLHttpRequest();
-            xmlhttpnf.onreadystatechange = function() {
-                if (this.readyState == 4 && this.status == 200) {
-
-
-                    var badgeElement = document.getElementById('notificationCount');
-                    var responseHtml = this.responseText.trim(); // Remove espaços em branco extras
-
-                    if (responseHtml != "" || responseHtml != undefined) {
-                        console.log("response");
-                        badgeElement.innerHTML = responseHtml; // Insere o HTML retornado pelo PHP
-                        responseHtml = '';
-                    } else {
-                        console.log("response NULL");
-                        badgeElement.innerHTML = ''; // Limpa o conteúdo do elemento
-                    }
-                } else {
-                    var badgeElement = document.getElementById('notificationCount');
-                    badgeElement.innerHTML = '';
-                    responseHtml = '';
-                }
-            };
-            xmlhttpnf.open("GET", "widget/atualizar_notificacoes.php", true);
-            xmlhttpnf.send();
-        }
-        updateNotificationCount()
-        setInterval(updateNotificationCount, 6000);
+        
 
         function redirectToAnotherPage() {
             var form = document.getElementById('formularionome');
@@ -1754,24 +1732,7 @@ font-size: small;
             });
         });
 
-        const notifyMenu = document.querySelector('.notify-menu');
-        const notifications = notifyMenu.querySelectorAll('.notification');
-        let notifyCounter = 8;
-
-        function deleteNotification(event) {
-            event.preventDefault();
-            const notificationParent = event.currentTarget.parentNode;
-            if (notificationParent) {
-                notificationParent.remove();
-                notifyCounter--;
-                notifyMenu.dataset.notifyMenu = `Notification ${notifyCounter}`;
-                updateEmptyBoxDisplay();
-            }
-        }
-
-        notifications.forEach((notification) => {
-            notification.addEventListener('click', deleteNotification);
-        });
+      
 
         const emptyBox = document.querySelector('.empty-box');
 

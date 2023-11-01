@@ -747,7 +747,7 @@ if ($respoconect != null) {
       <div class="row telacheia margemmnavbar">
 
         <!-- Esquerda -->
-        <div id="profile-column" class="shadow col-12 col-md-12 col-lg-3 justify-content-start overflow-auto scrollable-column">
+        <div id="profile-column" class="shadow col-12 col-md-12 col-lg-3 justify-content-start overflow-auto scrollable-column fixed-on-desktop">
           <div class="card rounded-4 shadow">
             <div class="card-body p-0 m-0">
               <div class="col-12 mh-25">
@@ -835,6 +835,7 @@ if ($respoconect != null) {
                 </div>
               <?php } ?>
               <div class="row pr-2  mb-2">
+                  <?php if($idusers != $geral){?>
                 <form method="POST" action="../controller/viewProfileController.php" enctype="multipart/form-data">
                   <input type="hidden" value="<?php echo $idusers; ?>" name="iduser">
                   <input type="hidden" value="<?php echo $geral; ?>" name="geral">
@@ -855,17 +856,26 @@ if ($respoconect != null) {
 
                   </div>
                 </form>
+                <?php }?>
               </div>
             </div>
           </div>
-          <div class="card rounded-4 shadow mt-2">
-            <div class="card-body p-0 m-0">
+         <div class="card rounded-4 shadow mt-2 margemdesck">
+            <div class="card-body p-0 m-0" style="overflow-y: auto !important;
+    max-height: 312px !important;
+    overflow-x: hidden !important;
+    min-height: 312px !important;">
               <div class="row ">
-              <div class="col-12 ">
+                <div class="col-12 ">
+
                   <p class="fonte-titulo" style="padding: 7px; font-size: 17px;">Description</p>
+
                 </div>
                 <div class="col-12 ">
-                  <p class="fonte-principal" style="padding: 7px; font-size: 14px;"><?php echo $descricao; ?></p>
+
+                  <p class="fonte-principal" style="padding: 7px; font-size: 14px;" id="descricao"><?php echo $descricao; ?></p>
+
+
                 </div>
                 <div class="col-3 m-0 p-0">
                 </div>
@@ -877,7 +887,7 @@ if ($respoconect != null) {
         <div class="col-3"></div>
 
         <!-- Meio -->
-        <div class="col-lg-8 col-12 justify-content-center">
+        <div class="col-lg-9 col-12 justify-content-center">
           <div class="col-md-12  justify-content-center">
             <div class="col-md-12">
               <?php if ($corebusiness != "3" && $corebusiness != "4") {
@@ -916,6 +926,7 @@ if ($respoconect != null) {
                                                                               if ($resultsProductsPicture != null) {
                                                                                 foreach ($resultsProductsPicture as $rowProdutos1) {
                                                                                   echo $rowProdutos1->tblProductPicturePath;
+                                                                                  break;
                                                                                 }
                                                                               } else {
                                                                                 echo "https://images.unsplash.com/photo-1507608158173-1dcec673a2e5?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1470&q=80";
@@ -1314,6 +1325,34 @@ if ($respoconect != null) {
         }
       });
     });
+     function updateNotificationCount() {
+            var xmlhttpnf = new XMLHttpRequest();
+            xmlhttpnf.onreadystatechange = function() {
+                if (this.readyState == 4 && this.status == 200) {
+
+
+                    var badgeElement = document.getElementById('notificationCount');
+                    var responseHtml = this.responseText.trim(); // Remove espaços em branco extras
+
+                    if (responseHtml != "" || responseHtml != undefined) {
+                        console.log("response");
+                        badgeElement.innerHTML = responseHtml; // Insere o HTML retornado pelo PHP
+                        responseHtml = '';
+                    } else {
+                        console.log("response NULL");
+                        badgeElement.innerHTML = ''; // Limpa o conteúdo do elemento
+                    }
+                } else {
+                    var badgeElement = document.getElementById('notificationCount');
+                    badgeElement.innerHTML = '';
+                    responseHtml = '';
+                }
+            };
+            xmlhttpnf.open("GET", "widget/atualizar_notificacoes.php", true);
+            xmlhttpnf.send();
+        }
+        updateNotificationCount()
+        setInterval(updateNotificationCount, 6000);
   </script>
 </body>
 

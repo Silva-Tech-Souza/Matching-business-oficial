@@ -3,8 +3,8 @@
         <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title txtnomeperfil">Create Product</h5>
-                <button type="button" class="close rounded-2 border-0" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
+                <button type="button" class="close rounded-2 border-0 bcolor-azul-escuro" data-dismiss="modal" aria-label="Close">
+                    <span class="color-branco" aria-hidden="true">&times;</span>
                 </button>
             </div>
             <div class="modal-body">
@@ -14,7 +14,8 @@
                         <div class="col-sm-12 mt-4">
                             <div class="form-group">
                                 <label class="txtinput">Image:</label>
-                                <input type="file" name="user-produto" required id="user-produto" class="form-control file-upload-input " accept="image/*">
+                                <spam>You can choose more than one image to upload</spam>
+                                <input type="file" name="user-produto[]" required id="user-produto" class="form-control file-upload-input "  multiple="multiple" accept="image/*">
                             </div>
                         </div>
 

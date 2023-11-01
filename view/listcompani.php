@@ -797,7 +797,7 @@ if ($results != null) {
               }
               if ($operation == null && $busines == null && $text != null) {
 
-                if ($text == "mysp") { ?>
+                if ($text == "mysp" || $text == "Seach Profile" || $text == "Seaches Profile" || $text == "seach profile" || $text == "seaches profile" || $text == "my seaches" || $text == "meu seaches") { ?>
                   <div class="carousel-filmes">
                     <div class="row">
                       <div class="col-8 d-flex align-middle">

@@ -573,11 +573,7 @@ if ($resultsoperation != null) {
             })
 
         });
-        let profileMenu = document.getElementById("profileMenu");
-
-        function toggleMenu() {
-            profileMenu.classList.toggle("open-menu");
-        }
+       
         /* Set the width of the sidebar to 250px (show it) */
         function openNav() {
             document.getElementById("mySidepanel").style.width = "250px";
@@ -589,10 +585,7 @@ if ($resultsoperation != null) {
         }
 
 
-        function toggleNotifyMenu() {
-            const notifyMenu = document.getElementById('notifyMenu')
-            notifyMenu.classList.toggle("open-menu");
-        }
+    
 
 
         const notifyMenu = document.querySelector('.notify-menu');
@@ -687,6 +680,35 @@ if ($resultsoperation != null) {
             element5.classList.remove('ms-active');
             element6.classList.remove('ms-active');
         });
+        
+         function updateNotificationCount() {
+            var xmlhttpnf = new XMLHttpRequest();
+            xmlhttpnf.onreadystatechange = function() {
+                if (this.readyState == 4 && this.status == 200) {
+
+
+                    var badgeElement = document.getElementById('notificationCount');
+                    var responseHtml = this.responseText.trim(); // Remove espaços em branco extras
+
+                    if (responseHtml != "" || responseHtml != undefined) {
+                        console.log("response");
+                        badgeElement.innerHTML = responseHtml; // Insere o HTML retornado pelo PHP
+                        responseHtml = '';
+                    } else {
+                        console.log("response NULL");
+                        badgeElement.innerHTML = ''; // Limpa o conteúdo do elemento
+                    }
+                } else {
+                    var badgeElement = document.getElementById('notificationCount');
+                    badgeElement.innerHTML = '';
+                    responseHtml = '';
+                }
+            };
+            xmlhttpnf.open("GET", "widget/atualizar_notificacoes.php", true);
+            xmlhttpnf.send();
+        }
+        updateNotificationCount()
+        setInterval(updateNotificationCount, 6000);
     </script>
 </body>
 

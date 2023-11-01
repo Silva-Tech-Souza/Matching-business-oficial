@@ -47,15 +47,21 @@ if ($produtoResults != null) {
 
                             <div class="sliderBlock" style="width: -webkit-fill-available;height: 450px;">
                                 <ul class="sliderBlock_items" style="width: -webkit-fill-available;height: -webkit-fill-available;">
+                   <?php
+include_once('../../model/classes/tblProductPictures.php');
+                                                                                                                                            $productsPictures = new ProductPictures($dbh);
+                                                                                                                                            $productsPictures->setidProduct($idProduto);
+                                                                                                                                            $resultsProdutos1 = $productsPictures->consulta("WHERE idProduct = :idProduct");
+                                                                                                                                            if ($resultsProdutos1 != null) {
+                                                                                                                                                foreach ($resultsProdutos1 as $rowProdutosu) { ?>
+                                    
                                     <li class="sliderBlockitemsitemPhoto sliderBlock_items__showing">
-                                        <img src="https://github.com/BlackStar1991/CardProduct/blob/master/app/img/goods/item1/phones1.png?raw=true" alt="headphones" class="imgproduto">
+
+                                        <img src="<?php echo $rowProdutosu->tblProductPicturePath;?>" alt="headphones" class="imgproduto" style="width: -webkit-fill-available;">
+                                      
                                     </li>
-                                    <li class="sliderBlockitemsitemPhoto">
-                                        <img src="https://github.com/BlackStar1991/CardProduct/blob/master/app/img/goods/item1/phones2.png?raw=true" alt="headphones" class="imgproduto">
-                                    </li>
-                                    <li class="sliderBlockitemsitemPhoto">
-                                        <img src="https://github.com/BlackStar1991/CardProduct/blob/master/app/img/goods/item1/phones5.png?raw=true" alt="headphones" class="imgproduto">
-                                    </li>
+                                      <?php }}?>
+                                   
 
                                 </ul>
 

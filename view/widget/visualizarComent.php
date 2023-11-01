@@ -47,6 +47,8 @@ if (isset($_GET["texto"]) && $_GET["texto"] != "") {
 
     if ($resultstbPostComent != null) {
         foreach ($resultstbPostComent as $rowfeed) {
+            
+            $idcommenter = $rowfeed->iduser;
 
 
             $postDateTimeC = new DateTime($rowfeed->datahora);
@@ -126,6 +128,14 @@ if (isset($_GET["texto"]) && $_GET["texto"] != "") {
     display: block;
 ">
                             <?php echo $timeAgoC; ?>
+                            <?php if($idcommenter == $iduser){?>
+                            <a href="#" class="trash-icon" style="margin-left: 10px;">
+                            <i class="fas fa-trash-alt" style="color: #e3171a;"></i>
+                            </a>
+                            <a href="#" class="trash-icon" style="margin-left: 5px; ">
+                            <i class="fas fa-pencil-alt" style="color: #002D4B; " ></i>
+                            </a>
+                            <?php }?>
                         </div>
                     </div>
                 </div>

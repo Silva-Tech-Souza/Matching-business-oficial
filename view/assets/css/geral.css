@@ -9,6 +9,14 @@
     --cor-preto: #000000;
 }
 
+input{
+text-transform: uppercase !important;
+}
+
+ .input-low{
+        text-transform: none !important;
+    }
+
 .color-branco {
     color: var(--cor-branco) !important;
 }
@@ -142,3 +150,4 @@ body {
         margin-top: 75px !important;
     }
 }
+

@@ -60,7 +60,7 @@ include_once('../model/classes/conexao.php');
                 $_SESSION['fName'] = $rowlogin->FirstName;
                 $_SESSION['lName'] = $rowlogin->LastName;
 
-                if($operationIdG == "3" || $operationIdG == "4"){
+                if($CoreBusinessIdpost == "3" || $CoreBusinessIdpost == "4"){
                     header("Location: ../view/qualidistribuidor.php");
                 }else{
                     header("Location: ../view/profile.php");

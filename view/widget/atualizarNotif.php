@@ -24,7 +24,7 @@ $iduser = $_SESSION["id"];
     $searchProfileResults = new SearchProfile_Results($dbh);
     $searchProfileResults->setidClienteEncontrado($iduser);
     $resultsSearchProfile = $searchProfileResults->consulta("WHERE idClienteEncontrado = :idClienteEncontrado ORDER BY datahora DESC");
-
+    $usernamepost ="";
     if ($resultsSearchProfile != null) {
         foreach ($resultsSearchProfile as $rownotif) {
             $idCliente = $rownotif->idUsuario;
@@ -48,6 +48,7 @@ $iduser = $_SESSION["id"];
             }
 
             $idTipoNotif = $rownotif->idTipoNotif;
+           
             if ($idTipoNotif == 5) {
                 $textNotif = "<p  class='d-inline' style='color: white; font-size: 11px;'>" . $usernamepost . " </p><p class='d-inline' style='color: #f2f2f2;'></p> <p class='d-inline' style='color: #62B7D8;'>liked</p><p class='d-inline' style='color: #f2f2f2;'> your post !</p><br>";
             } else if ($idTipoNotif == 2) {

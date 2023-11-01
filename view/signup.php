@@ -37,15 +37,17 @@ date_default_timezone_set('America/Sao_Paulo');
 
 </head>
 
+
+
 <body class="hero">
   <div class="container m-auto">
     <br>
     <div class="col-12">
       <div class="row">
-        <div class="col-lg-7 col-12">
+        <div class="col-lg-7 col-12 ">
           <div class="mt-5">
             <h1 class="color-branco titulologin mt-5" style="font-size: 40px;">Welcome to <span style="color:#0057e4;">Matching Business Online.</span></h1>
-            <p class="color-branco desclogin mt-5">Dear user,<br>
+            <p class="color-branco desclogin mt-5" style="padding-right: 40px;">Dear user,<br>
 
               Your account is linked to a Legal Entity (PJ). Each PJ account can have up to 5 users. This restriction aims to ensure security and proper control of the company's activities. <br>
 
@@ -59,7 +61,7 @@ date_default_timezone_set('America/Sao_Paulo');
           </div>
         </div>
         
-        <div class="col-lg-5 col-12 ">
+        <div class="col-lg-5 col-12 ml-5">
           <div class="cardcadastro">
             <form action="../controller/signupController.php" method="POST" enctype="multipart/form-data">
               <div class="row">
@@ -199,7 +201,7 @@ date_default_timezone_set('America/Sao_Paulo');
         </div>
         <!-- Rodapé do modal -->
         <div class="modal-footer">
-          <button type="button" class="btn btn-success closes" data-dismiss="modal" aria-label="Close">OK</button>
+          <a type="button" class="btn btn-success closes" data-dismiss="modal" aria-label="Close" href="login.php">OK</a>
         </div>
       </div>
     </div>

@@ -92,6 +92,23 @@ date_default_timezone_set('America/Sao_Paulo');
                                     </div>
                                 </div>
                                 <div class="col-sm-12">
+                                    <div class="form-floating mb-3">
+                                        <select style="font-size: small;height: 4rem !important;" required name="numSellers" class=" form-select  border-dark inputtamanho" id="floatingSelectGrid" aria-label="Floating label select example">
+                                            <?php
+                                            include_once('../model/classes/tblNumEmpregados.php');
+                                            $tblNumEmpregados = new NumEmpregados($dbh);
+                                            $resultsNumEmpregados = $tblNumEmpregados->consulta("");
+                                            if ($resultsNumEmpregados != null) {
+                                                foreach ($resultsNumEmpregados as $rowemply) {
+                                            ?>
+                                                    <option value="<?php echo $rowemply->idNumEmpregados; ?>"><?php echo $rowemply->DescNumEmpregados; ?></option>
+                                            <?php  }
+                                            } ?>
+                                        </select>
+                                        <label for="floatingSelectGrid" style=" font-size: larger;">N° Of Sellers::</label>
+                                    </div>
+                                </div>
+                                <div class="col-sm-12">
                                     <div class="form-floating">
 
                                         <select style="font-size: small;height: 4rem !important;" required name="nivelOperacao" class=" form-select  border-dark inputtamanho" id="floatingSelectGrid" aria-label="Floating label select example">

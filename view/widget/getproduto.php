@@ -41,7 +41,7 @@ if($produtoResults != null){
             <div class="col-sm-12">
                 <div class="form-group">
                      <label class="txtinput">Image:</label>
-                    <input type="file" name="imgproduto"  id="imgproduto" class="form-control file-upload-input " accept="image/*">
+                    <input type="file" name="imgproduto[]" multiple="multiple" id="imgproduto" class="form-control file-upload-input " accept="image/*">
                 </div>
             </div>
 

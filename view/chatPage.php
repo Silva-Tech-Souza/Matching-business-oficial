@@ -65,7 +65,7 @@ if ($resultsoperation != null) {
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-4bw+/aepP/YC94hEpVNVgiZdgIC5+VKNBQNGCHeKRQN+PtmoHDEXuppvnDJzQIu9" crossorigin="anonymous">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
-  <link rel="stylesheet" href="assets/css/geral.css">
+  
   <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
   <script src="https://kit.fontawesome.com/f51201541f.js" crossorigin="anonymous"></script>
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
@@ -77,11 +77,16 @@ if ($resultsoperation != null) {
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
   <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
   <link rel='stylesheet' href='https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.0.3/css/font-awesome.css'>
+  <link rel="stylesheet" href="assets/css/geral.css">
+
+   
+     <link rel="stylesheet" href="assets/css/feed.css">
+        <link rel="stylesheet" href="assets/css/navbar.css">
+  <link rel="stylesheet" href="assets/css/chatPage.css">
 
   <title>Messaging</title>
-  <link rel="stylesheet" href="assets/css/feed.css">
-  <link rel="stylesheet" href="assets/css/chatPage.css">
-  <link rel="stylesheet" href="assets/css/navbar.css">
+
+
 </head>
 
 <body class="funcolinhas">
@@ -236,6 +241,9 @@ if ($resultsoperation != null) {
   <script src="assets/js/select2.min.js"></script>
   <script src="assets/plugins/summernote/dist/summernote-bs4.min.js"></script>
   <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  
+   
+        
   <script>
     <?php if ($_POST["envarmsg"] != "") {
       $_POST["envarmsg"] != "";
@@ -390,13 +398,7 @@ if ($resultsoperation != null) {
     });
   </script>
 
-  <script>
-    let profileMenu = document.getElementById("profileMenu");
-
-    function toggleMenu() {
-      profileMenu.classList.toggle("open-menu");
-    }
-  </script>
+ 
 
   <script>
     function likeColor(element) {
@@ -441,10 +443,7 @@ if ($resultsoperation != null) {
     }
 
 
-    function toggleNotifyMenu() {
-      const notifyMenu = document.getElementById('notifyMenu')
-      notifyMenu.classList.toggle("open-menu");
-    }
+
 
     document.addEventListener('DOMContentLoaded', function() {
       var dropdownToggle = document.querySelector('.notify-dropdown-toggle');
@@ -623,7 +622,37 @@ if ($resultsoperation != null) {
     document.addEventListener('DOMContentLoaded', function() {
       scrollToBottom();
     });
+     function updateNotificationCount() {
+            var xmlhttpnf = new XMLHttpRequest();
+            xmlhttpnf.onreadystatechange = function() {
+                if (this.readyState == 4 && this.status == 200) {
+
+
+                    var badgeElement = document.getElementById('notificationCount');
+                    var responseHtml = this.responseText.trim(); // Remove espaços em branco extras
+
+                    if (responseHtml != "" || responseHtml != undefined) {
+                        console.log("response");
+                        badgeElement.innerHTML = responseHtml; // Insere o HTML retornado pelo PHP
+                        responseHtml = '';
+                    } else {
+                        console.log("response NULL");
+                        badgeElement.innerHTML = ''; // Limpa o conteúdo do elemento
+                    }
+                } else {
+                    var badgeElement = document.getElementById('notificationCount');
+                    badgeElement.innerHTML = '';
+                    responseHtml = '';
+                }
+            };
+            xmlhttpnf.open("GET", "widget/atualizar_notificacoes.php", true);
+            xmlhttpnf.send();
+        }
+        updateNotificationCount()
+        setInterval(updateNotificationCount, 6000);
   </script>
+  
+  
 
 </body>
 

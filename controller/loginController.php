@@ -56,6 +56,7 @@ if(isset($_COOKIE["remember_me"])){
                 header("Location: ../view/home.php");
             }
         }else{
+             setcookie("remember_me","",time() - 3600, "/");
             $_SESSION['loginerro']= "No profile found";
             header("Location: ../view/login.php");
             exit;
@@ -102,6 +103,7 @@ if(isset($_COOKIE["remember_me"])){
                 header("Location: ../view/home.php");
             }
         }else{
+             setcookie("remember_me","",time() - 3600, "/");
             $_SESSION['loginerro']= "No profile found";
             header("Location: ../view/login.php");
             exit;
@@ -151,6 +153,7 @@ if(isset($_COOKIE["remember_me"])){
             header("Location: ../view/home.php");
         }
     }else{
+         setcookie("remember_me","",time() - 3600, "/");
         $_SESSION['loginerro']= "No profile found";
         header("Location: ../view/login.php");
         exit;

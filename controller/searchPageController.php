@@ -165,16 +165,40 @@ if($_POST["flagtipo"] == "A"){
 
     if($idSearch!= null){
 
-        foreach($_POST["business"] as $businessUnid){
-
-            if($businessUnid != null && $businessUnid != 'Select'){
-                $searchBussiness->setidSearch($idSearch);
-                $searchBussiness->setidBusiness($businessUnid);
+        if (is_array($_POST["business"])) {
         
-                $searchBussiness->cadastrar();
+            foreach($_POST["business"] as $businessUnid){
+
+                if($businessUnid != null && $businessUnid != 'Select'){
+                    $searchBussiness->setidSearch($idSearch);
+                    $searchBussiness->setidBusiness($businessUnid);
+            
+                    $searchBussiness->cadastrar();
+                }
+    
+            }
+        
+        }else{
+
+            $searchBussiness->setidSearch($idSearch);
+            $searchBussiness->setidBusiness($_POST["business"]);
+    
+            $searchBussiness->cadastrar();
+            
+            foreach($_POST["category"] as $categoryUnid){
+
+                if($categoryUnid != 'Select'){
+                    $searchCategory->setidSearch($idSearch);
+                    $searchCategory->setidCategory($categoryUnid);
+    
+                    $searchCategory->cadastrar();
+                }
+    
             }
 
+
         }
+        
 
         foreach($_POST["country"] as $countryUnid){
 

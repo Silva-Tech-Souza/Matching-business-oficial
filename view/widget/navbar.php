@@ -294,7 +294,8 @@
                                                                                                     ?>">
                             <input type="hidden" id="id" name="id" value="<?php echo $rownotif->id; ?>">
                             <input type="hidden" id="url" name="url" value="<?php echo $rownotif->url; ?>">
-                            <a class="notification notif-zoom" href="<?php echo $rownotif->url; ?>">
+                            <a class="notification notif-zoom" href="<?php
+                            if($idTipoNotif != 6){ echo $rownotif->url; }else{ echo 'viewProfile.php?profile=' .$rownotif->url; }?>">
 
                                 <div class="row justify-content-start">
                                     <div class="col-2 ">

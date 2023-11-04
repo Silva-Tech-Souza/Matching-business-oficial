@@ -336,57 +336,73 @@ if($_POST["flagtipo"] == "A"){
 
     if($idSearch!= null){
 
-        $searchBussiness->setidSearch($idSearch);
-        $searchBussiness->setidBusiness($corbusiness);
+        include_once("../model/classes/tblBusiness.php");
 
-        $searchBussiness->cadastrar();
+        $operation = new Business($dbh);
 
-        foreach($_POST["country"] as $countryUnid){
+        $operation->setidOperation($corbusiness);
+        $resultOperation = $operation->consulta('WHERE IdOperation = :IdOperation');
 
-            if($countryUnid != 'Select'){
-                $searchCountry->setidSearch($idSearch);
-                $searchCountry->setidCountry($countryUnid);
+        if($resultOperation != null){
 
-                $searchCountry->cadastrar();
+            foreach($resultOperation as $resultOperationUNID){
+
+                $searchBussiness->setidSearch($idSearch);
+                $searchBussiness->setidBusiness($resultOperationUNID->idBusiness);
+        
+                $searchBussiness->cadastrar();
+        
+                foreach($_POST["country"] as $countryUnid){
+        
+                    if($countryUnid != 'Select'){
+                        $searchCountry->setidSearch($idSearch);
+                        $searchCountry->setidCountry($countryUnid);
+        
+                        $searchCountry->cadastrar();
+                    }
+        
+                }
+        
+                foreach(explode(",",$servicostags) as $servicosUnid){
+        
+                    if($servicosUnid != '' && $servicosUnid != null){
+                        
+                        $searchEspecificationTag = new SearchEspecificationTag($dbh);
+            
+                        $searchEspecificationTag->setidSearch($idSearch);
+                        //idTagKeys = 2 é serviço
+                        $searchEspecificationTag->setidTagKeys(2);
+                        $searchEspecificationTag->setKeys($servicosUnid);
+            
+                        $searchEspecificationTag->cadastrar();
+            
+                    }
+            
+                }
+        
+                include_once("../model/classes/tblUserClients.php");
+                $user = new UserClients($dbh);
+                $user->setidClient($_SESSION["id"]);
+                $user->setPontos(200);
+                $user->atualizar("Pontos = Pontos + :Pontos WHERE idClient = :idClient");
+        
+                //    echo 'Cadastro Realizado com sucesso';
+                if(!isset($news)){
+                    header("Location: ../view/searchPage.php");
+                }else{
+                    if($news != "" || $news != null){
+                    //  header("Location: ../view/searchPage.php");
+                    }else{
+                    //  header("Location: ../view/listcompani.php?text=mysp");
+                    }
+                }  
+
             }
 
         }
 
-        foreach(explode(",",$servicostags) as $servicosUnid){
 
-            if($servicosUnid != '' && $servicosUnid != null){
-                
-                $searchEspecificationTag = new SearchEspecificationTag($dbh);
-    
-                $searchEspecificationTag->setidSearch($idSearch);
-                //idTagKeys = 2 é serviço
-                $searchEspecificationTag->setidTagKeys(2);
-                $searchEspecificationTag->setKeys($servicosUnid);
-    
-                $searchEspecificationTag->cadastrar();
-    
-            }
-    
-        }
-
-        include_once("../model/classes/tblUserClients.php");
-        $user = new UserClients($dbh);
-        $user->setidClient($_SESSION["id"]);
-        $user->setPontos(200);
-        $user->atualizar("Pontos = Pontos + :Pontos WHERE idClient = :idClient");
-
-        //    echo 'Cadastro Realizado com sucesso';
-        if(!isset($news)){
-            header("Location: ../view/searchPage.php");
-        }else{
-            if($news != "" || $news != null){
-              //  header("Location: ../view/searchPage.php");
-            }else{
-              //  header("Location: ../view/listcompani.php?text=mysp");
-            }
-        }  
-
-}
+    }
 
 }else{
    

@@ -8,8 +8,23 @@ include_once('../model/classes/conexao.php');
         $CoreBusinessIdpost = $_POST["coreBusiness"];
 
         if($_POST["coreBusiness"] >= 6){
-         
-          $_POST["satellite"] = $_POST["coreBusiness"];
+
+          include_once("../model/classes/tblBusiness.php");
+
+          $operation = new Business($dbh);
+  
+          $operation->setidOperation($CoreBusinessIdpost);
+          $resultOperation = $operation->consulta('WHERE IdOperation = :IdOperation');
+
+          if($resultOperation != null){
+
+            foreach($resultOperation as $resultOperationUNID){
+
+              $_POST["satellite"] = $resultOperationUNID->idBusiness;
+
+            }
+
+          }
       
         }
       

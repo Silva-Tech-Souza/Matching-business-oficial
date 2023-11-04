@@ -191,13 +191,24 @@ if(isset($_POST["editarPerfilempresa"])){
 
     //ini_set('display_erros', 1);
     //error_reporting(E_ALL);
-    $emailcolab = $_POST["emailcolab"];
-    $taxid = $_POST["taxid"];
+
+    $email = $_POST["emailcolab"];
+    $qtdcolab = $_POST["qtdcolab"];
+    $nomeempresa = $_POST["nomeempresa"];
 
     $from = "noreplay@matchingbusiness.online";
     $to = $emailcolab;
     $subject = "Matching Business Online - Collaborator Registration";
-    $message = "Prezado Usuário," . "\n" . "Agradecemos por iniciar o processo de registro conosco!" . "\n" . "Estamos empolgados em tê-lo(a) como parte da Matching Business Online. Este e-mail contém o link para completar o seu registro. Valorizamos o seu interesse e esperamos proporcionar uma experiência fantástica." . "\n" . "Para concluir o seu registro e associá-lo(a) à empresa que enviou este link, por favor clique no link abaixo:" . "\n" . "https://visual.matchingbusiness.online/view/signup.php?dixat=" . openssl_encrypt($taxid, openssl_get_cipher_methods()[2], "matchingBussinessMelhorSistema" );
+    $message = "Dear User,"
+    . "\n" . 
+   "It is with great pleasure that we welcome you to ". $nomeempresa."! We are delighted to have you as part of our team and confident that together we will achieve great accomplishments." 
+    . "\n" . 
+   "To get started, we kindly request you to complete your registration in the Matching Business Official system. This will help us ensure that you have access to all the necessary tools and resources to perform your duties to the best of your ability."
+     . "\n".
+   "Please click on the link below to initiate the registration process:" 
+     . "\n".
+   "https://visual.matchingbusiness.online/view/cadastrarCoolab.php?email=".urlencode($email)."&dixat=".urlencode(openssl_encrypt($taxid, openssl_get_cipher_methods()[2], "matchingBussinessMelhorSistema" ))."&balocdtq=".urlencode(openssl_encrypt($qtdcolab, openssl_get_cipher_methods()[2], "matchingBussinessMelhorSistema" ));
+    
     $headers = "From:" . $from;
     mail($to, $subject, $message, $headers);
     header("Location: ../view/empresa.php");

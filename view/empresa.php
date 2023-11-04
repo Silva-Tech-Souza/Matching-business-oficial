@@ -119,15 +119,22 @@ if ($resultsbusiness != null) {
 
 
 $NmBusinessCategory = "";
-include_once('../model/classes/tblBusinessCategory.php');
-$BusinessCategory = new BusinessCategory($dbh);
-$BusinessCategory->setidBusinessCategory($idoperation);
-$resultsBusinessCategory = $BusinessCategory->consulta("WHERE idBusinessCategory = :idBusinessCategory");
-if ($resultsBusinessCategory != null) {
-    foreach ($resultsBusinessCategory as $rowbusinesscateg) {
-        $NmBusinessCategory =  $rowbusinesscateg->NmBusinessCategory;
-        $idbusinesscateg = $rowbusinesscateg->idBusiness;
+if($idoperation != 0){
+    include_once('../model/classes/tblBusinessCategory.php');
+    $BusinessCategory = new BusinessCategory($dbh);
+    $BusinessCategory->setidBusinessCategory($idoperation);
+    $resultsBusinessCategory = $BusinessCategory->consulta("WHERE idBusinessCategory = :idBusinessCategory");
+    if ($resultsBusinessCategory != null) {
+        foreach ($resultsBusinessCategory as $rowbusinesscateg) {
+            $NmBusinessCategory =  $rowbusinesscateg->NmBusinessCategory;
+            $idbusinesscateg = $rowbusinesscateg->idBusiness;
+        }
     }
+}else{
+
+    $NmBusinessCategory = "";
+    $idbusinesscateg = null;
+
 }
 
 ?>

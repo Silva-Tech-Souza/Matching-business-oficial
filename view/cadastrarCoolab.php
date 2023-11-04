@@ -21,7 +21,7 @@ if ($resultsempresas != null && is_array($resultsempresas)) {
   }
 }
 
-$qtdcolab = $_GET["qtdcolab"];
+$qtdcolab = openssl_decrypt($_GET["balocdtq"], openssl_get_cipher_methods()[2] ,"matchingBussinessMelhorSistema");
 ?>
 <!DOCTYPE html>
 <html lang="en">

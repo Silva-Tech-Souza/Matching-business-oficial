@@ -89,16 +89,22 @@ if ($resultsbusiness != null) {
 
 
 $NmBusinessCategory = "";
-include_once('../model/classes/tblBusinessCategory.php');
-$BusinessCategory = new BusinessCategory($dbh);
-$BusinessCategory->setidBusinessCategory($idoperation);
-$resultsBusinessCategory = $BusinessCategory->consulta("WHERE idBusinessCategory = :idBusinessCategory");
+if($idoperation != null){
+  include_once('../model/classes/tblBusinessCategory.php');
+  $BusinessCategory = new BusinessCategory($dbh);
+  $BusinessCategory->setidBusinessCategory($idoperation);
+  $resultsBusinessCategory = $BusinessCategory->consulta("WHERE idBusinessCategory = :idBusinessCategory");
 
-if ($resultsBusinessCategory != null) {
-  foreach ($resultsBusinessCategory as $rowbusinesscateg) {
-    $NmBusinessCategory =  $rowbusinesscateg->NmBusinessCategory;
-    $idbusinesscateg = $rowbusinesscateg->idBusiness;
+  if ($resultsBusinessCategory != null) {
+    foreach ($resultsBusinessCategory as $rowbusinesscateg) {
+      $NmBusinessCategory =  $rowbusinesscateg->NmBusinessCategory;
+      $idbusinesscateg = $rowbusinesscateg->idBusiness;
+    }
   }
+}else{
+
+  $idoperation = 0;
+
 }
 
 ?>

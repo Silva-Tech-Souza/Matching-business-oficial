@@ -85,7 +85,6 @@ if($_POST["flagtipo"] == "A"){
     $search->setcoreBussinessID($corbusiness);
     $search->setNome($idname);
     $search->setidClient($_POST["idClient"]);
-    $search->setEstado(TRUE);
 
     $idSearch = $search->cadastrar();
 
@@ -159,7 +158,6 @@ if($_POST["flagtipo"] == "A"){
     $search->setcoreBussinessID($corbusiness);
     $search->setNome($idname);
     $search->setidClient($_POST["idClient"]);
-    $search->setEstado(TRUE);
 
     $idSearch = $search->cadastrar();
 
@@ -261,7 +259,6 @@ if($_POST["flagtipo"] == "A"){
     $search->setcoreBussinessID($corbusiness);
     $search->setNome($idname);
     $search->setidClient($_POST["idClient"]);
-    $search->setEstado(TRUE);
 
     $idSearch = $search->cadastrar();
 
@@ -334,7 +331,6 @@ if($_POST["flagtipo"] == "A"){
     $search->setcoreBussinessID($corbusiness);
     $search->setNome($idname);
     $search->setidClient($_POST["idClient"]);
-    $search->setEstado(TRUE);
 
     $idSearch = $search->cadastrar();
 

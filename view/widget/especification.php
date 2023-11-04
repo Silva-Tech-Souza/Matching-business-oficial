@@ -91,7 +91,7 @@ if ($_SESSION["FlagOperation"] == "A" || $_SESSION["FlagOperation"] == "C") {
         </div>
         <div class="col-sm-12">
             <div class="form-floating mb-3">
-                <input required type="date" id="yearInput" name="year" min="1900" max="2024" class="form-control inputstyle border-dark inputtamanho">
+                <input required type="date" id="yearInput" name="year" min="1900" max="2024" class="form-control inputstyle border-dark inputtamanho dataano">
                 <label for="yearInput">Founded in:</label>
             </div>
         </div>

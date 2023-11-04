@@ -31,8 +31,84 @@ $iduser = $_SESSION["id"];
     }
     $resultsfeed = $feeds->consulta("ORDER BY Published_at DESC LIMIT $n");
 
+    $x = 0;
+    
     if ($resultsfeed != null) {
         foreach ($resultsfeed as $rowfeed) {
+
+            if($x >= 2){
+
+                $x = 0;
+
+                include_once('../../model/classes/conexao.php');
+                include_once("../../model/classes/tblEmpresas.php");
+
+                $empresas = new Empresasview($dbh);
+                $resultsempresas = $empresas->consulta("LIMIT 1");
+                if ($resultsempresas != null) {
+                    $numEmpresa = count($resultsempresas);
+
+                    $numEmpresaSelecionada = random_int(0, $numEmpresa-1);
+
+                    $rowempresas = $resultsempresas[$numEmpresaSelecionada];
+                    $imgpostempresa = $rowempresas->fotoperfil;
+                ?>
+
+                <div class="card shadow p-0 bcolor rounded-4 mt-4 mb-4">
+                <div class="card-body shadow d-flex flex-column rounded-4 color-cinza">
+
+                    <div class=" row align-content-center">
+                        <div class="row">
+                            <div class="col-1">
+                                <img src="<?php if($rowempresas->fotoperfil != ""){echo $rowempresas->fotoperfil;}else{echo "assets/img/logo.png";}?>" alt="user" class="nav-profile-img  " onerror="this.onerror=null; this.src='/assets/img/Avatar.png'" style="min-height: 35px;">
+
+                            </div>
+                            <div class="col-8 p-2 color-preto" style="padding-left: 26px !important;">
+                                <a href="#" class="color-preto text-decoration-none">
+                                    <h3 class="fonte-titulo text-decoration-none">
+                                        <?php
+                                        echo $rowempresas-> nome;
+                                        ?>
+                                    </h3>
+                                </a>
+
+                            </div>
+                            <div class="col-2 d-flex text-right color-preto justify-content-end">
+
+                                                     
+
+                                                        </div>
+                          
+                        </div>
+
+
+
+                    </div>
+                    <div class="col-12" style="padding: inherit;">
+
+
+
+                    </div>
+
+                    <div class="row col-12 align-content-center justify-content-center">
+                        <?php if ($imgpostempresa != "Avatar.png" && $imgpostempresa != "" && file_exists("" . $imgpostempresa)) { ?>
+                            <img class="img-feed-styleset" src="<?php echo $imgpostempresa; ?>" alt="" width="100%">
+                        <?php }?>
+                    </div>
+                    
+                </div>
+            </div>
+
+            <?php 
+                
+            } 
+
+            }else{
+
+                $x = $x +1;
+
+            }
+
             // Obtenha a data e hora da postagem no formato DATETIME do banco de dados
             $postDateTime = new DateTime($rowfeed->Published_at);
 
@@ -88,7 +164,7 @@ $iduser = $_SESSION["id"];
                                                 echo "" . $imgpostuser;
                                             } else {
                                                 echo "assets/img/Avatar.png";
-                                            } ?>" alt="user" class="nav-profile-img  " onerror="this.onerror=null; this.src='assets/img/Avatar.png'">
+                                            } ?>" alt="user" class="nav-profile-img  " style="min-height: 35px;"  onerror="this.onerror=null; this.src='assets/img/Avatar.png'">
 
                             </div>
                             <div class="col-8 p-2 color-preto" style="padding-left: 26px !important;">
@@ -124,11 +200,31 @@ $iduser = $_SESSION["id"];
                                 ?><br>
 
                             </div>
-                            <div class="col-3 d-flex text-right color-preto justify-content-end">
+                            <div class="col-2 d-flex text-right color-preto justify-content-end">
 
                                 <?php echo $timeAgo; ?>
 
                             </div>
+                              <?php if($rowfeed->IdClient ==  $iduser){ ?>
+                            <div class="col-1 d-flex text-right color-preto justify-content-end">
+
+                                                        <div class="dropdown">
+                                                              <a class="btn btn-secondary dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false" style="background-color: transparent;
+    border: 0px;
+    color: black;
+    font-size: medium;">
+                                                             <i class="fas fa-ellipsis-v"></i>
+                                                              </a>
+                                                            
+                                                              <ul class="dropdown-menu">
+                                                                <li><a class="dropdown-item" href="../controller/homeController.php?deletar=true&idfeed=<?php echo $rowfeed->IdFeed;?>&idcliente=<?php echo $rowfeed->IdClient;?>"><i class="fas fa-trash-alt " style="margin-right: 5px;"></i>Delete</a></li>
+                                                                <li><a class="dropdown-item" href="#"><i class="fas fa-edit " style="margin-right: 5px;"></i>Eedit</a></li>
+                                                                
+                                                              </ul>
+                                                        </div>
+
+                                                        </div>
+                            <?php } ?>
                         </div>
 
 
@@ -296,7 +392,7 @@ $iduser = $_SESSION["id"];
                                                                                         echo "" . $rowucometarios->PersonalUserPicturePath;
                                                                                     } else {
                                                                                         echo "assets/img/Avatar.png";
-                                                                                    } ?>" alt="user" class="nav-profile-img" style="width: 33px;">
+                                                                                    } ?>" alt="user" class="nav-profile-img" style="min-height: 21px;  width: 33px;">
                                                                     </div>
                                                                     <div class="col-11">
                                                                         <div class="col-10 d-flex flex-column justify-content-start align-items-start color-preto" style="height: auto;">

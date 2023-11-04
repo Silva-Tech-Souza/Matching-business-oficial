@@ -111,7 +111,7 @@ $iduser = $_SESSION["id"];
                                             echo "assets/img/Avatar.png";
                                         }
                                         ?>
-                                            " alt="user" class="nav-profile-img">
+                                            " alt="user" style="min-height: 35px;" class="nav-profile-img">
                         </div>
                         <div class="col-8 justify-itens-start" style="text-align: start; margin-left: 2px;">
                             <span>

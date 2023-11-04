@@ -9,7 +9,7 @@ if ($resultsempresas != null) {
 ?>
         <div class="row sponsoredrow sponsored-item">
 
-            <img src="assets/img/logo.png" class="sponsoredimg">
+            <img src="<?php if($rowempresas->fotoperfil != ""){echo $rowempresas->fotoperfil;}else{echo "assets/img/logo.png";}?>" class="sponsoredimg" style=" padding: 0px;margin: 0px;box-shadow: 2px 2px 1px #00000042;">
 
             <div class="col-lg-7 col-sm-4 col-md-4 col-xs-4">
                 <h2 style="white-space: pre-line;"><?php echo $rowempresas->nome; ?></h2>

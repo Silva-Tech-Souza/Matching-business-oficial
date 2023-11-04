@@ -217,7 +217,7 @@ if ($resultsoperation != null) {
                                     <div class="col-sm-12">
 
                                         <div class="form-floating">
-                                            <select required class="form-select border-dark inputtamanho selecttamanho" name="corbusiness" onchange="showcorbusiness(this.value)" id="floatingSelectGrid" aria-label="Floating label select example">
+                                            <select required class="form-select border-dark inputtamanho selecttamanho selectsp1" name="corbusiness" onchange="showcorbusiness(this.value)" id="floatingSelectGrid" aria-label="Floating label select example">
                                                 <option valid="">Select</option>
                                                 <?php
                                                 include_once('../model/classes/tblOperations.php');
@@ -491,13 +491,23 @@ if ($resultsoperation != null) {
             $(".next").click(function() {
 
                 var inputField = $(this).parent().find('.inputtamanho');
-                var selectField = $(this).parent().find('.selecttamanho');
-                console.log(selectField.val());
-                if (inputField.val() === '' || inputField.val() === null || inputField.val() === "" || selectField.val() == 'Select') {
-                    // Se o campo estiver vazio, não avance e mostre uma mensagem de erro
-                    alert("Fill in the field before waiting.");
-                    return;
-                }
+                var dataano = $(this).parent().find('.dataano');
+                var selectsp1 = $(this).parent().find('.selectsp1');
+                var selectsp2 = $(this).parent().find('.selectsp2');
+                var selectsp3 = $(this).parent().find('.selectsp3');
+                console.log(dataano.val());
+               
+        var sp1Value = Array.isArray(selectsp1.val()) ? selectsp1.val().length : selectsp1.val() ? 1 : 0;
+        var sp2Value = Array.isArray(selectsp2.val()) ? selectsp2.val().length : selectsp2.val() ? 1 : 0;
+        var sp3Value = Array.isArray(selectsp3.val()) ? selectsp3.val().length : selectsp3.val() ? 1 : 0;
+        
+        if (inputField.val() === '' || inputField.val() === null || sp1Value === 0 || sp2Value === 0 || sp3Value === 0 || selectsp1.val() == 'Select' || selectsp2.val() == 'Select' || selectsp3.val() == 'Select') {
+            if(dataano.val() == ""){
+                alert("Fill in the field before waiting.");
+            return;
+            }
+            
+        }
 
 
                 current_fs = $(this).parent();

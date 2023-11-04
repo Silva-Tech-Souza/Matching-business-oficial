@@ -305,7 +305,7 @@
                                                         echo "assets/img/Avatar.png";
                                                     }
                                                     ?>
-                                            " alt="user" class="nav-profile-img">
+                                            " alt="user" style="min-height: 35px;" class="nav-profile-img">
                                     </div>
                                     <div class="col-8 justify-itens-start" style="text-align: start; margin-left: 2px;">
                                         <span>
@@ -396,7 +396,7 @@
                                                                         echo $rowcliente->PersonalUserPicturePath;
                                                                     } else {
                                                                         echo "assets/img/Avatar.png";
-                                                                    } ?>" alt="user" alt="An unknown user."></a>
+                                                                    } ?>" alt="user" style="min-height: 35px;" alt="An unknown user."></a>
                                                 </div>
                                                 <div class="col-8 ">
                                                     <a href="viewProfile.php?profile=<?php echo $rowcliente->idClient; ?>">

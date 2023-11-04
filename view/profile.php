@@ -113,51 +113,185 @@ if ($resultsBusinessCategory != null) {
 
   <link rel="stylesheet" href="assets/css/geral.css">
 
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-4bw+/aepP/YC94hEpVNVgiZdgIC5+VKNBQNGCHeKRQN+PtmoHDEXuppvnDJzQIu9" crossorigin="anonymous">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-4bw+/aepP/YC94hEpVNVgiZdgIC5+VKNBQNGCHeKRQN+PtmoHDEXuppvnDJzQIu9" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
 
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    <script src="https://kit.fontawesome.com/f51201541f.js" crossorigin="anonymous"></script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/autosize.js/4.0.2/autosize.min.js"></script>
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  <script src="https://kit.fontawesome.com/f51201541f.js" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/autosize.js/4.0.2/autosize.min.js"></script>
 
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
-    <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
-    <link rel="stylesheet" href="assets/css/navbar.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+  <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+  <link rel="stylesheet" href="assets/css/navbar.css">
 
   <link rel="stylesheet" href="assets/css/profile.css">
   <link rel="stylesheet" href="assets/css/feed.css">
 
   <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick.css" />
-    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick-theme.css" />
-    <script type="text/javascript" src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/autosize.js/4.0.2/autosize.min.js"></script>
-    <link rel="stylesheet" href="assets/css/cssprodutos.css">
-    <style>
-        #refHint label {
-            color: black !important;
-            font-size: 15px;
+  <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick-theme.css" />
+  <script type="text/javascript" src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/autosize.js/4.0.2/autosize.min.js"></script>
+  <link rel="stylesheet" href="assets/css/cssprodutos.css">
+  <style>
+    #refHint label {
+      color: black !important;
+      font-size: 15px;
+    }
+
+    #refHint select {
+      height: 30px !important;
+      font-size: 17px !important;
+    }
+
+    #refHint2 label {
+      color: black !important;
+      font-size: 15px;
+    }
+
+    #refHint2 select {
+      height: 30px !important;
+      font-size: 17px !important;
+    }
+
+    .dropdown-toggle::after {
+      content: "" !important;
+      display: none !important;
+      margin-left: 0 !important;
+    }
+
+    .avatar-upload {
+      position: relative;
+      max-width: 172px;
+      
+    }
+
+    .avatar-upload-banner {
+      position: relative;
+      max-width: -webkit-fill-available;
+      
+    }
+
+    .avatar-upload .avatar-edit {
+      position: absolute;
+      right: 0px;
+      z-index: 1;
+      top: 10px;
+    }
+    .avatar-upload-banner .avatar-edit {
+      position: absolute;
+      right: 12px;
+      z-index: 1;
+      top: 10px;
+    }
+    .avatar-upload .avatar-edit input {
+      display: none;
+    }
+    .avatar-upload-banner .avatar-edit input {
+      display: none;
+    }
+    .avatar-upload .avatar-edit label {
+      display: inline-block;
+      width: 26px;
+      height: 26px;
+      margin-bottom: 0;
+      border-radius: 100%;
+      background: #FFFFFF;
+      border: 1px solid #999999;
+      box-shadow: 0px 2px 4px 0px rgba(0, 0, 0, 0.12);
+      cursor: pointer;
+      font-weight: normal;
+      transition: all .2s ease-in-out;
+    }
+    .avatar-upload-banner .avatar-edit label {
+      display: inline-block;
+      width: 34px;
+      height: 34px;
+      margin-bottom: 0;
+      border-radius: 100%;
+      background: #FFFFFF;
+      border: 1px solid #999999;
+      box-shadow: 0px 2px 4px 0px rgba(0, 0, 0, 0.12);
+      cursor: pointer;
+      font-weight: normal;
+      transition: all .2s ease-in-out;
+    }
+    .avatar-upload .avatar-edit label:hover {
+      background: #f1f1f1;
+      border-color: #d6d6d6;
+    }
+    .avatar-upload-banner .avatar-edit label:hover {
+      background: #f1f1f1;
+      border-color: #d6d6d6;
+    }
+    .avatar-upload .avatar-edit label:after {
+      content: "\f040";
+      font-family: 'FontAwesome';
+      color: #757575;
+      position: absolute;
+      top: 6px;
+      left: 0;
+      right: 0;
+      text-align: center;
+      margin: auto;
+    }
+    .avatar-upload-banner .avatar-edit label:after {
+      content: "\f040";
+      font-family: 'FontAwesome';
+      color: #757575;
+      position: absolute;
+      top: 10px;
+      left: 0;
+      right: 0;
+      text-align: center;
+      margin: auto;
+    }
+    .avatar-upload .avatar-preview {
+      width: 110px;
+    height: 110px;
+    position: relative;
+    border-radius: 100%;
+    border: 3px solid #eaeaea;
+    box-shadow: 0px 1px 4px 0px rgb(0 0 0 / 98%);
+    }
+    .avatar-upload-banner .avatar-preview {
+      width: -webkit-fill-available;
+    height: 150px;
+    position: relative;
+    border-radius: 6px;
+    border: 3px solid #eaeaea;
+    box-shadow: 0px 1px 4px 0px rgb(0 0 0 / 98%);
+    }
+    .avatar-upload .avatar-preview>div {
+      width: 100%;
+      height: 100%;
+      border-radius: 100%;
+      background-size: cover;
+      background-repeat: no-repeat;
+      background-position: center;
+    }.avatar-upload-banner .avatar-preview>div {
+      width: 100%;
+      height: 100%;
+      border-radius: 6px;
+      background-size: cover;
+      background-repeat: no-repeat;
+      background-position: center;
+    }
+    @media (prefers-reduced-motion: reduce) {
+            .progress-bar-animated {
+                animation: 1s linear infinite progress-bar-stripes !important;
+            }
         }
-        
-         #refHint select {
-           height: 30px !important;
-           font-size: 17px !important;
-         }
-          #refHint2 label {
-            color: black !important;
-            font-size: 15px;
+
+        .progress {
+            display: none;
         }
-        
-         #refHint2 select {
-           height: 30px !important;
-           font-size: 17px !important;
-         }
-         
-    </style>
+
+  </style>
 </head>
 
 <body class="funcolinhas">
@@ -196,7 +330,6 @@ if ($resultsBusinessCategory != null) {
   </script>
 
   <script>
-  
     function showCurtida(iddiv) {
       if (iddiv == "") {
         document.getElementById("div-" + iddiv).innerHTML = "";
@@ -245,15 +378,24 @@ if ($resultsBusinessCategory != null) {
       <div class="row telacheia margemmnavbar">
 
         <!-- Esquerda -->
-        <div id="profile-column" class="shadow col-12 col-md-12 col-lg-3 justify-content-start overflow-auto scrollable-column fixed-on-desktop" >
+        <div id="profile-column" class="shadow col-12 col-md-12 col-lg-3 justify-content-start overflow-auto scrollable-column fixed-on-desktop">
           <div class="card rounded-4 shadow">
             <div class="card-body p-0 m-0">
-              <div class="col-12 mh-25">
-                <img class="mh-25 rounded-top-3" src="<?php if ($imgcapa != "Avatar.png" && $imgcapa != "" && $imgcapa != null) {
+                
+              <div class="col-12 mh-25" style="    max-height: 100px;
+    width: 100%;
+    background-image: url(<?php if ($imgcapa != "Avatar.png" && $imgcapa != "" && $imgcapa != null) {
                                                         echo "" . $imgcapa;
                                                       } else {
                                                         echo "https://images2.alphacoders.com/131/1317606.jpeg";
-                                                      } ?>" alt="Descrição da Imagem" style="max-height: 100px; width: 100%;" style="box-shadow: 0px -17px 10px -10px rgb(0 0 0 / 52%);">
+                                                      } ?>);
+    min-height: 100px;
+    border-top-left-radius: var(--bs-border-radius-lg)!important;
+    border-top-right-radius: var(--bs-border-radius-lg)!important;
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center;">
+               
               </div>
               <div class="row p-0 ml-0">
                 <div class="col-5 d-flex justify-content-start p-0 m-0 " style="height: 0px;">
@@ -285,7 +427,11 @@ if ($resultsBusinessCategory != null) {
                 <div class="col-12 m-0 p-0 mr-2">
                   <div class="col-12 m-0 p-0">
 
-                    <h4 class="fonte-principal">&nbsp;&nbsp;&nbsp;&nbsp;<i class="fa-solid fa-envelope "></i>&nbsp;&nbsp;<?php echo $email; ?></h4>
+                    <h4 class="fonte-principal" style="
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+">&nbsp;&nbsp;&nbsp;&nbsp;<i class="fa-solid fa-envelope "></i>&nbsp;&nbsp;<?php echo $email; ?></h4>
 
                   </div>
                 </div>
@@ -333,12 +479,12 @@ if ($resultsBusinessCategory != null) {
                 </div>
               <?php } ?>
               <div class="row mb-2" style="padding: 9px;margin: auto;">
-                <a href="#" class="btn btn-outline-primary ms-1" style="width: 100px;" data-toggle="modal" data-target="#add_perfil"><i class="bi bi-pen icon-btn-card"></i>&nbsp;Edit</a>
-                <a href="empresa.php" class="btn btn-outline-primary ms-1" style="width: 100px;" ><i class="bi bi-pen icon-btn-card"></i>&nbsp;Company Profile</a>
+                <a href="#" class="btn btn-outline-primary ms-1" style="width: 100px;     max-height: 35px !important;" data-toggle="modal" data-target="#add_perfil"><i class="bi bi-pen icon-btn-card"></i>&nbsp;Edit</a>
+                <a href="empresa.php" class="btn btn-outline-primary ms-1" style="width: 150px;     max-height: 35px !important;"><i class="bi bi-pen icon-btn-card"></i>&nbsp;Company Profile</a>
               </div>
             </div>
           </div>
-          <div class="card rounded-4 shadow mt-2 margemdesck" >
+          <div class="card rounded-4 shadow mt-2 margemdesck">
             <div class="card-body p-0 m-0" style="overflow-y: auto !important;
     max-height: 312px !important;
     overflow-x: hidden !important;
@@ -374,10 +520,10 @@ if ($resultsBusinessCategory != null) {
             <?php if ($corebusiness != "3" || $corebusiness != "4") {
               echo "<div class='row col-12'><div class='col-12 col-md-12 col-lg-6'>";
             } ?>
-                
+
             <div class="col-12 mt-4">
               <div class="row">
-        
+
                 <div class="col-6">
                   <div class="card card-body shadow">
                     <div class="row" style="font-size: larger;">
@@ -554,75 +700,75 @@ if ($resultsBusinessCategory != null) {
                   <div class="col-12">
                     <div class="row" style="font-size: larger;">
                       <?php
-                    
-
-                   
-
-                          
-                          include_once('../model/classes/tblNumEmpregados.php');
-                          $nEmpre = new NumEmpregados($dbh);
-                          $nEmpre->setidNumEmpregados($numEmpregadosid);
-                          $resultsnEmpre = $nEmpre->consulta("WHERE idNumEmpregados = :idNumEmpregados");
-                          if ($resultsnEmpre != null) {
-                            foreach ($resultsnEmpre as $rowEm) {
-                              $numEmpregados = $rowEm->DescNumEmpregados;
-                            }
-                          }
-
-                          include_once('../model/classes/tblNumEmpregados.php');
-                          $nEmpresales = new NumEmpregados($dbh);
-                          $nEmpresales->setidNumEmpregados($numVendedores);
-                          $resultsnEmpresales = $nEmpresales->consulta("WHERE idNumEmpregados = :idNumEmpregados");
-                          if ($resultsnEmpresales != null) {
-                            foreach ($resultsnEmpresales as $rowEmsales) {
-                              $numVendedoresr = $rowEmsales->DescNumEmpregados;
-                            }
-                          }
-
-                          include_once('../model/classes/tblNivelOperacao.php');
-                          $nOperacao = new NivelOperacao($dbh);
-                          $nOperacao->setidNivelOperacao($numNivelOperacao);
-                          $resultsnOperacao = $nOperacao->consulta("WHERE idNivelOperacao = :idNivelOperacao");
-                          if ($resultsnOperacao != null) {
-                            foreach ($resultsnOperacao as $rowEm) {
-                              $NivelOperacao = $rowEm->DescNivelOperacao;
-                            }
-                          }
-
-                         
-
-                          include_once('../model/classes/tblRangeValues.php');
 
 
 
-                          $tblRangeValues = new RangeValues($dbh);
-                          $tblRangeValues->setidlRangeValue($nVol3);
-                          $resultstblRangeValues = $tblRangeValues->consulta("WHERE idlRangeValue = :idlRangeValue");
-                          if ($resultstblRangeValues != null) {
-                            foreach ($resultstblRangeValues as $rowsallers) {
-                              $Vol3 = $rowsallers->DescricaoRangeValue;
-                            }
-                          }
 
-                         
-                          $tblRangeValues = new RangeValues($dbh);
-                          $tblRangeValues->setidlRangeValue($nVol2);
-                          $resultstblRangeValues = $tblRangeValues->consulta("WHERE idlRangeValue = :idlRangeValue");
-                          if ($resultstblRangeValues != null) {
-                            foreach ($resultstblRangeValues as $rowsallers) {
-                              $Vol2 = $rowsallers->DescricaoRangeValue;
-                            }
-                          }
-                         
-                          $tblRangeValues = new RangeValues($dbh);
-                          $tblRangeValues->setidlRangeValue($nVol1);
-                          $resultstblRangeValues = $tblRangeValues->consulta("WHERE idlRangeValue = :idlRangeValue");
-                          if ($resultstblRangeValues != null) {
-                            foreach ($resultstblRangeValues as $rowsallers) {
-                              $Vol1 = $rowsallers->DescricaoRangeValue;
-                            }
-                          }
-                       
+
+                      include_once('../model/classes/tblNumEmpregados.php');
+                      $nEmpre = new NumEmpregados($dbh);
+                      $nEmpre->setidNumEmpregados($numEmpregadosid);
+                      $resultsnEmpre = $nEmpre->consulta("WHERE idNumEmpregados = :idNumEmpregados");
+                      if ($resultsnEmpre != null) {
+                        foreach ($resultsnEmpre as $rowEm) {
+                          $numEmpregados = $rowEm->DescNumEmpregados;
+                        }
+                      }
+
+                      include_once('../model/classes/tblNumEmpregados.php');
+                      $nEmpresales = new NumEmpregados($dbh);
+                      $nEmpresales->setidNumEmpregados($numVendedores);
+                      $resultsnEmpresales = $nEmpresales->consulta("WHERE idNumEmpregados = :idNumEmpregados");
+                      if ($resultsnEmpresales != null) {
+                        foreach ($resultsnEmpresales as $rowEmsales) {
+                          $numVendedoresr = $rowEmsales->DescNumEmpregados;
+                        }
+                      }
+
+                      include_once('../model/classes/tblNivelOperacao.php');
+                      $nOperacao = new NivelOperacao($dbh);
+                      $nOperacao->setidNivelOperacao($numNivelOperacao);
+                      $resultsnOperacao = $nOperacao->consulta("WHERE idNivelOperacao = :idNivelOperacao");
+                      if ($resultsnOperacao != null) {
+                        foreach ($resultsnOperacao as $rowEm) {
+                          $NivelOperacao = $rowEm->DescNivelOperacao;
+                        }
+                      }
+
+
+
+                      include_once('../model/classes/tblRangeValues.php');
+
+
+
+                      $tblRangeValues = new RangeValues($dbh);
+                      $tblRangeValues->setidlRangeValue($nVol3);
+                      $resultstblRangeValues = $tblRangeValues->consulta("WHERE idlRangeValue = :idlRangeValue");
+                      if ($resultstblRangeValues != null) {
+                        foreach ($resultstblRangeValues as $rowsallers) {
+                          $Vol3 = $rowsallers->DescricaoRangeValue;
+                        }
+                      }
+
+
+                      $tblRangeValues = new RangeValues($dbh);
+                      $tblRangeValues->setidlRangeValue($nVol2);
+                      $resultstblRangeValues = $tblRangeValues->consulta("WHERE idlRangeValue = :idlRangeValue");
+                      if ($resultstblRangeValues != null) {
+                        foreach ($resultstblRangeValues as $rowsallers) {
+                          $Vol2 = $rowsallers->DescricaoRangeValue;
+                        }
+                      }
+
+                      $tblRangeValues = new RangeValues($dbh);
+                      $tblRangeValues->setidlRangeValue($nVol1);
+                      $resultstblRangeValues = $tblRangeValues->consulta("WHERE idlRangeValue = :idlRangeValue");
+                      if ($resultstblRangeValues != null) {
+                        foreach ($resultstblRangeValues as $rowsallers) {
+                          $Vol1 = $rowsallers->DescricaoRangeValue;
+                        }
+                      }
+
 
                       ?>
                       <h2 class="color-branco">Distributor Information</h2>
@@ -648,7 +794,7 @@ if ($resultsBusinessCategory != null) {
 
                       </div>
                       <div class="col-5 d-flex justify-content-end align-middle">
-                        <p class="mb-0  color-branco"> <b><?php echo $numVendedoresr ; ?></b></p>
+                        <p class="mb-0  color-branco"> <b><?php echo $numVendedoresr; ?></b></p>
                       </div>
                       <hr>
                       <div class="col-7 d-flex justify-content-start">
@@ -659,7 +805,7 @@ if ($resultsBusinessCategory != null) {
                         <p class="mb-0  color-branco"> <b><?php echo $NivelOperacao; ?></b></p>
                       </div>
                       <hr>
-                      
+
                       <div class="col-7 d-flex justify-content-start">
                         <p class="mb-0  color-branco">Fob <?php echo $Fob3; ?>:</p>
 
@@ -708,8 +854,8 @@ if ($resultsBusinessCategory != null) {
                           <h2 class="text-muted valoresinsi"><b>Products</b></h2>
                         </div>
                         <div class="col-3">
-                    <p class="text-muted mb-0"><a href="#" class="btn btn-outline-primary ms-1 m-1" data-toggle="modal" data-target="#add_produto"><i class="bi bi-plus-circle-fill" style="font-size: 14px;"></i>+ Add</a></p>
-                  </div>
+                          <p class="text-muted mb-0"><a href="#" class="btn btn-outline-primary ms-1 m-1" data-toggle="modal" data-target="#add_produto"><i class="bi bi-plus-circle-fill" style="font-size: 14px;"></i>+ Add</a></p>
+                        </div>
                       </div>
                       <div class="row rowProduct overflow-auto">
                         <?php
@@ -721,34 +867,35 @@ if ($resultsBusinessCategory != null) {
                           if (is_array($resultsProdutos) || is_object($resultsProdutos)) {
                             foreach ($resultsProdutos as $rowProdutos) {
                         ?>
-                              <div class="mb-4 " style="width: auto;">
-                                <div class="card-container">
-                                <a data-toggle="modal" data-target="#modalEditarProduto" data-toggle="modal" data-target="#add_produto" data-id="<?php echo $rowProdutos->idProduct; ?>" class="hero-image-container">
-                                    <img class="hero-image produto-img" src="<?php
 
-                                                                              include_once('../model/classes/tblProductPictures.php');
-                                                                              $productsPicture = new ProductPictures($dbh);
-                                                                              $productsPicture->setidProduct($rowProdutos->idProduct);
+                              <div class="card-container bcolor-azul-escuro rounded-4" style="width: -webkit-fill-available; height: 274px; margin-right: 10px !important;;">
+                                <div class="col-12" style="display: flex; flex-direction: column; min-height: 140px; max-height: 140px; padding: 4px; width: -webkit-fill-available;">
+                                  <a data-toggle="modal" data-target="#modalEditarProduto" data-toggle="modal" data-target="#add_produto" data-id="<?php echo $rowProdutos->idProduct; ?>" class="hero-image-container">
+                                    <img class="hero-image produtos-img rounded-4" style=" user-drag: none;" src="<?php
+                                                                                                                  include_once('../model/classes/tblProductPictures.php');
+                                                                                                                  $productsPicture = new ProductPictures($dbh);
+                                                                                                                  $productsPicture->setidProduct($rowProdutos->idProduct);
 
-                                                                              $resultsProductsPicture = $productsPicture->consulta("WHERE idProduct = :idProduct");
+                                                                                                                  $resultsProductsPicture = $productsPicture->consulta("WHERE idProduct = :idProduct");
 
 
-                                                                              if ($resultsProductsPicture != null) {
-                                                                                foreach ($resultsProductsPicture as $rowProdutos1) {
-                                                                                  echo $rowProdutos1->tblProductPicturePath;
-                                                                                  break;
-                                                                                }
-                                                                              } else {
-                                                                                echo "https://images.unsplash.com/photo-1507608158173-1dcec673a2e5?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1470&q=80";
-                                                                              }
-                                                                              ?>" alt="Spinning glass cube" />
+                                                                                                                  if ($resultsProductsPicture != null) {
+                                                                                                                    foreach ($resultsProductsPicture as $rowProdutos1) {
+                                                                                                                      echo $rowProdutos1->tblProductPicturePath;
+                                                                                                                      break;
+                                                                                                                    }
+                                                                                                                  } else {
+                                                                                                                    echo "https://images.unsplash.com/photo-1507608158173-1dcec673a2e5?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1470&q=80";
+                                                                                                                  }
+                                                                                                                  ?>" alt="Spinning glass cube" />
                                   </a>
                                   <div class="col-12 mt-0 ">
-                                    <h1 class="mb-0"><a data-toggle="modal" data-target="#modalEditarProduto" data-toggle="modal" data-target="#add_produto" data-id="<?php echo $rowProdutos->idProduct; ?>" ><?php echo $rowProdutos->ProductName; ?></a></h1>
-                                    <p class="cortardescricao color-cinza-b produto-desc-text texto-desc"><a data-toggle="modal" data-target="#modalEditarProduto" data-toggle="modal" data-target="#add_produto" data-id="<?php echo $rowProdutos->idProduct; ?>" ><?php echo $rowProdutos->ProdcuctDescription; ?></a></p>
+                                    <h1 class="mb-0" style="white-space: pre-line;"><a data-toggle="modal" data-target="#modalEditarProduto" data-toggle="modal" data-target="#add_produto" data-id="<?php echo $rowProdutos->idProduct; ?>"><?php echo $rowProdutos->ProductName; ?></a></h1>
+                                    <p class=" cortardescricao color-cinza-b desc-produto fonte-principal" style=""><a data-toggle="modal" data-target="#modalEditarProduto" data-toggle="modal" data-target="#add_produto" data-id="<?php echo $rowProdutos->idProduct; ?>"><?php echo $rowProdutos->ProdcuctDescription; ?></a></p>
                                   </div>
                                 </div>
                               </div>
+
 
                         <?php }
                           }
@@ -869,11 +1016,31 @@ if ($resultsBusinessCategory != null) {
                               ?><br>
 
                             </div>
-                            <div class="col-3 d-flex text-right color-preto justify-content-end">
+                            <div class="col-2 d-flex text-right color-preto justify-content-end">
 
                               <?php echo $timeAgo; ?>
 
                             </div>
+                            <?php if ($rowfeed->IdClient ==  $iduser) { ?>
+                              <div class="col-1 d-flex text-right color-preto justify-content-end">
+
+                                <div class="dropdown">
+                                  <a class="btn btn-secondary dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false" style="background-color: transparent;
+    border: 0px;
+    color: black;
+    font-size: medium;">
+                                    <i class="fas fa-ellipsis-v"></i>
+                                  </a>
+
+                                  <ul class="dropdown-menu">
+                                    <li><a class="dropdown-item" href="../controller/homeController.php?deletar=true&idfeed=<?php echo $rowfeed->IdFeed; ?>&idcliente=<?php echo $rowfeed->IdClient; ?>"><i class="fas fa-trash-alt " style="margin-right: 5px;"></i>Delete</a></li>
+                                    <li><a class="dropdown-item" href="#"><i class="fas fa-edit " style="margin-right: 5px;"></i>Eedit</a></li>
+
+                                  </ul>
+                                </div>
+
+                              </div>
+                            <?php } ?>
                           </div>
 
 
@@ -1456,33 +1623,40 @@ if ($resultsBusinessCategory != null) {
     $(document).ready(function() {
       function readURL(input) {
         if (input.files && input.files[0]) {
-          console.log("teste");
           var reader = new FileReader();
           reader.onload = function(e) {
-            if (input.id === 'user-image') {
-              $('#preview-image').attr('src', e.target.result).show();
-              $('#preview-video').hide();
-            } else if (input.id === 'video-input') {
-              $('#preview-video').attr('src', e.target.result).show();
-              $('#preview-image').hide();
-            }
-          };
+            $('#imagePreview').css('background-image', 'url(' + e.target.result + ')');
+            $('#imagePreview').hide();
+            $('#imagePreview').fadeIn(650);
+          }
           reader.readAsDataURL(input.files[0]);
-        } else {
-          var img = input.value;
-          $('#preview-image').attr('src', '').hide();
-          $('#preview-video').attr('src', '').hide();
         }
       }
-
-      // Event listeners para os inputs de imagem e vídeo
-      $('#user-image').on('change', function() {
+      
+      function readURL2(input) {
+        if (input.files && input.files[0]) {
+          var reader = new FileReader();
+          reader.onload = function(e) {
+            $('#imagePreview2').css('background-image', 'url(' + e.target.result + ')');
+            $('#imagePreview2').hide();
+            $('#imagePreview2').fadeIn(650);
+          }
+          reader.readAsDataURL(input.files[0]);
+        }
+      } 
+      $("#user-image").change(function() {
+        console.log("Uploading");
         readURL(this);
       });
 
-      $('#video-input').on('change', function() {
-        readURL(this);
+      $("#banner-image").change(function() {
+        console.log("Uploading");
+        readURL2(this);
       });
+
+
+
+
     });
 
 
@@ -1564,7 +1738,7 @@ if ($resultsBusinessCategory != null) {
       });
     });
   </script>
-  
+
   <script>
     $(document).ready(function() {
       // Activate the tab when the link is clicked
@@ -1840,34 +2014,46 @@ if ($resultsBusinessCategory != null) {
         }
       });
     });
-     function updateNotificationCount() {
-            var xmlhttpnf = new XMLHttpRequest();
-            xmlhttpnf.onreadystatechange = function() {
-                if (this.readyState == 4 && this.status == 200) {
+
+    function updateNotificationCount() {
+      var xmlhttpnf = new XMLHttpRequest();
+      xmlhttpnf.onreadystatechange = function() {
+        if (this.readyState == 4 && this.status == 200) {
 
 
-                    var badgeElement = document.getElementById('notificationCount');
-                    var responseHtml = this.responseText.trim(); // Remove espaços em branco extras
+          var badgeElement = document.getElementById('notificationCount');
+          var responseHtml = this.responseText.trim(); // Remove espaços em branco extras
 
-                    if (responseHtml != "" || responseHtml != undefined) {
-                        console.log("response");
-                        badgeElement.innerHTML = responseHtml; // Insere o HTML retornado pelo PHP
-                        responseHtml = '';
-                    } else {
-                        console.log("response NULL");
-                        badgeElement.innerHTML = ''; // Limpa o conteúdo do elemento
-                    }
-                } else {
-                    var badgeElement = document.getElementById('notificationCount');
-                    badgeElement.innerHTML = '';
-                    responseHtml = '';
-                }
-            };
-            xmlhttpnf.open("GET", "widget/atualizar_notificacoes.php", true);
-            xmlhttpnf.send();
+          if (responseHtml != "" || responseHtml != undefined) {
+            console.log("response");
+            badgeElement.innerHTML = responseHtml; // Insere o HTML retornado pelo PHP
+            responseHtml = '';
+          } else {
+            console.log("response NULL");
+            badgeElement.innerHTML = ''; // Limpa o conteúdo do elemento
+          }
+        } else {
+          var badgeElement = document.getElementById('notificationCount');
+          badgeElement.innerHTML = '';
+          responseHtml = '';
         }
-        updateNotificationCount()
-        setInterval(updateNotificationCount, 6000);
+      };
+      xmlhttpnf.open("GET", "widget/atualizar_notificacoes.php", true);
+      xmlhttpnf.send();
+    }
+    updateNotificationCount()
+    setInterval(updateNotificationCount, 6000);
+
+
+    document.getElementById('editarPerfil').addEventListener('click', function() {
+            // 
+            var progressBar = document.querySelector('.progress');
+            progressBar.style.display = 'flex';
+            setTimeout(function() {
+                e.preventDefault();
+                document.getElementById('editarperfilforms').submit();
+            }, 3000); //
+        });
   </script>
 </body>
 

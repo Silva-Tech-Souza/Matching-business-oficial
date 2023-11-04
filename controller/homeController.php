@@ -4,7 +4,22 @@ include_once('../model/classes/tblFeeds.php');
 
 date_default_timezone_set('America/Sao_Paulo');
 
-if ($_POST["post"] != "") {
+$deletar = $_GET["deletar"];
+$idfeededit = $_GET["idfeed"];
+$idclienteedit =  $_GET["idcliente"];
+
+if($deletar != "" && $deletar != null){
+    if($idclienteedit  == $_SESSION["id"]){
+    $feedsedit = new Feeds($dbh);
+    $feedsedit->setidIdFeed($idfeededit);
+    $feedsedit->setidClient($idclienteedit);
+    //echo $idfeededit ."<br>".$idclienteedit ."<br>". $_SESSION["id"];
+    $feedsedit->deletar(" WHERE IdFeed = :IdFeed AND idClient = :idClient");
+   echo '<script>window.location.href = "../view/home.php";</script>';
+    }
+    
+     
+}else if ($_POST["post"] != "" && $deletar == null || $deletar == "") {
     $_POST["post"] = "";
     $iduser=$_SESSION["id"];
     $txtpos = $_POST["txtpos"];
@@ -216,5 +231,5 @@ if ($_POST["post"] != "") {
     //echo"TEste1";
    echo '<script>window.location.href = "../view/home.php";</script>';
 }else{
-    echo"TEste2";
+   echo '<script>window.location.href = "../view/home.php";</script>';
 }

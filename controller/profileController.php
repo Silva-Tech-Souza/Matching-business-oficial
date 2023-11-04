@@ -1,6 +1,7 @@
 <?php
 
 include_once('../model/classes/conexao.php');
+
 $iduser = $_SESSION["id"];
 
 
@@ -157,6 +158,8 @@ $user->atualizar("Pontos = Pontos + :Pontos WHERE idClient = :idClient");
   header("Location: ../view/profile.php");
   
 }else if (isset($_POST["editarPerfil"] )) {
+  include_once('../model/classes/tblUserClients.php');
+
   $arquivoUser = $_FILES['user-image'];
   $arquivoCompany = $_FILES['banner-image'];
   if ($arquivoUser != "" && $arquivoUser != 0) {
@@ -322,8 +325,6 @@ $user->atualizar("Pontos = Pontos + :Pontos WHERE idClient = :idClient");
 
   }
 
-  include_once('../model/classes/tblUserClients.php');
-
   $userClients = new UserClients($dbh);
   $userClients-> setidClient($iduser);
   $userClients-> setFirstName($POSTFirstName);
@@ -377,7 +378,7 @@ $user->atualizar("Pontos = Pontos + :Pontos WHERE idClient = :idClient");
   }
   
 }else if (isset($_POST["salvar"] )) {
-
+ include_once('../model/classes/tblUserClients.php');
   $arquivoUser = $_FILES['user-image'];
   $arquivoCompany = $_FILES['banner-image'];
 
@@ -539,6 +540,7 @@ $user->atualizar("Pontos = Pontos + :Pontos WHERE idClient = :idClient");
   $user->atualizar("Pontos = Pontos + :Pontos WHERE idClient = :idClient");
   header("Location: ../view/profile.php");
 }else if (isset($_POST["deleteproduto"] )) {
+     include_once('../model/classes/tblUserClients.php');
   $idproduto = $_POST["idproduto"];
   $_POST["deleteproduto"] = "";
 
@@ -556,7 +558,7 @@ $user->atualizar("Pontos = Pontos + :Pontos WHERE idClient = :idClient");
   //$querydelete->execute();
   header("Location: ../view/profile.php");
 }else if (isset($_POST["updateproduto"])) {
-
+ include_once('../model/classes/tblUserClients.php');
   include_once('../model/classes/tblUserClients.php');
 
   $userClients = new UserClients($dbh);
@@ -708,6 +710,7 @@ for( $num=0 ; $num < $total ; $num++ ) {
   header("Location: ../view/profile.php");
   
 }else if (isset($_POST["conectar"])) {
+     include_once('../model/classes/tblUserClients.php');
   $idconect = $_POST["idconectar"];
   $idperfilpedido = $_POST["idperfilpedido"];
 
@@ -753,6 +756,7 @@ for( $num=0 ; $num < $total ; $num++ ) {
 
   header("Location: ../view/profile.php");
 }else if (isset($_POST["desconectar"])) {
+     include_once('../model/classes/tblUserClients.php');
   $idconect = $_POST["idconectar"];
   $idperfilpedido = $_POST["idperfilpedido"];
 
@@ -777,30 +781,33 @@ for( $num=0 ; $num < $total ; $num++ ) {
 
   header("Location: ../view/profile.php");
 }else if(isset($_POST["enviaremail"])){
-
+    
+  include_once("../model/classes/tblUserClients.php");
   $email = $_POST["emailcolab"];
-
+  $qtdcolab = $_POST["qtdcolab"];
+  $nomeempresa = $_POST["nomeempresa"];
   $codigoCadastroIncompleto = urlencode($email);
   ini_set('display_erros', 1);
   error_reporting(E_ALL);
   $from = "noreplay@matchingbusiness.online";
   $to = $email;
-  $subject = "Teste cadastro coolab";//"Matching Business Online - Confirmation Link";
-  $message = "Dear User," . "\n" . "Thank you for registering with us!" . "\n" . "We are excited to have you join Matching Business Online. This email serves as confirmation of your successful registration. We appreciate your interest and look forward to providing you with a fantastic experience." . "\n" . "Please click on the link below to enter your password and complete your registration." . "\n" . "https://visual.matchingbusiness.online/view/cadastrarCoolab.php?email=".$codigoCadastroIncompleto."&taxid=".urlencode($_POST["taxid"]);
-
+  $subject = "Matching Business Online - Confirmation Link";//"Matching Business Online - Confirmation Link";
+  $message = "Dear User,"
+   . "\n" . 
+  "It is with great pleasure that we welcome you to ". $nomeempresa."! We are delighted to have you as part of our team and confident that together we will achieve great accomplishments." 
+   . "\n" . 
+  "To get started, we kindly request you to complete your registration in the Matching Business Official system. This will help us ensure that you have access to all the necessary tools and resources to perform your duties to the best of your ability."
+    . "\n".
+  "Please click on the link below to initiate the registration process:" 
+    . "\n".
+  "https://visual.matchingbusiness.online/view/cadastrarCoolab.php?email=".$codigoCadastroIncompleto."&taxid=".urlencode($_POST["taxid"])."&qtdcolab=$qtdcolab";
   
-  
-    $headers = "From:" . $from;
+  $headers = "From:" . $from;
   mail($to, $subject, $message, $headers);
 
-  include_once("../model/classes/tblUserClients.php");
 
-  $user = new UserClients($dbh);
-  $user->setidClient($_SESSION["id"]);
-  $user->setPontos(1000);
-  $user->atualizar("Pontos = Pontos + :Pontos WHERE idClient = :idClient");
 
-  header("Location: ../view/profile.php");
+ header("Location: ../view/empresa.php");
 
 }else if(isset($_POST["EditDistribuidor"])){
 
@@ -835,11 +842,140 @@ for( $num=0 ; $num < $total ; $num++ ) {
   $resultsdistributorProfile = $distributorProfile->atualizar("AnoFundacao = :AnoFundacao, NumEmpregados = :NumEmpregados, NumVendedores = :NumVendedores, NivelOperacao = :NivelOperacao, Fob_3Y = :Fob_3Y, Vol_3Y = :Vol_3Y, Fob_2Y = :Fob_2Y, Vol_2Y = :Vol_2Y, Fob_1Y = :Fob_1Y, Vol_1Y = :Vol_1Y WHERE idClient = :idClient");
   header("Location: ../view/profile.php");
 
+}else if(isset($_POST["editarPerfilempresa"])){
+  include_once('../model/classes/tblEmpresas.php');
+  $idempresa = $_POST["idempresa"];
+  $arquivoUser = $_FILES['user-image'];
+  $arquivoCompany = $_FILES['banner-image'];
+
+
+  if ($arquivoUser != "" && $arquivoUser != 0) {
+    if (file_exists("../view/assets/img/$idempresa")) {
+      $userfile = $arquivoUser['name'];
+      $file_temp = $arquivoUser['tmp_name'];
+
+      $file_type = $userfile;
+      $file_type_length = strlen($file_type) - 3;
+      $file_type = substr($file_type, $file_type_length);
+
+      $file_type = strtolower($file_type);
+      if ($file_type == 'peg') {
+        $file_type = 'jpeg';
+      }
+      if ($file_type != 'peg' and $file_type != 'jpg' and $file_type != 'gif' and $file_type != 'png') {
+      } else {
+        $nomeArquivoMaisTipo = "PersonalUser_$idempresa." . $file_type;
+        if (move_uploaded_file($file_temp, "../view/assets/img/$idempresa/" . $nomeArquivoMaisTipo)) {
+          $caminho = "assets/img/$idempresa/$nomeArquivoMaisTipo";
+
+          $empresaDados = new Empresasview($dbh);
+          $empresaDados->setId($idempresa);
+          $empresaDados->setfotoperfil($caminho);
+          $results = $empresaDados->atualizar(" fotoperfil = :fotoperfil WHERE id = :id");
+        }
+      }
+    } else {
+      mkdir("../view/assets/img/$idempresa", 0755);
+      $userfile = $arquivoUser['name'];
+      $file_temp = $arquivoUser['tmp_name'];
+
+      $file_type = $userfile;
+      $file_type_length = strlen($file_type) - 3;
+      $file_type = substr($file_type, $file_type_length);
+
+      $file_type = strtolower($file_type);
+
+      if ($file_type == 'peg') {
+        $file_type = 'jpeg';
+      }
+      if ($file_type != 'peg' and $file_type != 'jpg' and $file_type != 'gif' and $file_type != 'png') {
+      } else {
+        $nomeArquivoMaisTipo = "PersonalUser_$idempresa." . $file_type;
+        if (move_uploaded_file($file_temp, "../view/assets/img/$idempresa/" . $nomeArquivoMaisTipo)) {
+          $caminho = "assets/img/$idempresa/$nomeArquivoMaisTipo";
+
+          $empresaDados = new Empresasview($dbh);
+          $empresaDados->setId($idempresa);
+          $empresaDados->setfotoperfil($caminho);
+          $results = $empresaDados->atualizar(" fotoperfil = :fotoperfil WHERE id = :id");
+        }
+      }
+    }
+  }
+
+  if ($arquivoCompany != "" && $arquivoCompany != 0) {
+    if (file_exists("../view/assets/img/$idempresa")) {
+      $userfile = $arquivoCompany['name'];
+      $file_temp = $arquivoCompany['tmp_name'];
+
+      $file_type = $userfile;
+      $file_type_length = strlen($file_type) - 3;
+      $file_type = substr($file_type, $file_type_length);
+
+      $file_type = strtolower($file_type);
+
+      if ($file_type == 'peg') {
+        $file_type = 'jpeg';
+      }
+      if ($file_type != 'peg' and $file_type != 'jpg' and $file_type != 'gif' and $file_type != 'png') {
+      } else {
+        $nomeArquivoMaisTipo = "LogoPicture_$idempresa." . $file_type;
+        if (move_uploaded_file($file_temp, "../view/assets/img/$idempresa/" . $nomeArquivoMaisTipo)) {
+          $caminho = "assets/img/$idempresa/$nomeArquivoMaisTipo";
+
+          $empresaDados = new Empresasview($dbh);
+          $empresaDados->setId($idempresa);
+          $empresaDados->setfotobanner($caminho);
+          $results = $empresaDados->atualizar(" fotobanner = :fotobanner WHERE id = :id");
+        }
+      }
+    } else {
+      mkdir("../view/assets/img/$idempresa", 0755);
+      $userfile = $arquivoCompany['name'];
+      $file_temp = $arquivoCompany['tmp_name'];
+
+      $file_type = $userfile;
+      $file_type_length = strlen($file_type) - 3;
+      $file_type = substr($file_type, $file_type_length);
+
+      $file_type = strtolower($file_type);
+
+
+      if ($file_type == 'peg') {
+        $file_type = 'jpeg';
+      }
+      if ($file_type != 'peg' and $file_type != 'jpg' and $file_type != 'gif' and $file_type != 'png') {
+      } else {
+        $nomeArquivoMaisTipo = "LogoPicture_$idempresa." . $file_type;
+        if (move_uploaded_file($file_temp, "../view/assets/img/$idempresa/" . $nomeArquivoMaisTipo)) {
+          $caminho = "assets/img/$idempresa/$nomeArquivoMaisTipo";
+          $empresaDados = new Empresasview($dbh);
+          $empresaDados->setId($idempresa);
+          $empresaDados->setfotobanner($caminho);
+          $results = $empresaDados->atualizar(" fotobanner = :fotobanner WHERE id = :id");
+        }
+      }
+    }
+  }
+
+  $nomeempresa = $_POST["nomeempresa"];
+  $redesocial = $_POST["redesocial"];
+  $site = $_POST["site"];
+  $country = $_POST["country"];
+  $descricao = $_POST["descricao"];
+
+  $empresaDados = new Empresasview($dbh);
+  $empresaDados->setId($idempresa);
+  $empresaDados->setNome($nomeempresa);
+  $empresaDados->setredesocial($redesocial);
+  $empresaDados->setsite($site);
+  $empresaDados->setdescricao($descricao);
+  $empresaDados->setpais($country);
+  $results = $empresaDados->atualizar(" nome = :nome, redesocial = :redesocial, site = :site, descricao = :descricao, pais = :pais WHERE id = :id");
+  header("Location: ../view/empresa.php");
 }else{
 
   header("Location: ../view/profile.php");
 
 }
-
-
 ?>

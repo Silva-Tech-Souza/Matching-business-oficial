@@ -9,12 +9,18 @@ if (session_status() !== PHP_SESSION_ACTIVE) {
 */
 date_default_timezone_set('America/Sao_Paulo');
 
+$idComentario = $_GET['idComentario'];
+
 
 $idPost = $_GET['idFeed'];
 $iduser = $_SESSION["id"];
 include_once('../../model/classes/tbPostComent.php');
 
-if (isset($_GET["texto"]) && $_GET["texto"] != "") {
+if($idComentario != "" && $_GET["texto"] == "apagar"){
+    $tbPostComent = new PostComent($dbh);
+    $tbPostComent->setid($idComentario );
+    $tbPostComent->deletar(" WHERE id = :id");
+}else if (isset($_GET["texto"]) && $_GET["texto"] != "") {
     $idFeed = $_GET["idFeed"];
     $texto = $_GET["texto"];
 
@@ -95,10 +101,10 @@ if (isset($_GET["texto"]) && $_GET["texto"] != "") {
                                     echo "" . $imgpostuser;
                                 } else {
                                     echo "assets/img/Avatar.png";
-                                } ?>" alt="user" class="nav-profile-img ">
+                                } ?>" alt="user" style="min-height: 35px;"  class="nav-profile-img ">
                 </div>
                 <div class="col-11  ">
-                    <div class="row align-content-center shadow" style="margin: 3px !important; overflow-y: auto; max-height: 400px;  padding: 15px;">
+                    <div class="row align-content-center shadow" style="margin: 3px !important; overflow-y: auto; max-height: 400px;  padding: 15px; background: white;border-radius: 7px">
                         <input class="form-control bordainput" value="" autocomplete="off" name="idproduto" type="hidden">
 
                         <div class="col-12 d-flex flex-column justify-content-start align-items-start" style="height: auto;">
@@ -121,19 +127,15 @@ if (isset($_GET["texto"]) && $_GET["texto"] != "") {
                         <div class="col-12" style="overflow-wrap: break-word;font-size: small;">
                             <?php echo $rowfeed->texto; ?>
                         </div>
-                        <div class="col-12 justify-content-end align-items-end" style="
-    text-align: end;
-    justify-content: end !important;
-    align-items: end !important;
-    display: block;
-">
+                        <hr class="mt-2">
+                        <div class="col-12 justify-content-end align-items-end" style="text-align: end;justify-content: end !important;align-items: end !important;display: block;">
                             <?php echo $timeAgoC; ?>
                             <?php if($idcommenter == $iduser){?>
-                            <a href="#" class="trash-icon" style="margin-left: 10px;">
-                            <i class="fas fa-trash-alt" style="color: #e3171a;"></i>
+                            <a href="#" class="trash-icon btnapagar"  data-comentario-id="<?php echo $rowfeed->id ;?>" style="margin-left: 10px;">
+                            <i class="fas fa-trash-alt" style="font-size: medium; color: #e3171a;"></i>
                             </a>
-                            <a href="#" class="trash-icon" style="margin-left: 5px; ">
-                            <i class="fas fa-pencil-alt" style="color: #002D4B; " ></i>
+                            <a href="#" class="trash-icon btneditar" style="margin-left: 5px; ">
+                            <i class="fas fa-pencil-alt" style="font-size: medium; color: #002D4B; " ></i>
                             </a>
                             <?php }?>
                         </div>
@@ -148,8 +150,8 @@ if (isset($_GET["texto"]) && $_GET["texto"] != "") {
 </div>
 
 
-<div class="row align-content-center " style="margin: 3px !important;background: #dddddd;">
-    <div class="card-body shadow d-flex flex-column rounded-4 ">
+<div class=" col-12 " style="background: #dddddd; box-shadow: 1px -10px 8px rgb(0 0 0 / 20%);">
+    <div class="row align-content-center "><div class="card-body shadow d-flex flex-column rounded-4 ">
         <form action="../controller/homeController.php" method="POST" enctype="multipart/form-data">
             <div class="row" style="margin: 2px;padding: 8px;">
                 <div class="col-md-10">
@@ -159,13 +161,14 @@ if (isset($_GET["texto"]) && $_GET["texto"] != "") {
                 </div>
                 <div class="col-md-2 ">
                     <div class="row justify-content-end mt-auto">
-                        <input class="insertpost btn btn-primary pl-4 pr-4 no-border p-3 post-btn-confirm btnpostado" type="button" name="postcomment" value="Post">
+                        <input class="insertpost btn btn-primary pl-4 pr-4 no-border p-3 post-btn-confirm btnpostado" type="button"  data-dismiss="modal" name="postcomment" value="Post">
                     </div>
                 </div>
             </div>
 
         </form>
-    </div>
+    </div></div>
+    
 </div>
 
 
@@ -175,7 +178,7 @@ if (isset($_GET["texto"]) && $_GET["texto"] != "") {
         $('.btnpostado').click(function() {
             // Obtenha o ID do produto associado ao link clicado
             var textArea = document.getElementById("textareaC");
-            console.log(" <?php echo $idPost; ?>");
+            
             // Obtém o texto dentro do textarea usando a propriedade "value"
             var texto = textArea.value;
             // Use o ID do produto para fazer uma requisição AJAX para buscar os dados do produto no servidor
@@ -198,7 +201,29 @@ if (isset($_GET["texto"]) && $_GET["texto"] != "") {
 
 
         });;
-
+            
+            
+        $('.btnapagar').click(function() {
+            var idComentario = $(this).data('comentario-id'); 
+            var texto = "apagar";
+            $.ajax({
+                type: 'GET',
+                url: 'widget/visualizarComent.php', // Substitua pelo caminho correto
+                data: {
+                    idFeed: <?php echo $idPost; ?>,
+                    texto: texto,
+                    idComentario: idComentario 
+                },
+                success: function(data) {
+                    // Preencha o conteúdo do modal com as informações do produto
+                    $('#modalEditarProduto .modal-content').html(data);
+                    verificarNovosPosts();
+                },
+                error: function() {
+                    alert('Ocorreu um erro ao carregar os dados do comentrios.');
+                }
+            });
+        });
 
     });
 

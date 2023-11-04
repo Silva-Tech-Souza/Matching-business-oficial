@@ -84,12 +84,11 @@ if ($resultsCountry != null) {
     <title>Matching Business</title>
     <link rel="stylesheet" href="assets/css/geral.css">
 
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-4bw+/aepP/YC94hEpVNVgiZdgIC5+VKNBQNGCHeKRQN+PtmoHDEXuppvnDJzQIu9" crossorigin="anonymous">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
 
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="https://kit.fontawesome.com/f51201541f.js" crossorigin="anonymous"></script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/autosize.js/4.0.2/autosize.min.js"></script>
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
@@ -510,6 +509,11 @@ if ($resultsCountry != null) {
             width: 0;
             left: -50px;
         }
+        .dropdown-toggle::after {
+            content: "" !important;
+            display: none !important;
+            margin-left: 0 !important;
+        }
     </style>
 </head>
 
@@ -592,13 +596,21 @@ if ($resultsCountry != null) {
                 <div class="col-3 d-none d-md-block justify-content-start position-fixed overflow-auto scrollable-column">
                     <div class="card rounded-4 shadow">
                         <div class="card-body p-0 m-0">
-                            <div class="col-12 mh-25">
-                                <img class="mh-25 rounded-top-3" src="<?php if ($imgcapa != "Avatar.png" && $imgcapa != "") {
-                                                                            echo "" . $imgcapa;
-                                                                        } else {
-                                                                            echo "https://images2.alphacoders.com/131/1317606.jpeg";
-                                                                        } ?>" alt="Descrição da Imagem" style="max-height: 100px; width: 100%;">
-                            </div>
+                             <div class="col-12 mh-25" style="    max-height: 100px;
+    width: 100%;
+    background-image: url(<?php if ($imgcapa != "Avatar.png" && $imgcapa != "" && $imgcapa != null) {
+                                                        echo "" . $imgcapa;
+                                                      } else {
+                                                        echo "https://images2.alphacoders.com/131/1317606.jpeg";
+                                                      } ?>);
+    min-height: 100px;
+    border-top-left-radius: var(--bs-border-radius-lg)!important;
+    border-top-right-radius: var(--bs-border-radius-lg)!important;
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center;">
+               
+              </div>
                             <div class="row p-0 ml-0">
                                 <div class="col-5 d-flex justify-content-start p-0 m-0 " style="height: 0px;">
                                     <img src=" <?php if ($imgperfil != "Avatar.png" && $imgperfil != "") {
@@ -700,9 +712,13 @@ if ($resultsCountry != null) {
                                     if ($resultsOperation != null) {
                                         foreach ($resultsOperation as $rowOperation) {
                                     ?>
-                                            <li>
+                                            <li class="row" style="padding: 0 !important;
+    justify-content: space-between;
+    flex-wrap: nowrap;
+    flex: 1;
+    display: flow;">
 
-                                                <a href="listcompani.php?operation=<?php echo $rowOperation->idOperation; ?>"><?php if ($rowOperation->FlagOperation != "D") {
+                                                <a  style="width: fit-content !important;" href="listcompani.php?operation=<?php echo $rowOperation->idOperation; ?>"><?php if ($rowOperation->FlagOperation != "D") {
                                                                                                                                     echo "<i class='fa-solid fa-add indicator ' ></i>";
                                                                                                                                 } ?>
                                                     <?php echo trim($rowOperation->NmOperation); ?>
@@ -721,7 +737,7 @@ if ($resultsCountry != null) {
                                                         if ($business != null) {
                                                             foreach ($resultsbusiness as $rowbusiness) {
                                                         ?>
-                                                                <li><a class="sizewidgh" href="listcompani.php?busines=<?php echo $rowbusiness->idBusiness; ?>&operation=<?php echo $rowOperation->idOperation; ?>"><?php
+                                                                <li><a class="sizewidgh" style="width: fit-content !important;" href="listcompani.php?busines=<?php echo $rowbusiness->idBusiness; ?>&operation=<?php echo $rowOperation->idOperation; ?>"><?php
                                                                                                                                                                                                                     echo trim($rowbusiness->NmBusiness); ?> <div style="text-align: end; width: 24px;float: right;position: initial;">
                                                                             <?php $numerouser2 = new UserClients($dbh);
                                                                             $numerouser2->setCoreBusinessId($rowOperation->idOperation);
@@ -773,7 +789,7 @@ if ($resultsCountry != null) {
 
                                         <div class="col-md-12">
                                             <div class="row justify-content-end mt-auto">
-                                                <label class="insertpost btn btn-second mr-2 btn-lg" for="file-input">
+                                                <label class="insertpost btn btn-second mr-2 btn-lg d-block d-md-none" for="file-input">
                                                     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-camera" viewBox="0 0 16 16">
                                                         <path d="M15 12a1 1 0 0 1-1 1H2a1 1 0 0 1-1-1V6a1 1 0 0 1 1-1h1.172a3 3 0 0 0 2.12-.879l.83-.828A1 1 0 0 1 6.827 3h2.344a1 1 0 0 1 .707.293l.828.828A3 3 0 0 0 12.828 5H14a1 1 0 0 1 1 1v6zM2 4a2 2 0 0 0-2 2v6a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V6a2 2 0 0 0-2-2h-1.172a2 2 0 0 1-1.414-.586l-.828-.828A2 2 0 0 0 9.172 2H6.828a2 2 0 0 0-1.414.586l-.828.828A2 2 0 0 1 3.172 4H2z" />
                                                         <path d="M8 11a2.5 2.5 0 1 1 0-5 2.5 2.5 0 0 1 0 5zm0 1a3.5 3.5 0 1 0 0-7 3.5 3.5 0 0 0 0 7zM3 6.5a.5.5 0 1 1-1 0 .5.5 0 0 1 1 0z" />
@@ -841,12 +857,12 @@ if ($resultsCountry != null) {
                                                     <div class="col-12" style="padding: 6px;">
                                                         <div class="col-12">
                                                             <a data-toggle="modal" data-target="#modalViewProduto" data-toggle="modal" data-id="<?php echo $rowProdutos->idProduct; ?>" class="hero-image-container">
-                                                                <h5 class="mb-0" style="white-space: pre-line;"><?php echo $rowProdutos->ProductName; ?></h5>
+                                                                <h5 class="mb-0" style="white-space: pre-line; color: #fff;text-transform: uppercase;"><?php echo $rowProdutos->ProductName; ?></h5>
                                                             </a>
                                                         </div>
-                                                        <div class="col-12">
-                                                            <a data-toggle="modal" data-target="#modalViewProduto" data-toggle="modal" data-id="<?php echo $rowProdutos->idProduct; ?>" class="hero-image-container">
-                                                                <p class=" cortardescricao color-cinza-b desc-produto fonte-principal" style=""><?php echo $rowProdutos->ProdcuctDescription; ?></p>
+                                                        <div class="col-12 mt-2">
+                                                            <a data-toggle="modal" data-target="#modalViewProduto" data-toggle="modal" data-id="<?php echo $rowProdutos->idProduct; ?>" class="hero-image-container" style="color: ##fff !important;">
+                                                                <p class=" cortardescricao color-cinza-b desc-produto fonte-principal" style="color: ##fff !important;"><?php echo $rowProdutos->ProdcuctDescription; ?></p>
                                                             </a>
                                                         </div>
                                                     </div>
@@ -860,19 +876,85 @@ if ($resultsCountry != null) {
                             <div id="divFeedUpdate">
                                 <?php
 
-                                //$sqlFeed = "SELECT * from tblFeeds ORDER BY Published_at DESC LIMIT 5";
-                                //$queryfeed = $dbh->prepare($sqlFeed);
-                                //$queryfeed->execute();
-                                //$resultsfeed = $queryfeed->fetchAll(PDO::FETCH_OBJ);
-
-
-
                                 $feeds = new Feeds($dbh);
-
                                 $resultsfeed = $feeds->consulta("ORDER BY Published_at DESC LIMIT 8");
+
+                                $x = 0;
 
                                 if ($resultsfeed != null) {
                                     foreach ($resultsfeed as $rowfeed) {
+
+                                            if($x >= 2){
+
+                                                $x = 0;
+
+                                                include_once('../model/classes/conexao.php');
+                                                include_once("../model/classes/tblEmpresas.php");
+
+                                                $empresas = new Empresasview($dbh);
+                                                $resultsempresas = $empresas->consulta("");
+                                                if ($resultsempresas != null) {
+
+                                                    $numEmpresa = count($resultsempresas);
+
+                                                    $numEmpresaSelecionada = random_int(0, $numEmpresa-1);
+
+                                                    $rowempresas = $resultsempresas[$numEmpresaSelecionada];
+                                                    $imgpostempresa = $rowempresas->fotoperfil;
+                                                ?>
+
+                                                <div class="card shadow p-0 bcolor rounded-4 mt-4 mb-4">
+                                                <div class="card-body shadow d-flex flex-column rounded-4 color-cinza">
+
+                                                    <div class=" row align-content-center">
+                                                        <div class="row">
+                                                            <div class="col-1">
+                                                                <img src="<?php if($rowempresas->fotoperfil != ""){echo $rowempresas->fotoperfil;}else{echo "assets/img/logo.png";}?>" alt="user" class="nav-profile-img  " onerror="this.onerror=null; this.src='/assets/img/Avatar.png'">
+
+                                                            </div>
+                                                            <div class="col-8 p-2 color-preto" style="padding-left: 26px !important;">
+                                                                <a href="#" class="color-preto text-decoration-none">
+                                                                    <h3 class="fonte-titulo text-decoration-none">
+                                                                        <?php
+                                                                        echo $rowempresas-> nome;
+                                                                        ?>
+                                                                    </h3>
+                                                                </a>
+
+                                                            </div>
+                                                            <div class="col-3 d-flex text-right color-preto justify-content-end">
+
+                                                            </div>
+                                                        </div>
+
+
+
+                                                    </div>
+                                                    <div class="col-12" style="padding: inherit;">
+
+
+
+                                                    </div>
+
+                                                    <div class="row col-12 align-content-center justify-content-center">
+                                                        <?php if ($imgpostempresa != "Avatar.png" && $imgpostempresa != "" && file_exists("" . $imgpostempresa)) { ?>
+                                                            <img class="img-feed-styleset" src="<?php echo $imgpostempresa; ?>" alt="" width="100%">
+                                                        <?php }?>
+                                                    </div>
+                                                    
+                                                </div>
+                                            </div>
+
+                                            <?php 
+                                                
+                                            } 
+
+                                            }else{
+
+                                                $x = $x +1;
+
+                                            }
+
                                             // Obtenha a data e hora da postagem no formato DATETIME do banco de dados
                                             $postDateTime = new DateTime($rowfeed->Published_at);
     
@@ -922,16 +1004,16 @@ if ($resultsCountry != null) {
                                             <div class="card-body shadow d-flex flex-column rounded-4 color-cinza">
 
                                                 <div class=" row align-content-center">
-                                                    <div class="row">
+                                                    
                                                         <div class="col-1">
                                                             <img src="<?php if ($imgpostuser != "Avatar.png" && $imgpostuser != "" && file_exists("" . $imgpostuser)) {
                                                                             echo "" . $imgpostuser;
                                                                         } else {
                                                                             echo "assets/img/Avatar.png";
-                                                                        } ?>" alt="user" class="nav-profile-img  " onerror="this.onerror=null; this.src='/assets/img/Avatar.png'">
+                                                                        } ?>" alt="user" class="nav-profile-img" style="min-height: 35px;" onerror="this.onerror=null; this.src='/assets/img/Avatar.png'">
 
                                                         </div>
-                                                        <div class="col-8 p-2 color-preto" style="padding-left: 26px !important;">
+                                                        <div class="col-8 p-2 color-preto" style="padding-left: 20px  !important;">
                                                             <a href="viewProfile.php?profile=<?php echo $rowfeed->IdClient; ?>" class="color-preto text-decoration-none">
                                                                 <h3 class="fonte-titulo text-decoration-none">
                                                                     <?php
@@ -964,13 +1046,32 @@ if ($resultsCountry != null) {
                                                             ?><br>
 
                                                         </div>
-                                                        <div class="col-3 d-flex text-right color-preto justify-content-end">
+                                                        <div class="col-2 d-flex text-right color-preto justify-content-end">
 
                                                             <?php echo $timeAgo; ?>
 
                                                         </div>
-                                                    </div>
+                                                        <?php if($rowfeed->IdClient ==  $iduser){ ?>
+                                                         <div class="col-1 d-flex text-right color-preto justify-content-end">
 
+                                                        <div class="dropdown">
+                                                              <a class="btn btn-secondary dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false" style="background-color: transparent;
+    border: 0px;
+    color: black;
+    font-size: medium;">
+                                                             <i class="fas fa-ellipsis-v"></i>
+                                                              </a>
+                                                            
+                                                              <ul class="dropdown-menu">
+                                                                <li><a class="dropdown-item" href="../controller/homeController.php?deletar=true&idfeed=<?php echo $rowfeed->IdFeed;?>&idcliente=<?php echo $rowfeed->IdClient;?>"><i class="fas fa-trash-alt " style="margin-right: 5px;"></i>Delete</a></li>
+                                                                <li><a class="dropdown-item" href="#"><i class="fas fa-edit " style="margin-right: 5px;"></i>Eedit</a></li>
+                                                                
+                                                              </ul>
+                                                        </div>
+
+                                                        </div>
+                                                        <?php } ?>
+                                                    
 
 
                                                 </div>
@@ -1136,7 +1237,7 @@ if ($resultsCountry != null) {
                                                                                         echo "" . $rowucometarios->PersonalUserPicturePath;
                                                                                     } else {
                                                                                         echo "assets/img/Avatar.png";
-                                                                                    } ?>" alt="user" class="nav-profile-img" style="width: 26px;">
+                                                                                    } ?>" alt="user" class="nav-profile-img"  style="min-height: 21px; width: 33px;">
                                                                     </div>
                                                                     <div class="col-11">
                                                                         <div class="col-10 d-flex flex-column justify-content-start align-items-start color-preto" style="height: auto;">
@@ -1467,7 +1568,7 @@ font-size: small;
 
     <div id="modalEditarProduto" class="modal custom-modal fade show comment-modal-primary" role="dialog">
         <div class="modal-dialog modal-dialog-centered modal-lg">
-            <div class="modal-content">
+            <div class="modal-content" style="background-color: #f0f0f0 !important;">
 
                 <div class="modal-body comment-modal-primary">
                     <h1 id="modalProductName mb-0"></h1>
@@ -1489,9 +1590,10 @@ font-size: small;
             </div>
         </div>
     </div>
+    
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.bundle.min.js" integrity="sha384-HwwvtgBNo3bZJJLYd8oVXjrBZt8cqVSpeBNS5n7C8IVInixGAoxmnlMuBnhbgrkm" crossorigin="anonymous"></script>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js"></script>
     <script>
         var $wrapper = $('.main-wrapper');
         $('body').append('<div class="sidebar-overlay"></div>');
@@ -1607,10 +1709,6 @@ font-size: small;
             });
         });
     </script>
-
-
-
-
     <script>
         $.fn.extend({
             treed: function(o) {
@@ -1802,13 +1900,9 @@ font-size: small;
             updateIndicators(activeIndex);
         });
     </script>
-
     <script>
         autosize(document.getElementById('myTextarea'));
     </script>
-
-
-
     <script>
         var limiteAtual = 3; // O limite inicial é de 3 linhas
         var alturaOriginal; // Variável para armazenar a altura original da div
@@ -1832,7 +1926,6 @@ font-size: small;
             return false;
         }
     </script>
-
     <script>
         // Função para adicionar a classe de fundo quando o scroll ocorre
         function adicionarFundoComScroll() {
@@ -2094,7 +2187,5 @@ font-size: small;
         };
     </script>
 
-
 </body>
-
 </html>

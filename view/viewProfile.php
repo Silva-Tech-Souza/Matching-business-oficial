@@ -20,16 +20,7 @@ $idusers = $_GET["profile"];
 
 $geral = $_SESSION["id"];
 
-//$sqlgeral = "SELECT * from tblUserClients WHERE idClient = :idClient";
-//$querygeral = $dbh->prepare($sqlgeral);
-//$querygeral->bindParam(':idClient', $geral, PDO::PARAM_INT);
-//$querygeral->execute();
-//$resultsgeral = $querygeral->fetchAll(PDO::FETCH_OBJ);
-//if ($querygeral->rowCount() > 0) {
-//  foreach ($resultsgeral as $rowgeral) {
-//    $imgperfilgeral = $rowgeral->PersonalUserPicturePath;
-//  }
-//}
+
 include_once('../model/classes/tblUserClients.php');
 
 $UserClient = new UserClients($dbh);
@@ -43,27 +34,7 @@ if ($resultsgeral != null) {
 }
 
 $_SESSION["n"] = 5;
-//$sql = "SELECT * from tblUserClients WHERE idClient = :idClient";
-//$query = $dbh->prepare($sql);
-//$query->bindParam(':idClient', $iduser1, PDO::PARAM_INT);
-//$query->execute();
-//$results = $query->fetchAll(PDO::FETCH_OBJ);
-//if ($query->rowCount() > 0) {
-//  foreach ($results as $row) {
-//    $username =  $row->FirstName . " " . $row->LastName;
-//    $FirstName = $row->FirstName;
-//    $LastName = $row->LastName;
-//    $jobtitle = $row->JobTitle;
-//    $idcountry = $row->idCountry;
-//    $idoperation = $row->IdOperation;
-//    $corebusiness = $row->CoreBusinessId;
-//    $satBusinessId =  $row->SatBusinessId;
-//    $companyname = $row->CompanyName;
-//    $imgperfil = $row->PersonalUserPicturePath;
-//    $imgcapa = $row->LogoPicturePath;
-//    $descricao =  $row->descricao;
-//  }
-//}
+
 
 $UserClient = new UserClients($dbh);
 $UserClient->setidClient($idusers);
@@ -98,16 +69,7 @@ if ($resultsreal != null) {
   }
 }
 
-//$sqlCountry = "SELECT * from tblCountry WHERE idCountry = :idCountry";
-//$queryCountry = $dbh->prepare($sqlCountry);
-//$queryCountry->bindParam(':idCountry', $idcountry, PDO::PARAM_INT);
-//$queryCountry->execute();
-//$resultsCountry = $queryCountry->fetchAll(PDO::FETCH_OBJ);
-//if ($queryCountry->rowCount() > 0) {
-//  foreach ($resultsCountry as $rowCountry) {
-//    $pais =  $rowCountry->NmCountry;
-//  }
-//}
+
 
 include_once('../model/classes/tblCountry.php');
 
@@ -121,16 +83,6 @@ if ($resultsCountry != null) {
   }
 }
 
-//$sqlbusiness = "SELECT * from tblOperations WHERE idOperation = :idOperation";
-//$querybusiness = $dbh->prepare($sqlbusiness);
-//$querybusiness->bindParam(':idOperation', $corebusiness, PDO::PARAM_INT);
-//$querybusiness->execute();
-//$resultsbusiness = $querybusiness->fetchAll(PDO::FETCH_OBJ);
-//if ($querybusiness->rowCount() > 0) {
-//  foreach ($resultsbusiness as $rowbusiness) {
-//    $NmBusiness =  $rowbusiness->NmOperation;
-//  }
-//}
 
 include_once('../model/classes/tblOperations.php');
 
@@ -144,17 +96,6 @@ if ($resultsbusiness != null) {
   }
 }
 
-
-//$sqlbusinesscor = "SELECT * from tblBusiness WHERE idBusiness = :idBusiness";
-//$querybusinesscor = $dbh->prepare($sqlbusinesscor);
-//$querybusinesscor->bindParam(':idBusiness', $satBusinessId, PDO::PARAM_INT);
-//$querybusinesscor->execute();
-//$resultsbusinesscor = $querybusinesscor->fetchAll(PDO::FETCH_OBJ);
-//if ($querybusinesscor->rowCount() > 0) {
-// foreach ($resultsbusinesscor as $rowbusinesscor) {
-//    $NmBusinesscor =  $rowbusinesscor->NmBusiness;
-//  }
-//}
 
 if ($satBusinessId != null) {
   include_once('../model/classes/tblBusiness.php');
@@ -170,17 +111,6 @@ if ($satBusinessId != null) {
   }
 }
 
-//$sqlbusinesscateg = "SELECT * from tblBusinessCategory WHERE idBusinessCategory = :idBusinessCategory";
-//$querybusinesscateg = $dbh->prepare($sqlbusinesscateg);
-//$querybusinesscateg->bindParam(':idBusinessCategory', $idoperation, PDO::PARAM_INT);
-//$querybusinesscateg->execute();
-//$resultsbusinesscateg = $querybusinesscateg->fetchAll(PDO::FETCH_OBJ);
-//if ($querybusinesscateg->rowCount() > 0) {
-//  foreach ($resultsbusinesscateg as $rowbusinesscateg) {
-//    $NmBusinessCategory =  $rowbusinesscateg->NmBusinessCategory;
-//    $idbusinesscateg = $rowbusinesscateg->idBusiness;
-//  }
-//}
 
 include_once('../model/classes/tblBusinessCategory.php');
 
@@ -195,12 +125,7 @@ if ($resultsbusinesscateg != null) {
   }
 }
 
-//$sqlView = "SELECT * FROM tblviews WHERE idUser = :idUser AND idView = :idView AND  DATE(datacriacao) = CURDATE()";
-//$queryView = $dbh->prepare($sqlView);
-//$queryView->bindParam(':idUser', $geral, PDO::PARAM_INT);
-//$queryView->bindParam(':idView', $iduser, PDO::PARAM_INT);
-//$queryView->execute();
-//$resultView = $queryView->fetchAll(PDO::FETCH_OBJ);
+
 
 include_once('../model/classes/tblViews.php');
 
@@ -211,12 +136,6 @@ $resultView = $Views->consulta("WHERE idUser = :idUser AND idView = :idView AND 
 
 if ($resultView == null) {
 
-  //$sqlViewinsert = "INSERT INTO tblviews(idUser, idView) VALUES (:idUser, :idView)";
-  //$queryViewinsert = $dbh->prepare($sqlViewinsert);
-  //$queryViewinsert->bindParam(':idUser', $geral, PDO::PARAM_INT);
-  //$queryViewinsert->bindParam(':idView', $iduser, PDO::PARAM_INT);
-  //$queryViewinsert->execute();
-
   include_once('../model/classes/tblViews.php');
 
   $Views = new Views($dbh);
@@ -226,11 +145,7 @@ if ($resultView == null) {
 
   $Views->cadastrar();
 
-  //$sqlinsertpost = "INSERT INTO tblsearchprofile_results (idUsuario, idClienteEncontrado, idTipoNotif) VALUES (:idUsuario, :idClienteEncontrado, '2')";
-  //$queryinsertpost = $dbh->prepare($sqlinsertpost);
-  //$queryinsertpost->bindParam(':idUsuario', $geral, PDO::PARAM_INT);
-  //$queryinsertpost->bindParam(':idClienteEncontrado', $iduser, PDO::PARAM_INT);
-  //$queryinsertpost->execute();
+
 
   include_once('../model/classes/tblSearchProfile_Results.php');
 
@@ -245,26 +160,14 @@ if ($resultView == null) {
   $searchprofile_results->cadastrar();
 }
 
-//$sqlconect = "SELECT * FROM tblconect WHERE idUserPed = :idUserPed AND idUserReceb = :idUserReceb ";
-//$queryconect = $dbh->prepare($sqlconect);
-//$queryconect->bindParam(':idUserPed', $geral, PDO::PARAM_INT);
-//$queryconect->bindParam(':idUserReceb', $iduser, PDO::PARAM_INT);
-//$queryconect->execute();
-//$respoconect = $queryconect->fetchAll(PDO::FETCH_OBJ);
-//if ($queryconect->rowCount() > 0) {
-//  foreach ($respoconect as $rowconnect) {
-//    $temconexao = $rowconnect->status;
-//  }
-//} else {
-//  $temconexao = "";
-//}
+
 
 include_once('../model/classes/tblConect.php');
 
 $connecttem = new Conect($dbh);
 
-$connecttem->setidUserPed($geral);
-$connecttem->setidUserReceb($idusers);
+$connecttem->setidUserPed($idusers);
+$connecttem->setidUserReceb($geral);
 
 $respoconect = $connecttem->consulta("WHERE idUserPed = :idUserPed AND idUserReceb = :idUserReceb");
 
@@ -750,13 +653,22 @@ if ($respoconect != null) {
         <div id="profile-column" class="shadow col-12 col-md-12 col-lg-3 justify-content-start overflow-auto scrollable-column fixed-on-desktop">
           <div class="card rounded-4 shadow">
             <div class="card-body p-0 m-0">
-              <div class="col-12 mh-25">
-                <img class="mh-25 rounded-top-3" src="<?php if ($imgcapas != "Avatar.png" && $imgcapas != "" && $imgcapas != null) {
+                 <div class="col-12 mh-25" style="    max-height: 100px;
+    width: 100%;
+    background-image: url(<?php if ($imgcapas != "Avatar.png" && $imgcapas != "" && $imgcapas != null) {
                                                         echo "" . $imgcapas;
                                                       } else {
                                                         echo "https://images2.alphacoders.com/131/1317606.jpeg";
-                                                      } ?>" alt="Descrição da Imagem" style="max-height: 100px; width: 100%;">
+                                                      } ?>);
+    min-height: 100px;
+    border-top-left-radius: var(--bs-border-radius-lg)!important;
+    border-top-right-radius: var(--bs-border-radius-lg)!important;
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center;">
+               
               </div>
+             
               <div class="row p-0 ml-0">
                 <div class="col-5 d-flex justify-content-start p-0 m-0 " style="height: 0px;">
                   <img src=" <?php if ($imgperfils != "Avatar.png" && $imgperfils != "") {
@@ -846,7 +758,7 @@ if ($respoconect != null) {
                       <button type="submit" name="desconectar" value="desconectar" class="btn btn-outline-danger ms-1 m-1"><i class="bi bi-person-x-fill icon-btn-card"></i>&nbsp;Disconnect</button>
                     <?php   } else 
                   if ($temconexao == "0" && $temconexao != "") { ?>
-                      <button type="submit" name="desconectar" value="desconectar" class="btn btn-outline-warning ms-1 m-1"><i class="bi bi-person-x-fill icon-btn-card"></i>&nbsp;Pending</button>
+                      <button type="submit" name="aceitar" value="aceitar" class="btn btn-outline-warning ms-1 m-1"><i class="bi bi-person-x-fill icon-btn-card"></i>&nbsp;Accept connection</button>
                     <?php   } else if ($temconexao == "" || $temconexao == "#" || $temconexao == null) { ?>
                       <button type="submit" name="conectar" value="conectar" class="btn btn-outline-primary ms-1 m-1"><i class="bi bi-person-plus-fill icon-btn-card"></i>&nbsp;Connect</button>
                     <?php   } ?>
@@ -911,10 +823,10 @@ if ($respoconect != null) {
                           if (is_array($resultsProdutos) || is_object($resultsProdutos)) {
                             foreach ($resultsProdutos as $rowProdutos) {
                         ?>
-                              <div class="mb-4 " style="width: auto;">
-                                <div class="card-container">
+                             <div class="card-container bcolor-azul-escuro rounded-4" style="width: -webkit-fill-available; height: 274px; margin-right: 10px !important;;">
+                               <div class="col-12" style="display: flex; flex-direction: column; min-height: 140px; max-height: 140px; padding: 4px; width: -webkit-fill-available;">
                                   <a data-toggle="modal" data-target="#modalViewProduto" data-toggle="modal" data-id="<?php echo $rowProdutos->idProduct; ?>" class="hero-image-container">
-                                    <img class="hero-image produto-img" src="<?php
+                                    <img class="hero-image produtos-img rounded-4" style=" user-drag: none;" src="<?php
 
                                                                               include_once('../model/classes/tblProductPictures.php');
                                                                               $productsPicture = new ProductPictures($dbh);
@@ -934,8 +846,8 @@ if ($respoconect != null) {
                                                                               ?>" alt="Spinning glass cube" />
                                   </a>
                                   <div class="col-12 mt-0 ">
-                                    <h1 class="mb-0"><a class="cortardescricao color-branco desc-perfil-text" href="#"><?php echo $rowProdutos->ProductName; ?></a></h1>
-                                    <p class="cortardescricao color-cinza-b produto-desc-text texto-desc"><?php echo $rowProdutos->ProdcuctDescription; ?></p>
+                                    <h1  class="mb-0" style="white-space: pre-line;"><a data-toggle="modal" data-target="#modalEditarProduto" data-toggle="modal" data-target="#add_produto" data-id="<?php echo $rowProdutos->idProduct; ?>" ><?php echo $rowProdutos->ProductName; ?></a></h1>
+                                    <p class=" cortardescricao color-cinza-b desc-produto fonte-principal" style=""><a data-toggle="modal" data-target="#modalEditarProduto" data-toggle="modal" data-target="#add_produto" data-id="<?php echo $rowProdutos->idProduct; ?>" ><?php echo $rowProdutos->ProdcuctDescription; ?></a></p>
                                   </div>
                                 </div>
                               </div>
@@ -1026,7 +938,7 @@ if ($respoconect != null) {
                                           echo "" . $imgpostuser;
                                         } else {
                                           echo "assets/img/Avatar.png";
-                                        } ?>" alt="user" class="nav-profile-img  " onerror="this.onerror=null; this.src='/assets/img/Avatar.png'">
+                                        } ?>" alt="user" class="nav-profile-img  " style="min-height: 35px;" onerror="this.onerror=null; this.src='/assets/img/Avatar.png'">
 
                             </div>
                             <div class="col-8 p-2 color-preto" style="padding-left: 26px !important;">

@@ -33,7 +33,7 @@ if ($tblOperations1 != null) {
     </div>
     <div class="col-sm-12">
       <div class="form-floating">
-        <select name="business[]" class=" form-select categmulti border-dark inputtamanho selecttamanho" multiple='multiple' id="floatingSelectGrid" aria-label="Floating label select example">
+        <select name="business[]" class=" form-select categmulti border-dark inputtamanho selecttamanho selectsp2" multiple='multiple' id="floatingSelectGrid" aria-label="Floating label select example">
           <option>Select</option>
           <?php
           include_once('../../model/classes/tblBusiness.php');
@@ -63,7 +63,7 @@ if ($tblOperations1 != null) {
     </div>
     <div class="col-sm-12">
       <div class="form-floating">
-        <select name="business" onchange="showcategoria(this.value)" class="form-select border-dark inputtamanho" id="floatingSelectGrid" aria-label="Floating label select example">
+        <select name="business" onchange="showcategoria(this.value)" class="form-select border-dark inputtamanho selectsp2" id="floatingSelectGrid" aria-label="Floating label select example">
           <option>Select</option>
           <?php
           include_once('../../model/classes/tblBusiness.php');

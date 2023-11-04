@@ -528,13 +528,21 @@ if ($results != null) {
                           <div class="item celularcard">
                             <div class="card rounded-4 shadow celularcard">
                               <div class="card-body p-0 m-0" style="min-height: 300px !IMPORTANT;">
-                                <div class="col-12 mh-25">
-                                  <img class="mh-25 rounded-top-3" src="<?php if ($rowOperationselect->LogoPicturePath != "Avatar.png" && $rowOperationselect->LogoPicturePath != "") {
-                                                                          echo "" . $rowOperationselect->LogoPicturePath;
-                                                                        } else {
-                                                                          echo "https://images2.alphacoders.com/131/1317606.jpeg";
-                                                                        } ?>" alt="Descrição da Imagem" style="max-height: 100px; width: 100%;">
-                                </div>
+                                 <div class="col-12 mh-25" style="    max-height: 100px;
+    width: 100%;
+    background-image: url(<?php if ($rowOperationselect->LogoPicturePath != "Avatar.png" && $rowOperationselect->LogoPicturePath != "" && $rowOperationselect->LogoPicturePath != null) {
+                                                        echo "" . $rowOperationselect->LogoPicturePath;
+                                                      } else {
+                                                        echo "https://images2.alphacoders.com/131/1317606.jpeg";
+                                                      } ?>);
+    min-height: 100px;
+    border-top-left-radius: var(--bs-border-radius-lg)!important;
+    border-top-right-radius: var(--bs-border-radius-lg)!important;
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center;">
+               
+              </div>
                                 <div class="row p-0 ml-0 m-0">
                                   <div class="col-6 d-flex justify-content-start p-0 m-0 " style="height: 0px;">
                                     <img src=" <?php if ($rowOperationselect->PersonalUserPicturePath != "Avatar.png" && $rowOperationselect->PersonalUserPicturePath != "") {
@@ -621,13 +629,22 @@ if ($results != null) {
                         <div class="item celularcard">
                           <div class="card rounded-4 shadow celularcard">
                             <div class="card-body p-0 m-0" style="min-height: 300px !IMPORTANT;">
-                              <div class="col-12 mh-25">
-                                <img class="mh-25 rounded-top-3" src="<?php if ($rowOperationselect->LogoPicturePath != "Avatar.png" && $rowOperationselect->LogoPicturePath != "") {
-                                                                        echo "" . $rowOperationselect->LogoPicturePath;
-                                                                      } else {
-                                                                        echo "https://images2.alphacoders.com/131/1317606.jpeg";
-                                                                      } ?>" alt="Descrição da Imagem" style="max-height: 100px; width: 100%;">
-                              </div>
+                                
+                             <div class="col-12 mh-25" style="    max-height: 100px;
+    width: 100%;
+    background-image: url(<?php if ($rowOperationselect->LogoPicturePath != "Avatar.png" && $rowOperationselect->LogoPicturePath != "" && $rowOperationselect->LogoPicturePath != null) {
+                                                        echo "" . $rowOperationselect->LogoPicturePath;
+                                                      } else {
+                                                        echo "https://images2.alphacoders.com/131/1317606.jpeg";
+                                                      } ?>);
+    min-height: 100px;
+    border-top-left-radius: var(--bs-border-radius-lg)!important;
+    border-top-right-radius: var(--bs-border-radius-lg)!important;
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center;">
+               
+              </div>
                               <div class="row p-0 ml-0 m-0">
                                 <div class="col-6 d-flex justify-content-start p-0 m-0 " style="height: 0px;">
                                   <img src=" <?php if ($rowOperationselect->PersonalUserPicturePath != "Avatar.png" && $rowOperationselect->PersonalUserPicturePath != "") {
@@ -724,13 +741,22 @@ if ($results != null) {
                               <div class="item celularcard">
                                 <div class="card rounded-4 shadow celularcard">
                                   <div class="card-body p-0 m-0" style="min-height: 300px !IMPORTANT;">
-                                    <div class="col-12 mh-25">
-                                      <img class="mh-25 rounded-top-3" src="<?php if ($rowOperationselect->LogoPicturePath != "Avatar.png" && $rowOperationselect->LogoPicturePath != "") {
-                                                                              echo "" . $rowOperationselect->LogoPicturePath;
-                                                                            } else {
-                                                                              echo "https://images2.alphacoders.com/131/1317606.jpeg";
-                                                                            } ?>" alt="Descrição da Imagem" style="max-height: 100px; width: 100%;">
-                                    </div>
+                                        <div class="col-12 mh-25" style="    max-height: 100px;
+    width: 100%;
+    background-image: url(<?php if ($rowOperationselect->LogoPicturePath != "Avatar.png" && $rowOperationselect->LogoPicturePath != "" && $rowOperationselect->LogoPicturePath != null) {
+                                                        echo "" . $rowOperationselect->LogoPicturePath;
+                                                      } else {
+                                                        echo "https://images2.alphacoders.com/131/1317606.jpeg";
+                                                      } ?>);
+    min-height: 100px;
+    border-top-left-radius: var(--bs-border-radius-lg)!important;
+    border-top-right-radius: var(--bs-border-radius-lg)!important;
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center;">
+               
+              </div>
+                                    
                                     <div class="row p-0 ml-0 m-0">
                                       <div class="col-6 d-flex justify-content-start p-0 m-0 " style="height: 0px;">
                                         <img src=" <?php if ($rowOperationselect->PersonalUserPicturePath != "Avatar.png" && $rowOperationselect->PersonalUserPicturePath != "") {
@@ -797,7 +823,7 @@ if ($results != null) {
               }
               if ($operation == null && $busines == null && $text != null) {
 
-                if ($text == "mysp" || $text == "Seach Profile" || $text == "Seaches Profile" || $text == "seach profile" || $text == "seaches profile" || $text == "my seaches" || $text == "meu seaches") { ?>
+                if ($text == "mysp" || $text == "Seach Profile" || $text == "seach" || $text == "Seaches Profile" || $text == "seach profile" || $text == "seaches profile" || $text == "my seaches" || $text == "meu seaches" || $text == "seaches") { ?>
                   <div class="carousel-filmes">
                     <div class="row">
                       <div class="col-8 d-flex align-middle">
@@ -864,10 +890,12 @@ if ($results != null) {
                                     $tblSearchCategory->setidSearch($resultConectUnidSearch->idSearch);
                                     $resultstbltblSearchCategory = $tblSearchCategory->consulta("WHERE idSearch = :idSearch");
                                     $resultstblqtdnumcaeg = $tblSearchCategory->quantidade("WHERE idSearch = :idSearch");
-                                    if ($resultstblqtdnumcaeg != null) {
-                                      if ($resultstblqtdnumcaeg->rowCount() == 10) {
+                                    if ($resultstbltblSearchCategory != null) {
+                                      if ($resultstblqtdnumcaeg->rowCount() > 5 && $resultstblqtdnumcaeg->rowCount() < 378) {
                                         echo "<b>Business Category: </b>" . $resultstblqtdnumcaeg->rowCount();
-                                      } else if ($resultstblqtdnumcaeg->rowCount() > 0 && $resultstblqtdnumcaeg->rowCount() < 10) {
+                                      }else  if ($resultstblqtdnumcaeg->rowCount() >=378) {
+                                           echo "<b>Business Category: Todos</b>";
+                                      } else if ($resultstbltblSearchCategory->rowCount() > 0 && $resultstbltblSearchCategory->rowCount() < 10) {
                                         if ($resultstbltblSearchCategory != null) {
                                           $namesbscateg = array();
                                           foreach ($resultstbltblSearchCategory as $rowSearchBusinesscateg) {
@@ -914,13 +942,22 @@ if ($results != null) {
                                     <div class="item celularcard">
                                       <div class="card rounded-4 shadow celularcard">
                                         <div class="card-body p-0 m-0" style="min-height: 300px !IMPORTANT;">
-                                          <div class="col-12 mh-25">
-                                            <img class="mh-25 rounded-top-3" src="<?php if ($rowOperationselect->LogoPicturePath != "Avatar.png" && $rowOperationselect->LogoPicturePath != "") {
-                                                                                    echo "" . $rowOperationselect->LogoPicturePath;
-                                                                                  } else {
-                                                                                    echo "https://images2.alphacoders.com/131/1317606.jpeg";
-                                                                                  } ?>" alt="Descrição da Imagem" style="max-height: 100px; width: 100%;">
-                                          </div>
+                                          
+                                           <div class="col-12 mh-25" style="    max-height: 100px;
+    width: 100%;
+    background-image: url(<?php if ($rowOperationselect->LogoPicturePath != "Avatar.png" && $rowOperationselect->LogoPicturePath != "" && $rowOperationselect->LogoPicturePath != null) {
+                                                        echo "" . $rowOperationselect->LogoPicturePath;
+                                                      } else {
+                                                        echo "https://images2.alphacoders.com/131/1317606.jpeg";
+                                                      } ?>);
+    min-height: 100px;
+    border-top-left-radius: var(--bs-border-radius-lg)!important;
+    border-top-right-radius: var(--bs-border-radius-lg)!important;
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center;">
+               
+              </div>
                                           <div class="row p-0 ml-0 m-0">
                                             <div class="col-6 d-flex justify-content-start p-0 m-0 " style="height: 0px;">
                                               <img src=" <?php if ($rowOperationselect->PersonalUserPicturePath != "Avatar.png" && $rowOperationselect->PersonalUserPicturePath != "") {
@@ -1018,13 +1055,21 @@ padding-right: 6px;
                                 <div class="item celularcard">
                                   <div class="card rounded-4 shadow celularcard">
                                     <div class="card-body p-0 m-0" style="min-height: 300px !IMPORTANT;">
-                                      <div class="col-12 mh-25">
-                                        <img class="mh-25 rounded-top-3" src="<?php if ($rowOperationselect->LogoPicturePath != "Avatar.png" && $rowOperationselect->LogoPicturePath != "") {
-                                                                                echo "" . $rowOperationselect->LogoPicturePath;
-                                                                              } else {
-                                                                                echo "https://images2.alphacoders.com/131/1317606.jpeg";
-                                                                              } ?>" alt="Descrição da Imagem" style="max-height: 100px; width: 100%;">
-                                      </div>
+                                       <div class="col-12 mh-25" style="    max-height: 100px;
+    width: 100%;
+    background-image: url(<?php if ($rowOperationselect->LogoPicturePath != "Avatar.png" && $rowOperationselect->LogoPicturePath != "" && $rowOperationselect->LogoPicturePath != null) {
+                                                        echo "" . $rowOperationselect->LogoPicturePath;
+                                                      } else {
+                                                        echo "https://images2.alphacoders.com/131/1317606.jpeg";
+                                                      } ?>);
+    min-height: 100px;
+    border-top-left-radius: var(--bs-border-radius-lg)!important;
+    border-top-right-radius: var(--bs-border-radius-lg)!important;
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center;">
+               
+              </div>
                                       <div class="row p-0 ml-0 m-0">
                                         <div class="col-6 d-flex justify-content-start p-0 m-0 " style="height: 0px;">
                                           <img src=" <?php if ($rowOperationselect->PersonalUserPicturePath != "Avatar.png" && $rowOperationselect->PersonalUserPicturePath != "") {
@@ -1116,13 +1161,21 @@ padding-right: 6px;
                                 <div class="item celularcard">
                                   <div class="card rounded-4 shadow celularcard">
                                     <div class="card-body p-0 m-0" style="min-height: 300px !IMPORTANT;">
-                                      <div class="col-12 mh-25">
-                                        <img class="mh-25 rounded-top-3" src="<?php if ($rowOperationselect->LogoPicturePath != "Avatar.png" && $rowOperationselect->LogoPicturePath != "") {
-                                                                                echo "" . $rowOperationselect->LogoPicturePath;
-                                                                              } else {
-                                                                                echo "https://images2.alphacoders.com/131/1317606.jpeg";
-                                                                              } ?>" alt="Descrição da Imagem" style="max-height: 100px; width: 100%;">
-                                      </div>
+                                       <div class="col-12 mh-25" style="    max-height: 100px;
+    width: 100%;
+    background-image: url(<?php if ($rowOperationselect->LogoPicturePath != "Avatar.png" && $rowOperationselect->LogoPicturePath != "" && $rowOperationselect->LogoPicturePath != null) {
+                                                        echo "" . $rowOperationselect->LogoPicturePath;
+                                                      } else {
+                                                        echo "https://images2.alphacoders.com/131/1317606.jpeg";
+                                                      } ?>);
+    min-height: 100px;
+    border-top-left-radius: var(--bs-border-radius-lg)!important;
+    border-top-right-radius: var(--bs-border-radius-lg)!important;
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center;">
+               
+              </div>
                                       <div class="row p-0 ml-0 m-0">
                                         <div class="col-6 d-flex justify-content-start p-0 m-0 " style="height: 0px;">
                                           <img src=" <?php if ($rowOperationselect->PersonalUserPicturePath != "Avatar.png" && $rowOperationselect->PersonalUserPicturePath != "") {
@@ -1212,13 +1265,21 @@ padding-right: 6px;
                                 <div class="item celularcard">
                                   <div class="card rounded-4 shadow celularcard">
                                     <div class="card-body p-0 m-0" style="min-height: 300px !IMPORTANT;">
-                                      <div class="col-12 mh-25">
-                                        <img class="mh-25 rounded-top-3" src="<?php if ($rowOperationselect->LogoPicturePath != "Avatar.png" && $rowOperationselect->LogoPicturePath != "") {
-                                                                                echo "" . $rowOperationselect->LogoPicturePath;
-                                                                              } else {
-                                                                                echo "https://images2.alphacoders.com/131/1317606.jpeg";
-                                                                              } ?>" alt="Descrição da Imagem" style="max-height: 100px; width: 100%;">
-                                      </div>
+                                      <div class="col-12 mh-25" style="    max-height: 100px;
+    width: 100%;
+    background-image: url(<?php if ($rowOperationselect->LogoPicturePath != "Avatar.png" && $rowOperationselect->LogoPicturePath != "" && $rowOperationselect->LogoPicturePath != null) {
+                                                        echo "" . $rowOperationselect->LogoPicturePath;
+                                                      } else {
+                                                        echo "https://images2.alphacoders.com/131/1317606.jpeg";
+                                                      } ?>);
+    min-height: 100px;
+    border-top-left-radius: var(--bs-border-radius-lg)!important;
+    border-top-right-radius: var(--bs-border-radius-lg)!important;
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center;">
+               
+              </div>
                                       <div class="row p-0 ml-0 m-0">
                                         <div class="col-6 d-flex justify-content-start p-0 m-0 " style="height: 0px;">
                                           <img src=" <?php if ($rowOperationselect->PersonalUserPicturePath != "Avatar.png" && $rowOperationselect->PersonalUserPicturePath != "") {
@@ -1292,13 +1353,21 @@ padding-right: 6px;
                             <div class="item celularcard">
                               <div class="card rounded-4 shadow celularcard">
                                 <div class="card-body p-0 m-0" style="min-height: 300px !IMPORTANT;">
-                                  <div class="col-12 mh-25">
-                                    <img class="mh-25 rounded-top-3" src="<?php if ($rowOperationselect->LogoPicturePath != "Avatar.png" && $rowOperationselect->LogoPicturePath != "") {
-                                                                            echo "" . $rowOperationselect->LogoPicturePath;
-                                                                          } else {
-                                                                            echo "https://images2.alphacoders.com/131/1317606.jpeg";
-                                                                          } ?>" alt="Descrição da Imagem" style="max-height: 100px; width: 100%;">
-                                  </div>
+                                   <div class="col-12 mh-25" style="    max-height: 100px;
+    width: 100%;
+    background-image: url(<?php if ($rowOperationselect->LogoPicturePath != "Avatar.png" && $rowOperationselect->LogoPicturePath != "" && $rowOperationselect->LogoPicturePath != null) {
+                                                        echo "" . $rowOperationselect->LogoPicturePath;
+                                                      } else {
+                                                        echo "https://images2.alphacoders.com/131/1317606.jpeg";
+                                                      } ?>);
+    min-height: 100px;
+    border-top-left-radius: var(--bs-border-radius-lg)!important;
+    border-top-right-radius: var(--bs-border-radius-lg)!important;
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center;">
+               
+              </div>
                                   <div class="row p-0 ml-0 m-0">
                                     <div class="col-6 d-flex justify-content-start p-0 m-0 " style="height: 0px;">
                                       <img src=" <?php if ($rowOperationselect->PersonalUserPicturePath != "Avatar.png" && $rowOperationselect->PersonalUserPicturePath != "") {
@@ -1377,13 +1446,21 @@ padding-right: 6px;
                                 <div class="item celularcard">
                                   <div class="card rounded-4 shadow celularcard">
                                     <div class="card-body p-0 m-0" style="min-height: 300px !IMPORTANT;">
-                                      <div class="col-12 mh-25">
-                                        <img class="mh-25 rounded-top-3" src="<?php if ($rowOperationselect->LogoPicturePath != "Avatar.png" && $rowOperationselect->LogoPicturePath != "") {
-                                                                                echo "" . $rowOperationselect->LogoPicturePath;
-                                                                              } else {
-                                                                                echo "https://images2.alphacoders.com/131/1317606.jpeg";
-                                                                              } ?>" alt="Descrição da Imagem" style="max-height: 100px; width: 100%;">
-                                      </div>
+                                       <div class="col-12 mh-25" style="    max-height: 100px;
+    width: 100%;
+    background-image: url(<?php if ($rowOperationselect->LogoPicturePath != "Avatar.png" && $rowOperationselect->LogoPicturePath != "" && $rowOperationselect->LogoPicturePath != null) {
+                                                        echo "" . $rowOperationselect->LogoPicturePath;
+                                                      } else {
+                                                        echo "https://images2.alphacoders.com/131/1317606.jpeg";
+                                                      } ?>);
+    min-height: 100px;
+    border-top-left-radius: var(--bs-border-radius-lg)!important;
+    border-top-right-radius: var(--bs-border-radius-lg)!important;
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center;">
+               
+              </div>
                                       <div class="row p-0 ml-0 m-0">
                                         <div class="col-6 d-flex justify-content-start p-0 m-0 " style="height: 0px;">
                                           <img src=" <?php if ($rowOperationselect->PersonalUserPicturePath != "Avatar.png" && $rowOperationselect->PersonalUserPicturePath != "") {

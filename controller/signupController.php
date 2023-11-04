@@ -52,9 +52,10 @@ include_once('../model/classes/conexao.php');
             $resultCadastro = $userClients->cadastrar();
 
             $cadastrarEmpresas = new Empresasview($dbh);
-            $cadastrarEmpresas->setNome($companyname);
-            $cadastrarEmpresas->setTaxid($taxid);
-            $cadastrarEmpresas->setidClient($resultCadastro);
+            $cadastrarEmpresas->setNome($companyname); 
+            $cadastrarEmpresas->setTaxid($taxid); 
+            $cadastrarEmpresas->setpais($contry); 
+            $cadastrarEmpresas->setcolab1($resultCadastro);
             $cadastrarEmpresas->cadastrar();
 
     

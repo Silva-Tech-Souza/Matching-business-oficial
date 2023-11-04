@@ -868,7 +868,7 @@ for( $num=0 ; $num < $total ; $num++ ) {
         if (move_uploaded_file($file_temp, "../view/assets/img/$idempresa/" . $nomeArquivoMaisTipo)) {
           $caminho = "assets/img/$idempresa/$nomeArquivoMaisTipo";
 
-          $empresaDados = new Empresasview($dbh);
+          $empresaDados = new Empresas($dbh);
           $empresaDados->setId($idempresa);
           $empresaDados->setfotoperfil($caminho);
           $results = $empresaDados->atualizar(" fotoperfil = :fotoperfil WHERE id = :id");
@@ -894,7 +894,7 @@ for( $num=0 ; $num < $total ; $num++ ) {
         if (move_uploaded_file($file_temp, "../view/assets/img/$idempresa/" . $nomeArquivoMaisTipo)) {
           $caminho = "assets/img/$idempresa/$nomeArquivoMaisTipo";
 
-          $empresaDados = new Empresasview($dbh);
+          $empresaDados = new Empresas($dbh);
           $empresaDados->setId($idempresa);
           $empresaDados->setfotoperfil($caminho);
           $results = $empresaDados->atualizar(" fotoperfil = :fotoperfil WHERE id = :id");
@@ -923,7 +923,7 @@ for( $num=0 ; $num < $total ; $num++ ) {
         if (move_uploaded_file($file_temp, "../view/assets/img/$idempresa/" . $nomeArquivoMaisTipo)) {
           $caminho = "assets/img/$idempresa/$nomeArquivoMaisTipo";
 
-          $empresaDados = new Empresasview($dbh);
+          $empresaDados = new Empresas($dbh);
           $empresaDados->setId($idempresa);
           $empresaDados->setfotobanner($caminho);
           $results = $empresaDados->atualizar(" fotobanner = :fotobanner WHERE id = :id");
@@ -949,7 +949,7 @@ for( $num=0 ; $num < $total ; $num++ ) {
         $nomeArquivoMaisTipo = "LogoPicture_$idempresa." . $file_type;
         if (move_uploaded_file($file_temp, "../view/assets/img/$idempresa/" . $nomeArquivoMaisTipo)) {
           $caminho = "assets/img/$idempresa/$nomeArquivoMaisTipo";
-          $empresaDados = new Empresasview($dbh);
+          $empresaDados = new Empresas($dbh);
           $empresaDados->setId($idempresa);
           $empresaDados->setfotobanner($caminho);
           $results = $empresaDados->atualizar(" fotobanner = :fotobanner WHERE id = :id");
@@ -964,7 +964,7 @@ for( $num=0 ; $num < $total ; $num++ ) {
   $country = $_POST["country"];
   $descricao = $_POST["descricao"];
 
-  $empresaDados = new Empresasview($dbh);
+  $empresaDados = new Empresas($dbh);
   $empresaDados->setId($idempresa);
   $empresaDados->setNome($nomeempresa);
   $empresaDados->setredesocial($redesocial);

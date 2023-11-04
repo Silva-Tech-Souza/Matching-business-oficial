@@ -8,7 +8,7 @@
                 </button>
             </div>
             <div class="modal-body">
-                <form method="POST" id="editarperfilforms" enctype="multipart/form-data" action="../controller/profileController.php">
+                <form method="POST" id="editarperfilforms" enctype="multipart/form-data" action="../controller/empresaController.php">
                     <div class="row">
                         <input type="hidden" name="idempresa" value="<?php echo $idempresa; ?>">
                         <div class="col-sm-12 ">
@@ -46,7 +46,7 @@
                         <div class="col-sm-12 mt-4">
                             <div class="form-group">
                                 <label class="txtinput sizetituloedit">Company Name:</label>
-                                <input class="form-control bordainput sizeinputedit" value="<?php echo $nomeempresa; ?>" autocomplete="off" name="nomeempresa" type="text">
+                                <input class="form-control bordainput sizeinputedit" required value="<?php echo $nomeempresa; ?>" autocomplete="off" name="nomeempresa" type="text">
                                 <datalist id="referencia">
                                 </datalist>
                             </div>
@@ -73,7 +73,7 @@
                         <div class="col-sm-12 mt-4">
                             <div class="form-group">
                                 <label class="txtinput sizetituloedit">Country:</label>
-                                <select class="form-control bordainput sizeinputedit" id="country-select" name="country">
+                                <select required class="form-control bordainput sizeinputedit" id="country-select" name="country">
                                     <option value="">Select a country</option>
                                     <?php
                                     include_once('../model/classes/tblCountry.php');

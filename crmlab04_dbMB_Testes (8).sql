@@ -1,3 +1,4 @@
+-- Active: 1694553335993@@127.0.0.1@3306@crmlab04_dbmb_testes
 -- phpMyAdmin SQL Dump
 -- version 5.2.1
 -- https://www.phpmyadmin.net/
@@ -6,6 +7,8 @@
 -- Tempo de geração: 04/11/2023 às 13:24
 -- Versão do servidor: 5.7.23-23
 -- Versão do PHP: 8.1.16
+
+USE crmlab04_dbmb_testes;
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
@@ -20,18 +23,6 @@ SET time_zone = "+00:00";
 --
 -- Banco de dados: `crmlab04_dbMB_Testes`
 --
-
-DELIMITER $$
---
--- Procedimentos
---
-$$
-
-$$
-
-$$
-
-DELIMITER ;
 
 -- --------------------------------------------------------
 

@@ -2,7 +2,7 @@
 include_once('../../model/classes/conexao.php');
 include_once("../../model/classes/tblEmpresas.php");
 
-$empresas = new Empresasview($dbh);
+$empresas = new Empresas($dbh);
 $resultsempresas = $empresas->consulta("LIMIT 12");
 if ($resultsempresas != null) {
     foreach ($resultsempresas as $rowempresas) {

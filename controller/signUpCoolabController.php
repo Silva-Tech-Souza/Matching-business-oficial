@@ -30,22 +30,22 @@ include_once('../model/classes/tblEmpresas.php');
             $resultCadastro = $userClients->cadastrar();
 
             if($qtdcolab == "1"){
-                $cadastrarEmpresas = new Empresasview($dbh);
+                $cadastrarEmpresas = new Empresas($dbh);
                 $cadastrarEmpresas->setTaxid($taxid);  
                 $cadastrarEmpresas->setcolab2($resultCadastro);
                 $cadastrarEmpresas->atualizar(" colab2 = :colab2 WHERE taxid = :taxid ");
             }else if($qtdcolab == "2"){
-                $cadastrarEmpresas = new Empresasview($dbh);
+                $cadastrarEmpresas = new Empresas($dbh);
                 $cadastrarEmpresas->setTaxid($taxid);  
                 $cadastrarEmpresas->setcolab3($resultCadastro);
                 $cadastrarEmpresas->atualizar(" colab3 = :colab3 WHERE taxid = :taxid ");
             }else if($qtdcolab == "3"){
-                $cadastrarEmpresas = new Empresasview($dbh);
+                $cadastrarEmpresas = new Empresas($dbh);
                 $cadastrarEmpresas->setTaxid($taxid);  
                 $cadastrarEmpresas->setcolab4($resultCadastro);
                 $cadastrarEmpresas->atualizar(" colab4 = :colab4 WHERE taxid = :taxid ");
             }else if($qtdcolab == "4"){
-                $cadastrarEmpresas = new Empresasview($dbh);
+                $cadastrarEmpresas = new Empresas($dbh);
                 $cadastrarEmpresas->setTaxid($taxid);  
                 $cadastrarEmpresas->setcolab5($resultCadastro);
                 $cadastrarEmpresas->atualizar(" colab5 = :colab5 WHERE taxid = :taxid ");

@@ -35,7 +35,7 @@ if ($results != null) {
     }
 }
 $adm = "";
-$empresaDados = new Empresasview($dbh);
+$empresaDados = new Empresas($dbh);
 $empresaDados->setTaxid($taxidempresa);
 $results = $empresaDados->consulta("WHERE taxid = :taxid");
 if ($results != null) {

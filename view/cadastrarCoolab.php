@@ -6,11 +6,11 @@ if ($_SESSION["id"] < 0 || $_SESSION["id"] == "") {
   header("Location: login.php");
 }
 
-$txaid = $_GET["taxid"];
+$txaid = openssl_decrypt($_GET["dixat"], openssl_get_cipher_methods()[2] ,"matchingBussinessMelhorSistema");
 date_default_timezone_set('America/Sao_Paulo'); 
 include_once('../model/classes/tblEmpresas.php');
 $NOMEEMRPESA = "";
-$empresas = new Empresasview($dbh);
+$empresas = new Empresas($dbh);
 
 $empresas->setTaxid($txaid);
 

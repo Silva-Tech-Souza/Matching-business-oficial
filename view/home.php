@@ -830,7 +830,30 @@ if ($resultsCountry != null) {
                                     <?php
 
                                     $productss = new Products($dbh);
-                                    $resultsProdutoss = $productss->consulta("ORDER BY idProduct ASC");
+
+                                    if ($corebusiness == 2) {
+                                        //Flag A
+
+                                        $resultsProdutoss = $productss->consulta(" WHERE Category IN (3, 4,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23) ORDER BY idProduct ASC");
+
+                                    } else if ($corebusiness == 3 || $corebusiness == 4) {
+                                        //Flag B
+
+                                        $resultsProdutoss = $productss->consulta(" WHERE Category IN (2, 5) ORDER BY idProduct ASC");
+
+                                    } else if ($corebusiness == 5) {
+                                        //Flag C
+        
+                                        $resultsProdutoss = $productss->consulta(" WHERE Category IN (3,4) ORDER BY idProduct ASC");
+
+                                    } else {
+                                        //Flag D
+        
+                                        $resultsProdutoss = $productss->consulta(" ORDER BY idProduct ASC");
+                                        
+                                    }
+
+                                    
                                     if ($resultsProdutoss != null) {
 
                                         foreach ($resultsProdutoss as $rowProdutos) { ?>
@@ -891,7 +914,7 @@ if ($resultsCountry != null) {
                                                 include_once('../model/classes/conexao.php');
                                                 include_once("../model/classes/tblEmpresas.php");
 
-                                                $empresas = new Empresasview($dbh);
+                                                $empresas = new Empresas($dbh);
                                                 $resultsempresas = $empresas->consulta("");
                                                 if ($resultsempresas != null) {
 

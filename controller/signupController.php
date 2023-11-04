@@ -51,7 +51,7 @@ include_once('../model/classes/conexao.php');
             $userClients->settaxid($taxid);
             $resultCadastro = $userClients->cadastrar();
 
-            $cadastrarEmpresas = new Empresasview($dbh);
+            $cadastrarEmpresas = new Empresas($dbh);
             $cadastrarEmpresas->setNome($companyname); 
             $cadastrarEmpresas->setTaxid($taxid); 
             $cadastrarEmpresas->setpais($contry); 

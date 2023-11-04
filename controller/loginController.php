@@ -37,7 +37,7 @@ if(isset($_COOKIE["remember_me"])){
                 $_SESSION['lName'] = $row->LastName; 
 
                 include_once('../model/classes/tblEmpresas.php');
-                $empresas = new Empresasview($dbh); 
+                $empresas = new Empresas($dbh); 
                 $empresas->setidClient($row->idClient);
                 $empresas->setTaxid($row->taxid);
 

@@ -11,7 +11,7 @@
             <div class="modal-body"  style="padding: 10px !important;">
 
                 <div class="row">
-                    <form method="POST" enctype="multipart/form-data" action="../controller/profileController.php">
+                    <form method="POST" enctype="multipart/form-data" action="../controller/empresaController.php">
                         <p style=" font-size: medium;">
                             Write the employee's email, and Matching Business will send a link to register
                         </p>

@@ -33,7 +33,7 @@ $iduser = $_SESSION["id"];
                 include_once('../../model/classes/conexao.php');
                 include_once("../../model/classes/tblEmpresas.php");
 
-                $empresas = new Empresasview($dbh);
+                $empresas = new Empresas($dbh);
                 $resultsempresas = $empresas->consulta("LIMIT 1");
                 if ($resultsempresas != null) {
                     $numEmpresa = count($resultsempresas);

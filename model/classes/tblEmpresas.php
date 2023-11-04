@@ -1,6 +1,6 @@
 <?php
 
-class Empresasview
+class Empresas
 {
 
     protected $id = null;

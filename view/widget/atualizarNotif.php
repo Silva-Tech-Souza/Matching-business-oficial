@@ -61,7 +61,9 @@ $iduser = $_SESSION["id"];
                 $textNotif = "<p  class='d-inline' style='color: white; font-size: 11px;'>" . $usernamepost . " </p><p class='d-inline' style='color: #f2f2f2;'></p> <p class='d-inline' style='color: #62B7D8;'>commented  </p><p class='d-inline' style='color: #f2f2f2;'>  on your post!</p><br>";
             } else if ($idTipoNotif == 6) {
                 $textNotif = "<p  class='d-inline' style='color: white; font-size: 11px;'>" . $usernamepost . " </p><p class='d-inline' style='color: #f2f2f2;'></p> <p class='d-inline' style='color: #62B7D8;'>was found in  </p><p class='d-inline' style='color: #f2f2f2;'>  your search profile!</p><br>";
-            }
+            } else if ($idTipoNotif == 9) {
+                            $textNotif = "<p  class='d-inline' style='color: white; font-size: 11px;'>" . $usernamepost . " </p><p class='d-inline' style='color: #f2f2f2;'></p> <p class='d-inline' style='color: #62B7D8;'>sent a message   </p><p class='d-inline' style='color: #f2f2f2;'>  to your profile!</p><br>";
+                        }
             $postDateTime = new DateTime($rownotif->datahora);
 
             // Obtenha o objeto DateTime da data e hora atual
@@ -102,7 +104,7 @@ $iduser = $_SESSION["id"];
                 <input type="hidden" id="url" name="url" value="<?php echo $rownotif->url; ?>">
                 <a class="notification notif-zoom" href="<?php echo $rownotif->url;?>">
 
-                    <div class="row justify-content-start" href="<?php echo $rownotif->url;?>">
+                    <div class="row justify-content-start" href="<?php if($idTipoNotif != 6 && $idTipoNotif != 9){ echo $rownotif->url; }else if ($idTipoNotif == 9){echo $rownotif->url."?idperfilchat=$idCliente";}else{ echo 'viewProfile.php?profile=' .$rownotif->url; }?>">
                         <div class="col-2 ">
                             <img src="<?php
                                         if ($imgpostuser != "Avatar.png" && $imgpostuser != "") {
@@ -111,7 +113,7 @@ $iduser = $_SESSION["id"];
                                             echo "assets/img/Avatar.png";
                                         }
                                         ?>
-                                            " alt="user" style="min-height: 35px;" class="nav-profile-img">
+                                            " alt="user" style="min-height: 35px; object-fit: cover;" class="nav-profile-img">
                         </div>
                         <div class="col-8 justify-itens-start" style="text-align: start; margin-left: 2px;">
                             <span>

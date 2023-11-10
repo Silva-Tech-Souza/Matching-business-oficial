@@ -202,7 +202,7 @@ class Empresas
             $query->bindParam(':colab1', $this->colab1, PDO::PARAM_INT);
         }
         if ($this->pais != null) {
-            $query->bindParam(':pais', $this->idClient, PDO::PARAM_INT);
+            $query->bindParam(':pais', $this->pais, PDO::PARAM_INT);
         }
 
         $query->execute();

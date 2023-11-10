@@ -51,6 +51,10 @@ if ($results != null) {
     }
 }
 
+if($corebusiness == "" || $corebusiness == null || $corebusiness == 0){
+    header("Location: qualificacao.php");
+}
+
 //$sqlCountry = "SELECT * from tblcountry WHERE idCountry = :idCountry";
 //$queryCountry = $dbh->prepare($sqlCountry);
 //$queryCountry->bindParam(':idCountry', $idcountry, PDO::PARAM_INT);
@@ -514,6 +518,9 @@ if ($resultsCountry != null) {
             display: none !important;
             margin-left: 0 !important;
         }
+        ::-webkit-scrollbar-thumb {
+    background: transparent !important;
+}
     </style>
 </head>
 
@@ -593,10 +600,12 @@ if ($resultsCountry != null) {
             <div class="row telacheia margemmnavbar">
 
                 <!-- Esquerda -->
-                <div class="col-3 d-none d-md-block justify-content-start position-fixed overflow-auto scrollable-column">
+                <div class="col-3 d-none d-md-block justify-content-start position-fixed overflow-auto scrollable-column" style="
+    height: 100%;
+">
                     <div class="card rounded-4 shadow">
                         <div class="card-body p-0 m-0">
-                             <div class="col-12 mh-25" style="    max-height: 100px;
+                             <div class="col-12 mh-25" style="max-height: 100px;
     width: 100%;
     background-image: url(<?php if ($imgcapa != "Avatar.png" && $imgcapa != "" && $imgcapa != null) {
                                                         echo "" . $imgcapa;
@@ -617,11 +626,11 @@ if ($resultsCountry != null) {
                                                     echo "" . $imgperfil;
                                                 } else {
                                                     echo "assets/img/Avatar.png";
-                                                } ?>" alt="user" class="border-2 mini-profile-img " onclick="toggleMenu()">
+                                                } ?>" alt="user" class="border-2 mini-profile-img "style="object-fit: cover; box-shadow: 0px -3px 11px #0000005e;" >
                                 </div>
-                                <div class="col-5 p-0 m-0">
-                                    <h3 class="fonte-titulo"><?php echo $username; ?></h3>
-                                    <h6 class="fonte-principal"><?php echo $jobtitle . ' at ' . $companyname ?></h6>
+                                <div class="col-7 p-0 m-0">
+                                    <h3 class="fonte-titulo"><?php echo $companyname; ?></h3>
+                                    <h6 class="fonte-principal" style="font-size: small;"><?php echo $username ?></h6>
                                 </div>
                             </div>
                             <div class="col-12 m-0 p-0">
@@ -694,7 +703,7 @@ if ($resultsCountry != null) {
                             </div>
                         </div>
                     </div>
-                    <div class="card rounded-4 shadow  treeviewmin panddingardtreeview" style="margin-bottom: 100px !important;">
+                    <div class="card rounded-4 shadow  treeviewmin panddingardtreeview" style="margin-bottom: 100px !important; height: 100%;max-height: -webkit-fill-available;">
                         <div class="card-body p-0">
                             <div class="col-12 mh-25">
                                 <h3 class="color-branco">Matching Business Online <div style="text-align: end; width: 24px;float: right;position: initial;    color: #62b1ff;"><?php $numerouser2 = new UserClients($dbh);
@@ -826,7 +835,7 @@ if ($resultsCountry != null) {
                             </div>
                             <div class="card shadow rounded-4 card-post-style  mt-4 produtos-feed-scrollbar">
                                 <h3 class="texto-titulo" style="margin: inherit;"> &nbsp;&nbsp;Featured Products</h3>
-                                <div class="rowProduct overflow-auto produtos-feed-scrollbar row-produto-card-pro" style="margin-bottom: 17px;padding: 10px;">
+                                 <div class="rowProduct overflow-auto produtos-feed-scrollbar row-produto-card-pro" style="margin-bottom: 17px;padding: 10px;" id="produtos-feed">
                                     <?php
 
                                     $productss = new Products($dbh);
@@ -927,7 +936,7 @@ if ($resultsCountry != null) {
                                                 ?>
 
                                                 <div class="card shadow p-0 bcolor rounded-4 mt-4 mb-4">
-                                                <div class="card-body shadow d-flex flex-column rounded-4 color-cinza">
+                                                <div class="card-body shadow d-flex flex-column rounded-4 color-cinza" style="background-color: #d3d3d3;">
 
                                                     <div class=" row align-content-center">
                                                         <div class="row">
@@ -936,14 +945,15 @@ if ($resultsCountry != null) {
 
                                                             </div>
                                                             <div class="col-8 p-2 color-preto" style="padding-left: 26px !important;">
-                                                                <a href="#" class="color-preto text-decoration-none">
+                                                                <a href="empresa.php?idtax=<?php echo  $rowempresas->taxid;?>" class="color-preto text-decoration-none">
                                                                     <h3 class="fonte-titulo text-decoration-none">
                                                                         <?php
-                                                                        echo $rowempresas-> nome;
+                                                                        echo $rowempresas->nome;
                                                                         ?>
                                                                     </h3>
+                                                                    <h5>Sponsored</h5>
                                                                 </a>
-
+    
                                                             </div>
                                                             <div class="col-3 d-flex text-right color-preto justify-content-end">
 
@@ -954,15 +964,36 @@ if ($resultsCountry != null) {
 
                                                     </div>
                                                     <div class="col-12" style="padding: inherit;">
-
-
+  <?php
+                                                     $numeroCaracteres2 = strlen($rowempresas->descricao);
+                                                    if ($numeroCaracteres2 > 200) {
+                                                        echo "
+                                                        <div id='textoEx" .$rowempresas->id .$rowfeed->IdFeed. "' style='height: 8em; overflow: hidden;'>
+                                                            <p class='fonte-principal color-preto' style='font-size: larger; color: #1d1d1d;'>
+                                                                <br>
+                                                                " . $rowempresas->descricao . "
+                                                            </p>
+                                                        </div>";
+                                                        echo "<a href='javascript:void(0)' id='btn-vm" . $rowempresas->id.$rowfeed->IdFeed . "' onClick='alterarLimite(" . $rowempresas->id.$rowfeed->IdFeed . ")' style='color: #0308b0;font-size: larger;'>Ver mais</a>";
+                                                    } else {
+                                                        echo "
+                                                        <div id='textoEx" . $rowempresas->id .$rowfeed->IdFeed. "'>
+                                                            <p class='fonte-principal color-preto' style='font-size: larger; color: #1d1d1d;'>
+                                                                <br>
+                                                                " . $rowempresas->descricao . "
+                                                            </p>
+                                                        </div>";
+                                                    }
+                                                    ?>
+                                                    <br>
+                                                
 
                                                     </div>
 
                                                     <div class="row col-12 align-content-center justify-content-center">
-                                                        <?php if ($imgpostempresa != "Avatar.png" && $imgpostempresa != "" && file_exists("" . $imgpostempresa)) { ?>
+                                                       <!-- <?php if ($imgpostempresa != "Avatar.png" && $imgpostempresa != "" && file_exists("" . $imgpostempresa)) { ?>
                                                             <img class="img-feed-styleset" src="<?php echo $imgpostempresa; ?>" alt="" width="100%">
-                                                        <?php }?>
+                                                        <?php }?> -->
                                                     </div>
                                                     
                                                 </div>
@@ -1020,6 +1051,8 @@ if ($resultsCountry != null) {
                                                     $usernamepost = $rowuserpost->FirstName . " " . $rowuserpost->LastName;
                                                     $idpostoperation = $rowuserpost->CoreBusinessId;
                                                     $imgpostuser = $rowuserpost->PersonalUserPicturePath;
+                                                    $jobtitlepost = $rowuserpost->JobTitle;
+                                                    $companynamepost = $rowuserpost->CompanyName;
                                                 }
                                             }
                                     ?>
@@ -1033,7 +1066,7 @@ if ($resultsCountry != null) {
                                                                             echo "" . $imgpostuser;
                                                                         } else {
                                                                             echo "assets/img/Avatar.png";
-                                                                        } ?>" alt="user" class="nav-profile-img" style="min-height: 35px;" onerror="this.onerror=null; this.src='/assets/img/Avatar.png'">
+                                                                        } ?>" alt="user" class="nav-profile-img" style="min-height: 35px;border: 1px solid #00000042;object-fit: cover;" onerror="this.onerror=null; this.src='/assets/img/Avatar.png'">
 
                                                         </div>
                                                         <div class="col-8 p-2 color-preto" style="padding-left: 20px  !important;">
@@ -1063,7 +1096,7 @@ if ($resultsCountry != null) {
 
                                                             if ($resultsOperationpost != null) {
                                                                 foreach ($resultsOperationpost as $rowOperationpost) {
-                                                                    echo $rowOperationpost->NmOperation;
+                                                                    echo $rowOperationpost->NmOperation . " / ". $jobtitlepost . ' at ' . $companynamepost ;
                                                                 }
                                                             }
                                                             ?><br>
@@ -1260,7 +1293,7 @@ if ($resultsCountry != null) {
                                                                                         echo "" . $rowucometarios->PersonalUserPicturePath;
                                                                                     } else {
                                                                                         echo "assets/img/Avatar.png";
-                                                                                    } ?>" alt="user" class="nav-profile-img"  style="min-height: 21px; width: 33px;">
+                                                                                    } ?>" alt="user" class="nav-profile-img" style="min-height: 35px;border: 1px solid #00000042;object-fit: cover;" style="min-height: 21px; width: 33px;">
                                                                     </div>
                                                                     <div class="col-11">
                                                                         <div class="col-10 d-flex flex-column justify-content-start align-items-start color-preto" style="height: auto;">
@@ -1602,17 +1635,17 @@ font-size: small;
         </div>
     </div>
     <div id="modalViewProduto" class="modal custom-modal fade" role="dialog">
-        <div class="modal-dialog modal-dialog-centered modal-lg">
-            <div class="modal-content">
+    <div class="modal-dialog modal-dialog-centered modal-lg">
+      <div class="modal-content">
 
-                <div class="modal-body">
-                    <h1 id="modalProductName" class="mb-0"></h1>
-                    <p id="modalProductDescription" class="color-cinza-b produto-desc-text"></p>
-                </div>
-
-            </div>
+        <div class="modal-body">
+          <h1 id="modalProductName" class="mb-0"></h1>
+          <p id="modalProductDescription" class="color-cinza-b produto-desc-text"></p>
         </div>
+
+      </div>
     </div>
+  </div>
     
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.bundle.min.js" integrity="sha384-HwwvtgBNo3bZJJLYd8oVXjrBZt8cqVSpeBNS5n7C8IVInixGAoxmnlMuBnhbgrkm" crossorigin="anonymous"></script>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
@@ -2208,6 +2241,19 @@ font-size: small;
             }
 
         };
+    </script>
+    
+    <script>
+        // JavaScript para clonar e adicionar cards novamente
+        const produtosFeed = document.getElementById('produtos-feed');
+        const cardProdutoUni = document.querySelectorAll('.card-produto-uni');
+
+        const cloneCards = () => {
+            const cardsClone = Array.from(cardProdutoUni).map((card) => card.cloneNode(true));
+            cardsClone.forEach((card) => produtosFeed.appendChild(card));
+        };
+
+        cloneCards();
     </script>
 
 </body>

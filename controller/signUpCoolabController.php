@@ -15,6 +15,10 @@ include_once('../model/classes/tblEmpresas.php');
         $contry =  htmlspecialchars($_POST["country"]);
         $companyname =  htmlspecialchars($_POST["nomeEmpresa"]);
         $taxid =  htmlspecialchars($_POST["taxid"]);
+        
+        $idoperation =  htmlspecialchars($_POST["idoperation"]);
+        $corebusiness =  htmlspecialchars($_POST["corebusiness"]);
+        $satBusinessId =  htmlspecialchars($_POST["satBusinessId"]);
 
         if($taxid != ""){
             $userClients = new UserClients($dbh);
@@ -27,15 +31,31 @@ include_once('../model/classes/tblEmpresas.php');
             $userClients->setemail($email);
             $userClients->setWhatsAppNumber($phone);
             $userClients->settaxid($taxid);
+         
+            
             $resultCadastro = $userClients->cadastrar();
-
+            
+            
+            $userClients2 = new UserClients($dbh);
+            $userClients2->setidClient($resultCadastro);
+            $userClients2->setCoreBusinessId($corebusiness);
+            $userClients2->setSatBusinessId($satBusinessId); 
+            $userClients2->setIdOperation($idoperation);
+            if(isset($_POST["category"])){
+              
+                  $userClients2->atualizar("CoreBusinessId = :CoreBusinessId, IdOperation = :IdOperation, SatBusinessId = :SatBusinessId WHERE idClient = :idClient");
+            }else{
+              
+                  $userClients2->atualizar("CoreBusinessId = :CoreBusinessId, IdOperation = NULL, SatBusinessId = :SatBusinessId WHERE idClient = :idClient");
+            }
+            
             if($qtdcolab == "1"){
-                $cadastrarEmpresas = new Empresas($dbh);
+              $cadastrarEmpresas = new Empresas($dbh);
                 $cadastrarEmpresas->setTaxid($taxid);  
                 $cadastrarEmpresas->setcolab2($resultCadastro);
                 $cadastrarEmpresas->atualizar(" colab2 = :colab2 WHERE taxid = :taxid ");
             }else if($qtdcolab == "2"){
-                $cadastrarEmpresas = new Empresas($dbh);
+               $cadastrarEmpresas = new Empresas($dbh);
                 $cadastrarEmpresas->setTaxid($taxid);  
                 $cadastrarEmpresas->setcolab3($resultCadastro);
                 $cadastrarEmpresas->atualizar(" colab3 = :colab3 WHERE taxid = :taxid ");

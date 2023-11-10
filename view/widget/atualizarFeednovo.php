@@ -45,7 +45,7 @@ $iduser = $_SESSION["id"];
                 ?>
 
                 <div class="card shadow p-0 bcolor rounded-4 mt-4 mb-4">
-                <div class="card-body shadow d-flex flex-column rounded-4 color-cinza">
+                <div class="card-body shadow d-flex flex-column rounded-4 color-cinza" style="background-color: #d3d3d3;">
 
                     <div class=" row align-content-center">
                         <div class="row">
@@ -54,12 +54,13 @@ $iduser = $_SESSION["id"];
 
                             </div>
                             <div class="col-8 p-2 color-preto" style="padding-left: 26px !important;">
-                                <a href="#" class="color-preto text-decoration-none">
+                                <a href="empresa.php?idtax=<?php echo  $rowempresas->taxid;?>" class="color-preto text-decoration-none">
                                     <h3 class="fonte-titulo text-decoration-none">
                                         <?php
                                         echo $rowempresas-> nome;
                                         ?>
                                     </h3>
+                                     <h5>Sponsored</h5>
                                 </a>
 
                             </div>
@@ -72,7 +73,27 @@ $iduser = $_SESSION["id"];
 
                     </div>
                     <div class="col-12" style="padding: inherit;">
-
+ <?php
+                                                     $numeroCaracteres2 = strlen($rowempresas->descricao);
+                                                    if ($numeroCaracteres2 > 200) {
+                                                        echo "
+                                                        <div id='textoEx" .$rowempresas->id . "' style='height: 8em; overflow: hidden;'>
+                                                            <p class='fonte-principal color-preto' style='font-size: larger; color: #1d1d1d;'>
+                                                                <br>
+                                                                " . $rowempresas->descricao . "
+                                                            </p>
+                                                        </div>";
+                                                        echo "<a href='javascript:void(0)' id='btn-vm" . $rowempresas->id . "' onClick='alterarLimite(" . $rowempresas->id . ")' style='color: #0308b0;font-size: larger;'>Ver mais</a>";
+                                                    } else {
+                                                        echo "
+                                                        <div id='textoEx" . $rowempresas->id . "'>
+                                                            <p class='fonte-principal color-preto' style='font-size: larger; color: #1d1d1d;'>
+                                                                <br>
+                                                                " . $rowempresas->descricao . "
+                                                            </p>
+                                                        </div>";
+                                                    }
+                                                    ?>
 
 
                     </div>
@@ -138,6 +159,8 @@ $iduser = $_SESSION["id"];
                     $usernamepost = $rowuserpost->FirstName . " " . $rowuserpost->LastName;
                     $idpostoperation = $rowuserpost->CoreBusinessId;
                     $imgpostuser = $rowuserpost->PersonalUserPicturePath;
+                    $jobtitlepost = $rowuserpost->JobTitle;
+                    $companynamepost = $rowuserpost->CompanyName;
                 }
             }
     ?>
@@ -151,7 +174,7 @@ $iduser = $_SESSION["id"];
                                                 echo "" . $imgpostuser;
                                             } else {
                                                 echo "assets/img/Avatar.png";
-                                            } ?>" alt="user" class="nav-profile-img  "style="min-height: 35px;"  onerror="this.onerror=null; this.src='assets/img/Avatar.png'">
+                                            } ?>" alt="user" class="nav-profile-img  "style="min-height: 35px;border: 1px solid #00000042;object-fit: cover;"  onerror="this.onerror=null; this.src='assets/img/Avatar.png'">
 
                             </div>
                             <div class="col-8 p-2 color-preto" style="padding-left: 26px !important;">
@@ -181,7 +204,7 @@ $iduser = $_SESSION["id"];
 
                                 if ($resultsOperationpost != null) {
                                     foreach ($resultsOperationpost as $rowOperationpost) {
-                                        echo $rowOperationpost->NmOperation;
+                                         echo $rowOperationpost->NmOperation . " / ". $jobtitlepost . ' at ' . $companynamepost ;
                                     }
                                 }
                                 ?><br>
@@ -375,7 +398,7 @@ $iduser = $_SESSION["id"];
                                                                                         echo "" . $rowucometarios->PersonalUserPicturePath;
                                                                                     } else {
                                                                                         echo "assets/img/Avatar.png";
-                                                                                    } ?>" alt="user" class="nav-profile-img" style="min-height: 21px;  width: 33px;">
+                                                                                    } ?>" alt="user" class="nav-profile-img" style="min-height: 35px;border: 1px solid #00000042;object-fit: cover;">
                                                                     </div>
                                                                     <div class="col-11">
                                                                         <div class="col-10 d-flex flex-column justify-content-start align-items-start color-preto" style="height: auto;">

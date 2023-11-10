@@ -1,196 +1,139 @@
 <?php
 
 include("../model/classes/conexao.php");
-
+include_once('../model/classes/tblEmpresas.php');
 if(isset($_POST["editarPerfilempresa"])){
-
-    include_once('../model/classes/tblEmpresas.php');
-
-    $idEmpresa = $_POST["idempresa"];
-    $nomeEmpres = $_POST["nomeempresa"];
+    $idempresa = $_POST["idempresa"];
+    $arquivoUser = $_FILES['user-image'];
+    $arquivoCompany = $_FILES['banner-image'];
+  
+  
+    if ($arquivoUser != "" && $arquivoUser != 0) {
+      if (file_exists("../view/assets/img/$idempresa")) {
+        $userfile = $arquivoUser['name'];
+        $file_temp = $arquivoUser['tmp_name'];
+  
+        $file_type = $userfile;
+        $file_type_length = strlen($file_type) - 3;
+        $file_type = substr($file_type, $file_type_length);
+  
+        $file_type = strtolower($file_type);
+        if ($file_type == 'peg') {
+          $file_type = 'jpeg';
+        }
+        if ($file_type != 'peg' and $file_type != 'jpg' and $file_type != 'gif' and $file_type != 'png') {
+        } else {
+          $nomeArquivoMaisTipo = "PersonalUser_$idempresa." . $file_type;
+          if (move_uploaded_file($file_temp, "../view/assets/img/$idempresa/" . $nomeArquivoMaisTipo)) {
+            $caminho = "assets/img/$idempresa/$nomeArquivoMaisTipo";
+  
+            $empresaDados = new Empresas($dbh);
+            $empresaDados->setId($idempresa);
+            $empresaDados->setfotoperfil($caminho);
+            $results = $empresaDados->atualizar(" fotoperfil = :fotoperfil WHERE id = :id");
+          }
+        }
+      } else {
+        mkdir("../view/assets/img/$idempresa", 0755);
+        $userfile = $arquivoUser['name'];
+        $file_temp = $arquivoUser['tmp_name'];
+  
+        $file_type = $userfile;
+        $file_type_length = strlen($file_type) - 3;
+        $file_type = substr($file_type, $file_type_length);
+  
+        $file_type = strtolower($file_type);
+  
+        if ($file_type == 'peg') {
+          $file_type = 'jpeg';
+        }
+        if ($file_type != 'peg' and $file_type != 'jpg' and $file_type != 'gif' and $file_type != 'png') {
+        } else {
+          $nomeArquivoMaisTipo = "PersonalUser_$idempresa." . $file_type;
+          if (move_uploaded_file($file_temp, "../view/assets/img/$idempresa/" . $nomeArquivoMaisTipo)) {
+            $caminho = "assets/img/$idempresa/$nomeArquivoMaisTipo";
+  
+            $empresaDados = new Empresas($dbh);
+            $empresaDados->setId($idempresa);
+            $empresaDados->setfotoperfil($caminho);
+            $results = $empresaDados->atualizar(" fotoperfil = :fotoperfil WHERE id = :id");
+          }
+        }
+      }
+    }
+  
+    if ($arquivoCompany != "" && $arquivoCompany != 0) {
+      if (file_exists("../view/assets/img/$idempresa")) {
+        $userfile = $arquivoCompany['name'];
+        $file_temp = $arquivoCompany['tmp_name'];
+  
+        $file_type = $userfile;
+        $file_type_length = strlen($file_type) - 3;
+        $file_type = substr($file_type, $file_type_length);
+  
+        $file_type = strtolower($file_type);
+  
+        if ($file_type == 'peg') {
+          $file_type = 'jpeg';
+        }
+        if ($file_type != 'peg' and $file_type != 'jpg' and $file_type != 'gif' and $file_type != 'png') {
+        } else {
+          $nomeArquivoMaisTipo = "LogoPicture_$idempresa." . $file_type;
+          if (move_uploaded_file($file_temp, "../view/assets/img/$idempresa/" . $nomeArquivoMaisTipo)) {
+            $caminho = "assets/img/$idempresa/$nomeArquivoMaisTipo";
+  
+            $empresaDados = new Empresas($dbh);
+            $empresaDados->setId($idempresa);
+            $empresaDados->setfotobanner($caminho);
+            $results = $empresaDados->atualizar(" fotobanner = :fotobanner WHERE id = :id");
+          }
+        }
+      } else {
+        mkdir("../view/assets/img/$idempresa", 0755);
+        $userfile = $arquivoCompany['name'];
+        $file_temp = $arquivoCompany['tmp_name'];
+  
+        $file_type = $userfile;
+        $file_type_length = strlen($file_type) - 3;
+        $file_type = substr($file_type, $file_type_length);
+  
+        $file_type = strtolower($file_type);
+  
+  
+        if ($file_type == 'peg') {
+          $file_type = 'jpeg';
+        }
+        if ($file_type != 'peg' and $file_type != 'jpg' and $file_type != 'gif' and $file_type != 'png') {
+        } else {
+          $nomeArquivoMaisTipo = "LogoPicture_$idempresa." . $file_type;
+          if (move_uploaded_file($file_temp, "../view/assets/img/$idempresa/" . $nomeArquivoMaisTipo)) {
+            $caminho = "assets/img/$idempresa/$nomeArquivoMaisTipo";
+            $empresaDados = new Empresas($dbh);
+            $empresaDados->setId($idempresa);
+            $empresaDados->setfotobanner($caminho);
+            $results = $empresaDados->atualizar(" fotobanner = :fotobanner WHERE id = :id");
+          }
+        }
+      }
+    }
+  
+    $nomeempresa = $_POST["nomeempresa"];
     $redesocial = $_POST["redesocial"];
     $site = $_POST["site"];
     $country = $_POST["country"];
     $descricao = $_POST["descricao"];
-    $arquivoUser = $_FILES['user-image'];
-    $arquivoBanner = $_FILES['banner-image'];
-
-    if(isset($arquivoBanner)){
-
-        if (!file_exists("../view/assets/img/empresas/banner/$idEmpresa")) {
-
-            mkdir("../view/assets/img/empresas/banner/$idEmpresa", 0755);
-
-        }
-
-        var_dump($arquivoBanner);
-
-        $nameFile = $arquivoBanner['name'];
-        $file_temp = $arquivoBanner['tmp_name'];
-        $file_type = $arquivoBanner["type"];
-
-        if ($file_type == 'image/jpeg' || $file_type == 'image/jpg' || $file_type == 'image/gif' || $file_type == 'image/png') {
-
-            if($file_type =='image/jpeg'){
-
-                $nomeArquivoMaisTipo = "EmpresaUser_$idEmpresa.jpeg";
-
-            }else if($file_type =='image/jpg'){
-
-                $nomeArquivoMaisTipo = "EmpresaUser_$idEmpresa.jpg";
-
-            }else if($file_type =='image/png'){
-
-                $nomeArquivoMaisTipo = "EmpresaUser_$idEmpresa.png";
-
-            }else {
-
-                $nomeArquivoMaisTipo = "EmpresaUser_$idEmpresa.gif";
-
-            }
-
-            $caminho = "assets/img/empresas/banner/$idEmpresa/$nomeArquivoMaisTipo";
-
-
-            if (move_uploaded_file($file_temp, "../view/" . $caminho)) {
-    
-                $Empresas = new Empresas($dbh);
-                $Empresas-> setfotobanner($caminho);
-                $Empresas-> setid($idEmpresa);
-
-                var_dump($Empresas->getfotobanner());
-                var_dump($Empresas->getId());
-    
-                $Empresas->atualizar('fotobanner = :fotobanner WHERE  id = :id');
-
-            }else{
-
-                new Exception($message = "Erro ao tentar fazer o upload da imagem.");
-
-            }
-
-        }
-    }
-
-    if(isset($arquivoUser)){
-
-        var_dump($arquivoUser);
-
-        
-        if (!file_exists("../view/assets/img/empresas/user/$idEmpresa")) {
-
-            mkdir("../view/assets/img/empresas/user/$idEmpresa", 0755);
-
-        }
-
-        $nameFile = $arquivoUser['name'];
-        $file_temp = $arquivoUser['tmp_name'];
-        $file_type = $arquivoUser["type"];
-
-        if ($file_type == 'image/jpeg' || $file_type == 'image/jpg' || $file_type == 'image/gif' || $file_type == 'image/png') {
-
-            if($file_type == 'image/jpeg'){
-
-                $nomeArquivoMaisTipo = "EmpresaUser_$idEmpresa.jpeg";
-
-            }else if($file_type == 'image/jpg'){
-
-                $nomeArquivoMaisTipo = "EmpresaUser_$idEmpresa.jpg";
-
-            }else if($file_type == 'image/png'){
-
-                $nomeArquivoMaisTipo = "EmpresaUser_$idEmpresa.png";
-
-            }else {
-
-                $nomeArquivoMaisTipo = "EmpresaUser_$idEmpresa.gif";
-
-            }
-
-            $caminho = "assets/img/empresas/user/$idEmpresa/$nomeArquivoMaisTipo";
-
-
-            if (move_uploaded_file($file_temp, "../view/" . $caminho)) {
-                
-                $empresas = new Empresas($dbh);
-                $empresas-> setfotoperfil($caminho);
-                $empresas-> setid($idEmpresa);
-    
-                $empresas->atualizar("fotoperfil = :fotoperfil WHERE  id = :id");
-
-            }else{
-
-                new Exception($message = "Erro ao tentar fazer o upload da imagem.");
-
-            }
-
-        }
-
-    }
-
-    $idEmpresa = $_POST["idempresa"];
-    $nomeEmpres = $_POST["nomeempresa"];
-    $country = $_POST["country"];
-
-    $empresas = new Empresas($dbh);
-
-    $empresas->setid($idEmpresa);
-    $empresas->setNome($nomeEmpres);
-    $empresas->setpais($country);
-
-    $string = 'nome = :nome ,pais = :pais ';
-
-    if(isset($_POST["redesocial"]) && $_POST["redesocial"] != ""){
-
-        $empresas->setredesocial($_POST["redesocial"]);
-
-        $string = $string . ',redesocial = :redesocial ';
-
-    }else{
-
-        $string = $string . ',redesocial = NULL ';
-
-    }
-
-    if(isset($_POST["site"]) && $_POST["site"] != ""){
-
-        $empresas->setsite($_POST["site"]);
-
-        $string = $string . ',site = :site ';
-
-    }else{
-
-        $string = $string . ',site = NULL ';
-
-    }
-
-    if(isset($_POST["descricao"]) && $_POST["descricao"] != ""){
-
-        $empresas->setdescricao($_POST["descricao"]);
-
-        $string = $string . ',descricao = :descricao ';
-
-    }else{
-
-        $string = $string . ',descricao = NULL ';
-
-    }
-
-    $string = $string . 'WHERE id = :id';
-
-    $empresas->atualizar($string);
-
+  
+    $empresaDados = new Empresas($dbh);
+    $empresaDados->setId($idempresa);
+    $empresaDados->setNome($nomeempresa);
+    $empresaDados->setredesocial($redesocial);
+    $empresaDados->setsite($site);
+    $empresaDados->setdescricao($descricao);
+    $empresaDados->setpais($country);
+    $results = $empresaDados->atualizar(" nome = :nome, redesocial = :redesocial, site = :site, descricao = :descricao, pais = :pais WHERE id = :id");
     header("Location: ../view/empresa.php");
 
-
 }else if (isset($_POST["enviaremail"])) {
-
-    include_once('../model/classes/conexao.php');
-    include_once('../model/classes/tblUserClients.php');
-    include_once('../model/classes/tblEmpresas.php');
-
-    //ini_set('display_erros', 1);
-    //error_reporting(E_ALL);
 
     $email = $_POST["emailcolab"];
     $qtdcolab = $_POST["qtdcolab"];

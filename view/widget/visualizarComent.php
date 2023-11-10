@@ -96,18 +96,18 @@ if($idComentario != "" && $_GET["texto"] == "apagar"){
 
     ?>
             <div class="row" style=" margin-left: 0; margin-right: 0;">
-                <div class="col-1 d-flex flex-column justify-content-center align-items-center" style="height: auto;">
+                <div class="col-1 d-flex flex-column align-items-center" style="height: auto;       padding-top: 9px;  justify-content: unset;">
                     <img src="<?php if ($imgpostuser != "Avatar.png" && $imgpostuser != "") {
                                     echo "" . $imgpostuser;
                                 } else {
                                     echo "assets/img/Avatar.png";
-                                } ?>" alt="user" style="min-height: 35px;"  class="nav-profile-img ">
+                                } ?>" alt="user" style="min-height: 41px;object-fit: cover;border: 1px solid #00000057;"  class="nav-profile-img ">
                 </div>
                 <div class="col-11  ">
                     <div class="row align-content-center shadow" style="margin: 3px !important; overflow-y: auto; max-height: 400px;  padding: 15px; background: white;border-radius: 7px">
                         <input class="form-control bordainput" value="" autocomplete="off" name="idproduto" type="hidden">
 
-                        <div class="col-12 d-flex flex-column justify-content-start align-items-start" style="height: auto;">
+                        <div class="col-12 d-flex flex-column justify-content-start align-items-start" style="height: auto; ">
                             <a href="viewProfile.php?profile=<?php echo $rowfeed->iduser; ?>" class="minimenuoption">
                                 <h4><?php echo $usernamepost; ?></h4>
                             </a>

@@ -23,7 +23,59 @@ if($produtoResults != null){
     }
 
 }
+
+include_once('../../model/classes/tblProductPictures.php');
+$productsPicture = new ProductPictures($dbh);
+$productsPicture->setidProduct($idProduct);
+
+$resultsProductsPicture = $productsPicture->consulta("WHERE idProduct = :idProduct");
+
+$qtd = 0;
+
+
+if ($resultsProductsPicture != null) {
+foreach ($resultsProductsPicture as $rowProdutos1) {
+    
+    if($qtd == 0){
+        $path1 = $rowProdutos1->tblProductPicturePath;
+        $qtd++;
+    } else if($qtd == 1){
+        $path2 = $rowProdutos1->tblProductPicturePath;
+        $qtd++;
+    }else if($qtd == 2){
+        $path3 = $rowProdutos1->tblProductPicturePath;
+        $qtd++;
+    }else  if($qtd == 3){
+        $path4 = $rowProdutos1->tblProductPicturePath;
+        $qtd++;
+    }else if($qtd == 4){
+        $path5 = $rowProdutos1->tblProductPicturePath;
+        $qtd++;
+    }else{
+        
+    }
+    
+    
+}}
+
+
+
+
 ?>
+
+        <script>
+     $(document).ready(function() {
+      $('#summernote2').summernote();
+    });
+    
+     $(document).ready(function() {
+      $('#summernote3').summernote();
+    });
+    
+</script>
+
+
+
 
 <div class="modal-header">
     <h5 class="modal-title txtnomeperfil">Edit Product</h5>
@@ -38,46 +90,112 @@ if($produtoResults != null){
         <div class="row">
             <input class="form-control bordainput" value="<?php echo $idProduct?>"   autocomplete="off" name="idproduto" type="hidden">
 
-            <div class="col-sm-12">
-                <div class="form-group">
-                     <label class="txtinput">Image:</label>
-                    <input type="file" name="imgproduto[]" multiple="multiple" id="imgproduto" class="form-control file-upload-input " accept="image/*">
-                </div>
-            </div>
+             <div class="col-sm-12 mt-4">
+                            <div class="form-group">
+                                <label class="txtinput">Image:</label>
+                                <spam>You can choose more than one image to upload</spam>
+                                <input type="file" name="imgproduto[]"  id="user-produto" class="form-control file-upload-input" multiple="multiple" accept=".jpg, .jpeg, .png" onchange="showImages(event)" style="display: none;">
+
+                            </div>
+                        </div>
+            
+           
+                        <div class="col-sm-4 mt-4">
+                            <br>
+                            <div class=" d-flex justify-content-center align-middle ">
+                                <label for="user-produto" class="btn btn-primary btnupload" style="display: flex !important; flex-direction: column !important; align-items: center !important; justify-content: center;">
+                                <i class="fas fa-upload" style="font-size: 40px;"></i> <br><p style="font-size: 10px;">Choose the images</p>
+                            </label>
+                            </div>
+                            
+                        </div>
+                        <div class="col-sm-4 mt-4 card card-body d-flex justify-content-center">
+                            <div class="image-preview d-flex justify-content-center" style="" id="image-preview1">
+                                <?php if(!isset($path1)){?>
+                                <i class="fas fa-image iconimage"></i>
+                                <?php }else{?>
+                                <img src="<?php echo $path1;?>">
+                                <?php }?>
+                            </div>
+                        </div>
+                        <div class="col-sm-4 mt-4 card card-body">
+                            <div class="image-preview  d-flex justify-content-center" style="" id="image-preview2">
+                                <?php if(!isset($path2)){?>
+                                <i class="fas fa-image iconimage"></i>
+                                <?php }else{?>
+                                <img src="<?php echo $path2;?>">
+                                <?php }?>
+                            </div>
+                        </div>
+                        <div class="col-sm-4 mt-4 card card-body">
+                            <div class="image-preview  d-flex justify-content-center" style="" id="image-preview3">
+                                <?php if(!isset($path3)){?>
+                                <i class="fas fa-image iconimage"></i>
+                                <?php }else{?>
+                                <img src="<?php echo $path3;?>">
+                                <?php }?>
+                            </div>
+                        </div>
+                        <div class="col-sm-4 mt-4 card card-body">
+                            <div class="image-preview  d-flex justify-content-center" style="" id="image-preview4">
+                                <?php if(!isset($path4)){?>
+                                <i class="fas fa-image iconimage"></i>
+                                <?php }else{?>
+                                <img src="<?php echo $path4;?>">
+                                <?php }?>
+                            </div>
+                        </div>
+                        <div class="col-sm-4 mt-4 card card-body">
+                            <div class="image-preview  d-flex justify-content-center" style="" id="image-preview5">
+                                <?php if(!isset($path5)){?>
+                                <i class="fas fa-image iconimage"></i>
+                                <?php }else{?>
+                                <img src="<?php echo $path5;?>">
+                                <?php }?>
+                            </div>
+                        </div>
 
 
             <div class="col-sm-12">
                 <div class="form-group">
                     <label class="txtinput">Name:</label>
 
-                    <input class="form-control bordainput" value="<?php echo $ProductName;?>" required  autocomplete="off" name="nomeproduto" type="text">
+                    <input class="form-control bordainput" value="<?php echo $ProductName;?>" required  autocomplete="off" name="nomeproduto" type="text" style="height: 40px; font-size: 17px;">
                     <datalist id="referencia">''</datalist>
                 </div>
             </div>
-
-            <div class="col-sm-6">
+            <br>
+            <div class="col-sm-12">
+                <br>
                 <div class="form-group">
+                    <br>
                     <label class="txtinput">Description:</label>
-                    <textarea class="form-control bordainput" required name="descricao" type="text"><?php echo $ProdcuctDescription; ?> </textarea>
+                    <textarea class="form-control bordainput summernote" id="summernote2" required name="descricao" type="text" style="height: 100px; font-size: 17px;"><?php echo $ProdcuctDescription; ?> </textarea>
                 </div>
             </div>
-
-            <div class="col-sm-6">
+            <br>
+            <div class="col-sm-12">
+                <br>
                 <div class="form-group">
+                    <br>
                     <label class="txtinput">Specification:</label>
-                    <textarea class="form-control bordainput"  name="specification" type="text"><?php echo $ProdcuctEspecification; ?></textarea>
+                    <textarea  class="form-control bordainput summernote" id="summernote3" name="specification" type="text" style="height: 100px; font-size: 17px;"><?php echo $ProdcuctEspecification; ?></textarea>
                 </div>
             </div>
+           
 
+
+          
             <div class="col-sm-6">
-                <div class="submit-section">
-                    <button type="submit" name="deleteproduto" value="Salvar" class="btn btn-danger submit-btn">Delete </button>
+                <div class="row">
+                    <div class="submit-section">
+                        <br>
+                        <button type="submit" name="updateproduto" value="Salvar" class="btn btn-primary submit-btn">Confirm</button>
+                        <button type="submit" name="deleteproduto" value="Salvar" class="btn btn-danger submit-btn">Delete </button>
+                    </div>
+               
                 </div>
-            </div>
-            <div class="col-sm-6">
-                '<div class="submit-section">
-                    <button type="submit" name="updateproduto" value="Salvar" class="btn btn-primary submit-btn">Confirm</button>
-                </div>
+                
             </div>
 
         </div>
@@ -85,4 +203,33 @@ if($produtoResults != null){
         </div>
     </form>
 </div>
+
+
+
+<script>
+    function showImages(event) {
+        const fileInput = event.target;
+
+        for (let i = 1; i <= 5; i++) {
+            const imagePreview = document.getElementById(`image-preview${i}`);
+            imagePreview.innerHTML = '';
+
+            if (fileInput.files[i - 1]) {
+                const reader = new FileReader();
+                const image = document.createElement('img');
+
+                reader.onload = function (e) {
+                    image.src = e.target.result;
+                    imagePreview.appendChild(image);
+                };
+
+                reader.readAsDataURL(fileInput.files[i - 1]);
+            } else {
+                const icon = document.createElement('i');
+                icon.className = 'fas fa-image iconimage';
+                imagePreview.appendChild(icon);
+            }
+        }
+    }
+</script>
 

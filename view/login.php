@@ -5,8 +5,17 @@ if ( session_status() !== PHP_SESSION_ACTIVE )
    $_SESSION["n"] = 8;
 }
 include_once('../model/classes/conexao.php');
-if (isset($_COOKIE["remember_me"])) {
-  header("Location: ../controller/loginController.php");
+try {
+    if (isset($_COOKIE["remember_me"])) {
+        if ($_COOKIE["remember_me"] != null) {
+            header("Location: ../controller/loginController.php");
+        } else {
+            // Assuming you have defined $cookie_name, $cookie_value, and $cookie_expire elsewhere in your code
+            setcookie($cookie_name, $cookie_value, $cookie_expire, "/");
+        }
+    }
+} catch (Exception $e) {
+ 
 }
 error_reporting(0);
 date_default_timezone_set('America/Sao_Paulo');

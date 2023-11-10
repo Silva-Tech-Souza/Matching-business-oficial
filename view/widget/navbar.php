@@ -103,7 +103,7 @@
                                                     echo "" . $imgperfil;
                                                 } else {
                                                     echo "assets/img/Avatar.png";
-                                                } ?>" alt="user" class="nav-profile-img" onclick="toggleMenu();"></li>
+                                                } ?>" alt="user" class="nav-profile-img" onclick="toggleMenu();" style="object-fit: cover; min-height: 35px !important; max-height: 41px;"></li>
                             </ul>
                         </div>
                     </div>
@@ -155,7 +155,7 @@
                                     echo "" . $imgperfil;
                                 } else {
                                     echo "assets/img/Avatar.png";
-                                } ?>" alt="user" class="nav-profile-img" onclick="toggleMenu();">
+                                } ?>" alt="user" class="nav-profile-img" onclick="toggleMenu();" style="object-fit: cover; min-height: 35px !important;">
                 </div>
 
                 <div class="col-9 mt-4 p-0 justify-content-start">
@@ -251,6 +251,10 @@
                             $textNotif = "<p  class='d-inline' style='color: white; font-size: 11px;'>" . $usernamepost . " </p><p class='d-inline' style='color: #f2f2f2;'></p> <p class='d-inline' style='color: #62B7D8;'>commented  </p><p class='d-inline' style='color: #f2f2f2;'>  on your post!</p><br>";
                         } else if ($idTipoNotif == 6) {
                             $textNotif = "<p  class='d-inline' style='color: white; font-size: 11px;'>" . $usernamepost . " </p><p class='d-inline' style='color: #f2f2f2;'></p> <p class='d-inline' style='color: #62B7D8;'>was found in  </p><p class='d-inline' style='color: #f2f2f2;'>  your search profile!</p><br>";
+                        
+                            
+                        } else if ($idTipoNotif == 9) {
+                            $textNotif = "<p  class='d-inline' style='color: white; font-size: 11px;'>" . $usernamepost . " </p><p class='d-inline' style='color: #f2f2f2;'></p> <p class='d-inline' style='color: #62B7D8;'>sent a message   </p><p class='d-inline' style='color: #f2f2f2;'>  to your profile!</p><br>";
                         }
                         $postDateTime = new DateTime($rownotif->datahora);
 
@@ -294,8 +298,7 @@
                                                                                                     ?>">
                             <input type="hidden" id="id" name="id" value="<?php echo $rownotif->id; ?>">
                             <input type="hidden" id="url" name="url" value="<?php echo $rownotif->url; ?>">
-                            <a class="notification notif-zoom" href="<?php
-                            if($idTipoNotif != 6){ echo $rownotif->url; }else{ echo 'viewProfile.php?profile=' .$rownotif->url; }?>">
+                            <a class="notification notif-zoom" href="<?php if($idTipoNotif != 6 && $idTipoNotif != 9){ echo $rownotif->url; }else if ($idTipoNotif == 9){echo $rownotif->url."?idperfilchat=$idCliente";}else{ echo 'viewProfile.php?profile=' .$rownotif->url; }?>">
 
                                 <div class="row justify-content-start">
                                     <div class="col-2 ">
@@ -306,7 +309,7 @@
                                                         echo "assets/img/Avatar.png";
                                                     }
                                                     ?>
-                                            " alt="user" style="min-height: 35px;" class="nav-profile-img">
+                                            " alt="user" style="min-height: 35px;    object-fit: cover;" class="nav-profile-img">
                                     </div>
                                     <div class="col-8 justify-itens-start" style="text-align: start; margin-left: 2px;">
                                         <span>
@@ -397,7 +400,7 @@
                                                                         echo $rowcliente->PersonalUserPicturePath;
                                                                     } else {
                                                                         echo "assets/img/Avatar.png";
-                                                                    } ?>" alt="user" style="min-height: 35px;" alt="An unknown user."></a>
+                                                                    } ?>" alt="user" style="min-height: 35px;    object-fit: cover;  min-width: 35px;" alt="An unknown user."></a>
                                                 </div>
                                                 <div class="col-8 ">
                                                     <a href="viewProfile.php?profile=<?php echo $rowcliente->idClient; ?>">
@@ -447,7 +450,7 @@
                 </a>
 
 
-                <a href="searchPage.php" class="profile-menu-link expand-zoom-menu">
+                <a href="listcompani.php?text=mysp" class="profile-menu-link expand-zoom-menu">
                     <i class="fa fa-search fa-1x" style="color: white;"></i>
                     <p style="color: #ffffff; margin-bottom: 0px !important; text-decoration: none;">&nbsp;&nbsp;&nbsp;&nbsp;My Search</p>
                     <i class="bi bi-caret-right-fill" style="color: white;"></i>

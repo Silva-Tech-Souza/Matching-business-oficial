@@ -445,6 +445,8 @@ if ($respoconect != null) {
       }
     }
   </style>
+  
+ 
 </head>
 
 <body class="funcolinhas">
@@ -823,10 +825,11 @@ if ($respoconect != null) {
                           if (is_array($resultsProdutos) || is_object($resultsProdutos)) {
                             foreach ($resultsProdutos as $rowProdutos) {
                         ?>
-                             <div class="card-container bcolor-azul-escuro rounded-4" style="width: -webkit-fill-available; height: 274px; margin-right: 10px !important;;">
-                               <div class="col-12" style="display: flex; flex-direction: column; min-height: 140px; max-height: 140px; padding: 4px; width: -webkit-fill-available;">
-                                  <a data-toggle="modal" data-target="#modalViewProduto" data-toggle="modal" data-id="<?php echo $rowProdutos->idProduct; ?>" class="hero-image-container">
-                                    <img class="hero-image produtos-img rounded-4" style=" user-drag: none;" src="<?php
+                        
+                            <div class="card-container bcolor-azul-escuro rounded-4" style="width: -webkit-fill-available; height: 274px; margin-left: 10px !important;">
+                                <div class="col-12" style="display: flex; flex-direction: column; min-height: 140px; max-height: 140px; padding: 4px; width: -webkit-fill-available;">
+                                    <a data-toggle="modal" data-target="#modalViewProduto" data-toggle="modal" data-id="<?php echo $rowProdutos->idProduct; ?>" class="hero-image-container">
+                                        <img class="hero-image produtos-img rounded-4" style=" user-drag: none;" src="<?php
 
                                                                               include_once('../model/classes/tblProductPictures.php');
                                                                               $productsPicture = new ProductPictures($dbh);
@@ -845,10 +848,21 @@ if ($respoconect != null) {
                                                                               }
                                                                               ?>" alt="Spinning glass cube" />
                                   </a>
-                                  <div class="col-12 mt-0 ">
-                                    <h1  class="mb-0" style="white-space: pre-line;"><a data-toggle="modal" data-target="#modalEditarProduto" data-toggle="modal" data-target="#add_produto" data-id="<?php echo $rowProdutos->idProduct; ?>" ><?php echo $rowProdutos->ProductName; ?></a></h1>
-                                    <p class=" cortardescricao color-cinza-b desc-produto fonte-principal" style=""><a data-toggle="modal" data-target="#modalEditarProduto" data-toggle="modal" data-target="#add_produto" data-id="<?php echo $rowProdutos->idProduct; ?>" ><?php echo $rowProdutos->ProdcuctDescription; ?></a></p>
-                                  </div>
+                                   <div class="col-12" style="padding: 6px;">
+                                    <div class="col-12">
+                                        <a data-toggle="modal" data-target="#modalViewProduto" data-toggle="modal" data-id="<?php echo $rowProdutos->idProduct; ?>" class="">
+                                            <h5 class="mb-0 fonte-titulo" style="white-space: pre-line; color: #fff;text-transform: uppercase; font-weight: 800 !important;"><?php echo $rowProdutos->ProductName; ?></h5>
+                                        </a>
+                                    </div>
+                                    <div class="col-12 mt-2">
+                                        <a data-toggle="modal" data-target="#modalViewProduto" data-toggle="modal" data-id="<?php echo $rowProdutos->idProduct; ?>" class="" style="color: #ffffff !important;">
+                                            <p class="color-cinza-b fonte-principal" style="color: #fff !important; max-height: 7em; overflow: hidden;">
+                                                <?php echo $rowProdutos->ProdcuctDescription; ?>
+                                            </p>
+                                        </a>
+                                        </div>
+
+                                </div>
                                 </div>
                               </div>
 
@@ -1163,6 +1177,79 @@ if ($respoconect != null) {
   </div>
 
   <script>
+  
+  function initSlider() {
+            var slider1 = document.getElementsByClassName("sliderBlock_items");
+            var slides1 = document.getElementsByClassName("sliderBlockitemsitemPhoto");
+            var next1 = document.getElementsByClassName("sliderBlockcontrolsarrowForward")[0];
+            var previous1 = document.getElementsByClassName("sliderBlockcontrolsarrowBackward")[0];
+            var items1 = document.getElementsByClassName("sliderBlock_positionControls")[0];
+            var currentSlideItem1 = document.getElementsByClassName("sliderBlock_positionControls__paginatorItem");
+            var currentSlide1 = 0;
+            var slideInterval1 = setInterval(nextSlide, 5000); /// Delay time of slides
+            function nextSlide() {
+                goToSlide(currentSlide1 + 1);
+            }
+
+            function previousSlide() {
+                goToSlide(currentSlide1 - 1);
+            }
+
+            function goToSlide(n) {
+                slides1[currentSlide1].className = 'sliderBlockitemsitemPhoto';
+                items1.children[currentSlide1].className = 'sliderBlock_positionControls__paginatorItem';
+                currentSlide1 = (n + slides1.length) % slides1.length;
+                slides1[currentSlide1].className = 'sliderBlockitemsitemPhoto sliderBlock_items__showing';
+                items1.children[currentSlide1].className = 'sliderBlock_positionControls__paginatorItem sliderBlock_positionControls__active';
+            }
+            next1.onclick = function() {
+                nextSlide();
+            };
+            previous1.onclick = function() {
+                previousSlide();
+            };
+
+            function goToSlideAfterPushTheMiniBlock() {
+                for (var i = 0; i < currentSlideItem1.length; i++) {
+                    currentSlideItem1[i].onclick = function(i) {
+                        var index1 = Array.prototype.indexOf.call(currentSlideItem1, this);
+                        goToSlide(index1);
+                    }
+                }
+            }
+            goToSlideAfterPushTheMiniBlock();
+            var buttonFullSpecification1 = document.getElementsByClassName("block_specification")[0];
+            var buttonSpecification1 = document.getElementsByClassName("block_specification__specificationShow")[0];
+            var buttonInformation1 = document.getElementsByClassName("block_specification__informationShow")[0];
+            var blockCharacteristiic1 = document.querySelector(".block_descriptionCharacteristic");
+            var activeCharacteristic1 = document.querySelector(".block_descriptionCharacteristic__active");
+
+            buttonFullSpecification1.onclick = function() {
+                console.log("OK");
+                buttonSpecification1.classList.toggle("hide");
+                buttonInformation1.classList.toggle("hide");
+                blockCharacteristiic1.classList.toggle("block_descriptionCharacteristic__active");
+            };
+            var up1 = document.getElementsByClassName('block_quantity__up')[0],
+                down1 = document.getElementsByClassName('block_quantity__down')[0],
+                input1 = document.getElementsByClassName('block_quantity__number')[0];
+
+            function getValue() {
+                return parseInt(input1.value);
+            }
+            up1.onclick = function(event) {
+                input1.value = getValue() + 1;
+            };
+            down1.onclick = function(event) {
+                if (input1.value <= 1) {
+                    return 1;
+                } else {
+                    input1.value = getValue() - 1;
+                }
+            }
+
+        }
+        
      function redirectToAnotherPage() {
             var form = document.getElementById('formularionome');
             var textValue = form.querySelector('[name="text"]').value;

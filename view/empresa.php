@@ -35,6 +35,9 @@ if ($results != null) {
     }
 }
 $adm = "";
+if ($_GET["idtax"] != null) {
+    $taxidempresa = $_GET["idtax"];
+}
 $empresaDados = new Empresas($dbh);
 $empresaDados->setTaxid($taxidempresa);
 $results = $empresaDados->consulta("WHERE taxid = :taxid");
@@ -56,8 +59,24 @@ if ($results != null) {
         $site = $row->site;
     }
 }
+
+$userClients2 = new UserClients($dbh);
+$userClients2->setidClient($colab1);
+$results2 = $userClients2->consulta("WHERE idClient = :idClient");
+if ($results2 != null) {
+    foreach ($results2 as $row) {
+        $emailcolab1 = $row->email;
+        $numberfonecolab1  = $row->WhatsAppNumber;
+        $idoperationcolab1 = $row->IdOperation;
+        $corebusinesscolab1 = $row->CoreBusinessId;
+        $satBusinessIdcolab1 =  $row->SatBusinessId;
+        $imgperfilcolab1 = $row->PersonalUserPicturePath;
+        $imgcapacolab1 = $row->LogoPicturePath;
+        $descricaocolab1 =  $row->descricao;
+    }
+}
 if ($iduser !=  $colab1) {
-      $adm = "false";
+    $adm = "false";
 } else {
     $adm = "true";
 }
@@ -98,7 +117,7 @@ if ($resultsCountry != null) {
 
 include_once('../model/classes/tblOperations.php');
 $operations = new Operations($dbh);
-$operations->setidOperation($corebusiness);
+$operations->setidOperation($corebusinesscolab1);
 $resultsoperation = $operations->consulta("WHERE idOperation = :idOperation");
 if ($resultsoperation != null) {
     foreach ($resultsoperation as $rowoperation) {
@@ -109,7 +128,7 @@ if ($resultsoperation != null) {
 
 include_once('../model/classes/tblBusiness.php');
 $business = new Business($dbh);
-$business->setidBusiness($satBusinessId);
+$business->setidBusiness($satBusinessIdcolab1);
 $resultsbusiness = $business->consulta("WHERE idBusiness = :idBusiness");
 if ($resultsbusiness != null) {
     foreach ($resultsbusiness as $rowbusiness) {
@@ -119,10 +138,10 @@ if ($resultsbusiness != null) {
 
 
 $NmBusinessCategory = "";
-if($idoperation != 0){
+if ($idoperation != 0) {
     include_once('../model/classes/tblBusinessCategory.php');
     $BusinessCategory = new BusinessCategory($dbh);
-    $BusinessCategory->setidBusinessCategory($idoperation);
+    $BusinessCategory->setidBusinessCategory($idoperationcolab1);
     $resultsBusinessCategory = $BusinessCategory->consulta("WHERE idBusinessCategory = :idBusinessCategory");
     if ($resultsBusinessCategory != null) {
         foreach ($resultsBusinessCategory as $rowbusinesscateg) {
@@ -130,11 +149,10 @@ if($idoperation != 0){
             $idbusinesscateg = $rowbusinesscateg->idBusiness;
         }
     }
-}else{
+} else {
 
     $NmBusinessCategory = "";
     $idbusinesscateg = null;
-
 }
 
 ?>
@@ -331,20 +349,28 @@ if($idoperation != 0){
                 <div id="profile-column" class="shadow col-12 col-md-12 col-lg-3 justify-content-start overflow-auto scrollable-column fixed-on-desktop">
                     <div class="card rounded-4 shadow">
                         <div class="card-body p-0 m-0">
-                            <div class="col-12 mh-25">
-                                <img class="mh-25 rounded-top-3" src="<?php if ($bannerempresa != "Avatar.png" && $bannerempresa != "" && $bannerempresa != null) {
-                                                                            echo "" . $bannerempresa;
-                                                                        } else {
-                                                                            echo "https://images2.alphacoders.com/131/1317606.jpeg";
-                                                                        } ?>" alt="Descrição da Imagem" style="max-height: 100px; width: 100%;" style="box-shadow: 0px -17px 10px -10px rgb(0 0 0 / 52%);">
+                            <div class="col-12 mh-25" style="    max-height: 100px;
+    width: 100%;
+    background-image: url(<?php if ($imgcapacolab1 != "Avatar.png" && $imgcapacolab1 != "" && $imgcapacolab1 != null) {
+                                echo "" . $imgcapacolab1;
+                            } else {
+                                echo "https://images2.alphacoders.com/131/1317606.jpeg";
+                            } ?>);
+    min-height: 100px;
+    border-top-left-radius: var(--bs-border-radius-lg)!important;
+    border-top-right-radius: var(--bs-border-radius-lg)!important;
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center;">
+
                             </div>
                             <div class="row p-0 ml-0">
                                 <div class="col-5 d-flex justify-content-start p-0 m-0 " style="height: 0px;">
-                                    <img src=" <?php if ($fotoempresa != "Avatar.png" && $fotoempresa != "") {
-                                                    echo "" . $fotoempresa;
+                                    <img src=" <?php if ($imgperfilcolab1 != "Avatar.png" && $imgperfilcolab1 != "") {
+                                                    echo "" . $imgperfilcolab1;
                                                 } else {
                                                     echo "assets/img/Avatar.png";
-                                                } ?>" alt="user" class="border-2 mini-profile-img " onclick="toggleMenu()">
+                                                } ?>" alt="user" class="border-2 mini-profile-img " style="object-fit: cover; box-shadow: 0px -3px 11px #0000005e;">
                                 </div>
                                 <div class="col-5 p-0 m-0">
                                     <h3 class="fonte-titulo"><?php echo $nomeempresa; ?><br></h3><br>
@@ -356,6 +382,16 @@ if($idoperation != 0){
                                 <hr class="m-0">
                             </div>
                             <div class="row m-0 p-0">
+                                <div class="col-12 m-0 p-0">
+
+                                    <h4 class="fonte-principal">&nbsp;&nbsp;&nbsp;&nbsp;<i class="fa-solid fa-envelope "></i>&nbsp;&nbsp;<?php echo $email; ?></h4>
+
+                                </div>
+                                <div class="col-12 m-0 p-0">
+
+                                    <h4 class="fonte-principal">&nbsp;&nbsp;&nbsp;&nbsp;<i class="fa-solid fa-phone-square "></i>&nbsp;&nbsp;<?php echo $numberfone; ?></h4>
+
+                                </div>
                                 <div class="col-12 m-0 p-0">
 
                                     <h4 class="fonte-principal">&nbsp;&nbsp;&nbsp;&nbsp;<i class="fa-solid fa-globe "></i>&nbsp;&nbsp;<?php echo $paisempresa; ?></h4>
@@ -371,13 +407,31 @@ if($idoperation != 0){
                                     <h4 class="fonte-principal">&nbsp;&nbsp;&nbsp;&nbsp;<i class="fa fa-linkedin-square"></i>&nbsp;&nbsp;<?php echo $redesocial; ?></h4>
 
                                 </div>
+                                <div class="col-12 m-0 p-0">
 
+                                    <h4 class="fonte-principal">&nbsp;&nbsp;&nbsp;&nbsp;<i class="fa-solid fa-building "></i>&nbsp;&nbsp;<?php echo $NmBusiness; ?></h4>
+
+                                </div>
+                                <?php if ($corebusiness == "1" || $corebusiness == "2" || $corebusiness == "3" || $corebusiness == "4" || $corebusiness == "5") {
+                                ?>
+                                    <div class="col-12 m-0 p-0">
+
+                                        <h4 class="fonte-principal">&nbsp;&nbsp;&nbsp;&nbsp;<i class="fa-solid fa-briefcase"></i>&nbsp;&nbsp;<?php echo $NmBusinesscor; ?></h4>
+
+                                    </div>
+                                    <div class="col-12 m-0 p-0">
+
+                                        <h4 class="fonte-principal">&nbsp;&nbsp;&nbsp;&nbsp;<i class="fa-solid fa-briefcase "></i>&nbsp;&nbsp;<?php echo $NmBusinessCategory; ?></h4>
+
+                                    </div>
+                                <?php } ?>
                             </div>
 
 
                             <div class="row mb-2" style="padding: 9px;margin: auto;">
-                                <a href="#" class="btn btn-outline-primary ms-1" style="width: 100px;" data-toggle="modal" data-target="#add_perfil"><i class="bi bi-pen icon-btn-card"></i>&nbsp;Edit</a>
-
+                                <?php if ($adm == "true") { ?>
+                                    <a href="#" class="btn btn-outline-primary ms-1" style="width: 100px;" data-toggle="modal" data-target="#add_perfil"><i class="bi bi-pen icon-btn-card"></i>&nbsp;Edit</a>
+                                <?php } ?>
                             </div>
                         </div>
                     </div>
@@ -404,7 +458,7 @@ if($idoperation != 0){
                 <div class="col-3 "></div>
                 <!-- direita -->
                 <div class="col-lg-9 col-12 justify-content-center">
-                    < <div class="col-12  p-3 ">
+                    <div class="col-12  p-3 ">
                         <div class="card card-body shadow bcolor-azul-escuro">
                             <div class="row">
                                 <?php
@@ -619,100 +673,317 @@ if($idoperation != 0){
                                 <?php } ?>
                             </div>
                         </div>
-                </div>
-            </div>
+
+                        <?php if ($corebusinesscolab1 != "3" && $corebusinesscolab1 != "4") {
+                        ?>
+                            <div class="row">
+                                <div class="col-12">
+                                    <div class="card card-body shadow">
+                                        <div class="row">
+                                            <div class="col-sm-12">
+                                                <h2 class="text-muted valoresinsi"><b>Products</b></h2>
+                                            </div>
+
+                                        </div>
+                                        <div class="row rowProduct overflow-auto">
+                                            <?php
+                                            include_once('../model/classes/tblProducts.php');
+                                            $products = new Products($dbh);
+                                            $products->setidClient($colab1);
+                                            $resultsProdutos = $products->consulta("WHERE idClient = :idClient  ORDER BY idProduct ASC ");
+                                            if ($resultsProdutos != null) {
+                                                if (is_array($resultsProdutos) || is_object($resultsProdutos)) {
+                                                    foreach ($resultsProdutos as $rowProdutos) {
+                                            ?>
+
+                                                        <div class="card-container bcolor-azul-escuro rounded-4" style="width: -webkit-fill-available; height: 274px; margin-left: 10px !important;">
+                                                            <div class="col-12" style="display: flex; flex-direction: column; min-height: 140px; max-height: 140px; padding: 4px; width: -webkit-fill-available;">
+                                                                <a data-toggle="modal" data-target="#modalViewProduto" data-toggle="modal" data-id="<?php echo $rowProdutos->idProduct; ?>" class="hero-image-container">
+                                                                    <img class="hero-image produtos-img rounded-4" style=" user-drag: none;" src="<?php
+
+                                                                                                                                                    include_once('../model/classes/tblProductPictures.php');
+                                                                                                                                                    $productsPicture = new ProductPictures($dbh);
+                                                                                                                                                    $productsPicture->setidProduct($rowProdutos->idProduct);
+
+                                                                                                                                                    $resultsProductsPicture = $productsPicture->consulta("WHERE idProduct = :idProduct");
 
 
+                                                                                                                                                    if ($resultsProductsPicture != null) {
+                                                                                                                                                        foreach ($resultsProductsPicture as $rowProdutos1) {
+                                                                                                                                                            echo $rowProdutos1->tblProductPicturePath;
+                                                                                                                                                            break;
+                                                                                                                                                        }
+                                                                                                                                                    } else {
+                                                                                                                                                        echo "https://images.unsplash.com/photo-1507608158173-1dcec673a2e5?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1470&q=80";
+                                                                                                                                                    }
+                                                                                                                                                    ?>" alt="Spinning glass cube" />
+                                                                </a>
+                                                                <div class="col-12" style="padding: 6px;">
+                                                                    <div class="col-12">
+                                                                        <a data-toggle="modal" data-target="#modalViewProduto" data-toggle="modal" data-id="<?php echo $rowProdutos->idProduct; ?>" class="">
+                                                                            <h5 class="mb-0 fonte-titulo" style="white-space: pre-line; color: #fff;text-transform: uppercase; font-weight: 800 !important;"><?php echo $rowProdutos->ProductName; ?></h5>
+                                                                        </a>
+                                                                    </div>
+                                                                    <div class="col-12 mt-2">
+                                                                        <a data-toggle="modal" data-target="#modalViewProduto" data-toggle="modal" data-id="<?php echo $rowProdutos->idProduct; ?>" class="" style="color: #ffffff !important;">
+                                                                            <p class="color-cinza-b fonte-principal" style="color: #fff !important; max-height: 7em; overflow: hidden;">
+                                                                                <?php echo $rowProdutos->ProdcuctDescription; ?>
+                                                                            </p>
+                                                                        </a>
+                                                                    </div>
 
+                                                                </div>
+                                                            </div>
+                                                        </div>
 
-            <div id="modalEditarProduto" class="modal custom-modal fade" role="dialog">
-                <div class="modal-dialog modal-dialog-centered modal-lg">
-                    <div class="modal-content">
-
-                        <div class="modal-body">
-                            <h1 id="modalProductName" class="mb-0"></h1>
-                            <p id="modalProductDescription" class="color-cinza-b produto-desc-text"></p>
-                        </div>
-
+                                            <?php }
+                                                }
+                                            } ?>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        <?php }   ?>
                     </div>
                 </div>
-            </div>
 
-            <div id="modalEditarProduto" class="modal custom-modal fade show comment-modal-primary" role="dialog">
-                <div class="modal-dialog modal-dialog-centered modal-lg">
-                    <div class="modal-content">
 
-                        <div class="modal-body comment-modal-primary">
-                            <h1 id="modalProductName mb-0"></h1>
-                            <p id="modalProductDescription color-cinza-b"></p>
+
+                <div id="modalViewProduto" class="modal custom-modal fade" role="dialog">
+                    <div class="modal-dialog modal-dialog-centered modal-lg">
+                        <div class="modal-content">
+
+                            <div class="modal-body">
+                                <h1 id="modalProductName" class="mb-0"></h1>
+                                <p id="modalProductDescription" class="color-cinza-b produto-desc-text"></p>
+                            </div>
+
                         </div>
-
                     </div>
                 </div>
+
+                <div id="modalEditarProduto" class="modal custom-modal fade show comment-modal-primary" role="dialog">
+                    <div class="modal-dialog modal-dialog-centered modal-lg">
+                        <div class="modal-content">
+
+                            <div class="modal-body comment-modal-primary">
+                                <h1 id="modalProductName mb-0"></h1>
+                                <p id="modalProductDescription color-cinza-b"></p>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+
+
             </div>
-
-
+            <?php include_once("widget/editarperfilempresa.php"); ?>
+            <?php include_once("widget/enviaremail.php"); ?>
         </div>
-        <?php include_once("widget/editarperfilempresa.php"); ?>
-        <?php include_once("widget/enviaremail.php"); ?>
-    </div>
 
 
-    <script src="assets/js/jquery.slimscroll.min.js"></script>
-    <script src="assets/js/select2.min.js"></script>
-    <script src="assets/plugins/summernote/dist/summernote-bs4.min.js"></script>
-    <script src="assets/js/jquery-3.2.1.min.js"></script>
-    <script src="assets/js/popper.min.js"></script>
-    <script src="assets/js/bootstrap.min.js"></script>
-    <!-- Select2 JS -->
-    <script src="assets/js/select2.min.js"></script>
-    <script src="assets/plugins/summernote/dist/summernote-bs4.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    <script src="https://kit.fontawesome.com/f51201541f.js" crossorigin="anonymous"></script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/autosize.js/4.0.2/autosize.min.js"></script>
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
-    <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+        <script src="assets/js/jquery.slimscroll.min.js"></script>
+        <script src="assets/js/select2.min.js"></script>
+        <script src="assets/plugins/summernote/dist/summernote-bs4.min.js"></script>
+        <script src="assets/js/jquery-3.2.1.min.js"></script>
+        <script src="assets/js/popper.min.js"></script>
+        <script src="assets/js/bootstrap.min.js"></script>
+        <!-- Select2 JS -->
+        <script src="assets/js/select2.min.js"></script>
+        <script src="assets/plugins/summernote/dist/summernote-bs4.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+        <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+        <script src="https://kit.fontawesome.com/f51201541f.js" crossorigin="anonymous"></script>
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/autosize.js/4.0.2/autosize.min.js"></script>
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+        <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
 
 
-    <script>
-        $(document).ready(function() {
-            function readURL(input) {
-                if (input.files && input.files[0]) {
-                    var reader = new FileReader();
-                    reader.onload = function(e) {
-                        $('#imagePreview').css('background-image', 'url(' + e.target.result + ')');
-                        $('#imagePreview').hide();
-                        $('#imagePreview').fadeIn(650);
+        <script>
+            
+  function initSlider() {
+            var slider1 = document.getElementsByClassName("sliderBlock_items");
+            var slides1 = document.getElementsByClassName("sliderBlockitemsitemPhoto");
+            var next1 = document.getElementsByClassName("sliderBlockcontrolsarrowForward")[0];
+            var previous1 = document.getElementsByClassName("sliderBlockcontrolsarrowBackward")[0];
+            var items1 = document.getElementsByClassName("sliderBlock_positionControls")[0];
+            var currentSlideItem1 = document.getElementsByClassName("sliderBlock_positionControls__paginatorItem");
+            var currentSlide1 = 0;
+            var slideInterval1 = setInterval(nextSlide, 5000); /// Delay time of slides
+            function nextSlide() {
+                goToSlide(currentSlide1 + 1);
+            }
+
+            function previousSlide() {
+                goToSlide(currentSlide1 - 1);
+            }
+
+            function goToSlide(n) {
+                slides1[currentSlide1].className = 'sliderBlockitemsitemPhoto';
+                items1.children[currentSlide1].className = 'sliderBlock_positionControls__paginatorItem';
+                currentSlide1 = (n + slides1.length) % slides1.length;
+                slides1[currentSlide1].className = 'sliderBlockitemsitemPhoto sliderBlock_items__showing';
+                items1.children[currentSlide1].className = 'sliderBlock_positionControls__paginatorItem sliderBlock_positionControls__active';
+            }
+            next1.onclick = function() {
+                nextSlide();
+            };
+            previous1.onclick = function() {
+                previousSlide();
+            };
+
+            function goToSlideAfterPushTheMiniBlock() {
+                for (var i = 0; i < currentSlideItem1.length; i++) {
+                    currentSlideItem1[i].onclick = function(i) {
+                        var index1 = Array.prototype.indexOf.call(currentSlideItem1, this);
+                        goToSlide(index1);
                     }
-                    reader.readAsDataURL(input.files[0]);
+                }
+            }
+            goToSlideAfterPushTheMiniBlock();
+            var buttonFullSpecification1 = document.getElementsByClassName("block_specification")[0];
+            var buttonSpecification1 = document.getElementsByClassName("block_specification__specificationShow")[0];
+            var buttonInformation1 = document.getElementsByClassName("block_specification__informationShow")[0];
+            var blockCharacteristiic1 = document.querySelector(".block_descriptionCharacteristic");
+            var activeCharacteristic1 = document.querySelector(".block_descriptionCharacteristic__active");
+
+            buttonFullSpecification1.onclick = function() {
+                console.log("OK");
+                buttonSpecification1.classList.toggle("hide");
+                buttonInformation1.classList.toggle("hide");
+                blockCharacteristiic1.classList.toggle("block_descriptionCharacteristic__active");
+            };
+            var up1 = document.getElementsByClassName('block_quantity__up')[0],
+                down1 = document.getElementsByClassName('block_quantity__down')[0],
+                input1 = document.getElementsByClassName('block_quantity__number')[0];
+
+            function getValue() {
+                return parseInt(input1.value);
+            }
+            up1.onclick = function(event) {
+                input1.value = getValue() + 1;
+            };
+            down1.onclick = function(event) {
+                if (input1.value <= 1) {
+                    return 1;
+                } else {
+                    input1.value = getValue() - 1;
                 }
             }
 
-            function readURL2(input) {
-                if (input.files && input.files[0]) {
-                    var reader = new FileReader();
-                    reader.onload = function(e) {
-                        $('#imagePreview2').css('background-image', 'url(' + e.target.result + ')');
-                        $('#imagePreview2').hide();
-                        $('#imagePreview2').fadeIn(650);
-                    }
-                    reader.readAsDataURL(input.files[0]);
-                }
-            }
-            $("#user-image").change(function() {
-                console.log("Uploading");
-                readURL(this);
-            });
+        }
+        
+     function redirectToAnotherPage() {
+            var form = document.getElementById('formularionome');
+            var textValue = form.querySelector('[name="text"]').value;
 
-            $("#banner-image").change(function() {
-                console.log("Uploading");
-                readURL2(this);
-            });
+            // Redireciona para listcompani.php com o parâmetro GET "text"
+            window.location.href = 'listcompani.php?text=' + encodeURIComponent(textValue);
+        }
+    $(document).ready(function() {
+      // Ao clicar em um link de produto
+      $('.hero-image-container').click(function() {
+        // Obtenha o ID do produto associado ao link clicado
+        var idProduto = $(this).data('id');
+        console.log(idProduto);
+        // Use o ID do produto para fazer uma requisição AJAX para buscar os dados do produto no servidor
+        $.ajax({
+          type: 'GET',
+          url: 'widget/viewProduto.php', // Substitua pelo caminho correto
+          data: {
+            idProduto: idProduto
+          },
+          success: function(data) {
+            // Preencha o conteúdo do modal com as informações do produto
+            $('#modalViewProduto .modal-content').html(data);
+          },
+          error: function() {
+            alert('Ocorreu um erro ao carregar os dados do produto.');
+          }
         });
-    </script>
+
+        // Abra o modal correspondente
+        $('#modalViewProduto').fadeIn();
+      });;
+
+      // Feche o modal ao clicar fora dele ou no botão de fechar
+      $('.modal').click(function(event) {
+        if ($(event.target).hasClass('modal')) {
+          $(this).fadeOut();
+        }
+      });
+    });
+
+    $(document).ready(function() {
+      // Ao clicar em um link de produto
+      $('.hero-image-container2').click(function() {
+        // Obtenha o ID do produto associado ao link clicado
+        var idFeed = $(this).data('id');
+        console.log(idFeed);
+        // Use o ID do produto para fazer uma requisição AJAX para buscar os dados do produto no servidor
+        $.ajax({
+          type: 'GET',
+          url: 'widget/visualizarComent.php', // Substitua pelo caminho correto
+          data: {
+            idFeed: idFeed
+          },
+          success: function(data) {
+            // Preencha o conteúdo do modal com as informações do produto
+            $('#modalEditarProduto .modal-content').html(data);
+          },
+          error: function() {
+            alert('Ocorreu um erro ao carregar os dados do produto.');
+          }
+        });
+
+        // Abra o modal correspondente
+        $('#modalEditarProduto').fadeIn();
+      });;
+
+      // Feche o modal ao clicar fora dele ou no botão de fechar
+      $('.modal').click(function(event) {
+        if ($(event.target).hasClass('modal')) {
+          $(this).fadeOut();
+        }
+      });
+    });
+            $(document).ready(function() {
+                function readURL(input) {
+                    if (input.files && input.files[0]) {
+                        var reader = new FileReader();
+                        reader.onload = function(e) {
+                            $('#imagePreview').css('background-image', 'url(' + e.target.result + ')');
+                            $('#imagePreview').hide();
+                            $('#imagePreview').fadeIn(650);
+                        }
+                        reader.readAsDataURL(input.files[0]);
+                    }
+                }
+
+                function readURL2(input) {
+                    if (input.files && input.files[0]) {
+                        var reader = new FileReader();
+                        reader.onload = function(e) {
+                            $('#imagePreview2').css('background-image', 'url(' + e.target.result + ')');
+                            $('#imagePreview2').hide();
+                            $('#imagePreview2').fadeIn(650);
+                        }
+                        reader.readAsDataURL(input.files[0]);
+                    }
+                }
+                $("#user-image").change(function() {
+                    console.log("Uploading");
+                    readURL(this);
+                });
+
+                $("#banner-image").change(function() {
+                    console.log("Uploading");
+                    readURL2(this);
+                });
+            });
+        </script>
 </body>
 
 </html>

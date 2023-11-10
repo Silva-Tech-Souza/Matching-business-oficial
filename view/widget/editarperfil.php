@@ -52,7 +52,7 @@
                         <div class="col-sm-6 mt-4">
                             <div class="form-group">
                                 <label class="txtinput sizetituloedit">Name:</label>
-                                <input class="form-control bordainput sizeinputedit" value="<?php echo $FirstName; ?>" autocomplete="off" name="nome" type="text">
+                                <input class="form-control bordainput sizeinputedit" value="<?php echo $FirstName; ?>" required autocomplete="off" name="nome" type="text">
                                 <datalist id="referencia">
                                 </datalist>
                             </div>
@@ -67,7 +67,7 @@
                             </div>
                         </div>
 
-                        <div class="col-sm-6 mt-4">
+                        <div class=" <?php if ($adm) {?>col-sm-6 <?php }else{echo "col-sm-12";}?> mt-4">
                             <div class="form-group">
                                 <label class="txtinput sizetituloedit">Job tittle:</label>
                                 <input class="form-control bordainput sizeinputedit" required value="<?php echo $jobtitle; ?>" autocomplete="off" name="jobtitle" type="text">
@@ -76,7 +76,7 @@
                             </div>
                         </div>
 
-                        <div class="col-sm-6 mt-4">
+                        <?php if ($adm) {?> <div class="col-sm-6 mt-4">
                             <div class="form-group">
                                 <label class="txtinput sizetituloedit">Company name:</label>
                                 <input class="form-control bordainput sizeinputedit" required value="<?php echo $companyname; ?>" autocomplete="off" name="conpany" type="text">
@@ -84,19 +84,19 @@
                                 </datalist>
                             </div>
                         </div>
+                        <?php }else{?>
+                            <input class="form-control bordainput sizeinputedit" required value="<?php echo $companyname; ?>" autocomplete="off" name="conpany" type="hidden">
+                        <?php }if ($adm) {?>
                         <div class="col-sm-12  mt-4">
                             <div class="form-group">
                                 <label class="txtinput sizetituloedit">Core Business:</label>
 
-                                <select class="form-control bordainput sizeinputedit" onchange="showbusines(this.value)" id="coreBusiness" name="coreBusiness">
+                                <select class="form-control bordainput sizeinputedit" onchange="showbusines(this.value)" required id="coreBusiness" name="coreBusiness">
 
                                     <?php
-
-
                                     include_once('../model/classes/tblOperations.php');
                                     $operations = new Operations($dbh);
                                     $resultsoperation = $operations->consulta("");
-
                                     if ($operations != null) {
                                         foreach ($resultsoperation as $row) { ?>
                                             <option <?php if ($row->NmOperation ==  $NmBusiness) {
@@ -112,7 +112,7 @@
                             <div class="col-sm-6 mt-4" id="refHint">
                                 <div class="form-group">
                                     <label class="txtinput sizetituloedit">Business:</label>
-                                    <select onchange="showbusines2(this.value)" class="form-control bordainput sizeinputedit" id="satellite" name="satellite">
+                                    <select onchange="showbusines2(this.value)" required class="form-control bordainput sizeinputedit" id="satellite" name="satellite">
                                         <?php
                                         include_once('../model/classes/tblBusiness.php');
                                         $bussiness = new Business($dbh);
@@ -164,11 +164,15 @@
                                     <div class="col" id="refHint2"></div>
                                 </div>
                             </div>
-                        <?php } ?>
+                        <?php }}else{ ?>
+                            <input  value="<?php echo $corebusiness; ?>" id="coreBusiness" name="coreBusiness" type="hidden">
+                            <input  value="<?php echo $satBusinessId; ?>" id="satellite" name="satellite" type="hidden">
+                            <input  value="<?php echo $idoperation; ?>" id="category" name="category" type="hidden">
+                            <?php } ?>
                         <div class="col-sm-12  mt-4">
                             <div class="form-group">
                                 <label class="txtinput sizetituloedit">Description:</label>
-                                <textarea class="form-control bordainput" maxlength="1000" name="descricao" type="text" style="font-size: larger; min-height: 109px;"><?php echo $descricao; ?></textarea>
+                                <textarea class="form-control bordainput summernote" id="summernote" style="font-size: small !important;"  maxlength="1000" name="descricao" type="text" style="font-size: larger; min-height: 109px;"><?php echo $descricao; ?></textarea>
                             </div>
                         </div>
                     </div>

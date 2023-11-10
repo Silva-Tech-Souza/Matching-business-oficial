@@ -3,7 +3,8 @@
 include_once('../model/classes/conexao.php');
 include_once('../model/classes/tblUserClients.php');
 date_default_timezone_set('America/Sao_Paulo');
-
+ ini_set('display_erros', 1);
+  error_reporting(E_ALL);
 if(isset($_COOKIE["remember_me"])){
     if($_COOKIE["remember_me"]!=null){
         $renemberMeArray = json_decode($_COOKIE['remember_me'], true);

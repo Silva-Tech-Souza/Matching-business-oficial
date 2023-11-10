@@ -1730,22 +1730,13 @@ input {
     font-size: 10px;
 }
 
-.produtos-img {
-    width: -webkit-fill-available;
-    max-width: 100%;
-    max-height: 140px;
-    max-height: 140px !important;
-    min-width: 140px !important;
-    height: 140px;
-}
+
 
 .text-produto {
     font-size: 13px;
 }
 
-.desc-produto {
-    font-size: x-small;
-}
+
 
 .img-feed-styleset {
     display: block;
@@ -1991,12 +1982,6 @@ input {
     min-height: 247px;
 }
 
-.card-produto-uni {
-    display: inline-block;
-    margin-right: 10px;
-    vertical-align: top;
-    width: 175px;
-}
 
 .row-produto-card-pro {
     display: block;
@@ -2055,17 +2040,7 @@ input {
     text-overflow: ellipsis;
 }
 
-.cortardescricao {
-    overflow: hidden !important;
-    text-overflow: ellipsis !important;
-    -webkit-box-orient: vertical !important;
-    height: 100px;
-    width: -webkit-fill-available;
-    word-break: break-word;
-    -webkit-line-clamp: 4;
-    text-align: justify;
-    white-space: pre-line;
-}
+
 
 .minimenuoption {
     color: black !important;

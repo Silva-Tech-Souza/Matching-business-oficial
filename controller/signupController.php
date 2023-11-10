@@ -60,15 +60,22 @@ include_once('../model/classes/conexao.php');
 
     
             $codigoCadastroIncompleto = "4matching7" . urlencode($email) . "274bussiness5";
-            ini_set('display_erros', 1);
-            //error_reporting(E_ALL);
+            
             $from = "noreplay@matchingbusiness.online";
             $to = $email;
             $subject = "Matching Business Online - Confirmation Link";
-            $message = "Dear User," . "\n" . "Thank you for registering with us!" . "\n" . "We are excited to have you join Matching Business Online. This email serves as confirmation of your successful registration. We appreciate your interest and look forward to providing you with a fantastic experience." . "\n" . "Please click on the link below to enter your password and complete your registration." . "\n" . "https://visual.matchingbusiness.online/view/createPass.php?codigoCadastroIncompleto=" . $codigoCadastroIncompleto;
+            $message = "Dear User," . "\n" . "Thank you for registering with us!" . "\n" . "We are excited to have you join Matching Business Online. This email serves as confirmation of your successful registration. We appreciate your interest and look forward to providing you with a fantastic experience." . "\n" . "Please click on the link below to enter your password and complete your registration." . "\n" . "https://visual.matchingbusiness.online/view/createPass.php?codigoCadastroIncompleto=" . $codigoCadastroIncompleto."\r\n";
             $headers = "From:" . $from;
-            mail($to, $subject, $message, $headers);
-            header("Location: ../view/signup.php?showModal=true");
+            $headers  .= 'MIME-Version: Matching Business Online' . "\r\n";
+            $headers  .= 'Reply-To:'. $from . "\r\n";
+           $headers .= 'Content-type: text/plain; charset=iso-8859-1' . "\r\n";
+           
+            if(mail($to, $subject, $message, $headers)){
+                 header("Location: ../view/signup.php?showModal=true");
+            } else {
+                 header("Location: ../view/signup.php?showModal=true");
+            }
+           
             $_SESSION['signuperro']="";
            
         }

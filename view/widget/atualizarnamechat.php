@@ -5,7 +5,7 @@ header('Content-Type: application/json');
 header("Access-Control-Allow-Origin: *");
 
 include('../../model/classes/tblUserClients.php');
-
+include_once('../../model/classes/tblOperations.php');
 $idClientConversa = $_POST['idClientConversa'];
 
 $userClients = new UserClients($dbh);
@@ -23,9 +23,19 @@ if ($results != null) {
     } else {
         $urlimg =  "assets/img/Avatar.png";
     }
+    
+    $IdOperation =$mensagenUnid->CoreBusinessId;
+    $operations = new Operations($dbh);
+    $operations->setidOperation($IdOperation);
+    $resultsoperation = $operations->consulta("WHERE idOperation = :idOperation");
+    if ($resultsoperation != null) {
+      foreach ($resultsoperation as $rowoperation) {
+        $NmOperation = $rowoperation->NmOperation;
+      }
+    }
       $response['messages'][] = array(
         'name' => $mensagenUnid->FirstName." ".$mensagenUnid->LastName,
-        'core' =>$mensagenUnid->FirstName,
+        'core' =>$NmOperation,
         'img' => $urlimg
       );
    

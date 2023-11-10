@@ -11,14 +11,14 @@
             <div class="modal-body"  style="padding: 10px !important;">
 
                 <div class="row">
-                    <form method="POST" enctype="multipart/form-data" action="../controller/empresaController.php">
+                    <form method="POST" enctype="multipart/form-data" action="../controller/profileController.php">
                         <p style=" font-size: medium;">
                             Write the employee's email, and Matching Business will send a link to register
                         </p>
                         <div class="col-sm-12 mt-4">
                             <div class="form-group">
                                 <label class="txtinput sizetituloedit">Employee Email:</label>
-                                <input class="form-control sizeinputedit file-upload-input bordainput" placeholder="Ex: exemplo@gmail.com" required autocomplete="off" name="emailcolab" type="email">
+                                <input class="form-control sizeinputedit file-upload-input bordainput input-low" placeholder="Ex: exemplo@gmail.com" required autocomplete="off" name="emailcolab" type="email">
                                 <input class="form-control sizeinputedit file-upload-input bordainput" value="<?php echo $taxidempresa; ?>" required autocomplete="off" name="taxid" type="hidden">
                                 <input class="form-control sizeinputedit file-upload-input bordainput" value="<?php echo $nomeempresa; ?>" required autocomplete="off" name="nomeempresa" type="hidden">
                                 <input class="form-control sizeinputedit file-upload-input bordainput" value="<?php echo $qtdcolab; ?>" required autocomplete="off" name="qtdcolab" type="hidden">

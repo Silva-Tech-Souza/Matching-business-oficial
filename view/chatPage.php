@@ -11,11 +11,11 @@ if ($_SESSION["id"] < 0 || $_SESSION["id"] == "") {
 $iduser = $_SESSION["id"];
 
 $_SESSION["n"] = 5;
-if (isset($_GET["idClientConversa"])) {
+if (isset($_GET["idperfilchat"])) {
 
-  $idClientConversa = $_GET["idClientConversa"];
+  $idClientConversa = $_GET["idperfilchat"];
 } else {
-  $idClientConversa = 17;
+
 }
 
 
@@ -85,7 +85,6 @@ if ($resultsoperation != null) {
   <link rel="stylesheet" href="assets/css/chatPage.css">
 
   <title>Messaging</title>
-
 
 </head>
 

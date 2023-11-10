@@ -7,15 +7,18 @@
             </div>
             <div class="modal-body">
                 <div class="product-form">
+                    
                     <input type="text" name="description" id="description" placeholder="Product description" required></input>
                     <input type="number" name="product-price" id="product-price" placeholder="Product price"></input>
                     <div class="file-upload-wrapper d-flex">
                         <label for="product-form" class="productadd-title-image">Product Image</label><br><br>
                         <input type="file" name="product-image" class="file-upload-input" accept="image/*">
                         <span class="file-upload-filename"></span>
+                        
                     </div>
                 </div>
             </div>
+            <div id="image-preview"></div>
             <div class="modal-footer">
                 <button type="button" class="btn-danger bcolor-cinza-b productadd-cancel-btn" data-bs-dismiss="modal">Cancel</button>
                 <button type="button" class="btn btn-danger bcolor-azul-claro productadd-save-btn" data-bs-dismiss="modal">Create</button>
@@ -24,3 +27,23 @@
         </div>
     </div>
 </div>
+
+  <script>
+        function showImage(event) {
+            const fileInput = event.target;
+            const imagePreview = document.getElementById('image-preview');
+
+            if (fileInput.files && fileInput.files[0]) {
+                const reader = new FileReader();
+
+                reader.onload = function (e) {
+                    const image = document.createElement('img');
+                    image.src = e.target.result;
+                    imagePreview.innerHTML = '';
+                    imagePreview.appendChild(image);
+                };
+
+                reader.readAsDataURL(fileInput.files[0]);
+            }
+        }
+    </script>

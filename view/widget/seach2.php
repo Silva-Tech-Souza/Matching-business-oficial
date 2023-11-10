@@ -35,7 +35,7 @@ if ($tblBusiness != null) {
   </div>
 <div class="col-sm-12">
     <div class="form-floating">
-    <select name="category[]"  class=" form-select categmulti border-dark inputtamanho selecttamanho selectsp3" multiple  id="floatingSelectGrid" aria-label="Floating label select example">
+    <select name="category[]" required class=" form-select categmulti border-dark inputtamanho selecttamanho selectsp3" multiple  id="floatingSelectGrid" aria-label="Floating label select example">
     <option>Select</option>
             <?php
             include_once('../../model/classes/tblBusinessCategory.php');

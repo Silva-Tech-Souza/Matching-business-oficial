@@ -1,13 +1,12 @@
 <?php
 include_once('../model/classes/conexao.php');
-
+include_once('../model/classes/tblUserClients.php');
 date_default_timezone_set('America/Sao_Paulo');
 if ($_SESSION["id"] < 0 || $_SESSION["id"] == "") {
   header("Location: login.php");
 }
-
 $txaid = openssl_decrypt($_GET["dixat"], openssl_get_cipher_methods()[2] ,"matchingBussinessMelhorSistema");
-date_default_timezone_set('America/Sao_Paulo'); 
+
 include_once('../model/classes/tblEmpresas.php');
 $NOMEEMRPESA = "";
 $empresas = new Empresas($dbh);
@@ -18,9 +17,21 @@ $resultsempresas = $empresas->consulta("WHERE taxid = :taxid");
 if ($resultsempresas != null && is_array($resultsempresas)) {  
   foreach ($resultsempresas as $rowempresa) {
     $NOMEEMRPESA = $rowempresa->nome;
+    $colab1 = $row->colab1;
   }
 }
 
+
+$userClientscolab = new UserClients($dbh);
+$userClientscolab->setidClient($colab1);
+$resultscolab = $userClientscolab->consulta("WHERE idClient = :idClient");
+if ($resultscolab != null) {
+    foreach ($resultscolab as $row) {
+        $idoperation = $row->IdOperation;
+        $corebusiness = $row->CoreBusinessId;
+        $satBusinessId =  $row->SatBusinessId;
+    }
+}
 $qtdcolab = openssl_decrypt($_GET["balocdtq"], openssl_get_cipher_methods()[2] ,"matchingBussinessMelhorSistema");
 ?>
 <!DOCTYPE html>
@@ -104,11 +115,15 @@ $qtdcolab = openssl_decrypt($_GET["balocdtq"], openssl_get_cipher_methods()[2] ,
           <div class="cardcadastro mt-5">
             <form action="../controller/signUpCoolabController.php" method="POST" enctype="multipart/form-data">
               <div class="row">
+                  
                 <div class="col-sm-12">
                   <div class="form-group" style="text-align: start;">
                     <label class="color-branco labelcadastro h2" for="company-name">Company</label>
                     <hr class="color-branco">
                     <input type="hidden" class="form-control inputtamanho" value="<?PHP echo $qtdcolab; ?>" name="qtdcolab" >
+                     <input type="hidden" class="form-control inputtamanho" value="<?PHP echo $idoperation; ?>" name="idoperation" >
+                      <input type="hidden" class="form-control inputtamanho" value="<?PHP echo $corebusiness; ?>" name="corebusiness" >
+                      <input type="hidden" class="form-control inputtamanho" value="<?PHP echo $satBusinessId; ?>" name="satBusinessId" >
                   </div>
                 </div>
 
@@ -123,11 +138,11 @@ $qtdcolab = openssl_decrypt($_GET["balocdtq"], openssl_get_cipher_methods()[2] ,
                 <div class="col-sm-12">
                   <div class="form-group" style="text-align: start;">
                     <label class="color-branco labelcadastro" for="taxid">TAX ID </label>
-                    <input type="hidden" class="form-control inputtamanho" value="<?PHP if (isset($_GET["taxid"])) {
-                                                                                    echo $_GET["taxid"];
+                    <input type="hidden" class="form-control inputtamanho" value="<?PHP if (isset($txaid)) {
+                                                                                    echo $txaid;
                                                                                   } ?>" name="taxid" id="taxid" placeholder="ex: Devloper" required><br><br>
-                    <input type="text" disabled class="form-control inputtamanho" value="<?PHP if (isset($_GET["taxid"])) {
-                                                                                            echo $_GET["taxid"];
+                    <input type="text" disabled class="form-control inputtamanho" value="<?PHP if (isset($txaid)) {
+                                                                                            echo $txaid;
                                                                                           } ?>" name="taxid" id="taxid" placeholder="ex: Devloper" required><br><br>
                   </div>
                 </div>

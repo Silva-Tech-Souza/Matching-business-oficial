@@ -549,7 +549,7 @@ if ($results != null) {
                                                   echo "" . $rowOperationselect->PersonalUserPicturePath;
                                                 } else {
                                                   echo "assets/img/Avatar.png";
-                                                } ?>" alt="user" class="border-2 mini-profile-img " onclick="toggleMenu()">
+                                                } ?>" alt="user" class="border-2 mini-profile-img " style="object-fit: cover;box-shadow: 0px -3px 11px #0000005e;" >
                                   </div>
                                   <div class="col-6">
                                     <h4 class="fonte-titulo cortardescricao mr-1"><?php echo  $rowOperationselect->FirstName . " " . $rowOperationselect->LastName; ?></h4>
@@ -651,7 +651,7 @@ if ($results != null) {
                                                 echo "" . $rowOperationselect->PersonalUserPicturePath;
                                               } else {
                                                 echo "assets/img/Avatar.png";
-                                              } ?>" alt="user" class="border-2 mini-profile-img " onclick="toggleMenu()">
+                                              } ?>" alt="user" class="border-2 mini-profile-img " style="object-fit: cover;box-shadow: 0px -3px 11px #0000005e;"  >
                                 </div>
                                 <div class="col-6">
                                   <h4 class="fonte-titulo cortardescricao mr-1"><?php echo  $rowOperationselect->FirstName . " " . $rowOperationselect->LastName; ?></h4>
@@ -763,7 +763,7 @@ if ($results != null) {
                                                       echo "" . $rowOperationselect->PersonalUserPicturePath;
                                                     } else {
                                                       echo "assets/img/Avatar.png";
-                                                    } ?>" alt="user" class="border-2 mini-profile-img " onclick="toggleMenu()">
+                                                    } ?>" alt="user" class="border-2 mini-profile-img " style="object-fit: cover;box-shadow: 0px -3px 11px #0000005e;" >
                                       </div>
                                       <div class="col-6">
                                         <h4 class="fonte-titulo cortardescricao mr-1"><?php echo  $rowOperationselect->FirstName . " " . $rowOperationselect->LastName; ?></h4>
@@ -843,7 +843,7 @@ if ($results != null) {
                       foreach ($resultSearchcard as $resultConectUnidSearch) { ?>
                         <div class="carousel-filmes">
                           <h2 id="filme" class="titulo2 txthtitulo"><?php echo  $resultConectUnidSearch->Nome; ?> </h2><br>
-                          <div class="card col-12" style="height: fit-content;margin-left: 10px;margin-right: 10px;margin-bottom: 10px;">
+                          <div class="card col-12" style="height: fit-content;margin-left: 10px;margin-right: 10px;margin-bottom: 10px; width: -webkit-fill-available;box-shadow: 1px -1px 7px 0px #4343433d;">
                             <div class="row" style="padding: 4px;">
                               <div style="font-size: small;"><?php include_once('../model/classes/tblOperations.php');
                                     $operations = new Operations($dbh);
@@ -891,6 +891,37 @@ if ($results != null) {
                                     $resultstbltblSearchCategory = $tblSearchCategory->consulta("WHERE idSearch = :idSearch");
                                     $resultstblqtdnumcaeg = $tblSearchCategory->quantidade("WHERE idSearch = :idSearch");
                                     if ($resultstbltblSearchCategory != null) {
+                                        if($resultstblqtdnumcaeg->rowCount() >5 && $resultstblqtdnumcaeg->rowCount() < 378){
+                                              echo  "<b>Business Category: </b>".$resultstblqtdnumcaeg->rowCount();
+                                        }else if($resultstblqtdnumcaeg->rowCount() >= 378){
+                                             echo  "<b>Business Category: Todos</b>";
+                                        }else{
+                                             $namesbscateg3 = array();
+                                          
+                                            
+                                             foreach ($resultstbltblSearchCategory as $rowSearchBusinesscateg2) {
+                                                 include_once('../model/classes/tblBusinessCategory.php');
+                                                $BusinessCategory1 = new BusinessCategory($dbh);
+                                                $BusinessCategory1->setidBusinessCategory($rowSearchBusinesscateg2->idCategory);
+                                                $resultsBusinessCategory1 = $BusinessCategory1->consulta("WHERE idBusinessCategory = :idBusinessCategory");
+                                                 if ($resultsBusinessCategory1 != null) {
+                                                    
+                                                     foreach ($resultsBusinessCategory1 as $rowbusinesscateg3) {
+    
+                                                    $namesbscateg3[] = $rowbusinesscateg3->NmBusinessCategory;
+                                                  }
+                                                 }
+                                                 
+                                             }
+                                              if (!empty($namesbscateg3)) {
+                                                    echo "<b>Business Category: </b>" . implode(", ", $namesbscateg3);
+                                                  }
+                                        }
+                                      
+                                    }
+                                    
+                                   /* if ($resultstbltblSearchCategory != null) {}
+                                   
                                       if ($resultstblqtdnumcaeg->rowCount() > 5 && $resultstblqtdnumcaeg->rowCount() < 378) {
                                         echo "<b>Business Category: </b>" . $resultstblqtdnumcaeg->rowCount();
                                       }else  if ($resultstblqtdnumcaeg->rowCount() >=378) {
@@ -916,8 +947,12 @@ if ($results != null) {
                                           }
                                         }
                                       }
-                                    }
+                                    }*/
                                     ?></div>
+                                      <div class="row mb-2" style="padding: 9px;margin: auto;justify-content: space-between;">
+                <a href="widget/deletarseach.php?idseach=<?php echo $resultConectUnidSearch->idSearch;?>" class="btn btn-outline-danger ms-1" style="width: 100px;max-height: 35px !important;" ><i class="fas fa-trash-alt " style="margin-right: 5px;"></i>&nbsp;Delete</a>
+              
+              </div>
                             </div>
                           </div>
                           <div class=" owl-carousel owl-thema ">
@@ -964,7 +999,7 @@ if ($results != null) {
                                                             echo "" . $rowOperationselect->PersonalUserPicturePath;
                                                           } else {
                                                             echo "assets/img/Avatar.png";
-                                                          } ?>" alt="user" class="border-2 mini-profile-img " onclick="toggleMenu()">
+                                                          } ?>" alt="user" class="border-2 mini-profile-img " style="object-fit: cover;box-shadow: 0px -3px 11px #0000005e;" >
                                             </div>
                                             <div class="col-6">
                                               <h4 class="fonte-titulo cortardescricao mr-1"><?php echo  $rowOperationselect->FirstName . " " . $rowOperationselect->LastName; ?></h4>
@@ -1076,7 +1111,7 @@ padding-right: 6px;
                                                         echo "" . $rowOperationselect->PersonalUserPicturePath;
                                                       } else {
                                                         echo "assets/img/Avatar.png";
-                                                      } ?>" alt="user" class="border-2 mini-profile-img " onclick="toggleMenu()">
+                                                      } ?>" alt="user" class="border-2 mini-profile-img " style="object-fit: cover;box-shadow: 0px -3px 11px #0000005e;" >
                                         </div>
                                         <div class="col-6">
                                           <h4 class="fonte-titulo cortardescricao mr-1"><?php echo  $rowOperationselect->FirstName . " " . $rowOperationselect->LastName; ?></h4>
@@ -1182,7 +1217,7 @@ padding-right: 6px;
                                                         echo "" . $rowOperationselect->PersonalUserPicturePath;
                                                       } else {
                                                         echo "assets/img/Avatar.png";
-                                                      } ?>" alt="user" class="border-2 mini-profile-img " onclick="toggleMenu()">
+                                                      } ?>" alt="user" class="border-2 mini-profile-img " style="object-fit: cover;box-shadow: 0px -3px 11px #0000005e;"  >
                                         </div>
                                         <div class="col-6">
                                           <h4 class="fonte-titulo cortardescricao mr-1"><?php echo  $rowOperationselect->FirstName . " " . $rowOperationselect->LastName; ?></h4>
@@ -1286,7 +1321,7 @@ padding-right: 6px;
                                                         echo "" . $rowOperationselect->PersonalUserPicturePath;
                                                       } else {
                                                         echo "assets/img/Avatar.png";
-                                                      } ?>" alt="user" class="border-2 mini-profile-img " onclick="toggleMenu()">
+                                                      } ?>" alt="user" class="border-2 mini-profile-img " style="object-fit: cover;box-shadow: 0px -3px 11px #0000005e;" >
                                         </div>
                                         <div class="col-6">
                                           <h4 class="fonte-titulo cortardescricao mr-1"><?php echo  $rowOperationselect->FirstName . " " . $rowOperationselect->LastName; ?></h4>
@@ -1374,7 +1409,7 @@ padding-right: 6px;
                                                     echo "" . $rowOperationselect->PersonalUserPicturePath;
                                                   } else {
                                                     echo "assets/img/Avatar.png";
-                                                  } ?>" alt="user" class="border-2 mini-profile-img " onclick="toggleMenu()">
+                                                  } ?>" alt="user" class="border-2 mini-profile-img " style="object-fit: cover;box-shadow: 0px -3px 11px #0000005e;" >
                                     </div>
                                     <div class="col-6">
                                       <h4 class="fonte-titulo cortardescricao mr-1"><?php echo  $rowOperationselect->FirstName . " " . $rowOperationselect->LastName; ?></h4>
@@ -1467,7 +1502,7 @@ padding-right: 6px;
                                                         echo "" . $rowOperationselect->PersonalUserPicturePath;
                                                       } else {
                                                         echo "assets/img/Avatar.png";
-                                                      } ?>" alt="user" class="border-2 mini-profile-img " onclick="toggleMenu()">
+                                                      } ?>" alt="user" class="border-2 mini-profile-img " style="object-fit: cover;box-shadow: 0px -3px 11px #0000005e;" >
                                         </div>
                                         <div class="col-6">
                                           <h4 class="fonte-titulo cortardescricao mr-1"><?php echo  $rowOperationselect->FirstName . " " . $rowOperationselect->LastName; ?></h4>

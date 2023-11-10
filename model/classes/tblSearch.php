@@ -32,6 +32,7 @@ class Search{
     public function getidClient(){return $this->idClient;}
 
 
+
     public function cadastrar(){
 
         $sql = "INSERT INTO tblSearch (coreBussinessID, idClient, Nome) VALUES (:coreBussinessID,:idClient, :Nome)";
@@ -47,8 +48,7 @@ class Search{
         if($this->idClient != null){
             $query->bindParam(':idClient', $this->idClient, PDO::PARAM_INT);
         }
-
-
+        
         $query->execute();
         return $this->dbh->lastInsertId();
 
@@ -104,6 +104,7 @@ class Search{
             $query->bindParam(':idClient', $this->idClient, PDO::PARAM_INT);
         }
 
+
         $query->execute();
         return $query;
 
@@ -129,6 +130,7 @@ class Search{
         if($this->idClient != null){
             $query->bindParam(':idClient', $this->idClient, PDO::PARAM_INT);
         }
+
 
         $query->execute();
         return $query;

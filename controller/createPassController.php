@@ -39,8 +39,12 @@ if ($_POST["create"] != "") {
             $_SESSION['fName'] = $rowchekflag->FirstName;
             $_SESSION['lName'] = $rowchekflag->LastName;
 
-
-            header("Location: ../view/qualificacao.php");
+            if($rowchekflag->CoreBusinessId != null){
+                header("Location: ../view/qualificacao.php");
+            }else{
+                header("Location: ../view/home.php");
+            }
+            
         }
     } else {
         $errosenha = "The passwords are different";

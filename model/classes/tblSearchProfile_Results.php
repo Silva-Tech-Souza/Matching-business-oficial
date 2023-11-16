@@ -12,14 +12,9 @@ class SearchProfile_Results{
     protected $dbh = null;
     protected $estadoNotif = null;
 
-    function __construct()
+    function __construct($dbh)
     {
-        
-        include_once('conexao.php');
-        $conexao = new Conexao();
-        $conexao->abrirConexao();
-        $this->dbh = $conexao->getConexao();
-
+        $this->dbh = $dbh;
     }
 
 
@@ -64,6 +59,7 @@ class SearchProfile_Results{
        
         if($this->idUsuario != null){
             $query->bindParam(':idUsuario', $this->idUsuario, PDO::PARAM_INT);
+            
         }
         if($this->idClienteEncontrado != null){
             $query->bindParam(':idClienteEncontrado', $this->idClienteEncontrado, PDO::PARAM_INT);
@@ -79,6 +75,7 @@ class SearchProfile_Results{
         }
         if($this->estadoNotif != null){
             $query->bindParam(':estadoNotif', $this->estadoNotif, PDO::PARAM_INT);
+        
         }
 
         

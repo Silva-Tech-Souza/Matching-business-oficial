@@ -7,20 +7,16 @@ class SearchCountry{
     protected $idCountry = null;
     protected $dbh = null;
 
-    function __construct()
+    function __construct($dbh)
     {
-        
-        include_once('conexao.php');
-        $conexao = new Conexao();
-        $conexao->abrirConexao();
-        $this->dbh = $conexao->getConexao();
-
+        $this->dbh = $dbh;
     }
+
 
 
     public function setidSearchCountry($param){$this->idSearchCountry = $param;}
 
-    public function getidSearchCountry(){return $this->idSearchCountry;}
+    public function getidSearchCountry($dbh){return $this->idSearchCountry;}
 
     public function setidSearch($param){$this->idSearch = $param;}
 
@@ -28,7 +24,7 @@ class SearchCountry{
 
     public function setidCountry($param){$this->idCountry = $param;}
 
-    public function getidCountry(){return $this->idCountry;}
+    public function getidCountry($dbh){return $this->idCountry;}
 
 
     public function cadastrar(){

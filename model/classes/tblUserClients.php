@@ -1,8 +1,10 @@
 <?php
 
-class UserClients{ 
-    
+class UserClients
+{
+
     protected $idClient = null;
+    protected $Pontos = null;
     protected $FirstName = null;
     protected $MiddleName = null;
     protected $LastName = null;
@@ -33,653 +35,928 @@ class UserClients{
     protected $Vol_2Y = null;
     protected $Fob_1Y = null;
     protected $Vol_1Y = null;
+    protected $FobImports_3Y = null;
+    protected $VolImports_3Y = null;
+    protected $FobImports_2Y = null;
+    protected $VolImports_2Y = null;
+    protected $FobImports_1Y = null;
+    protected $VolImports_1Y = null;
     protected $dbh = null;
-    protected $idemrpesa = null;
+    private static $instancia;
 
-    function __construct()
+    function __construct($dbh)
     {
-        
-        include_once('conexao.php');
-        $conexao = new Conexao();
-        $conexao->abrirConexao();
-        $this->dbh = $conexao->getConexao();
-
+        $this->dbh = $dbh;
     }
 
 
-    public function setidClient($param){$this->idClient = $param;}
+    public function setidClient($param)
+    {
+        $this->idClient = $param;
+    }
 
-    public function getidClient(){return $this->idClient;}
+    public function getidClient()
+    {
+        return $this->idClient;
+    }
 
-    public function setFirstName($param){$this->FirstName = $param;}
-    
-    public function getFirstName(){return $this->FirstName;}
+    public function getPontos()
+    {
+        return $this->Pontos;
+    }
 
-    public function setMiddleName($param){$this->MiddleName = $param;}
-    
-    public function getMiddleName(){return $this->MiddleName;}
+    public function setPontos($param)
+    {
+        $this->Pontos = $param;
+    }
 
-    public function setLastName($param){$this->LastName = $param;}
-    
-    public function getLastName(){return $this->LastName;}
+    public function setFirstName($param)
+    {
+        $this->FirstName = $param;
+    }
 
-    public function setJobTitle($param){$this->JobTitle = $param;}
-    
-    public function getJobTitle(){return $this->JobTitle;}
+    public function getFirstName()
+    {
+        return $this->FirstName;
+    }
 
-    public function setidCountry($param){$this->idCountry = $param;}
-    
-    public function getidCountry(){return $this->idCountry;}
+    public function setMiddleName($param)
+    {
+        $this->MiddleName = $param;
+    }
 
-    public function setCompanyName($param){$this->CompanyName = $param;}
-    
-    public function getCompanyName(){return $this->CompanyName;}
+    public function getMiddleName()
+    {
+        return $this->MiddleName;
+    }
 
-    public function setPassword($param){$this->Password = $param;}
-    
-    public function getPassword(){return $this->Password;}
+    public function setLastName($param)
+    {
+        $this->LastName = $param;
+    }
 
-    public function setcreated_at($param){$this->created_at = $param;}
+    public function getLastName()
+    {
+        return $this->LastName;
+    }
 
-    public function getcreated_at(){return $this->created_at;}
+    public function setJobTitle($param)
+    {
+        $this->JobTitle = $param;
+    }
 
-    public function setCoreBusinessId($param){$this->CoreBusinessId = $param;}
-    
-    public function getCoreBusinessId(){return $this->CoreBusinessId;}
+    public function getJobTitle()
+    {
+        return $this->JobTitle;
+    }
 
-    public function setSatBusinessId($param){$this->SatBusinessId = $param;}
-    
-    public function getSatBusinessId(){return $this->SatBusinessId;}
+    public function setidCountry($param)
+    {
+        $this->idCountry = $param;
+    }
 
-    public function setIdOperation($param){$this->IdOperation = $param;}
-    
-    public function getIdOperation(){return $this->IdOperation;}
+    public function getidCountry($dbh)
+    {
+        return $this->idCountry;
+    }
 
-    public function setemail($param){$this->email = $param;}
-    
-    public function getemail(){return $this->email;}
+    public function setCompanyName($param)
+    {
+        $this->CompanyName = $param;
+    }
 
-    public function setidFlagStatusCadastro($param){$this->idFlagStatusCadastro = $param;}
-    
-    public function getidFlagStatusCadastro(){return $this->idFlagStatusCadastro;}
+    public function getCompanyName()
+    {
+        return $this->CompanyName;
+    }
 
-    public function setidPerfilUsuario($param){$this->idPerfilUsuario = $param;}
-    
-    public function getidPerfilUsuario(){return $this->idPerfilUsuario;}
+    public function setPassword($param)
+    {
+        $this->Password = $param;
+    }
 
-    public function setPersonalUserPicturePath($param){$this->PersonalUserPicturePath = $param;}
-    
-    public function getPersonalUserPicturePath(){return $this->PersonalUserPicturePath;}
+    public function getPassword()
+    {
+        return $this->Password;
+    }
 
-    public function setLogoPicturePath($param){$this->LogoPicturePath = $param;}
+    public function setcreated_at($param)
+    {
+        $this->created_at = $param;
+    }
 
-    public function getLogoPicturePath(){return $this->LogoPicturePath;}
+    public function getcreated_at()
+    {
+        return $this->created_at;
+    }
 
-    public function setWhatsAppNumber($param){$this->WhatsAppNumber = $param;}
-    
-    public function getWhatsAppNumber(){return $this->WhatsAppNumber;}
+    public function setCoreBusinessId($param)
+    {
+        $this->CoreBusinessId = $param;
+    }
 
-    public function setdescricao($param){$this->descricao = $param;}
-    
-    public function getdescricao(){return $this->descricao;}
+    public function getCoreBusinessId()
+    {
+        return $this->CoreBusinessId;
+    }
 
-    public function settaxid($param){$this->taxid = $param;}
-    
-    public function gettaxid(){return $this->taxid;}
+    public function setSatBusinessId($param)
+    {
+        $this->SatBusinessId = $param;
+    }
 
-    public function setAnoFundacao($param){$this->AnoFundacao = $param;}
-    
-    public function getAnoFundacao(){return $this->AnoFundacao;}
+    public function getSatBusinessId()
+    {
+        return $this->SatBusinessId;
+    }
 
-    public function setNumEmpregados($param){$this->NumEmpregados = $param;}
-    
-    public function getNumEmpregados(){return $this->NumEmpregados;}
+    public function setIdOperation($param)
+    {
+        $this->IdOperation = $param;
+    }
 
-    public function setNumVendedores($param){$this->NumVendedores = $param;}
-    
-    public function getNumVendedores(){return $this->NumVendedores;}
+    public function getIdOperation()
+    {
+        return $this->IdOperation;
+    }
 
-    public function setNivelOperacao($param){$this->NivelOperacao = $param;}
-    
-    public function getNivelOperacao(){return $this->NivelOperacao;}
+    public function setemail($param)
+    {
+        $this->email = $param;
+    }
 
-    public function setDetalheRegiao($param){$this->DetalheRegiao = $param;}
-    
-    public function getDetalheRegiao(){return $this->DetalheRegiao;}
+    public function getemail()
+    {
+        return $this->email;
+    }
 
-    public function setFob_3Y($param){$this->Fob_3Y = $param;}
-    
-    public function getFob_3Y(){return $this->Fob_3Y;}
+    public function setidFlagStatusCadastro($param)
+    {
+        $this->idFlagStatusCadastro = $param;
+    }
 
-    public function setVol_3Y($param){$this->Vol_3Y = $param;}
-    
-    public function getVol_3Y(){return $this->Vol_3Y;}
+    public function getidFlagStatusCadastro()
+    {
+        return $this->idFlagStatusCadastro;
+    }
 
-    public function setFob_2Y($param){$this->Fob_2Y = $param;}
-    
-    public function getFob_2Y(){return $this->Fob_2Y;}
+    public function setidPerfilUsuario($param)
+    {
+        $this->idPerfilUsuario = $param;
+    }
 
-    public function setVol_2Y($param){$this->Vol_2Y = $param;}
-    
-    public function getVol_2Y(){return $this->Vol_2Y;}
+    public function getidPerfilUsuario()
+    {
+        return $this->idPerfilUsuario;
+    }
 
-    public function setFob_1Y($param){$this->Fob_1Y = $param;}
-    
-    public function getFob_1Y(){return $this->Fob_1Y;}
+    public function setPersonalUserPicturePath($param)
+    {
+        $this->PersonalUserPicturePath = $param;
+    }
 
-    public function setVol_1Y($param){$this->Vol_1Y = $param;}
-    
-    public function getVol_1Y(){return $this->Vol_1Y;}
+    public function getPersonalUserPicturePath()
+    {
+        return $this->PersonalUserPicturePath;
+    }
 
-    public function setidEmpresa($param){$this->idemrpesa = $param;}
+    public function setLogoPicturePath($param)
+    {
+        $this->LogoPicturePath = $param;
+    }
 
-    public function getidEmpresa(){return $this->idemrpesa;}
+    public function getLogoPicturePath()
+    {
+        return $this->LogoPicturePath;
+    }
 
-    public function cadastrar(){
+    public function setWhatsAppNumber($param)
+    {
+        $this->WhatsAppNumber = $param;
+    }
 
-        
+    public function getWhatsAppNumber()
+    {
+        return $this->WhatsAppNumber;
+    }
 
-        $sql = "INSERT INTO tblUserClients ( `FirstName`,  `LastName`, `JobTitle`, `idCountry`, `CompanyName`,  `email`, IdOperation, idFlagStatusCadastro, idPerfilUsuario, `WhatsAppNumber`, `taxid`, idemrpesa) VALUES ( :FirstName,  :LastName, :JobTitle, :idCountry, :CompanyName, :email, '1', '2', '1', :WhatsAppNumber, :taxid, :idemrpesa)";
+    public function setdescricao($param)
+    {
+        $this->descricao = $param;
+    }
+
+    public function getdescricao()
+    {
+        return $this->descricao;
+    }
+
+    public function settaxid($param)
+    {
+        $this->taxid = $param;
+    }
+
+    public function gettaxid()
+    {
+        return $this->taxid;
+    }
+
+    public function setAnoFundacao($param)
+    {
+        $this->AnoFundacao = $param;
+    }
+
+    public function getAnoFundacao()
+    {
+        return $this->AnoFundacao;
+    }
+
+    public function setNumEmpregados($param)
+    {
+        $this->NumEmpregados = $param;
+    }
+
+    public function getNumEmpregados()
+    {
+        return $this->NumEmpregados;
+    }
+
+    public function setNumVendedores($param)
+    {
+        $this->NumVendedores = $param;
+    }
+
+    public function getNumVendedores()
+    {
+        return $this->NumVendedores;
+    }
+
+    public function setNivelOperacao($param)
+    {
+        $this->NivelOperacao = $param;
+    }
+
+    public function getNivelOperacao()
+    {
+        return $this->NivelOperacao;
+    }
+
+    public function setDetalheRegiao($param)
+    {
+        $this->DetalheRegiao = $param;
+    }
+
+    public function getDetalheRegiao()
+    {
+        return $this->DetalheRegiao;
+    }
+
+    public function setFob_3Y($param)
+    {
+        $this->Fob_3Y = $param;
+    }
+
+    public function getFob_3Y()
+    {
+        return $this->Fob_3Y;
+    }
+
+    public function setVol_3Y($param)
+    {
+        $this->Vol_3Y = $param;
+    }
+
+    public function getVol_3Y()
+    {
+        return $this->Vol_3Y;
+    }
+
+    public function setFob_2Y($param)
+    {
+        $this->Fob_2Y = $param;
+    }
+
+    public function getFob_2Y()
+    {
+        return $this->Fob_2Y;
+    }
+
+    public function setVol_2Y($param)
+    {
+        $this->Vol_2Y = $param;
+    }
+
+    public function getVol_2Y()
+    {
+        return $this->Vol_2Y;
+    }
+
+    public function setFob_1Y($param)
+    {
+        $this->Fob_1Y = $param;
+    }
+
+    public function getFob_1Y()
+    {
+        return $this->Fob_1Y;
+    }
+
+    public function setVol_1Y($param)
+    {
+        $this->Vol_1Y = $param;
+    }
+
+    public function getVol_1Y()
+    {
+        return $this->Vol_1Y;
+    }
+    public function setFobImports_3Y($param)
+    {
+        $this->FobImports_3Y = $param;
+    }
+
+    public function getFobImports_3Y()
+    {
+        return $this->FobImports_3Y;
+    }
+
+    public function setVolImports_3Y($param)
+    {
+        $this->VolImports_3Y = $param;
+    }
+
+    public function getVolImports_3Y()
+    {
+        return $this->VolImports_3Y;
+    }
+
+    public function setFobImports_2Y($param)
+    {
+        $this->FobImports_2Y = $param;
+    }
+
+    public function getFobImports_2Y()
+    {
+        return $this->FobImports_2Y;
+    }
+
+    public function setVolImports_2Y($param)
+    {
+        $this->VolImports_2Y = $param;
+    }
+
+    public function getVolImports_2Y()
+    {
+        return $this->VolImports_2Y;
+    }
+
+    public function setFobImports_1Y($param)
+    {
+        $this->FobImports_1Y = $param;
+    }
+
+    public function getFobImports_1Y()
+    {
+        return $this->FobImports_1Y;
+    }
+
+    public function setVolImports_1Y($param)
+    {
+        $this->VolImports_1Y = $param;
+    }
+
+    public function getVolImports_1Y()
+    {
+        return $this->VolImports_1Y;
+    }
+    public function cadastrar()
+    {
+
+        $sql = "INSERT INTO tblUserClients ( `FirstName`,  `LastName`, `JobTitle`, `idCountry`, `CompanyName`,  `email`, IdOperation, idFlagStatusCadastro, idPerfilUsuario, `WhatsAppNumber`, `taxid`) VALUES ( :FirstName,  :LastName, :JobTitle, :idCountry, :CompanyName, :email, '1', '2', '1', :WhatsAppNumber, :taxid)";
         $query = $this->dbh->prepare($sql);
-        
-        if($this->idClient != null){
+
+        if ($this->idClient != null) {
             $query->bindParam(':idClient', $this->idClient, PDO::PARAM_INT);
         }
-        if($this->FirstName != null){
+        if ($this->FirstName != null) {
             $query->bindParam(':FirstName', $this->FirstName, PDO::PARAM_STR);
         }
-        if($this->MiddleName != null){
+        if ($this->MiddleName != null) {
             $query->bindParam(':MiddleName', $this->MiddleName, PDO::PARAM_STR);
         }
-        if($this->LastName != null){
+        if ($this->LastName != null) {
             $query->bindParam(':LastName', $this->LastName, PDO::PARAM_STR);
         }
-        if($this->JobTitle != null){
+        if ($this->JobTitle != null) {
             $query->bindParam(':JobTitle', $this->JobTitle, PDO::PARAM_STR);
         }
-        if($this->idCountry != null){
+        if ($this->idCountry != null) {
             $query->bindParam(':idCountry', $this->idCountry, PDO::PARAM_INT);
         }
-        if($this->CompanyName != null){
+        if ($this->CompanyName != null) {
             $query->bindParam(':CompanyName', $this->CompanyName, PDO::PARAM_STR);
         }
-        if($this->Password != null){
+        if ($this->Password != null) {
             $query->bindParam(':Password', $this->Password, PDO::PARAM_STR);
         }
-       
-        if($this->CoreBusinessId != null){
+
+        if ($this->CoreBusinessId != null) {
             $query->bindParam(':CoreBusinessId', $this->CoreBusinessId, PDO::PARAM_INT);
         }
-        if($this->SatBusinessId != null){
+        if ($this->SatBusinessId != null) {
             $query->bindParam(':SatBusinessId', $this->SatBusinessId, PDO::PARAM_INT);
         }
-        if($this->IdOperation != null){
+        if ($this->IdOperation != null) {
             $query->bindParam(':IdOperation', $this->IdOperation, PDO::PARAM_INT);
         }
-        if($this->email != null){
+        if ($this->email != null) {
             $query->bindParam(':email', $this->email, PDO::PARAM_STR);
         }
-        if($this->idFlagStatusCadastro != null){
+        if ($this->idFlagStatusCadastro != null) {
             $query->bindParam(':idFlagStatusCadastro', $this->idFlagStatusCadastro, PDO::PARAM_INT);
         }
-        if($this->idPerfilUsuario != null){
+        if ($this->idPerfilUsuario != null) {
             $query->bindParam(':idPerfilUsuario', $this->idPerfilUsuario, PDO::PARAM_INT);
         }
-        if($this->PersonalUserPicturePath != null){
+        if ($this->PersonalUserPicturePath != null) {
             $query->bindParam(':PersonalUserPicturePath', $this->PersonalUserPicturePath, PDO::PARAM_STR);
         }
-        if($this->LogoPicturePath != null){
+        if ($this->LogoPicturePath != null) {
             $query->bindParam(':LogoPicturePath', $this->LogoPicturePath, PDO::PARAM_STR);
         }
-        if($this->WhatsAppNumber != null){
+        if ($this->WhatsAppNumber != null) {
             $query->bindParam(':WhatsAppNumber', $this->WhatsAppNumber, PDO::PARAM_STR);
         }
-        if($this->descricao != null){
+        if ($this->descricao != null) {
             $query->bindParam(':descricao', $this->descricao, PDO::PARAM_STR);
         }
-        if($this->taxid != null){
+        if ($this->taxid != null) {
             $query->bindParam(':taxid', $this->taxid, PDO::PARAM_STR);
-        }
-        if($this->idemrpesa != null){
-            $query->bindParam(':idemrpesa', $this->idemrpesa, PDO::PARAM_INT);
         }
 
         $query->execute();
-        return $query;
-
+        return $this->dbh->lastInsertId();
     }
 
-    public function consulta($paramsExtra){
+    public function consulta($paramsExtra)
+    {
 
         //$sql = "SELECT * from tblUserClients WHERE idClient = :idClient ";
-        $sql = "SELECT * from tblUserClients ".$paramsExtra;
+        $sql = "SELECT * from tblUserClients " . $paramsExtra;
         $query = $this->dbh->prepare($sql);
-        
-        if($this->idClient != null){
+
+        if ($this->idClient != null) {
             $query->bindParam(':idClient', $this->idClient, PDO::PARAM_INT);
         }
-        if($this->FirstName != null){
+        if ($this->FirstName != null) {
             $query->bindParam(':FirstName', $this->FirstName, PDO::PARAM_STR);
         }
-        if($this->MiddleName != null){
+        if ($this->MiddleName != null) {
             $query->bindParam(':MiddleName', $this->MiddleName, PDO::PARAM_STR);
         }
-        if($this->LastName != null){
+        if ($this->LastName != null) {
             $query->bindParam(':LastName', $this->LastName, PDO::PARAM_STR);
         }
-        if($this->JobTitle != null){
+        if ($this->JobTitle != null) {
             $query->bindParam(':JobTitle', $this->JobTitle, PDO::PARAM_STR);
         }
-        if($this->idCountry != null){
+        if ($this->idCountry != null) {
             $query->bindParam(':idCountry', $this->idCountry, PDO::PARAM_INT);
         }
-        if($this->CompanyName != null){
+        if ($this->CompanyName != null) {
             $query->bindParam(':CompanyName', $this->CompanyName, PDO::PARAM_STR);
         }
-        if($this->Password != null){
+        if ($this->Password != null) {
             $query->bindParam(':Password', $this->Password, PDO::PARAM_STR);
         }
-        if($this->created_at != null){
+        if ($this->created_at != null) {
             $query->bindParam(':created_at', $this->created_at, PDO::PARAM_STR);
         }
-        if($this->CoreBusinessId != null){
+        if ($this->CoreBusinessId != null) {
             $query->bindParam(':CoreBusinessId', $this->CoreBusinessId, PDO::PARAM_INT);
         }
-        if($this->SatBusinessId != null){
+        if ($this->SatBusinessId != null) {
             $query->bindParam(':SatBusinessId', $this->SatBusinessId, PDO::PARAM_INT);
         }
-        if($this->IdOperation != null){
+        if ($this->IdOperation != null) {
             $query->bindParam(':IdOperation', $this->IdOperation, PDO::PARAM_INT);
         }
-        if($this->email != null){
+        if ($this->email != null) {
             $query->bindParam(':email', $this->email, PDO::PARAM_STR);
         }
-        if($this->idFlagStatusCadastro != null){
+        if ($this->idFlagStatusCadastro != null) {
             $query->bindParam(':idFlagStatusCadastro', $this->idFlagStatusCadastro, PDO::PARAM_INT);
         }
-        if($this->idPerfilUsuario != null){
+        if ($this->idPerfilUsuario != null) {
             $query->bindParam(':idPerfilUsuario', $this->idPerfilUsuario, PDO::PARAM_INT);
         }
-        if($this->PersonalUserPicturePath != null){
+        if ($this->PersonalUserPicturePath != null) {
             $query->bindParam(':PersonalUserPicturePath', $this->PersonalUserPicturePath, PDO::PARAM_STR);
         }
-        if($this->LogoPicturePath != null){
+        if ($this->LogoPicturePath != null) {
             $query->bindParam(':LogoPicturePath', $this->LogoPicturePath, PDO::PARAM_STR);
         }
-        if($this->WhatsAppNumber != null){
+        if ($this->WhatsAppNumber != null) {
             $query->bindParam(':WhatsAppNumber', $this->WhatsAppNumber, PDO::PARAM_STR);
         }
-        if($this->descricao != null){
+        if ($this->descricao != null) {
             $query->bindParam(':descricao', $this->descricao, PDO::PARAM_STR);
         }
-        if($this->taxid != null){
+        if ($this->taxid != null) {
             $query->bindParam(':taxid', $this->taxid, PDO::PARAM_STR);
         }
-        if($this->AnoFundacao != null){
+        if ($this->AnoFundacao != null) {
             $query->bindParam(':AnoFundacao', $this->AnoFundacao, PDO::PARAM_STR);
         }
-        if($this->NumEmpregados != null){
+        if ($this->NumEmpregados != null) {
             $query->bindParam(':NumEmpregados', $this->NumEmpregados, PDO::PARAM_STR);
         }
-        if($this->NumVendedores != null){
+        if ($this->NumVendedores != null) {
             $query->bindParam(':NumVendedores', $this->NumVendedores, PDO::PARAM_STR);
         }
-        if($this->NivelOperacao != null){
+        if ($this->NivelOperacao != null) {
             $query->bindParam(':NivelOperacao', $this->NivelOperacao, PDO::PARAM_STR);
         }
-        if($this->DetalheRegiao != null){
+        if ($this->DetalheRegiao != null) {
             $query->bindParam(':DetalheRegiao', $this->DetalheRegiao, PDO::PARAM_STR);
         }
-        if($this->Fob_3Y != null){
+        if ($this->Fob_3Y != null) {
             $query->bindParam(':Fob_3Y', $this->Fob_3Y, PDO::PARAM_INT);
         }
-        if($this->Vol_3Y != null){
+        if ($this->Vol_3Y != null) {
             $query->bindParam(':Vol_3Y', $this->Vol_3Y, PDO::PARAM_INT);
         }
-        if($this->Fob_2Y != null){
+        if ($this->Fob_2Y != null) {
             $query->bindParam(':Fob_2Y', $this->Fob_2Y, PDO::PARAM_INT);
         }
-        if($this->Vol_2Y != null){
+        if ($this->Vol_2Y != null) {
             $query->bindParam(':Vol_2Y', $this->Vol_2Y, PDO::PARAM_INT);
         }
-        if($this->Fob_1Y != null){
+        if ($this->Fob_1Y != null) {
             $query->bindParam(':Fob_1Y', $this->Fob_1Y, PDO::PARAM_INT);
         }
-        if($this->Vol_1Y != null){
+        if ($this->Vol_1Y != null) {
             $query->bindParam(':Vol_1Y', $this->Vol_1Y, PDO::PARAM_INT);
         }
-        if($this->idemrpesa != null){
-            $query->bindParam(':idemrpesa', $this->idemrpesa, PDO::PARAM_INT);
+        if ($this->Pontos != null) {
+            $query->bindParam(':Pontos', $this->Pontos, PDO::PARAM_INT);
         }
+
         $query->execute();
         $results = $query->fetchAll(PDO::FETCH_OBJ);
 
-        if ($query->rowCount() > 0) {return $results;} else {return null;}
-
+        if ($query->rowCount() > 0) {
+            return $results;
+        } else {
+            return null;
+        }
     }
 
-    public function atualizar($paramsExtra){
+    public function atualizar($paramsExtra)
+    {
 
         //UPDATE tblAction SET IdAction = ':idAction', Description = ':description' WHERE CustomerID = 1;
-        $sql = "UPDATE tblUserClients SET ".$paramsExtra;
+        $sql = "UPDATE tblUserClients SET " . $paramsExtra;
         $query = $this->dbh->prepare($sql);
-        
-        if($this->idClient != null){
+
+        if ($this->idClient != null) {
             $query->bindParam(':idClient', $this->idClient, PDO::PARAM_INT);
         }
-        if($this->FirstName != null){
+        if ($this->FirstName != null) {
             $query->bindParam(':FirstName', $this->FirstName, PDO::PARAM_STR);
         }
-        if($this->MiddleName != null){
+        if ($this->MiddleName != null) {
             $query->bindParam(':MiddleName', $this->MiddleName, PDO::PARAM_STR);
         }
-        if($this->LastName != null){
+        if ($this->LastName != null) {
             $query->bindParam(':LastName', $this->LastName, PDO::PARAM_STR);
         }
-        if($this->JobTitle != null){
+        if ($this->JobTitle != null) {
             $query->bindParam(':JobTitle', $this->JobTitle, PDO::PARAM_STR);
         }
-        if($this->idCountry != null){
+        if ($this->idCountry != null) {
             $query->bindParam(':idCountry', $this->idCountry, PDO::PARAM_INT);
         }
-        if($this->CompanyName != null){
+        if ($this->CompanyName != null) {
             $query->bindParam(':CompanyName', $this->CompanyName, PDO::PARAM_STR);
         }
-        if($this->Password != null){
+        if ($this->Password != null) {
             $query->bindParam(':Password', $this->Password, PDO::PARAM_STR);
         }
-        if($this->created_at != null){
+        if ($this->created_at != null) {
             $query->bindParam(':created_at', $this->created_at, PDO::PARAM_STR);
         }
-        if($this->CoreBusinessId != null){
+        if ($this->CoreBusinessId != null) {
             $query->bindParam(':CoreBusinessId', $this->CoreBusinessId, PDO::PARAM_INT);
         }
-        if($this->SatBusinessId != null){
+        if ($this->SatBusinessId != null) {
             $query->bindParam(':SatBusinessId', $this->SatBusinessId, PDO::PARAM_INT);
         }
-        if($this->IdOperation != null){
+        if ($this->IdOperation != null) {
             $query->bindParam(':IdOperation', $this->IdOperation, PDO::PARAM_INT);
         }
-        if($this->email != null){
+        if ($this->email != null) {
             $query->bindParam(':email', $this->email, PDO::PARAM_STR);
         }
-        if($this->idFlagStatusCadastro != null){
+        if ($this->idFlagStatusCadastro != null) {
             $query->bindParam(':idFlagStatusCadastro', $this->idFlagStatusCadastro, PDO::PARAM_INT);
         }
-        if($this->idPerfilUsuario != null){
+        if ($this->idPerfilUsuario != null) {
             $query->bindParam(':idPerfilUsuario', $this->idPerfilUsuario, PDO::PARAM_INT);
         }
-        if($this->PersonalUserPicturePath != null){
+        if ($this->PersonalUserPicturePath != null) {
             $query->bindParam(':PersonalUserPicturePath', $this->PersonalUserPicturePath, PDO::PARAM_STR);
         }
-        if($this->LogoPicturePath != null){
+        if ($this->LogoPicturePath != null) {
             $query->bindParam(':LogoPicturePath', $this->LogoPicturePath, PDO::PARAM_STR);
         }
-        if($this->WhatsAppNumber != null){
+        if ($this->WhatsAppNumber != null) {
             $query->bindParam(':WhatsAppNumber', $this->WhatsAppNumber, PDO::PARAM_STR);
         }
-        if($this->descricao != null){
+        if ($this->descricao != null) {
             $query->bindParam(':descricao', $this->descricao, PDO::PARAM_STR);
         }
-        if($this->taxid != null){
+        if ($this->taxid != null) {
             $query->bindParam(':taxid', $this->taxid, PDO::PARAM_STR);
         }
-        if($this->AnoFundacao != null){
+        if ($this->AnoFundacao != null) {
             $query->bindParam(':AnoFundacao', $this->AnoFundacao, PDO::PARAM_STR);
         }
-        if($this->NumEmpregados != null){
+        if ($this->NumEmpregados != null) {
             $query->bindParam(':NumEmpregados', $this->NumEmpregados, PDO::PARAM_STR);
         }
-        if($this->NumVendedores != null){
+        if ($this->NumVendedores != null) {
             $query->bindParam(':NumVendedores', $this->NumVendedores, PDO::PARAM_STR);
         }
-        if($this->NivelOperacao != null){
+        if ($this->NivelOperacao != null) {
             $query->bindParam(':NivelOperacao', $this->NivelOperacao, PDO::PARAM_STR);
         }
-        if($this->DetalheRegiao != null){
+        if ($this->DetalheRegiao != null) {
             $query->bindParam(':DetalheRegiao', $this->DetalheRegiao, PDO::PARAM_STR);
         }
-        if($this->Fob_3Y != null){
+        if ($this->Fob_3Y != null) {
             $query->bindParam(':Fob_3Y', $this->Fob_3Y, PDO::PARAM_STR);
         }
-        if($this->Vol_3Y != null){
+        if ($this->Vol_3Y != null) {
             $query->bindParam(':Vol_3Y', $this->Vol_3Y, PDO::PARAM_INT);
         }
-        if($this->Fob_2Y != null){
+        if ($this->Fob_2Y != null) {
             $query->bindParam(':Fob_2Y', $this->Fob_2Y, PDO::PARAM_STR);
         }
-        if($this->Vol_2Y != null){
+        if ($this->Vol_2Y != null) {
             $query->bindParam(':Vol_2Y', $this->Vol_2Y, PDO::PARAM_INT);
         }
-        if($this->Fob_1Y != null){
+        if ($this->Fob_1Y != null) {
             $query->bindParam(':Fob_1Y', $this->Fob_1Y, PDO::PARAM_STR);
         }
-        if($this->Vol_1Y != null){
+        if ($this->Vol_1Y != null) {
             $query->bindParam(':Vol_1Y', $this->Vol_1Y, PDO::PARAM_INT);
         }
-        if($this->idemrpesa != null){
-            $query->bindParam(':idemrpesa', $this->idemrpesa, PDO::PARAM_INT);
+        if ($this->Pontos != null) {
+            $query->bindParam(':Pontos', $this->Pontos, PDO::PARAM_INT);
+        }
+        if ($this->FobImports_3Y !== null) {
+            $query->bindParam(':FobImports_3Y', $this->FobImports_3Y, PDO::PARAM_STR);
+        }
+        if ($this->VolImports_3Y !== null) {
+            $query->bindParam(':VolImports_3Y', $this->VolImports_3Y, PDO::PARAM_STR);
+        }
+        if ($this->FobImports_2Y !== null) {
+            $query->bindParam(':FobImports_2Y', $this->FobImports_2Y, PDO::PARAM_STR);
+        }
+        if ($this->VolImports_2Y !== null) {
+            $query->bindParam(':VolImports_2Y', $this->VolImports_2Y, PDO::PARAM_STR);
+        }
+        if ($this->FobImports_1Y !== null) {
+            $query->bindParam(':FobImports_1Y', $this->FobImports_1Y, PDO::PARAM_STR);
+        }
+        if ($this->VolImports_1Y !== null) {
+            $query->bindParam(':VolImports_1Y', $this->VolImports_1Y, PDO::PARAM_STR);
         }
         $query->execute();
         return $query;
-
     }
 
-    public function quantidade($paramsExtra){
-        
+    public function quantidade($paramsExtra)
+    {
+
         //$sql = "SELECT * from tblUserClients WHERE idClient = :idClient ";
-        $sql = "SELECT * from tblUserClients ".$paramsExtra;
+        $sql = "SELECT * from tblUserClients " . $paramsExtra;
         $query = $this->dbh->prepare($sql);
-        
-        if($this->idClient != null){
+
+        if ($this->idClient != null) {
             $query->bindParam(':idClient', $this->idClient, PDO::PARAM_INT);
         }
-        if($this->FirstName != null){
+        if ($this->FirstName != null) {
             $query->bindParam(':FirstName', $this->FirstName, PDO::PARAM_STR);
         }
-        if($this->MiddleName != null){
+        if ($this->MiddleName != null) {
             $query->bindParam(':MiddleName', $this->MiddleName, PDO::PARAM_STR);
         }
-        if($this->LastName != null){
+        if ($this->LastName != null) {
             $query->bindParam(':LastName', $this->LastName, PDO::PARAM_STR);
         }
-        if($this->JobTitle != null){
+        if ($this->JobTitle != null) {
             $query->bindParam(':JobTitle', $this->JobTitle, PDO::PARAM_STR);
         }
-        if($this->idCountry != null){
+        if ($this->idCountry != null) {
             $query->bindParam(':idCountry', $this->idCountry, PDO::PARAM_INT);
         }
-        if($this->CompanyName != null){
+        if ($this->CompanyName != null) {
             $query->bindParam(':CompanyName', $this->CompanyName, PDO::PARAM_STR);
         }
-        if($this->Password != null){
+        if ($this->Password != null) {
             $query->bindParam(':Password', $this->Password, PDO::PARAM_STR);
         }
-        if($this->created_at != null){
+        if ($this->created_at != null) {
             $query->bindParam(':created_at', $this->created_at, PDO::PARAM_STR);
         }
-        if($this->CoreBusinessId != null){
+        if ($this->CoreBusinessId != null) {
             $query->bindParam(':CoreBusinessId', $this->CoreBusinessId, PDO::PARAM_INT);
         }
-        if($this->SatBusinessId != null){
+        if ($this->SatBusinessId != null) {
             $query->bindParam(':SatBusinessId', $this->SatBusinessId, PDO::PARAM_INT);
         }
-        if($this->IdOperation != null){
+        if ($this->IdOperation != null) {
             $query->bindParam(':IdOperation', $this->IdOperation, PDO::PARAM_INT);
         }
-        if($this->email != null){
+        if ($this->email != null) {
             $query->bindParam(':email', $this->email, PDO::PARAM_STR);
         }
-        if($this->idFlagStatusCadastro != null){
+        if ($this->idFlagStatusCadastro != null) {
             $query->bindParam(':idFlagStatusCadastro', $this->idFlagStatusCadastro, PDO::PARAM_INT);
         }
-        if($this->idPerfilUsuario != null){
+        if ($this->idPerfilUsuario != null) {
             $query->bindParam(':idPerfilUsuario', $this->idPerfilUsuario, PDO::PARAM_INT);
         }
-        if($this->PersonalUserPicturePath != null){
+        if ($this->PersonalUserPicturePath != null) {
             $query->bindParam(':PersonalUserPicturePath', $this->PersonalUserPicturePath, PDO::PARAM_STR);
         }
-        if($this->LogoPicturePath != null){
+        if ($this->LogoPicturePath != null) {
             $query->bindParam(':LogoPicturePath', $this->LogoPicturePath, PDO::PARAM_STR);
         }
-        if($this->WhatsAppNumber != null){
+        if ($this->WhatsAppNumber != null) {
             $query->bindParam(':WhatsAppNumber', $this->WhatsAppNumber, PDO::PARAM_STR);
         }
-        if($this->descricao != null){
+        if ($this->descricao != null) {
             $query->bindParam(':descricao', $this->descricao, PDO::PARAM_STR);
         }
-        if($this->taxid != null){
+        if ($this->taxid != null) {
             $query->bindParam(':taxid', $this->taxid, PDO::PARAM_STR);
         }
-        if($this->AnoFundacao != null){
+        if ($this->AnoFundacao != null) {
             $query->bindParam(':AnoFundacao', $this->AnoFundacao, PDO::PARAM_STR);
         }
-        if($this->NumEmpregados != null){
+        if ($this->NumEmpregados != null) {
             $query->bindParam(':NumEmpregados', $this->NumEmpregados, PDO::PARAM_STR);
         }
-        if($this->NumVendedores != null){
+        if ($this->NumVendedores != null) {
             $query->bindParam(':NumVendedores', $this->NumVendedores, PDO::PARAM_STR);
         }
-        if($this->NivelOperacao != null){
+        if ($this->NivelOperacao != null) {
             $query->bindParam(':NivelOperacao', $this->NivelOperacao, PDO::PARAM_STR);
         }
-        if($this->DetalheRegiao != null){
+        if ($this->DetalheRegiao != null) {
             $query->bindParam(':DetalheRegiao', $this->DetalheRegiao, PDO::PARAM_STR);
         }
-        if($this->Fob_3Y != null){
+        if ($this->Fob_3Y != null) {
             $query->bindParam(':Fob_3Y', $this->Fob_3Y, PDO::PARAM_INT);
         }
-        if($this->Vol_3Y != null){
+        if ($this->Vol_3Y != null) {
             $query->bindParam(':Vol_3Y', $this->Vol_3Y, PDO::PARAM_INT);
         }
-        if($this->Fob_2Y != null){
+        if ($this->Fob_2Y != null) {
             $query->bindParam(':Fob_2Y', $this->Fob_2Y, PDO::PARAM_INT);
         }
-        if($this->Vol_2Y != null){
+        if ($this->Vol_2Y != null) {
             $query->bindParam(':Vol_2Y', $this->Vol_2Y, PDO::PARAM_INT);
         }
-        if($this->Fob_1Y != null){
+        if ($this->Fob_1Y != null) {
             $query->bindParam(':Fob_1Y', $this->Fob_1Y, PDO::PARAM_INT);
         }
-        if($this->Vol_1Y != null){
+        if ($this->Vol_1Y != null) {
             $query->bindParam(':Vol_1Y', $this->Vol_1Y, PDO::PARAM_INT);
         }
-        if($this->idemrpesa != null){
-            $query->bindParam(':idemrpesa', $this->idemrpesa, PDO::PARAM_INT);
+        if ($this->Pontos != null) {
+            $query->bindParam(':Pontos', $this->Pontos, PDO::PARAM_INT);
         }
+
         $query->execute();
         $results = $query->fetchAll(PDO::FETCH_OBJ);
 
-        if ($query->rowCount() > 0) {return $query->rowCount();} else {return 0;}
+        if ($query->rowCount() > 0) {
+            return $query->rowCount();
+        } else {
+            return 0;
+        }
     }
 
-    public function deletar($paramsExtra){
+    public function deletar($paramsExtra)
+    {
 
-        
+
 
         //DELETE FROM tblAction WHERE IdAction=':idAction';
-        $sql = "DELETE FROM tblUserClients ".$paramsExtra;
+        $sql = "DELETE FROM tblUserClients " . $paramsExtra;
         $query = $this->dbh->prepare($sql);
-        
-        if($this->idClient != null){
+
+        if ($this->idClient != null) {
             $query->bindParam(':idClient', $this->idClient, PDO::PARAM_INT);
         }
-        if($this->FirstName != null){
+        if ($this->FirstName != null) {
             $query->bindParam(':FirstName', $this->FirstName, PDO::PARAM_STR);
         }
-        if($this->MiddleName != null){
+        if ($this->MiddleName != null) {
             $query->bindParam(':MiddleName', $this->MiddleName, PDO::PARAM_STR);
         }
-        if($this->LastName != null){
+        if ($this->LastName != null) {
             $query->bindParam(':LastName', $this->LastName, PDO::PARAM_STR);
         }
-        if($this->JobTitle != null){
+        if ($this->JobTitle != null) {
             $query->bindParam(':JobTitle', $this->JobTitle, PDO::PARAM_STR);
         }
-        if($this->idCountry != null){
+        if ($this->idCountry != null) {
             $query->bindParam(':idCountry', $this->idCountry, PDO::PARAM_INT);
         }
-        if($this->CompanyName != null){
+        if ($this->CompanyName != null) {
             $query->bindParam(':CompanyName', $this->CompanyName, PDO::PARAM_STR);
         }
-        if($this->Password != null){
+        if ($this->Password != null) {
             $query->bindParam(':Password', $this->Password, PDO::PARAM_STR);
         }
-        if($this->created_at != null){
+        if ($this->created_at != null) {
             $query->bindParam(':created_at', $this->created_at, PDO::PARAM_STR);
         }
-        if($this->CoreBusinessId != null){
+        if ($this->CoreBusinessId != null) {
             $query->bindParam(':CoreBusinessId', $this->CoreBusinessId, PDO::PARAM_INT);
         }
-        if($this->SatBusinessId != null){
+        if ($this->SatBusinessId != null) {
             $query->bindParam(':SatBusinessId', $this->SatBusinessId, PDO::PARAM_INT);
         }
-        if($this->IdOperation != null){
+        if ($this->IdOperation != null) {
             $query->bindParam(':IdOperation', $this->IdOperation, PDO::PARAM_INT);
         }
-        if($this->email != null){
+        if ($this->email != null) {
             $query->bindParam(':email', $this->email, PDO::PARAM_STR);
         }
-        if($this->idFlagStatusCadastro != null){
+        if ($this->idFlagStatusCadastro != null) {
             $query->bindParam(':idFlagStatusCadastro', $this->idFlagStatusCadastro, PDO::PARAM_INT);
         }
-        if($this->idPerfilUsuario != null){
+        if ($this->idPerfilUsuario != null) {
             $query->bindParam(':idPerfilUsuario', $this->idPerfilUsuario, PDO::PARAM_INT);
         }
-        if($this->PersonalUserPicturePath != null){
+        if ($this->PersonalUserPicturePath != null) {
             $query->bindParam(':PersonalUserPicturePath', $this->PersonalUserPicturePath, PDO::PARAM_STR);
         }
-        if($this->LogoPicturePath != null){
+        if ($this->LogoPicturePath != null) {
             $query->bindParam(':LogoPicturePath', $this->LogoPicturePath, PDO::PARAM_STR);
         }
-        if($this->WhatsAppNumber != null){
+        if ($this->WhatsAppNumber != null) {
             $query->bindParam(':WhatsAppNumber', $this->WhatsAppNumber, PDO::PARAM_STR);
         }
-        if($this->descricao != null){
+        if ($this->descricao != null) {
             $query->bindParam(':descricao', $this->descricao, PDO::PARAM_STR);
         }
-        if($this->taxid != null){
+        if ($this->taxid != null) {
             $query->bindParam(':taxid', $this->taxid, PDO::PARAM_STR);
         }
-        if($this->AnoFundacao != null){
+        if ($this->AnoFundacao != null) {
             $query->bindParam(':AnoFundacao', $this->AnoFundacao, PDO::PARAM_STR);
         }
-        if($this->NumEmpregados != null){
+        if ($this->NumEmpregados != null) {
             $query->bindParam(':NumEmpregados', $this->NumEmpregados, PDO::PARAM_STR);
         }
-        if($this->NumVendedores != null){
+        if ($this->NumVendedores != null) {
             $query->bindParam(':NumVendedores', $this->NumVendedores, PDO::PARAM_STR);
         }
-        if($this->NivelOperacao != null){
+        if ($this->NivelOperacao != null) {
             $query->bindParam(':NivelOperacao', $this->NivelOperacao, PDO::PARAM_STR);
         }
-        if($this->DetalheRegiao != null){
+        if ($this->DetalheRegiao != null) {
             $query->bindParam(':DetalheRegiao', $this->DetalheRegiao, PDO::PARAM_STR);
         }
-        if($this->Fob_3Y != null){
+        if ($this->Fob_3Y != null) {
             $query->bindParam(':Fob_3Y', $this->Fob_3Y, PDO::PARAM_INT);
         }
-        if($this->Vol_3Y != null){
+        if ($this->Vol_3Y != null) {
             $query->bindParam(':Vol_3Y', $this->Vol_3Y, PDO::PARAM_INT);
         }
-        if($this->Fob_2Y != null){
+        if ($this->Fob_2Y != null) {
             $query->bindParam(':Fob_2Y', $this->Fob_2Y, PDO::PARAM_INT);
         }
-        if($this->Vol_2Y != null){
+        if ($this->Vol_2Y != null) {
             $query->bindParam(':Vol_2Y', $this->Vol_2Y, PDO::PARAM_INT);
         }
-        if($this->Fob_1Y != null){
+        if ($this->Fob_1Y != null) {
             $query->bindParam(':Fob_1Y', $this->Fob_1Y, PDO::PARAM_INT);
         }
-        if($this->Vol_1Y != null){
+        if ($this->Vol_1Y != null) {
             $query->bindParam(':Vol_1Y', $this->Vol_1Y, PDO::PARAM_INT);
         }
-        if($this->idemrpesa != null){
-            $query->bindParam(':idemrpesa', $this->idemrpesa, PDO::PARAM_INT);
+        if ($this->Pontos != null) {
+            $query->bindParam(':Pontos', $this->Pontos, PDO::PARAM_INT);
         }
+
         $query->execute();
         return $query;
-
     }
-
 }

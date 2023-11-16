@@ -1,6 +1,12 @@
 <?php
-session_start();
-error_reporting(0);
+include_once('../../model/classes/conexao.php');
+if ( session_status() !== PHP_SESSION_ACTIVE )
+{
+   session_start();
+}
+if(isset($_SESSION['error'])){
+    error_reporting(0);
+}
 date_default_timezone_set('America/Sao_Paulo');
 header("Access-Control-Allow-Origin: *");
 
@@ -9,14 +15,14 @@ $idpost = $_GET['id'];
 
 //parte 1
 include_once("../../model/classes/tblCurtidas.php");
-$tblcurtidadelete = new Curtidas;
+$tblcurtidadelete = new Curtidas($dbh);;
 $tblcurtidadelete->setidpost($idpost);
 $tblcurtidadelete->setidusuario($iduser);
 $tblcurtidadelete->deletar("WHERE idpost = :idpost AND idusuario = :idusuario");
 
 
 
-$tbcurtidaSe = new Curtidas;
+$tbcurtidaSe = new Curtidas($dbh);;
 $tbcurtidaSe->setidpost($idpost);
 $tbcurtidaSeResults = $tbcurtidaSe->consulta("WHERE idpost = :idpost");
 

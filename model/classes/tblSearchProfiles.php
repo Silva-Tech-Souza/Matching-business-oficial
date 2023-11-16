@@ -9,7 +9,11 @@ class SearchProfiles{
     protected $Value = null;
     protected $Concatenator = null;
     protected $FlagDeleted = null;
-
+    protected $dbh = null;
+    function __construct($dbh)
+    {
+        $this->dbh = $dbh;
+    }
 
 
     public function setSearchProfilesId($param){$this->SearchProfilesId = $param;}

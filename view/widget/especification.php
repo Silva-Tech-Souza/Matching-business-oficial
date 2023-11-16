@@ -1,11 +1,17 @@
 <?php
-session_start();
-//error_reporting(0);
+include_once('../../model/classes/conexao.php');
+if ( session_status() !== PHP_SESSION_ACTIVE )
+{
+   session_start();
+}
+if(isset($_SESSION['error'])){
+    error_reporting(0);
+}
 date_default_timezone_set('America/Sao_Paulo');
 
 $idbusines = $_GET["q"];
 include_once('../../model/classes/tblOperations.php');
-$tblOperations1 = new Operations();
+$tblOperations1 = new Operations($dbh);
 $tblOperations1->setidOperation($idbusines);
 $resultstblOperations = $tblOperations1->consulta("WHERE idOperation = :idOperation");
 if ($tblOperations1 != null) {
@@ -41,9 +47,9 @@ if ($_SESSION["FlagOperation"] == "A" || $_SESSION["FlagOperation"] == "C") {
 <div class="row">
     <?php if ($_SESSION["FlagOperation"] == "A" || $_SESSION["FlagOperation"] == "C") { ?>
         <div class="col-sm-12">
-            <div class="form-floating mb-3 multi-search-filter" onclick="Array.from(this.children).find(n=>n.tagName==='INPUT').focus()">
+            <div class="form-floating mb-3 multi-search-filter" onclick="">
 
-                <input type="text" class="form-control inputstyle border-dark inputtamanhoarea" onkeyup="multiSearchKeyup(this)">
+                <input type="text" onkeyup="multiSearchKeyup(this)" class="form-control inputstyle border-dark inputtamanhoarea" id='Produto_servico' >
                 <input type="hidden" id="keywords-hiddens" name="produtostags" value="">
 
             </div>
@@ -54,8 +60,8 @@ if ($_SESSION["FlagOperation"] == "A" || $_SESSION["FlagOperation"] == "C") {
                 <select required name="numempregados" class=" form-select  border-dark inputtamanho" id="floatingSelectGrid" aria-label="Floating label select example">
                     <?php
                     include_once('../../model/classes/tblNumEmpregados.php');
-                    $tblNumEmpregados = new NumEmpregados();
-                    $resultsNumEmpregados = $tblNumEmpregados->consulta("");
+                    $tblNumEmpregados = new NumEmpregados($dbh);
+                    $resultsNumEmpregados = $tblNumEmpregados->consulta("ORDER BY ValorInicial ASC");
                     if ($tblNumEmpregados != null) {
                         foreach ($resultsNumEmpregados as $rowemply) {
                     ?>
@@ -67,12 +73,29 @@ if ($_SESSION["FlagOperation"] == "A" || $_SESSION["FlagOperation"] == "C") {
             </div>
         </div>
         <div class="col-sm-12">
+                                    <div class="form-floating mb-3">
+                                        <select style="font-size: small;height: 4rem !important;" required name="numSellers" class=" form-select  border-dark inputtamanho" id="floatingSelectGrid" aria-label="Floating label select example">
+                                            <?php
+                                            include_once('../model/classes/tblNumEmpregados.php');
+                                            $tblNumEmpregados = new NumEmpregados($dbh);
+                                            $resultsNumEmpregados = $tblNumEmpregados->consulta("ORDER BY ValorInicial ASC");
+                                            if ($resultsNumEmpregados != null) {
+                                                foreach ($resultsNumEmpregados as $rowemply) {
+                                            ?>
+                                                    <option value="<?php echo $rowemply->idNumEmpregados; ?>"><?php echo $rowemply->DescNumEmpregados; ?></option>
+                                            <?php  }
+                                            } ?>
+                                        </select>
+                                        <label for="floatingSelectGrid" style=" font-size: larger;">Total Sales Rep:</label>
+                                    </div>
+                                </div>
+        <div class="col-sm-12">
             <div class="form-floating mb-3">
                 <select required name="rangevalues" class=" form-select  border-dark inputtamanho" id="floatingSelectGrid" aria-label="Floating label select example">
                     <?php
                     include_once('../../model/classes/tblRangeValues.php');
-                    $tblRangeValues = new RangeValues();
-                    $resultsRangeValues = $tblRangeValues->consulta("");
+                    $tblRangeValues = new RangeValues($dbh);
+                    $resultsRangeValues = $tblRangeValues->consulta("ORDER BY ValorInicial ASC");
                     if ($tblRangeValues != null) {
                         foreach ($resultsRangeValues as $rowsallers) {
                     ?>
@@ -80,22 +103,35 @@ if ($_SESSION["FlagOperation"] == "A" || $_SESSION["FlagOperation"] == "C") {
                     <?php  }
                     } ?>
                 </select>
-                <label for="floatingSelectGrid">Financial data:</label>
+                <label for="floatingSelectGrid">Turn Over in the Last Years:</label>
             </div>
         </div>
         <div class="col-sm-12">
             <div class="form-floating mb-3">
-                <input required type="date" id="yearInput" name="year" min="1900" max="2024" class="form-control inputstyle border-dark inputtamanho">
-                <label for="yearInput">Founded in:</label>
+                <select required name="rangevalues2" class=" form-select  border-dark inputtamanho" id="floatingSelectGrid" aria-label="Floating label select example">
+                    <?php
+                    include_once('../../model/classes/tblRangeValues.php');
+                    $tblRangeValues = new RangeValues($dbh);
+                    $resultsRangeValues = $tblRangeValues->consulta("ORDER BY ValorInicial ASC");
+                    if ($tblRangeValues != null) {
+                        foreach ($resultsRangeValues as $rowsallers) {
+                    ?>
+                            <option value="<?php echo $rowsallers->idlRangeValue; ?>"><?php echo $rowsallers->DescricaoRangeValue; ?></option>
+                    <?php  }
+                    } ?>
+                </select>
+                <label for="floatingSelectGrid">Total Imports/Purchases in the Last Years:</label>
             </div>
         </div>
+                <input required type="hidden" id="yearInput" name="year" value="2023-11-10" min="1900" max="2024" class="form-control inputstyle border-dark inputtamanho dataano">
+             
         <div class="col-sm-12">
             <div class="form-floating">
 
                 <select required name="niveloperacao" class=" form-select  border-dark inputtamanho" id="floatingSelectGrid" aria-label="Floating label select example">
                     <?php
                     include_once('../../model/classes/tblNivelOperacao.php');
-                    $tblNivelOperacao = new NivelOperacao();
+                    $tblNivelOperacao = new NivelOperacao($dbh);
                     $resultstblNivelOperacao = $tblNivelOperacao->consulta("");
                     if ($resultstblNivelOperacao != null) {
                         foreach ($resultstblNivelOperacao as $rowoperation) {
@@ -108,9 +144,9 @@ if ($_SESSION["FlagOperation"] == "A" || $_SESSION["FlagOperation"] == "C") {
             </div>
         <?php } else { ?>
             <div class="col-sm-12">
-                <div class="form-floating mb-3 multi-search-filter" onclick="Array.from(this.children).find(n=>n.tagName==='INPUT').focus()">
+                <div class="form-floating mb-3 multi-search-filter" onclick="">
 
-                    <input type="text" class="form-control inputstyle border-dark inputtamanhoarea" onkeyup="multiSearchKeyup(this)">
+                    <input type="text" onkeyup="multiSearchKeyup(this)" class="form-control inputstyle border-dark inputtamanhoarea" id='Produto_servico' >
                     <input type="hidden" id="keywords-hiddens" name="servicostags" value="">
 
                 </div>

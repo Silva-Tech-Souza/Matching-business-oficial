@@ -1,47 +1,61 @@
-<?
-header("Access-Control-Allow-Origin: *");
-?>
 <div id="add_perfil" class="modal custom-modal fade mt-1" role="dialog">
     <div class="modal-dialog modal-dialog-centered modal-lg">
         <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title txtnomeperfil">Edit profile</h5>
-                <button type="button" class="close rounded-2 border-0" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
+                <button type="button" class="close rounded-2 border-0 bcolor-azul-escuro" data-dismiss="modal" aria-label="Close">
+                    <span class="color-branco" aria-hidden="true">&times;</span>
                 </button>
             </div>
             <div class="modal-body">
-                <form method="POST" enctype="multipart/form-data" action="../controller/profileController.php">
+                <form method="POST" id="editarperfilforms" enctype="multipart/form-data" action="../controller/profileController.php">
                     <div class="row">
+                <input  value="<?php echo $numEmpregadosid; ?>" id="dadossistribuidor" name="dadossistribuidor" type="hidden">
+                        <div class="col-sm-12 ">
+                        <label class="txtinput sizetituloedit">Profile <?php if ($adm) {?>and banner<?php }?> images:</label>
+                          <div class="avatar-upload-banner">
+                                <?php if($iduser != $colab2 && $iduser != $colab3 && $iduser != $colab4 && $iduser != $colab5){ ?>
+                                <div class="avatar-edit">
+                                    <input type='file' name="banner-image" id="banner-image" class="form-control file-upload-input" accept=".png, .jpg, .jpeg" />
+                                    <label for="banner-image"></label>
+                                </div>
+                                <div class="avatar-preview">
+                                    <div id="imagePreview2" style="background-image: url(<?php if ($imgcapa != "Avatar.png" && $imgcapa != "" && $imgcapa != null) {
+                                                        echo "" . $imgcapa;
+                                                      } else {
+                                                        echo "https://images2.alphacoders.com/131/1317606.jpeg";
+                                                      } ?>);">
+                                    </div>
+                                </div>
+                                  <?php }?>
+                            </div>
+                           
+                            <div class="avatar-upload"   <?php if($iduser != $colab2 && $iduser != $colab3 && $iduser != $colab4 && $iduser != $colab5){ ?> style="position: absolute; top: 55px;left: 21px;" <?php }?>>
+                                <div class="avatar-edit" style="<?php if( $iduser != $colab1  && $iduser != $colab2 || $iduser != $colab1  &&  $iduser != $colab3 || $iduser != $colab1  &&  $iduser != $colab4 || $iduser != $colab1  &&  $iduser != $colab5){ echo "right: 61px;"; }?>" >
+                                    <input type='file' id="user-image" name="user-image" class="form-control file-upload-input" accept=".png, .jpg, .jpeg" />
+                                    <label for="user-image"></label>
+                                </div>
+                                <div class="avatar-preview">
+                                    <div id="imagePreview" style="background-image: url(<?php if ($imgperfil != "Avatar.png" && $imgperfil != "") {
+                                echo "" . $imgperfil;
+                              } else {
+                                echo "assets/img/Avatar.png";
+                              } ?>);">
+                                    </div>
+                                </div>
+                            </div>
+ 
+                        </div>
 
-                        <div class="col-sm-12">
-                            <div class="form-group">
-                                <label class="txtinput">Profile picture:</label>
-                                <input type="file" name="user-image" id="user-image" class="form-control file-upload-input" accept="image/*">
-                            </div>
-                        </div>
-                        <div class="col-sm-12 mt-4">
-                            <div class="form-group">
-                                <img id="preview-image" src="" alt="" class="d-flex post-imgvideo-style">
-                            </div>
-                        </div>
-                        <div class="col-sm-12 mt-4">
-                            <div class="form-group">
-                                <label class="txtinput">Banner picture:</label>
-                                <input type="file" name="banner-image" id="banner-image" class="form-control file-upload-input" accept="image/*">
-                            </div>
-                        </div>
-                        <div class="col-sm-12 mt-4">
-                            <div class="form-group">
-                                <img id="preview-image-banner" src="" alt="" class="d-flex post-imgvideo-style">
-                            </div>
-                        </div>
+
+
+
 
 
                         <div class="col-sm-6 mt-4">
                             <div class="form-group">
-                                <label class="txtinput">Name:</label>
-                                <input class="form-control bordainput" value="<?php echo $FirstName; ?>" autocomplete="off" name="nome" type="text">
+                                <label class="txtinput sizetituloedit">Name:</label>
+                                <input class="form-control bordainput sizeinputedit" value="<?php echo $FirstName; ?>" required autocomplete="off" name="nome" type="text">
                                 <datalist id="referencia">
                                 </datalist>
                             </div>
@@ -49,45 +63,45 @@ header("Access-Control-Allow-Origin: *");
 
                         <div class="col-sm-6 mt-4">
                             <div class="form-group">
-                                <label class="txtinput">LastName:</label>
-                                <input class="form-control bordainput" required value="<?php echo $LastName; ?>" autocomplete="off" name="lastname" type="text">
+                                <label class="txtinput sizetituloedit">Last Name:</label>
+                                <input class="form-control bordainput sizeinputedit" required value="<?php echo $LastName; ?>" autocomplete="off" name="lastname" type="text">
                                 <datalist id="referencia">
                                 </datalist>
                             </div>
                         </div>
 
-                        <div class="col-sm-6 mt-4">
+                        <div class=" <?php if ($adm) {?>col-sm-6 <?php }else{echo "col-sm-12";}?> mt-4">
                             <div class="form-group">
-                                <label class="txtinput">Job tittle:</label>
-                                <input class="form-control bordainput" required value="<?php echo $jobtitle; ?>" autocomplete="off" name="jobtitle" type="text">
+                                <label class="txtinput sizetituloedit">Job tittle:</label>
+                                <input class="form-control bordainput sizeinputedit" required value="<?php echo $jobtitle; ?>" autocomplete="off" name="jobtitle" type="text">
                                 <datalist id="referencia">
                                 </datalist>
                             </div>
                         </div>
 
-                        <div class="col-sm-6 mt-4">
+                        <?php if ($adm) {?> <div class="col-sm-6 mt-4">
                             <div class="form-group">
-                                <label class="txtinput">Company name:</label>
-                                <input class="form-control bordainput" required value="<?php echo $companyname; ?>" autocomplete="off" name="conpany" type="text">
+                                <label class="txtinput sizetituloedit">Company name:</label>
+                                <input class="form-control bordainput sizeinputedit" required value="<?php echo $companyname; ?>" autocomplete="off" name="conpany" type="text">
                                 <datalist id="referencia">
                                 </datalist>
                             </div>
                         </div>
+                        <?php }else{?>
+                            <input class="form-control bordainput sizeinputedit" required value="<?php echo $companyname; ?>" autocomplete="off" name="conpany" type="hidden">
+                        <?php }if ($adm) {?>
                         <div class="col-sm-12  mt-4">
                             <div class="form-group">
-                                <label class="txtinput">Core Business:</label>
+                                <label class="txtinput sizetituloedit">Core Business:</label>
 
-                                <select class="form-control bordainput" onchange="showbusines(this.value)" name="business">
+                                <select class="form-control bordainput sizeinputedit" onchange="showbusines(this.value)" required id="coreBusiness" name="coreBusiness">
 
                                     <?php
-                                    
-
                                     include_once('../model/classes/tblOperations.php');
-                                    $operations = new Operations();
+                                    $operations = new Operations($dbh);
                                     $resultsoperation = $operations->consulta("");
-
                                     if ($operations != null) {
-                                        foreach ($resultsoperation as $row) {?>
+                                        foreach ($resultsoperation as $row) { ?>
                                             <option <?php if ($row->NmOperation ==  $NmBusiness) {
                                                         echo "selected";
                                                     } ?> value="<?php echo $row->idOperation; ?>"><?php echo $row->NmOperation; ?></option>
@@ -100,11 +114,11 @@ header("Access-Control-Allow-Origin: *");
                         <?php if ($corebusiness == "1" || $corebusiness == "2" || $corebusiness == "3" || $corebusiness == "4" || $corebusiness == "5") { ?>
                             <div class="col-sm-6 mt-4" id="refHint">
                                 <div class="form-group">
-                                    <label class="txtinput">Business:</label>
-                                    <select onchange="showbusines2(this.value)" class="form-control bordainput" id="coreBusiness" name="coreBusiness">
+                                    <label class="txtinput sizetituloedit">Business:</label>
+                                    <select onchange="showbusines2(this.value)" required class="form-control bordainput sizeinputedit" id="satellite" name="satellite">
                                         <?php
                                         include_once('../model/classes/tblBusiness.php');
-                                        $bussiness = new Business();
+                                        $bussiness = new Business($dbh);
 
                                         $resultsbusiness = $bussiness->consulta("WHERE FlagOperation = '0' AND FlagOperation != 'D'");
 
@@ -121,17 +135,17 @@ header("Access-Control-Allow-Origin: *");
                                 </div>
                             </div>
                             <div class="col mt-4" id="refHint2">
-                                <label>Business Category:</label>
-                                <select name="satellite" class="form-control bordainput">
+                                <label class="txtinput sizetituloedit">Business Category:</label>
+                                <select class="form-control bordainput sizeinputedit" name="category" id="category">
 
                                     <?php
-                                    
+
                                     include_once('../model/classes/tblBusiness.php');
-                                    $bussinesscategory = new BusinessCategory;
+                                    $bussinesscategory = new BusinessCategory($dbh);
                                     $bussinesscategory->setidBusinessCategory($idoperation);
                                     $resultsbussinesscategory = $bussinesscategory->consulta("WHERE idBusinessCategory = :idBusinessCategory");
 
-                                   
+
                                     if ($resultsbussinesscategory != null) {
                                         foreach ($resultsbussinesscategory as $rowcor2) { ?>
                                             <option value="<?php echo $rowcor2->idBusinessCategory; ?>"><?php echo $rowcor2->NmBusinessCategory; ?></option>
@@ -140,19 +154,38 @@ header("Access-Control-Allow-Origin: *");
                                     ?>
                                 </select>
                             </div>
+                        <?php } else { ?>
 
+                            <div class="col-sm-6 mt-4">
+                                <div class="form-group" style="text-align: start;">
 
-                        <?php }  ?>
+                                    <div class="col" id="refHint"></div>
+                                </div>
+                            </div>
+                            <div class="col mt-4">
+                                <div class="form-group" style="text-align: start;">
+                                    <div class="col" id="refHint2"></div>
+                                </div>
+                            </div>
+                        <?php }}else{ ?>
+                            <input  value="<?php echo $corebusiness; ?>" id="coreBusiness" name="coreBusiness" type="hidden">
+                            <input  value="<?php echo $satBusinessId; ?>" id="satellite" name="satellite" type="hidden">
+                            <input  value="<?php echo $idoperation; ?>" id="category" name="category" type="hidden">
+                            <?php } ?>
+                            <?php if ($adm) {?>
                         <div class="col-sm-12  mt-4">
                             <div class="form-group">
-                                <label class="txtinput">Description:</label>
-                                <textarea class="form-control bordainput" name="descricao" type="text"><?php echo $descricao; ?></textarea>
+                                <label class="txtinput sizetituloedit">Description:</label>
+                                <textarea class="form-control bordainput summernote" id="summernote" style="font-size: small !important;"  maxlength="1000" name="descricao" type="text" style="font-size: larger; min-height: 109px;"><?php echo $descricao; ?></textarea>
                             </div>
                         </div>
+                        <?php }?>
                     </div>
-
+                    <div class="progress progress-striped active mt-2">
+                                                <div class="progress-bar progress-bar-striped progress-bar-animated active" role="progressbar" aria-valuenow="93" aria-valuemin="0" aria-valuemax="100" style="width: 88%"></div>
+                                            </div>
                     <div class="submit-section mt-4">
-                        <button type="submit" name="add_orcamento" value="Salvar" class="btn btn-primary submit-btn">Confirm</button>
+                        <button type="submit" name="editarPerfil" id="editarPerfil" value="Salvar" class="btn btn-primary submit-btn sizetituloedit">Confirm</button>
                     </div>
                 </form>
             </div>

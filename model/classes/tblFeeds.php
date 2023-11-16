@@ -12,14 +12,11 @@ class Feeds
     protected $Video = null;
     protected $dbh = null;
 
-    function __construct()
+    function __construct($dbh)
     {
-
-        include_once('conexao.php');
-        $conexao = new Conexao();
-        $conexao->abrirConexao();
-        $this->dbh = $conexao->getConexao();
+        $this->dbh = $dbh;
     }
+
 
 
     public function setidIdFeed($param)
@@ -199,21 +196,7 @@ class Feeds
         if ($this->idClient != null) {
             $query->bindParam(':idClient', $this->idClient, PDO::PARAM_INT);
         }
-        if ($this->Published_at != null) {
-            $query->bindParam(':Published_at', $this->Published_at, PDO::PARAM_STR);
-        }
-        if ($this->Title != null) {
-            $query->bindParam(':Title', $this->Title, PDO::PARAM_STR);
-        }
-        if ($this->Text != null) {
-            $query->bindParam(':Text', $this->Text, PDO::PARAM_STR);
-        }
-        if ($this->Image != null) {
-            $query->bindParam(':Image', $this->Image, PDO::PARAM_STR);
-        }
-        if ($this->Video != null) {
-            $query->bindParam(':Video', $this->Video, PDO::PARAM_STR);
-        }
+        
 
         $query->execute();
         return $query;

@@ -1,6 +1,7 @@
 <?php
-session_start();
-//error_reporting(0);
+
+include_once('../model/classes/conexao.php');
+include_once('../model/ErrorLog.php');
 header("Access-Control-Allow-Origin: *");
 date_default_timezone_set('America/Sao_Paulo');
 
@@ -74,26 +75,38 @@ date_default_timezone_set('America/Sao_Paulo');
     <div class="container m-auto">
         <div class="col-12">
             <div class="row">
-                <div class="col-lg-6 col-12">
+                <div class="col-lg-7 col-12">
                     <div class="mt-5">
                     <h1 class="color-branco titulologin" style="font-size: 40px;">Qualify your profile.</span></h1><br>
-                    <h4 class="color-branco">This part is essential for the system to work, in this qualification process we can better understand what our system should show you, thus bringing a relevant profile to your needs.</h4>
-                    </div>
+                    <p class="color-branco desclogin">This part is essential for the system to work, in this qualification process we can better understand what our system should show you, thus bringing a relevant profile to your needs.</p>
+                <p class="color-branco desclogin">
+        <b>Main Business Type</b><br>
+        <span style=" font-size: medium;  color: #c4c4c4;">Defines the core nature of your business, allowing us to customize the user experience according to the specific needs of manufacturers.<br></span>
+        <b>Business Sector</b><br>
+        <span style=" font-size: medium;  color: #c4c4c4;">Determines the sector in which your company operates, to provide relevant information for companies in the diagnostic, IVD (In Vitro Diagnostics), or imaging field.<br></span>
+        <b>Business Category</b><br>
+        <span style=" font-size: medium;  color: #c4c4c4;"> Further refines your company's profile, enabling the delivery of specific information and resources related to quality and safety.<br></span>
+                </p>    
                 </div>
-                <div class="col-lg-6 col-12">
-                    <div class="cardcadastro">
+                </div>
+                <div class="col-lg-5 col-12" style=" padding: 36px;">
+                    <div class="cardcadastro" style="    justify-content: center !important;
+    justify-items: center;
+    align-items: center;
+    text-align: center;
+    display: -webkit-inline-box;">
                         <form action="../controller/qualificacaoController.php" method="POST" enctype="multipart/form-data">
                             <div class="row">
 
                                 <div class="col-sm-12">
                                     <div class="form-group" style="text-align: start;">
-                                        <label class="color-branco labelcadastro" style="text-align: start !important;">What kind of business you have?</label>
-                                        <select onchange="showbusines(this.value)" class="form-control inputtamanho" name="business">
+                                        <label class="color-branco labelcadastro" style="text-align: start !important;">What type of main business do you have?</label>
+                                        <select onchange="showbusines(this.value)" class="form-control inputtamanho selectsize" name="coreBusiness">
                                             <option value="0">Select</option>
                                             <?php
                                             include_once('../model/classes/tblOperations.php');
 
-                                            $tblOperations = new Operations();
+                                            $tblOperations = new Operations($dbh);
 
                                             $resultstblOperations = $tblOperations->consulta("WHERE `FlagOperation` != '0'");
 

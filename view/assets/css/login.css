@@ -413,10 +413,14 @@ body {
     .titulologin {
         font-size: 25px;
     }
+    .desclogin {
+        font-size: 13px !important;
+    }
 }
 
 .desclogin {
-    font-size: 15px;
+    font-size: 19px;
+    text-align: justify;
 }
 
 .loginfooter {
@@ -464,4 +468,13 @@ body {
     top: 50%;
     transform: translateY(-50%);
     cursor: pointer;
+}
+
+.txterrologin {
+    font-size: 15px;
+    background-color: #f5b5b5;
+}
+
+.createaccounttxt {
+    font-size: medium !important;
 }

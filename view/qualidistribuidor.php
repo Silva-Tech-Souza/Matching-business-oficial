@@ -1,6 +1,7 @@
 <?php
-session_start();
-//error_reporting(0);
+
+include_once('../model/classes/conexao.php');
+include_once('../model/ErrorLog.php');
 header("Access-Control-Allow-Origin: *");
 date_default_timezone_set('America/Sao_Paulo');
 
@@ -38,24 +39,44 @@ date_default_timezone_set('America/Sao_Paulo');
     <div class="container m-auto">
         <div class="col-12">
             <div class="row">
-                <div class="col-lg-6 col-12">
+                <div class="col-lg-7 col-12">
                     <div class="mt-5">
                         <h1 class="color-branco titulologin" style="font-size: 40px;">Qualify your profile.</span></h1><br>
-                        <h4 class="color-branco d-none d-md-block">This part is essential for the system to work, in this qualification process we can better understand what our system should show you, thus bringing a relevant profile to your needs.</h4>
+                        <p class="color-branco desclogin">This part is essential for the system to work, in this qualification process we can better understand what our system should show you, thus bringing a relevant profile to your needs.<br></p>
+                        <p class="color-branco desclogin">This step ensures that the distributors we recommend are aligned with your business requirements. By providing specific details about your profile you enable our system to present you with the most relevant and specific options.</p>
                     </div>
                 </div>
-                <div class="col-lg-6 col-12">
+                <div class="col-lg-4 col-12">
                     <div class="cardcadastro">
                         <form action="../controller/distribuidorProfileController.php" method="POST" enctype="multipart/form-data">
                             <div class="row">
+                            <?php
+// Obter o ano atual
+$currentYear = date('Y');
 
+// Calcular os três últimos anos
+$lastYear1 = $currentYear - 1;
+$lastYear2 = $currentYear - 2;
+$lastYear3 = $currentYear - 3;
+?>
+                                <input type="hidden" name="labelfob1" value="<?php echo $lastYear1; ?>">
+                                <input type="hidden" name="labelfob2" value="<?php echo $lastYear2; ?>">
+                                <input type="hidden" name="labelfob3" value="<?php echo $lastYear3; ?>">
+
+                                <div class="col-sm-12">
+                                    <div class="form-floating mb-3">
+                                        
+                                        <input style="font-size: small;height: 4rem !important;" required type="date" id="yearInput" name="year" min="1900" max="2024" class="form-control inputstyle border-dark inputtamanho" >
+                                        <label for="yearInput" style=" font-size: larger;">Founded in:</label>
+                                    </div>
+                                </div>
                                 <div class="col-sm-12">
                                     <div class="form-floating mb-3">
                                         <select style="font-size: small;height: 4rem !important;" required name="numEmpregados" class=" form-select  border-dark inputtamanho" id="floatingSelectGrid" aria-label="Floating label select example">
                                             <?php
                                             include_once('../model/classes/tblNumEmpregados.php');
-                                            $tblNumEmpregados = new NumEmpregados();
-                                            $resultsNumEmpregados = $tblNumEmpregados->consulta("");
+                                            $tblNumEmpregados = new NumEmpregados($dbh);
+                                            $resultsNumEmpregados = $tblNumEmpregados->consulta("ORDER BY ValorInicial ASC");
                                             if ($resultsNumEmpregados != null) {
                                                 foreach ($resultsNumEmpregados as $rowemply) {
                                             ?>
@@ -66,27 +87,23 @@ date_default_timezone_set('America/Sao_Paulo');
                                         <label for="floatingSelectGrid" style=" font-size: larger;">N° of employees:</label>
                                     </div>
                                 </div>
-                              <!--  <div class="col-sm-12">
-                                    <div class="form-floating mb-3">
-                                        <select style="font-size: small;height: 4rem !important;" required name="rangeValues" class=" form-select  border-dark inputtamanho" id="floatingSelectGrid" aria-label="Floating label select example">
-                                            <?php
-                                          /*  include_once('../model/classes/tblRangeValues.php');
-                                            $tblRangeValues = new RangeValues();
-                                            $resultstblRangeValues = $tblRangeValues->consulta("");
-                                            if ($resultstblRangeValues != null) {
-                                                foreach ($resultstblRangeValues as $rowsallers) {
-                                            ?>
-                                                    <option value="<?php echo $rowsallers->idlRangeValue; ?>"><?php echo $rowsallers->DescricaoRangeValue; ?></option>
-                                            <?php  }
-                                            }*/ ?>
-                                        </select>
-                                        <label for="floatingSelectGrid" style=" font-size: larger;">N° of sellers:</label>
-                                    </div>
-                                </div>-->
+
+                              
                                 <div class="col-sm-12">
                                     <div class="form-floating mb-3">
-                                        <input style="font-size: small;height: 4rem !important;" required type="date" id="yearInput" name="year" min="1900" max="2024" class="form-control inputstyle border-dark inputtamanho">
-                                        <label for="yearInput" style=" font-size: larger;">Founded in:</label>
+                                        <select style="font-size: small;height: 4rem !important;" required name="numSellers1" class=" form-select  border-dark inputtamanho" id="floatingSelectGrid" aria-label="Floating label select example">
+                                            <?php
+                                            include_once('../model/classes/tblNumEmpregados.php');
+                                            $tblNumEmpregados = new NumEmpregados($dbh);
+                                            $resultsNumEmpregados = $tblNumEmpregados->consulta("ORDER BY ValorInicial ASC");
+                                            if ($resultsNumEmpregados != null) {
+                                                foreach ($resultsNumEmpregados as $rowemply) {
+                                            ?>
+                                                    <option value="<?php echo $rowemply->idNumEmpregados; ?>"><?php echo $rowemply->DescNumEmpregados; ?></option>
+                                            <?php  }
+                                            } ?>
+                                        </select>
+                                        <label for="floatingSelectGrid" style=" font-size: larger;">Total Sales Rep:</label>
                                     </div>
                                 </div>
                                 <div class="col-sm-12">
@@ -95,7 +112,7 @@ date_default_timezone_set('America/Sao_Paulo');
                                         <select style="font-size: small;height: 4rem !important;" required name="nivelOperacao" class=" form-select  border-dark inputtamanho" id="floatingSelectGrid" aria-label="Floating label select example">
                                             <?php
                                             include_once('../model/classes/tblNivelOperacao.php');
-                                            $tblNivelOperacao = new NivelOperacao();
+                                            $tblNivelOperacao = new NivelOperacao($dbh);
                                             $resultstblNivelOperacao = $tblNivelOperacao->consulta("");
                                             if ($resultstblNivelOperacao != null) {
                                                 foreach ($resultstblNivelOperacao as $rowoperation) {
@@ -111,15 +128,16 @@ date_default_timezone_set('America/Sao_Paulo');
                                 <div class="col-sm-12">
                                     <div class="form-floating">
                                         <br>
-                                        <h3 class="color-branco labelcadastro">Financial Data</h3>
+                                        <h3 class="color-branco labelcadastro">Turn Over in the Last Three Years</h3>
                                     </div>
                                 </div>
                                 <div class="col-sm-4">
                                     <div class="form-floating mb-3">
+
                                         <select style="font-size: small;height: 4rem !important;" required name="ano1" class=" form-select  border-dark inputtamanho" id="floatingSelectGrid" aria-label="Floating label select example">
                                             <?php
                                             include_once('../model/classes/tblRangeValues.php');
-                                            $tblRangeValues = new RangeValues();
+                                            $tblRangeValues = new RangeValues($dbh);
                                             $resultstblRangeValues = $tblRangeValues->consulta("");
                                             if ($resultstblRangeValues != null) {
                                                 foreach ($resultstblRangeValues as $rowsallers) {
@@ -136,7 +154,7 @@ date_default_timezone_set('America/Sao_Paulo');
                                         <select style="font-size: small;height: 4rem !important;" required name="ano2" class=" form-select  border-dark inputtamanho" id="floatingSelectGrid" aria-label="Floating label select example">
                                             <?php
                                             include_once('../model/classes/tblRangeValues.php');
-                                            $tblRangeValues = new RangeValues();
+                                            $tblRangeValues = new RangeValues($dbh);
                                             $resultstblRangeValues = $tblRangeValues->consulta("");
                                             if ($resultstblRangeValues != null) {
                                                 foreach ($resultstblRangeValues as $rowsallers) {
@@ -153,7 +171,7 @@ date_default_timezone_set('America/Sao_Paulo');
                                         <select style="font-size: small;height: 4rem !important;" required name="ano3" class=" form-select  border-dark inputtamanho" id="floatingSelectGrid" aria-label="Floating label select example">
                                             <?php
                                             include_once('../model/classes/tblRangeValues.php');
-                                            $tblRangeValues = new RangeValues();
+                                            $tblRangeValues = new RangeValues($dbh);
                                             $resultstblRangeValues = $tblRangeValues->consulta("");
                                             if ($resultstblRangeValues != null) {
                                                 foreach ($resultstblRangeValues as $rowsallers) {
@@ -165,9 +183,68 @@ date_default_timezone_set('America/Sao_Paulo');
                                         <label for="floatingSelectGrid" id="ano1" style=" font-size: larger;">N° of sellers:</label>
                                     </div>
                                 </div>
+
+
+                                <div class="col-sm-12">
+                                    <div class="form-floating">
+                                        <br>
+                                        <h3 class="color-branco labelcadastro">Total Imports/Purchases</h3>
+                                    </div>
+                                </div>
+                                <div class="col-sm-4">
+                                    <div class="form-floating mb-3">
+                                        <select style="font-size: small;height: 4rem !important;" required name="ano11" class=" form-select  border-dark inputtamanho" id="floatingSelectGrid" aria-label="Floating label select example">
+                                            <?php
+                                            include_once('../model/classes/tblRangeValues.php');
+                                            $tblRangeValues = new RangeValues($dbh);
+                                            $resultstblRangeValues = $tblRangeValues->consulta("");
+                                            if ($resultstblRangeValues != null) {
+                                                foreach ($resultstblRangeValues as $rowsallers) {
+                                            ?>
+                                                    <option value="<?php echo $rowsallers->idlRangeValue; ?>"><?php echo $rowsallers->DescricaoRangeValue; ?></option>
+                                            <?php  }
+                                            } ?>
+                                        </select>
+                                        <label for="floatingSelectGrid" id="ano33" style=" font-size: larger;">N° of sellers:</label>
+                                    </div>
+                                </div>
+                                <div class="col-sm-4">
+                                    <div class="form-floating mb-3">
+                                        <select style="font-size: small;height: 4rem !important;" required name="ano22" class=" form-select  border-dark inputtamanho" id="floatingSelectGrid" aria-label="Floating label select example">
+                                            <?php
+                                            include_once('../model/classes/tblRangeValues.php');
+                                            $tblRangeValues = new RangeValues($dbh);
+                                            $resultstblRangeValues = $tblRangeValues->consulta("");
+                                            if ($resultstblRangeValues != null) {
+                                                foreach ($resultstblRangeValues as $rowsallers) {
+                                            ?>
+                                                    <option value="<?php echo $rowsallers->idlRangeValue; ?>"><?php echo $rowsallers->DescricaoRangeValue; ?></option>
+                                            <?php  }
+                                            } ?>
+                                        </select>
+                                        <label for="floatingSelectGrid" id="ano22" style=" font-size: larger;">N° of sellers:</label>
+                                    </div>
+                                </div>
+                                <div class="col-sm-4">
+                                    <div class="form-floating mb-3">
+                                        <select style="font-size: small;height: 4rem !important;" required name="ano33" class=" form-select  border-dark inputtamanho" id="floatingSelectGrid" aria-label="Floating label select example">
+                                            <?php
+                                            include_once('../model/classes/tblRangeValues.php');
+                                            $tblRangeValues = new RangeValues($dbh);
+                                            $resultstblRangeValues = $tblRangeValues->consulta("");
+                                            if ($resultstblRangeValues != null) {
+                                                foreach ($resultstblRangeValues as $rowsallers) {
+                                            ?>
+                                                    <option value="<?php echo $rowsallers->idlRangeValue; ?>"><?php echo $rowsallers->DescricaoRangeValue; ?></option>
+                                            <?php  }
+                                            } ?>
+                                        </select>
+                                        <label for="floatingSelectGrid" id="ano11" style=" font-size: larger;">N° of sellers:</label>
+                                    </div>
+                                </div>
                                 <div class="col-sm-12">
                                     <div class="form-group" style="text-align: center;">
-                                        <button  style="width: 118px;font-size: small;" type="submit" class="btn btn-primary login-btn inputtamanho" value="NETX" name="savedistribuidor">NETX</button>
+                                        <button style="width: 118px;font-size: small;" type="submit" class="btn btn-primary login-btn inputtamanho" value="NETX" name="savedistribuidor">NEXT</button>
                                     </div>
                                 </div>
                             </div>
@@ -207,6 +284,15 @@ date_default_timezone_set('America/Sao_Paulo');
 
         const labelAno3 = document.getElementById('ano3');
         labelAno3.textContent = anoAtual - 3;
+
+        const labelAno11 = document.getElementById('ano11');
+        labelAno11.textContent = anoAtual - 1;
+
+        const labelAno22 = document.getElementById('ano22');
+        labelAno22.textContent = anoAtual - 2;
+
+        const labelAno33 = document.getElementById('ano33');
+        labelAno33.textContent = anoAtual - 3;
     </script>
 </body>
 

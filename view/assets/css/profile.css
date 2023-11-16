@@ -418,3 +418,30 @@ div.attribution {
     height: 25px;
     background-color: #EAEAEA;
 }
+
+.textmeiosize {
+    font-size: 12px !important;
+}
+
+.sizeinputedit {
+    height: 30px !important;
+    font-size: 17px !important;
+}
+
+.sizetituloedit {
+    font-size: 15px;
+}
+
+.editdistribtn {
+    border-color: #ffffff;
+    margin-top: 10px;
+}
+
+@media (min-width: 794px) {
+    .fixed-on-desktop {
+        position: fixed;
+    }
+    .margemdesck {
+        margin-bottom: 144px !important;
+    }
+}

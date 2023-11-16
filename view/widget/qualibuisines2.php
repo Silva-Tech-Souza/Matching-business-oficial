@@ -1,13 +1,20 @@
 <?php
-session_start();
-error_reporting(0);
+include_once('../../model/classes/conexao.php');
+if ( session_status() !== PHP_SESSION_ACTIVE )
+{
+   session_start();
+}
+if(isset($_SESSION['error'])){
+    error_reporting(0);
+}
+
 header("Access-Control-Allow-Origin: *");
 date_default_timezone_set('America/Sao_Paulo');
 
 $idbusines2 = $_GET["q"];
 
 include_once('../../model/classes/tblBusiness.php');
-$tblBusiness1 = new Business();
+$tblBusiness1 = new Business($dbh);
 $tblBusiness1->setidBusiness($idbusines2);
 $resultstblBusiness1 = $tblBusiness1->consulta("WHERE idBusiness = :idBusiness");
 
@@ -20,15 +27,15 @@ if ($tblBusiness1 != null) {
     }
 }
 ?>
-<label class="color-branco labelcadastro">Satellite Business: </label>
-<select class="form-control bordainput inputtamanho" name="satellite">
+<label class="color-branco labelcadastro">What is your business category? </label>
+<select class="form-control bordainput inputtamanho selectsize" name="category">
     <option value="0">Select</option>
     <?php
 
 include_once('../../model/classes/tblBusinessCategory.php');
-$tblBusinessCategory = new BusinessCategory();
+$tblBusinessCategory = new BusinessCategory($dbh);
 $tblBusinessCategory->setidBusiness($idBusiness);
-$resultstblBusinessCategory = $tblBusinessCategory->consulta("WHERE idBusiness = :idBusiness");
+$resultstblBusinessCategory = $tblBusinessCategory->consulta("WHERE idBusiness = :idBusiness ORDER BY NmBusinessCategory ASC");
     
 if ($tblBusinessCategory != null) {
     if (is_array($resultstblBusinessCategory) || is_object($resultstblBusinessCategory)) {

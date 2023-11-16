@@ -12,15 +12,11 @@ class SearchProfile_ResultsHistoryLog{
     protected $ResultsHistoryLogDate = null;
     protected $dbh = null;
 
-    function __construct()
+    function __construct($dbh)
     {
-        
-        include_once('conexao.php');
-        $conexao = new Conexao();
-        $conexao->abrirConexao();
-        $this->dbh = $conexao->getConexao();
-
+        $this->dbh = $dbh;
     }
+
 
     public function setSearchProfile_ResultsHistoryID($param){$this->SearchProfile_ResultsHistoryID = $param;}
 

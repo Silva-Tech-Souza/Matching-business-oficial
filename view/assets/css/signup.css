@@ -1,0 +1,42 @@
+.modal-body {
+    display: flex;
+    flex-direction: column;
+    height: 20rem;
+    align-items: center;
+    justify-content: center;
+    padding: 2rem;
+}
+
+.modal-body h3 {
+    font-weight: bold;
+}
+
+.close {
+    background-color: rgb(27, 27, 27);
+    color: white;
+    width: 24px;
+    border: 0;
+    height: 24px;
+    font-size: medium;
+    border-radius: 4px;
+}
+
+@media (max-width: 720px) {
+    .modal-body {
+        display: flex;
+        flex-direction: column;
+        height: 15rem;
+        align-items: center;
+        justify-content: center;
+    }
+}
+
+.fonteinput {
+    font-size: 17px !important;
+}
+
+.btnsignsize {
+    font-size: large !important;
+    height: 40px;
+    width: 120px;
+}

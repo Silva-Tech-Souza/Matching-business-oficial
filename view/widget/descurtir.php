@@ -1,6 +1,12 @@
 <?php
-session_start();
-error_reporting(0);
+include_once('../../model/classes/conexao.php');
+if ( session_status() !== PHP_SESSION_ACTIVE )
+{
+   session_start();
+}
+if(isset($_SESSION['error'])){
+    error_reporting(0);
+}
 date_default_timezone_set('America/Sao_Paulo');
 include('../../../conexao/conexao.php');
 if ($_SESSION["id"] < 0 || $_SESSION["id"] == "") {

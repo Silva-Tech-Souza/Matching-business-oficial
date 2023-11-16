@@ -1,14 +1,18 @@
 <?php
-session_start();
-error_reporting(0);
+
+include_once('../model/classes/conexao.php');
+include_once('../model/ErrorLog.php');
+include_once('../model/classes/tblUserClients.php');
+include_once('../model/classes/tblOperations.php');
+
 date_default_timezone_set('America/Sao_Paulo');
-include('../model/classes/conexao.php');
+
 $_SESSION["FlagOperation"] = 0;
 
 $iduser = $_SESSION["id"];
-include_once('../model/classes/tblUserClients.php');
 
-$userClients = new UserClients();
+
+$userClients = new UserClients($dbh);
 
 $userClients->setidClient($iduser);
 
@@ -20,13 +24,14 @@ if ($results != null) {
         $corebusiness = $row->CoreBusinessId;
         $satBusinessId =  $row->SatBusinessId;
         $imgperfilgeral = $row->PersonalUserPicturePath;
-    
+        $imgperfil = $row->PersonalUserPicturePath;
+        $imgcapa = $row->LogoPicturePath;
     }
 }
 
 $idoperation;
-include_once('../model/classes/tblOperations.php');
-$operations = new Operations();
+
+$operations = new Operations($dbh);
 $operations->setidOperation($corebusiness);
 $resultsoperation = $operations->consulta("WHERE idOperation = :idOperation");
 if ($resultsoperation != null) {
@@ -41,11 +46,11 @@ if ($resultsoperation != null) {
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>Create Search Profile</title>
     <link rel="stylesheet" href="assets/css/geral.css">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-4bw+/aepP/YC94hEpVNVgiZdgIC5+VKNBQNGCHeKRQN+PtmoHDEXuppvnDJzQIu9" crossorigin="anonymous">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
-    
+
     <link rel='stylesheet' href='https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.0.3/css/font-awesome.css'>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="https://kit.fontawesome.com/f51201541f.js" crossorigin="anonymous"></script>
@@ -71,12 +76,12 @@ if ($resultsoperation != null) {
 <body>
     <script>
         function showcorbusiness(str) {
-          document.getElementById("categorias").innerHTML ="";
+            document.getElementById("categorias").innerHTML = "";
             if (str == "") {
-              document.getElementById("categorias").innerHTML ="";
+                document.getElementById("categorias").innerHTML = "";
                 document.getElementById("especification").innerHTML = "";
                 document.getElementById("corBusiness").innerHTML = "";
-         
+
                 return;
             }
 
@@ -107,10 +112,10 @@ if ($resultsoperation != null) {
             xmlhttpespe.open("GET", "widget/especification.php?q=" + str, true);
             xmlhttpespe.send();
             if (str == "") {
-              document.getElementById("categorias").innerHTML = "";
+                document.getElementById("categorias").innerHTML = "";
                 document.getElementById("especification").innerHTML = "";
                 document.getElementById("corBusiness").innerHTML = "";
-           
+
                 return;
             }
             var xmlhttp = new XMLHttpRequest();
@@ -176,16 +181,16 @@ if ($resultsoperation != null) {
     <!-- Header -->
     <?php include_once("widget/navbar.php"); ?>
     <div class="container-fluid">
-        <div class="row justify-content-between telatoda">
-            <div class="col-5 text-center p-0  mb-2 imglefturl telatoda d-none d-md-block">
+        <div class="row justify-content-between telatoda ">
+            <div class="col-5 text-center p-0  mb-2 imglefturl telatoda d-none d-md-block h-auto">
             </div>
-            <div class="col-12 col-sm-12 col-md-12 col-lg-7 col-xl-7 text-center p-10  mb-2 arrastartela">
+            <div class="col-12 col-sm-12 col-md-12 col-lg-7 col-xl-7 text-center p-10  mb-2 arrastartela margemmnavbar">
                 <div class="card px-0  pb-0 mt-3 mb-3">
                     <h2 id="heading">Create Search Profiles</h2>
                     <p>Create searches to find the right match</p>
                     <form id="msform" action="../controller/searchPageController.php" method="POST" enctype="multipart/form-data">
-                    <input required type="hidden" name="idClient"  value="<?php echo $iduser;?>" >
-                    <!-- progressbar -->
+                        <input required type="hidden" name="idClient" value="<?php echo $iduser; ?>">
+                        <!-- progressbar -->
                         <ul id="progressbar">
                             <li class="active" id="account"><strong>Operation</strong></li>
                             <li id="specification"><strong>Specification</strong></li>
@@ -212,16 +217,16 @@ if ($resultsoperation != null) {
                                     <div class="col-sm-12">
 
                                         <div class="form-floating">
-                                            <select required class="form-select border-dark inputtamanho" name="corbusiness" onchange="showcorbusiness(this.value)" id="floatingSelectGrid" aria-label="Floating label select example">
+                                            <select required class="form-select border-dark inputtamanho selecttamanho selectsp1" name="corbusiness" onchange="showcorbusiness(this.value)" id="floatingSelectGrid" aria-label="Floating label select example">
                                                 <option valid="">Select</option>
                                                 <?php
                                                 include_once('../model/classes/tblOperations.php');
-                                                $operations = new Operations();
-                                                $resultsoperation = $operations->consulta("");
+                                                $operations = new Operations($dbh);
+                                                $resultsoperation = $operations->consulta(" WHERE idOperation != '1'");
                                                 if ($resultsoperation != null) {
-                                                  foreach ($resultsoperation as $rowoperation) {
+                                                    foreach ($resultsoperation as $rowoperation) {
                                                 ?>
-                                                
+
                                                         <option value="<?php echo $rowoperation->idOperation; ?>"><?php echo $rowoperation->NmOperation; ?></option>
                                                 <?php }
                                                 } ?>
@@ -261,12 +266,12 @@ if ($resultsoperation != null) {
                                                 <?php
                                                 include('../model/classes/tblCountry.php');
 
-                                                $country = new Country();
-                                                
+                                                $country = new Country($dbh);
+
                                                 $resultsCountry = $country->consulta("");
-                                                
+
                                                 if ($resultsCountry != null) {
-                                                  foreach ($resultsCountry as $rowCountry) {?>
+                                                    foreach ($resultsCountry as $rowCountry) { ?>
                                                         <option value="<?php echo $rowCountry->idCountry; ?>"><?php echo $rowCountry->NmCountry; ?></option>
                                                 <?php  }
                                                 } ?>
@@ -298,9 +303,9 @@ if ($resultsoperation != null) {
                                             <label for="floatingInput">Name ID</label>
                                         </div>
                                     </div>
-                                    
+
                                 </div>
-                            </div> <input type="button" name="next" class="next action-button" value="Submit" /> <input type="button" name="previous" class="previous action-button-previous" value="Previous" />
+                            </div> <input type="button" name="next" class="next action-button" value="Create"   onclick="enviarFormulario()"/> <input type="button" name="previous" class="previous action-button-previous" value="Previous" />
                         </fieldset>
                         <fieldset class="p-2">
                             <div class="form-card">
@@ -318,11 +323,11 @@ if ($resultsoperation != null) {
                                     </div>
                                     <div class="col-6 text-center">
 
-                                        <a href="searchPage.php" class="btn action-button  fontsizelager" style="float: left">Creates New</a>
+                                    <a href="searchPage.php" name="news" class="btn action-button fontsizelager"  style="float: left">Create New</a>
                                     </div>
                                     <div class="col-6 text-center">
-                                    <input   type="submit" name="next"  class="btn action-button  fontsizelager" value="Results" /> 
-                                   
+                                        <a href="listcompani.php?text=mysp"  class="btn action-button  fontsizelager" >Results</a>
+
                                     </div>
                                 </div>
                             </div>
@@ -337,6 +342,21 @@ if ($resultsoperation != null) {
 
     <script src="assets/js/select/jquery.multiselect.js"></script>
     <script>
+        function enviarFormulario() {
+            $.ajax({
+                type: 'POST',
+                url: '../controller/searchPageController.php',
+                data: $('#msform').serialize(),
+                success: function(response) {
+                    console.log('Envio bem-sucedido', response);
+                    // Faça qualquer outra coisa que você precise com a resposta
+                },
+                error: function(error) {
+                    console.error('Erro no envio', error);
+                    // Lide com erros aqui
+                }
+            });
+        }
         var doneButtonHtml = '<button id="doneButton" class="ms-done-button stylobutoninterno">Done</button>';
         optionsWrap.find('.no-result-message').before(doneButtonHtml);
         document.getElementById('doneButton').addEventListener('click', function() {
@@ -471,13 +491,23 @@ if ($resultsoperation != null) {
             $(".next").click(function() {
 
                 var inputField = $(this).parent().find('.inputtamanho');
-
-
-                if (inputField.val() === '' || inputField.val() === null || inputField.val() === "") {
-                    // Se o campo estiver vazio, não avance e mostre uma mensagem de erro
-                    alert("Fill in the field before waiting.");
-                    return;
-                }
+                var dataano = $(this).parent().find('.dataano');
+                var selectsp1 = $(this).parent().find('.selectsp1');
+                var selectsp2 = $(this).parent().find('.selectsp2');
+                var selectsp3 = $(this).parent().find('.selectsp3');
+                console.log(dataano.val());
+               
+        var sp1Value = Array.isArray(selectsp1.val()) ? selectsp1.val().length : selectsp1.val() ? 1 : 0;
+        var sp2Value = Array.isArray(selectsp2.val()) ? selectsp2.val().length : selectsp2.val() ? 1 : 0;
+        var sp3Value = Array.isArray(selectsp3.val()) ? selectsp3.val().length : selectsp3.val() ? 1 : 0;
+        
+        if (inputField.val() === '' || inputField.val() === null || sp1Value === 0 || sp2Value === 0 || sp3Value === 0 || selectsp1.val() == 'Select' || selectsp2.val() == 'Select' || selectsp3.val() == 'Select') {
+            if(dataano.val() == ""){
+                alert("Fill in the field before waiting.");
+            return;
+            }
+            
+        }
 
 
                 current_fs = $(this).parent();
@@ -553,11 +583,7 @@ if ($resultsoperation != null) {
             })
 
         });
-        let profileMenu = document.getElementById("profileMenu");
-
-        function toggleMenu() {
-            profileMenu.classList.toggle("open-menu");
-        }
+       
         /* Set the width of the sidebar to 250px (show it) */
         function openNav() {
             document.getElementById("mySidepanel").style.width = "250px";
@@ -569,10 +595,7 @@ if ($resultsoperation != null) {
         }
 
 
-        function toggleNotifyMenu() {
-            const notifyMenu = document.getElementById('notifyMenu')
-            notifyMenu.classList.toggle("open-menu");
-        }
+    
 
 
         const notifyMenu = document.querySelector('.notify-menu');
@@ -609,7 +632,13 @@ if ($resultsoperation != null) {
 
 
 
+        function redirectToAnotherPage() {
+            var form = document.getElementById('formularionome');
+            var textValue = form.querySelector('[name="text"]').value;
 
+            // Redireciona para listcompani.php com o parâmetro GET "text"
+            window.location.href = 'listcompani.php?text=' + encodeURIComponent(textValue);
+        }
 
 
         $(document).ready(function() {
@@ -661,6 +690,35 @@ if ($resultsoperation != null) {
             element5.classList.remove('ms-active');
             element6.classList.remove('ms-active');
         });
+        
+         function updateNotificationCount() {
+            var xmlhttpnf = new XMLHttpRequest();
+            xmlhttpnf.onreadystatechange = function() {
+                if (this.readyState == 4 && this.status == 200) {
+
+
+                    var badgeElement = document.getElementById('notificationCount');
+                    var responseHtml = this.responseText.trim(); // Remove espaços em branco extras
+
+                    if (responseHtml != "" || responseHtml != undefined) {
+                        console.log("response");
+                        badgeElement.innerHTML = responseHtml; // Insere o HTML retornado pelo PHP
+                        responseHtml = '';
+                    } else {
+                        console.log("response NULL");
+                        badgeElement.innerHTML = ''; // Limpa o conteúdo do elemento
+                    }
+                } else {
+                    var badgeElement = document.getElementById('notificationCount');
+                    badgeElement.innerHTML = '';
+                    responseHtml = '';
+                }
+            };
+            xmlhttpnf.open("GET", "widget/atualizar_notificacoes.php", true);
+            xmlhttpnf.send();
+        }
+        updateNotificationCount()
+        setInterval(updateNotificationCount, 6000);
     </script>
 </body>
 

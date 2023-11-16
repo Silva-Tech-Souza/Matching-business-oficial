@@ -21,6 +21,33 @@ a {
     background-color: #EAEAEA !important;
 }
 
+.loading {
+    display: none;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    text-align: center;
+}
+
+.loading-spinner {
+    border: 4px solid rgba(0, 0, 0, 0.3);
+    border-top: 4px solid #000;
+    border-radius: 50%;
+    width: 40px;
+    height: 40px;
+    animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+    0% {
+        transform: rotate(0deg);
+    }
+    100% {
+        transform: rotate(360deg);
+    }
+}
+
 
 /* Notify menu */
 
@@ -1703,19 +1730,13 @@ input {
     font-size: 10px;
 }
 
-.produtos-img {
-    width: -webkit-fill-available;
-    max-width: 100%;
-    max-height: 155px;
-}
+
 
 .text-produto {
     font-size: 13px;
 }
 
-.desc-produto {
-    font-size: x-small;
-}
+
 
 .img-feed-styleset {
     display: block;
@@ -1957,12 +1978,10 @@ input {
     /* creates padding around scroll thumb */
 }
 
-.card-produto-uni {
-    display: inline-block;
-    margin-right: 10px;
-    vertical-align: top;
-    width: 165px;
+.rowProduct .card-container {
+    min-height: 247px;
 }
+
 
 .row-produto-card-pro {
     display: block;
@@ -2021,19 +2040,7 @@ input {
     text-overflow: ellipsis;
 }
 
-.cortardescricao {
-    display: -webkit-box;
-    max-height: 2.4em !important;
-    /* Duas linhas com margem para a linha de corte */
-    line-height: 1.2em !important;
-    /* Altura da linha do texto */
-    overflow: hidden !important;
-    text-overflow: ellipsis !important;
-    /* Adiciona o "..." no final do texto cortado */
-    -webkit-line-clamp: 2 !important;
-    /* Suporte a navegadores WebKit, como o Chrome */
-    -webkit-box-orient: vertical !important;
-}
+
 
 .minimenuoption {
     color: black !important;
@@ -2041,4 +2048,91 @@ input {
 
 .minimenuoption:hover {
     color: #0445ae !important;
+}
+
+.texto-duas-linhas {
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+}
+
+.sponsoredimg {
+    border-radius: 20px;
+    width: 120px;
+}
+
+.sponsoredrow {
+    padding: 5px;
+    margin-bottom: 10px;
+    margin-top: 5px;
+}
+
+.sponsoredrow:hover {
+    border-radius: 12px;
+    background-color: #0015305d;
+}
+
+@media (max-width: 1138px) {
+    .sponsoredrow {
+        flex: 0 0 33.33%;
+        display: flex;
+        width: max-content;
+        flex-direction: row;
+        justify-content: flex-start;
+        align-items: center;
+        align-content: center;
+    }
+}
+.uniprodutocard{
+          height: 274px
+    }
+@media (max-width: 799px) {
+    .produtoscard{
+            height: 222px;
+    }
+    
+    .uniprodutocard{
+         height: 160px !important;
+             min-height: 160px !important;
+    }
+    
+    .card-produto-uni{
+           width: 122px; 
+    }
+    .rowProduct .overflow-auto .produtos-feed-scrollbar .row-produto-card-pro{
+            margin-bottom: 8px !important;
+    }
+    .imagemproduto{
+        min-height: 81px!important;
+        max-height: 80px!important;
+    }
+    .imgprodutotamanho{
+        height: 86px !important;
+    object-fit: cover !important;
+    width: -webkit-fill-available !important;
+    min-width: -webkit-fill-available !important;
+    max-width: -webkit-fill-available !important;
+    }
+    .txtprodutos{
+        height: initial;
+         width: -webkit-fill-available !important;
+    min-width: -webkit-fill-available !important;
+    max-width: -webkit-fill-available !important;
+    }
+    .tituloproduto{
+           font-size: x-small;
+    }
+    .desc-produto{
+        font-size: smaller;
+         max-height: 3em !important;
+    overflow: hidden !important;
+    text-overflow: ellipsis !important;
+    
+    }
+    
+    .rowProduct {
+        margin-bottom: 0px !important;
+    }
+    
 }

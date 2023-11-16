@@ -1,5 +1,5 @@
 <?php
-
+include_once('../model/classes/conexao.php');
 include_once('../model/classes/tblSearch.php');
 include_once('../model/classes/tblSearchBusiness.php');
 include_once('../model/classes/tblSearchCategory.php');
@@ -7,45 +7,55 @@ include_once('../model/classes/tblSearchCountry.php');
 include_once('../model/classes/tblSearchEspecificationTag.php');
 include_once('../model/classes/tblSearchSpecification.php');
 
+
 $corbusiness = $_POST["corbusiness"];
 //echo "corbusiness: " . $corbusiness . "<br>";
-
+if(isset($_POST["news"])){
+    $news = $_POST["news"];
+}
+if(isset($_POST["next"])){
+    $news = $_POST["next"];
+}
 if ($_POST["flagtipo"] == "D") {
     $business = $corbusiness;
   //  echo "business: " . $business;
-}
+}else{
 
- $_POST["flagtipo"];
-try {
-    //caso o flag do cor Business for tipo B ELENCAI DENTRO DO IF E SE FOR
-    if ($_POST["flagtipo"] == "B") {
-        $business = implode(", ", $_POST["business"]);
-      //  echo "business: " . $business . "<br>";
-    } else {
-        $business = $_POST["business"];
-      //  echo "business: " . $busines . "<br>";
-        //só existe categoria se a business não for um array
-        try {
-            if (!is_null($_POST["category"])) {
-                $category = implode(", ", $_POST["category"]);
-                //echo  "category: " . $category  . "<br>";
+    $_POST["flagtipo"];
+    try {
+        //caso o flag do cor Business for tipo B ELENCAI DENTRO DO IF E SE FOR
+        if ($_POST["flagtipo"] == "B") {
+            $business = implode(", ", $_POST["business"]);
+        //  echo "business: " . $business . "<br>";
+        } else {
+            $business = $_POST["business"];
+        //  echo "business: " . $busines . "<br>";
+            //só existe categoria se a business não for um array
+            try {
+                if (!is_null($_POST["category"])) {
+                    $category = implode(", ", $_POST["category"]);
+                    //echo  "category: " . $category  . "<br>";
+                }
+            } catch (\Throwable $th) {
             }
-        } catch (\Throwable $th) {
         }
+    } catch (\Throwable $th) {
+        echo "erro na parte 1 da step";
     }
-} catch (\Throwable $th) {
-    echo "erro na parte 1 da step";
 }
 
 
 try {
+    if($_POST["flagtipo"] == "A" || $_POST["flagtipo"] == "C"){
     //só existe se o flag do cor business for A OU C
     $produtostags =  $_POST["produtostags"];
  //   echo "produtostags: " . $produtostags  . "<br>";
+    }else if ($_POST["flagtipo"] == "D"){
 
     //só existe se o flag do cor business for D
     $servicostags =  $_POST["servicostags"];
  //   echo "servicostags: " . $servicostags . "<br>";
+    }
 
 } catch (\Throwable $th) {
    // echo "erro na parte 2 da step";
@@ -62,20 +72,19 @@ try {
    // echo "erro na parte final da step";
 }
 
-$search = new Search();
+$search = new Search($dbh);
 
-$searchBussiness = new SearchBusiness();
+$searchBussiness = new SearchBusiness($dbh);
 
-$searchCategory = new SearchCategory();
+$searchCategory = new SearchCategory($dbh);
 
-$searchCountry = new SearchCountry(); 
+$searchCountry = new SearchCountry($dbh); 
 
 if($_POST["flagtipo"] == "A"){
 
     $search->setcoreBussinessID($corbusiness);
     $search->setNome($idname);
     $search->setidClient($_POST["idClient"]);
-    $search->setEstado(TRUE);
 
     $idSearch = $search->cadastrar();
 
@@ -112,7 +121,7 @@ if($_POST["flagtipo"] == "A"){
 
             if($produtostagsUnid != '' && $produtostagsUnid != null){
                 
-                $searchEspecificationTag = new SearchEspecificationTag();
+                $searchEspecificationTag = new SearchEspecificationTag($dbh);
 
                 $searchEspecificationTag->setidSearch($idSearch);
                 //idTagKeys = 1 é produto
@@ -125,8 +134,13 @@ if($_POST["flagtipo"] == "A"){
 
         }
 
-    //    echo 'Cadastro Realizado com sucesso';
-        header("Location: ../view/listcompani.php");
+        include_once("../model/classes/tblUserClients.php");
+        $user = new UserClients($dbh);
+        $user->setidClient($_SESSION["id"]);
+        $user->setPontos(200);
+        $user->atualizar("Pontos = Pontos + :Pontos WHERE idClient = :idClient");
+
+       
     }
     
 
@@ -135,22 +149,61 @@ if($_POST["flagtipo"] == "A"){
     $search->setcoreBussinessID($corbusiness);
     $search->setNome($idname);
     $search->setidClient($_POST["idClient"]);
-    $search->setEstado(TRUE);
 
     $idSearch = $search->cadastrar();
 
     if($idSearch!= null){
 
-        foreach($_POST["business"] as $businessUnid){
-
-            if($businessUnid != null && $businessUnid != 'Select'){
-                $searchBussiness->setidSearch($idSearch);
-                $searchBussiness->setidBusiness($businessUnid);
+        if (is_array($_POST["business"])) {
         
-                $searchBussiness->cadastrar();
+            foreach($_POST["business"] as $businessUnid){
+
+                if($businessUnid != null && $businessUnid != 'Select'){
+                    $searchBussiness->setidSearch($idSearch);
+                    $searchBussiness->setidBusiness($businessUnid);
+            
+                    $searchBussiness->cadastrar();
+                }
+    
+            }
+    
+            include_once('../model/classes/tblBusinessCategory.php');
+
+            $businesCat = new BusinessCategory($dbh);
+
+            $resultBussinessCat = $businesCat->consulta("");
+
+            foreach($resultBussinessCat as $resultBussinessCatUnid){
+
+                $searchCategory->setidSearch($idSearch);
+                $searchCategory->setidCategory($resultBussinessCatUnid->idBusinessCategory);
+
+                $searchCategory->cadastrar();
+
+            }
+            
+
+        }else{
+
+            $searchBussiness->setidSearch($idSearch);
+            $searchBussiness->setidBusiness($_POST["business"]);
+    
+            $searchBussiness->cadastrar();
+            
+            foreach($_POST["category"] as $categoryUnid){
+
+                if($categoryUnid != 'Select'){
+                    $searchCategory->setidSearch($idSearch);
+                    $searchCategory->setidCategory($categoryUnid);
+    
+                    $searchCategory->cadastrar();
+                }
+    
             }
 
+
         }
+        
 
         foreach($_POST["country"] as $countryUnid){
 
@@ -175,19 +228,24 @@ if($_POST["flagtipo"] == "A"){
         echo "niveloperacao: " . $_POST["niveloperacao"] . "<br>";
         */
 
-        $searchspecification = new SearchEspecification();
+        $searchspecification = new SearchSpecification($dbh);
 
         $searchspecification->setidSearch($idSearch);
         $searchspecification->setidNumEmpregados($_POST["numempregados"]);
         $searchspecification->setidlRangeValue($_POST["rangevalues"]);
         $searchspecification->setidNivelOperacao($_POST["niveloperacao"]);
-        $searchspecification->setDataDeAbertura($_POST["year"]);
-
+        $searchspecification->setidTotalImportacao($_POST["rangevalues2"]);
+        $searchspecification->setidtotalSalesRep($_POST["numSellers"]);
+      
         $searchspecification->cadastrar();
 
+        include_once("../model/classes/tblUserClients.php");
+        $user = new UserClients($dbh);
+        $user->setidClient($_SESSION["id"]);
+        $user->setPontos(200);
+        $user->atualizar("Pontos = Pontos + :Pontos WHERE idClient = :idClient");
 
-        //echo 'Cadastro Realizado com sucesso';
-        header("Location: ../view/listcompani.php");
+
     }
 
 
@@ -196,7 +254,6 @@ if($_POST["flagtipo"] == "A"){
     $search->setcoreBussinessID($corbusiness);
     $search->setNome($idname);
     $search->setidClient($_POST["idClient"]);
-    $search->setEstado(TRUE);
 
     $idSearch = $search->cadastrar();
 
@@ -233,7 +290,7 @@ if($_POST["flagtipo"] == "A"){
 
             if($produtostagsUnid != '' && $produtostagsUnid != null){
                 
-                $searchEspecificationTag = new SearchEspecificationTag();
+                $searchEspecificationTag = new SearchEspecificationTag($dbh);
 
                 $searchEspecificationTag->setidSearch($idSearch);
                 //idTagKeys = 1 é produto
@@ -246,8 +303,13 @@ if($_POST["flagtipo"] == "A"){
 
         }
 
-      //  echo 'Cadastro Realizado com sucesso';
-        header("Location: ../view/listcompani.php");
+        include_once("../model/classes/tblUserClients.php");
+        $user = new UserClients($dbh);
+        $user->setidClient($_SESSION["id"]);
+        $user->setPontos(200);
+        $user->atualizar("Pontos = Pontos + :Pontos WHERE idClient = :idClient");
+
+ 
     }
 
 }else if($_POST["flagtipo"] == "D"){
@@ -255,50 +317,68 @@ if($_POST["flagtipo"] == "A"){
     $search->setcoreBussinessID($corbusiness);
     $search->setNome($idname);
     $search->setidClient($_POST["idClient"]);
-    $search->setEstado(TRUE);
 
     $idSearch = $search->cadastrar();
 
     if($idSearch!= null){
 
-        $searchBussiness->setidSearch($idSearch);
-        $searchBussiness->setidBusiness($corbusiness);
+        include_once("../model/classes/tblBusiness.php");
 
-        $searchBussiness->cadastrar();
+        $operation = new Business($dbh);
 
-        foreach($_POST["country"] as $countryUnid){
+        $operation->setidOperation($corbusiness);
+        $resultOperation = $operation->consulta('WHERE IdOperation = :IdOperation');
 
-            if($countryUnid != 'Select'){
-                $searchCountry->setidSearch($idSearch);
-                $searchCountry->setidCountry($countryUnid);
+        if($resultOperation != null){
 
-                $searchCountry->cadastrar();
+            foreach($resultOperation as $resultOperationUNID){
+
+                $searchBussiness->setidSearch($idSearch);
+                $searchBussiness->setidBusiness($resultOperationUNID->idBusiness);
+        
+                $searchBussiness->cadastrar();
+        
+                foreach($_POST["country"] as $countryUnid){
+        
+                    if($countryUnid != 'Select'){
+                        $searchCountry->setidSearch($idSearch);
+                        $searchCountry->setidCountry($countryUnid);
+        
+                        $searchCountry->cadastrar();
+                    }
+        
+                }
+        
+                foreach(explode(",",$servicostags) as $servicosUnid){
+        
+                    if($servicosUnid != '' && $servicosUnid != null){
+                        
+                        $searchEspecificationTag = new SearchEspecificationTag($dbh);
+            
+                        $searchEspecificationTag->setidSearch($idSearch);
+                        //idTagKeys = 2 é serviço
+                        $searchEspecificationTag->setidTagKeys(2);
+                        $searchEspecificationTag->setKeys($servicosUnid);
+            
+                        $searchEspecificationTag->cadastrar();
+            
+                    }
+            
+                }
+        
+                include_once("../model/classes/tblUserClients.php");
+                $user = new UserClients($dbh);
+                $user->setidClient($_SESSION["id"]);
+                $user->setPontos(200);
+                $user->atualizar("Pontos = Pontos + :Pontos WHERE idClient = :idClient");
+
             }
 
         }
 
-        foreach(explode(",",$servicostags) as $servicosUnid){
 
-            if($servicosUnid != '' && $servicosUnid != null){
-                
-                $searchEspecificationTag = new SearchEspecificationTag();
-    
-                $searchEspecificationTag->setidSearch($idSearch);
-                //idTagKeys = 2 é serviço
-                $searchEspecificationTag->setidTagKeys(2);
-                $searchEspecificationTag->setKeys($servicosUnid);
-    
-                $searchEspecificationTag->cadastrar();
-    
-            }
-    
-        }
-
-        //echo 'Cadastro Realizado com sucesso';
-        header("Location: ../view/listcompani.php");
     }
 
 }else{
    
 }
-

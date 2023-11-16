@@ -8,14 +8,9 @@ class SearchResults{
     protected $idClientResultado = null;
     protected $dbh = null;
 
-    function __construct()
+    function __construct($dbh)
     {
-
-        include_once('conexao.php');
-        $conexao = new Conexao();
-        $conexao->abrirConexao();
-        $this->dbh = $conexao->getConexao();
-
+        $this->dbh = $dbh;
     }
 
 
@@ -62,18 +57,18 @@ class SearchResults{
         $sql = "SELECT * from tblSearchResults ".$paramsExtra;
         $query = $this->dbh->prepare($sql);
         
-        if($this->idSearchResults != null){
+      /*  if($this->idSearchResults != null){
             $query->bindParam(':idSearchResults', $this->idSearchResults, PDO::PARAM_INT);
-        }
+        }*/
         if($this->idSearch != null){
             $query->bindParam(':idSearch', $this->idSearch, PDO::PARAM_INT);
         }
         if($this->idClientPesquisador != null){
             $query->bindParam(':idClientPesquisador', $this->idClientPesquisador, PDO::PARAM_STR);
         }
-        if($this->idClientResultado != null){
+      /*  if($this->idClientResultado != null){
             $query->bindParam(':idClientResultado', $this->idClientResultado, PDO::PARAM_INT);
-        }
+        }*/
 
         $query->execute();
         $results = $query->fetchAll(PDO::FETCH_OBJ);

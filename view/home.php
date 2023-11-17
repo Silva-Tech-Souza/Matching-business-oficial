@@ -1,19 +1,21 @@
 <?php
 
 //error_reporting(0);
-include_once('../model/classes/conexao.php');
-include_once("../model/classes/tblEmpresas.php");
-include_once('../model/classes/tblUserClients.php');
-include_once('../model/classes/tblOperations.php');
-include_once('../model/classes/tblBusiness.php');
-include_once('../model/classes/tblViews.php');
-include_once('../model/classes/tblConect.php');
-include_once('../model/classes/tblSearch.php');
-include_once('../model/classes/tblProducts.php');
-include_once('../model/classes/tblProductPictures.php');
-include_once('../model/classes/tblFeeds.php');
-include_once('../model/classes/tblCurtidas.php');
-include_once('../model/classes/tbPostComent.php');
+include('../model/classes/conexao.php');
+
+include("../model/classes/tblEmpresas.php");
+include('../model/classes/tblUserClients.php');
+include('../model/classes/tblOperations.php');
+include('../model/classes/tblBusiness.php');
+include('../model/classes/tblViews.php');
+include('../model/classes/tblConect.php');
+include('../model/classes/tblSearch.php');
+include('../model/classes/tblProducts.php');
+include('../model/classes/tblProductPictures.php');
+include('../model/classes/tblFeeds.php');
+include('../model/classes/tblCurtidas.php');
+include('../model/classes/tbPostComent.php');
+include('../model/classes/tblCountry.php'); 
 
 
 date_default_timezone_set('America/Sao_Paulo');
@@ -50,13 +52,17 @@ if ($results != null) {
     }
 }
 
+if($corebusiness == "" || $corebusiness == null || $corebusiness == 0){
+    header("Location: qualificacao.php");
+}
+
 //$sqlCountry = "SELECT * from tblcountry WHERE idCountry = :idCountry";
 //$queryCountry = $dbh->prepare($sqlCountry);
 //$queryCountry->bindParam(':idCountry', $idcountry, PDO::PARAM_INT);
 //$queryCountry->execute();
 //$resultsCountry = $queryCountry->fetchAll(PDO::FETCH_OBJ);
 
-include('../model/classes/tblCountry.php');
+
 
 $country = new Country($dbh);
 
@@ -83,12 +89,11 @@ if ($resultsCountry != null) {
     <title>Matching Business</title>
     <link rel="stylesheet" href="assets/css/geral.css">
 
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-4bw+/aepP/YC94hEpVNVgiZdgIC5+VKNBQNGCHeKRQN+PtmoHDEXuppvnDJzQIu9" crossorigin="anonymous">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
 
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="https://kit.fontawesome.com/f51201541f.js" crossorigin="anonymous"></script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/autosize.js/4.0.2/autosize.min.js"></script>
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
@@ -509,6 +514,14 @@ if ($resultsCountry != null) {
             width: 0;
             left: -50px;
         }
+        .dropdown-toggle::after {
+            content: "" !important;
+            display: none !important;
+            margin-left: 0 !important;
+        }
+        ::-webkit-scrollbar-thumb {
+    background: transparent !important;
+}
     </style>
 </head>
 
@@ -588,27 +601,37 @@ if ($resultsCountry != null) {
             <div class="row telacheia margemmnavbar">
 
                 <!-- Esquerda -->
-                <div class="col-3 d-none d-md-block justify-content-start position-fixed overflow-auto scrollable-column">
+                <div class="col-3 d-none d-md-block justify-content-start position-fixed overflow-auto scrollable-column" style="
+    height: 100%;
+">
                     <div class="card rounded-4 shadow">
                         <div class="card-body p-0 m-0">
-                            <div class="col-12 mh-25">
-                                <img class="mh-25 rounded-top-3" src="<?php if ($imgcapa != "Avatar.png" && $imgcapa != "") {
-                                                                            echo "" . $imgcapa;
-                                                                        } else {
-                                                                            echo "https://images2.alphacoders.com/131/1317606.jpeg";
-                                                                        } ?>" alt="Descrição da Imagem" style="max-height: 100px; width: 100%;">
-                            </div>
+                             <div class="col-12 mh-25" style="max-height: 100px;
+    width: 100%;
+    background-image: url(<?php if ($imgcapa != "Avatar.png" && $imgcapa != "" && $imgcapa != null) {
+                                                        echo "" . $imgcapa;
+                                                      } else {
+                                                        echo "https://images2.alphacoders.com/131/1317606.jpeg";
+                                                      } ?>);
+    min-height: 100px;
+    border-top-left-radius: var(--bs-border-radius-lg)!important;
+    border-top-right-radius: var(--bs-border-radius-lg)!important;
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center;">
+               
+              </div>
                             <div class="row p-0 ml-0">
                                 <div class="col-5 d-flex justify-content-start p-0 m-0 " style="height: 0px;">
                                     <img src=" <?php if ($imgperfil != "Avatar.png" && $imgperfil != "") {
                                                     echo "" . $imgperfil;
                                                 } else {
                                                     echo "assets/img/Avatar.png";
-                                                } ?>" alt="user" class="border-2 mini-profile-img " onclick="toggleMenu()">
+                                                } ?>" alt="user" class="border-2 mini-profile-img "style="object-fit: cover; box-shadow: 0px -3px 11px #0000005e;" >
                                 </div>
-                                <div class="col-5 p-0 m-0">
-                                    <h3 class="fonte-titulo"><?php echo $username; ?></h3>
-                                    <h6 class="fonte-principal"><?php echo $jobtitle . ' at ' . $companyname ?></h6>
+                                <div class="col-7 p-0 m-0">
+                                    <h3 class="fonte-titulo"><?php echo $companyname; ?></h3>
+                                    <h6 class="fonte-principal" style="font-size: small;"><?php echo $username ?></h6>
                                 </div>
                             </div>
                             <div class="col-12 m-0 p-0">
@@ -681,7 +704,7 @@ if ($resultsCountry != null) {
                             </div>
                         </div>
                     </div>
-                    <div class="card rounded-4 shadow  treeviewmin panddingardtreeview" style="margin-bottom: 100px !important;">
+                    <div class="card rounded-4 shadow  treeviewmin panddingardtreeview" style="margin-bottom: 100px !important; height: 100%;max-height: -webkit-fill-available;">
                         <div class="card-body p-0">
                             <div class="col-12 mh-25">
                                 <h3 class="color-branco">Matching Business Online <div style="text-align: end; width: 24px;float: right;position: initial;    color: #62b1ff;"><?php $numerouser2 = new UserClients($dbh);
@@ -699,9 +722,13 @@ if ($resultsCountry != null) {
                                     if ($resultsOperation != null) {
                                         foreach ($resultsOperation as $rowOperation) {
                                     ?>
-                                            <li>
+                                            <li class="row" style="padding: 0 !important;
+    justify-content: space-between;
+    flex-wrap: nowrap;
+    flex: 1;
+    display: flow;">
 
-                                                <a href="listcompani.php?operation=<?php echo $rowOperation->idOperation; ?>"><?php if ($rowOperation->FlagOperation != "D") {
+                                                <a  style="width: fit-content !important;" href="listcompani.php?operation=<?php echo $rowOperation->idOperation; ?>"><?php if ($rowOperation->FlagOperation != "D") {
                                                                                                                                     echo "<i class='fa-solid fa-add indicator ' ></i>";
                                                                                                                                 } ?>
                                                     <?php echo trim($rowOperation->NmOperation); ?>
@@ -720,7 +747,7 @@ if ($resultsCountry != null) {
                                                         if ($business != null) {
                                                             foreach ($resultsbusiness as $rowbusiness) {
                                                         ?>
-                                                                <li><a class="sizewidgh" href="listcompani.php?busines=<?php echo $rowbusiness->idBusiness; ?>&operation=<?php echo $rowOperation->idOperation; ?>"><?php
+                                                                <li><a class="sizewidgh" style="width: fit-content !important;" href="listcompani.php?busines=<?php echo $rowbusiness->idBusiness; ?>&operation=<?php echo $rowOperation->idOperation; ?>"><?php
                                                                                                                                                                                                                     echo trim($rowbusiness->NmBusiness); ?> <div style="text-align: end; width: 24px;float: right;position: initial;">
                                                                             <?php $numerouser2 = new UserClients($dbh);
                                                                             $numerouser2->setCoreBusinessId($rowOperation->idOperation);
@@ -772,7 +799,7 @@ if ($resultsCountry != null) {
 
                                         <div class="col-md-12">
                                             <div class="row justify-content-end mt-auto">
-                                                <label class="insertpost btn btn-second mr-2 btn-lg" for="file-input">
+                                                <label class="insertpost btn btn-second mr-2 btn-lg d-block d-md-none" for="file-input">
                                                     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-camera" viewBox="0 0 16 16">
                                                         <path d="M15 12a1 1 0 0 1-1 1H2a1 1 0 0 1-1-1V6a1 1 0 0 1 1-1h1.172a3 3 0 0 0 2.12-.879l.83-.828A1 1 0 0 1 6.827 3h2.344a1 1 0 0 1 .707.293l.828.828A3 3 0 0 0 12.828 5H14a1 1 0 0 1 1 1v6zM2 4a2 2 0 0 0-2 2v6a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V6a2 2 0 0 0-2-2h-1.172a2 2 0 0 1-1.414-.586l-.828-.828A2 2 0 0 0 9.172 2H6.828a2 2 0 0 0-1.414.586l-.828.828A2 2 0 0 1 3.172 4H2z" />
                                                         <path d="M8 11a2.5 2.5 0 1 1 0-5 2.5 2.5 0 0 1 0 5zm0 1a3.5 3.5 0 1 0 0-7 3.5 3.5 0 0 0 0 7zM3 6.5a.5.5 0 1 1-1 0 .5.5 0 0 1 1 0z" />
@@ -809,11 +836,34 @@ if ($resultsCountry != null) {
                             </div>
                             <div class="card shadow rounded-4 card-post-style  mt-4 produtos-feed-scrollbar">
                                 <h3 class="texto-titulo" style="margin: inherit;"> &nbsp;&nbsp;Featured Products</h3>
-                                <div class="rowProduct overflow-auto produtos-feed-scrollbar row-produto-card-pro" style="margin-bottom: 17px;padding: 10px;">
+                                 <div class="rowProduct overflow-auto produtos-feed-scrollbar row-produto-card-pro" style="margin-bottom: 17px;padding: 10px;" id="produtos-feed">
                                     <?php
 
                                     $productss = new Products($dbh);
-                                    $resultsProdutoss = $productss->consulta("ORDER BY idProduct ASC");
+
+                                    if ($corebusiness == 2) {
+                                        //Flag A
+
+                                        $resultsProdutoss = $productss->consulta(" WHERE Category IN (3, 4,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23) ORDER BY idProduct ASC");
+
+                                    } else if ($corebusiness == 3 || $corebusiness == 4) {
+                                        //Flag B
+
+                                        $resultsProdutoss = $productss->consulta(" WHERE Category IN (2, 5) ORDER BY idProduct ASC");
+
+                                    } else if ($corebusiness == 5) {
+                                        //Flag C
+        
+                                        $resultsProdutoss = $productss->consulta(" WHERE Category IN (3,4) ORDER BY idProduct ASC");
+
+                                    } else {
+                                        //Flag D
+        
+                                        $resultsProdutoss = $productss->consulta(" ORDER BY idProduct ASC");
+                                        
+                                    }
+
+                                    
                                     if ($resultsProdutoss != null) {
 
                                         foreach ($resultsProdutoss as $rowProdutos) { ?>
@@ -829,6 +879,7 @@ if ($resultsCountry != null) {
                                                                                                                                             if ($resultsProdutos1 != null) {
                                                                                                                                                 foreach ($resultsProdutos1 as $rowProdutosu) {
                                                                                                                                                     echo $rowProdutosu->tblProductPicturePath;
+                                                                                                                                                    break;
                                                                                                                                                 }
                                                                                                                                             } else {
                                                                                                                                                 echo "assets/img/Avatar.png";
@@ -839,12 +890,12 @@ if ($resultsCountry != null) {
                                                     <div class="col-12" style="padding: 6px;">
                                                         <div class="col-12">
                                                             <a data-toggle="modal" data-target="#modalViewProduto" data-toggle="modal" data-id="<?php echo $rowProdutos->idProduct; ?>" class="hero-image-container">
-                                                                <h5 class="mb-0" style="white-space: pre-line;"><?php echo $rowProdutos->ProductName; ?></h5>
+                                                                <h5 class="mb-0" style="white-space: pre-line; color: #fff;text-transform: uppercase;"><?php echo $rowProdutos->ProductName; ?></h5>
                                                             </a>
                                                         </div>
-                                                        <div class="col-12">
-                                                            <a data-toggle="modal" data-target="#modalViewProduto" data-toggle="modal" data-id="<?php echo $rowProdutos->idProduct; ?>" class="hero-image-container">
-                                                                <p class=" cortardescricao color-cinza-b desc-produto fonte-principal" style=""><?php echo $rowProdutos->ProdcuctDescription; ?></p>
+                                                        <div class="col-12 mt-2">
+                                                            <a data-toggle="modal" data-target="#modalViewProduto" data-toggle="modal" data-id="<?php echo $rowProdutos->idProduct; ?>" class="hero-image-container" style="color: ##fff !important;">
+                                                                <p class=" cortardescricao color-cinza-b desc-produto fonte-principal" style="color: ##fff !important;"><?php echo $rowProdutos->ProdcuctDescription; ?></p>
                                                             </a>
                                                         </div>
                                                     </div>
@@ -858,78 +909,166 @@ if ($resultsCountry != null) {
                             <div id="divFeedUpdate">
                                 <?php
 
-                                //$sqlFeed = "SELECT * from tblFeeds ORDER BY Published_at DESC LIMIT 5";
-                                //$queryfeed = $dbh->prepare($sqlFeed);
-                                //$queryfeed->execute();
-                                //$resultsfeed = $queryfeed->fetchAll(PDO::FETCH_OBJ);
-
-
-
                                 $feeds = new Feeds($dbh);
-
                                 $resultsfeed = $feeds->consulta("ORDER BY Published_at DESC LIMIT 8");
+
+                                $x = 0;
 
                                 if ($resultsfeed != null) {
                                     foreach ($resultsfeed as $rowfeed) {
-                                        // Obtenha a data e hora da postagem no formato DATETIME do banco de dados
-                                        $postDateTime = new DateTime($rowfeed->Published_at);
 
-                                        // Obtenha o objeto DateTime da data e hora atual
-                                        $currentTime = new DateTime();
+                                            if($x >= 2){
 
-                                        // Calcula a diferença entre a data e hora atual e a da postagem
-                                        $timeDiff = $postDateTime->diff($currentTime);
-
-                                        // Formata o tempo decorrido com base nas unidades (ano, mês, dia, hora, minuto, segundo)
-                                        if ($timeDiff->y > 0) {
-                                            $timeAgo = $timeDiff->y . " year(s) ago";
-                                        } elseif ($timeDiff->m > 0) {
-                                            $timeAgo = $timeDiff->m . " month(s) ago";
-                                        } elseif ($timeDiff->d > 0) {
-                                            $timeAgo = $timeDiff->d . " day(s) ago";
-                                        } elseif ($timeDiff->h > 0) {
-                                            $timeAgo = $timeDiff->h . " hour(s) ago";
-                                        } elseif ($timeDiff->i > 0) {
-                                            $timeAgo = $timeDiff->i . " minute(s) ago";
-                                        } else {
-                                            $timeAgo = "A few seconds ago";
-                                        }
-                                        //$sqluserpost = "SELECT * from tblUserClients WHERE idClient = :idClient";
-                                        //$queryuserpost = $dbh->prepare($sqluserpost);
-                                        //$queryuserpost->bindParam(':idClient', $rowfeed->IdClient, PDO::PARAM_INT);
-                                        //$queryuserpost->execute();
-                                        //$resultsuserpost = $queryuserpost->fetchAll(PDO::FETCH_OBJ);
+                                                $x = 0;
 
 
+                                                $empresas = new Empresas($dbh);
+                                                $resultsempresas = $empresas->consulta("");
+                                                if ($resultsempresas != null) {
 
-                                        $userClients = new UserClients($dbh);
+                                                    $numEmpresa = count($resultsempresas);
 
-                                        $userClients->setidClient($rowfeed->IdClient);
+                                                    $numEmpresaSelecionada = random_int(0, $numEmpresa-1);
 
-                                        $resultsuserpost = $userClients->consulta("WHERE idClient = :idClient");
+                                                    $rowempresas = $resultsempresas[$numEmpresaSelecionada];
+                                                    $imgpostempresa = $rowempresas->fotoperfil;
+                                                ?>
 
-                                        if ($resultsuserpost != null) {
-                                            foreach ($resultsuserpost as $rowuserpost) {
-                                                $usernamepost = $rowuserpost->FirstName . " " . $rowuserpost->LastName;
-                                                $idpostoperation = $rowuserpost->CoreBusinessId;
-                                                $imgpostuser = $rowuserpost->PersonalUserPicturePath;
+                                                <div class="card shadow p-0 bcolor rounded-4 mt-4 mb-4">
+                                                <div class="card-body shadow d-flex flex-column rounded-4 color-cinza" style="background-color: #d3d3d3;">
+
+                                                    <div class=" row align-content-center">
+                                                        <div class="row">
+                                                            <div class="col-1">
+                                                                <img src="<?php if($rowempresas->fotoperfil != ""){echo $rowempresas->fotoperfil;}else{echo "assets/img/logo.png";}?>" alt="user" class="nav-profile-img  " onerror="this.onerror=null; this.src='/assets/img/Avatar.png'">
+
+                                                            </div>
+                                                            <div class="col-8 p-2 color-preto" style="padding-left: 26px !important;">
+                                                                <a href="empresa.php?idtax=<?php echo  $rowempresas->taxid;?>" class="color-preto text-decoration-none">
+                                                                    <h3 class="fonte-titulo text-decoration-none">
+                                                                        <?php
+                                                                        echo $rowempresas->nome;
+                                                                        ?>
+                                                                    </h3>
+                                                                    <h5>Sponsored</h5>
+                                                                </a>
+    
+                                                            </div>
+                                                            <div class="col-3 d-flex text-right color-preto justify-content-end">
+
+                                                            </div>
+                                                        </div>
+
+
+
+                                                    </div>
+                                                    <div class="col-12" style="padding: inherit;">
+  <?php
+                                                     $numeroCaracteres2 = strlen($rowempresas->descricao);
+                                                    if ($numeroCaracteres2 > 200) {
+                                                        echo "
+                                                        <div id='textoEx" .$rowempresas->id .$rowfeed->IdFeed. "' style='height: 8em; overflow: hidden;'>
+                                                            <p class='fonte-principal color-preto' style='font-size: larger; color: #1d1d1d;'>
+                                                                <br>
+                                                                " . $rowempresas->descricao . "
+                                                            </p>
+                                                        </div>";
+                                                        echo "<a href='javascript:void(0)' id='btn-vm" . $rowempresas->id.$rowfeed->IdFeed . "' onClick='alterarLimite(" . $rowempresas->id.$rowfeed->IdFeed . ")' style='color: #0308b0;font-size: larger;'>Ver mais</a>";
+                                                    } else {
+                                                        echo "
+                                                        <div id='textoEx" . $rowempresas->id .$rowfeed->IdFeed. "'>
+                                                            <p class='fonte-principal color-preto' style='font-size: larger; color: #1d1d1d;'>
+                                                                <br>
+                                                                " . $rowempresas->descricao . "
+                                                            </p>
+                                                        </div>";
+                                                    }
+                                                    ?>
+                                                    <br>
+                                                
+
+                                                    </div>
+
+                                                    <div class="row col-12 align-content-center justify-content-center">
+                                                       <!-- <?php if ($imgpostempresa != "Avatar.png" && $imgpostempresa != "" && file_exists("" . $imgpostempresa)) { ?>
+                                                            <img class="img-feed-styleset" src="<?php echo $imgpostempresa; ?>" alt="" width="100%">
+                                                        <?php }?> -->
+                                                    </div>
+                                                    
+                                                </div>
+                                            </div>
+
+                                            <?php 
+                                                
+                                            } 
+
+                                            }else{
+
+                                                $x = $x +1;
+
                                             }
-                                        }
-                                ?>
+
+                                            // Obtenha a data e hora da postagem no formato DATETIME do banco de dados
+                                            $postDateTime = new DateTime($rowfeed->Published_at);
+    
+                                            // Obtenha o objeto DateTime da data e hora atual
+                                            $currentTime = new DateTime();
+    
+                                            // Calcula a diferença entre a data e hora atual e a da postagem
+                                            $timeDiff = $postDateTime->diff($currentTime);
+    
+                                            // Formata o tempo decorrido com base nas unidades (ano, mês, dia, hora, minuto, segundo)
+                                            if ($timeDiff->y > 0) {
+                                                $timeAgo = $timeDiff->y . " year(s) ago";
+                                            } elseif ($timeDiff->m > 0) {
+                                                $timeAgo = $timeDiff->m . " month(s) ago";
+                                            } elseif ($timeDiff->d > 0) {
+                                                $timeAgo = $timeDiff->d . " day(s) ago";
+                                            } elseif ($timeDiff->h > 0) {
+                                                $timeAgo = $timeDiff->h . " hour(s) ago";
+                                            } elseif ($timeDiff->i > 0) {
+                                                $timeAgo = $timeDiff->i . " minute(s) ago";
+                                            } else {
+                                                $timeAgo = "A few seconds ago";
+                                            }
+                                            //$sqluserpost = "SELECT * from tblUserClients WHERE idClient = :idClient";
+                                            //$queryuserpost = $dbh->prepare($sqluserpost);
+                                            //$queryuserpost->bindParam(':idClient', $rowfeed->IdClient, PDO::PARAM_INT);
+                                            //$queryuserpost->execute();
+                                            //$resultsuserpost = $queryuserpost->fetchAll(PDO::FETCH_OBJ);
+    
+    
+    
+                                            $userClients = new UserClients($dbh);
+    
+                                            $userClients->setidClient($rowfeed->IdClient);
+    
+                                            $resultsuserpost = $userClients->consulta("WHERE idClient = :idClient");
+    
+                                            if ($resultsuserpost != null) {
+                                                foreach ($resultsuserpost as $rowuserpost) {
+                                                    $usernamepost = $rowuserpost->FirstName . " " . $rowuserpost->LastName;
+                                                    $idpostoperation = $rowuserpost->CoreBusinessId;
+                                                    $imgpostuser = $rowuserpost->PersonalUserPicturePath;
+                                                    $jobtitlepost = $rowuserpost->JobTitle;
+                                                    $companynamepost = $rowuserpost->CompanyName;
+                                                }
+                                            }
+                                    ?>
                                         <div class="card shadow p-0 bcolor rounded-4 mt-4 mb-4">
                                             <div class="card-body shadow d-flex flex-column rounded-4 color-cinza">
 
                                                 <div class=" row align-content-center">
-                                                    <div class="row">
+                                                    
                                                         <div class="col-1">
                                                             <img src="<?php if ($imgpostuser != "Avatar.png" && $imgpostuser != "" && file_exists("" . $imgpostuser)) {
                                                                             echo "" . $imgpostuser;
                                                                         } else {
                                                                             echo "assets/img/Avatar.png";
-                                                                        } ?>" alt="user" class="nav-profile-img  " onerror="this.onerror=null; this.src='/assets/img/Avatar.png'">
+                                                                        } ?>" alt="user" class="nav-profile-img" style="min-height: 35px;border: 1px solid #00000042;object-fit: cover;" onerror="this.onerror=null; this.src='/assets/img/Avatar.png'">
 
                                                         </div>
-                                                        <div class="col-8 p-2 color-preto" style="padding-left: 26px !important;">
+                                                        <div class="col-8 p-2 color-preto" style="padding-left: 20px  !important;">
                                                             <a href="viewProfile.php?profile=<?php echo $rowfeed->IdClient; ?>" class="color-preto text-decoration-none">
                                                                 <h3 class="fonte-titulo text-decoration-none">
                                                                     <?php
@@ -956,19 +1095,38 @@ if ($resultsCountry != null) {
 
                                                             if ($resultsOperationpost != null) {
                                                                 foreach ($resultsOperationpost as $rowOperationpost) {
-                                                                    echo $rowOperationpost->NmOperation;
+                                                                    echo $rowOperationpost->NmOperation . " / ". $jobtitlepost . ' at ' . $companynamepost ;
                                                                 }
                                                             }
                                                             ?><br>
 
                                                         </div>
-                                                        <div class="col-3 d-flex text-right color-preto justify-content-end">
+                                                        <div class="col-2 d-flex text-right color-preto justify-content-end">
 
                                                             <?php echo $timeAgo; ?>
 
                                                         </div>
-                                                    </div>
+                                                        <?php if($rowfeed->IdClient ==  $iduser){ ?>
+                                                         <div class="col-1 d-flex text-right color-preto justify-content-end">
 
+                                                        <div class="dropdown">
+                                                              <a class="btn btn-secondary dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false" style="background-color: transparent;
+    border: 0px;
+    color: black;
+    font-size: medium;">
+                                                             <i class="fas fa-ellipsis-v"></i>
+                                                              </a>
+                                                            
+                                                              <ul class="dropdown-menu">
+                                                                <li><a class="dropdown-item" href="../controller/homeController.php?deletar=true&idfeed=<?php echo $rowfeed->IdFeed;?>&idcliente=<?php echo $rowfeed->IdClient;?>"><i class="fas fa-trash-alt " style="margin-right: 5px;"></i>Delete</a></li>
+                                                                <li><a class="dropdown-item" href="#"><i class="fas fa-edit " style="margin-right: 5px;"></i>Eedit</a></li>
+                                                                
+                                                              </ul>
+                                                        </div>
+
+                                                        </div>
+                                                        <?php } ?>
+                                                    
 
 
                                                 </div>
@@ -1134,7 +1292,7 @@ if ($resultsCountry != null) {
                                                                                         echo "" . $rowucometarios->PersonalUserPicturePath;
                                                                                     } else {
                                                                                         echo "assets/img/Avatar.png";
-                                                                                    } ?>" alt="user" class="nav-profile-img" style="width: 26px;">
+                                                                                    } ?>" alt="user" class="nav-profile-img" style="min-height: 35px;border: 1px solid #00000042;object-fit: cover;" style="min-height: 21px; width: 33px;">
                                                                     </div>
                                                                     <div class="col-11">
                                                                         <div class="col-10 d-flex flex-column justify-content-start align-items-start color-preto" style="height: auto;">
@@ -1154,7 +1312,10 @@ if ($resultsCountry != null) {
                                             </div>
                                         </div>
                                 <?php $numeroCurtidas = 0;
-                                    }
+                                    
+                                        }
+                        
+                                    
                                 } ?>
                             </div>
                         </div>
@@ -1462,7 +1623,7 @@ font-size: small;
 
     <div id="modalEditarProduto" class="modal custom-modal fade show comment-modal-primary" role="dialog">
         <div class="modal-dialog modal-dialog-centered modal-lg">
-            <div class="modal-content">
+            <div class="modal-content" style="background-color: #f0f0f0 !important;">
 
                 <div class="modal-body comment-modal-primary">
                     <h1 id="modalProductName mb-0"></h1>
@@ -1473,20 +1634,21 @@ font-size: small;
         </div>
     </div>
     <div id="modalViewProduto" class="modal custom-modal fade" role="dialog">
-        <div class="modal-dialog modal-dialog-centered modal-lg">
-            <div class="modal-content">
+    <div class="modal-dialog modal-dialog-centered modal-lg">
+      <div class="modal-content">
 
-                <div class="modal-body">
-                    <h1 id="modalProductName" class="mb-0"></h1>
-                    <p id="modalProductDescription" class="color-cinza-b produto-desc-text"></p>
-                </div>
-
-            </div>
+        <div class="modal-body">
+          <h1 id="modalProductName" class="mb-0"></h1>
+          <p id="modalProductDescription" class="color-cinza-b produto-desc-text"></p>
         </div>
+
+      </div>
     </div>
+  </div>
+    
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.bundle.min.js" integrity="sha384-HwwvtgBNo3bZJJLYd8oVXjrBZt8cqVSpeBNS5n7C8IVInixGAoxmnlMuBnhbgrkm" crossorigin="anonymous"></script>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js"></script>
     <script>
         var $wrapper = $('.main-wrapper');
         $('body').append('<div class="sidebar-overlay"></div>');
@@ -1500,34 +1662,7 @@ font-size: small;
 
         });
 
-        function updateNotificationCount() {
-            var xmlhttpnf = new XMLHttpRequest();
-            xmlhttpnf.onreadystatechange = function() {
-                if (this.readyState == 4 && this.status == 200) {
-
-
-                    var badgeElement = document.getElementById('notificationCount');
-                    var responseHtml = this.responseText.trim(); // Remove espaços em branco extras
-
-                    if (responseHtml != "" || responseHtml != undefined) {
-                        console.log("response");
-                        badgeElement.innerHTML = responseHtml; // Insere o HTML retornado pelo PHP
-                        responseHtml = '';
-                    } else {
-                        console.log("response NULL");
-                        badgeElement.innerHTML = ''; // Limpa o conteúdo do elemento
-                    }
-                } else {
-                    var badgeElement = document.getElementById('notificationCount');
-                    badgeElement.innerHTML = '';
-                    responseHtml = '';
-                }
-            };
-            xmlhttpnf.open("GET", "widget/atualizar_notificacoes.php", true);
-            xmlhttpnf.send();
-        }
-        updateNotificationCount()
-        setInterval(updateNotificationCount, 6000);
+        
 
         function redirectToAnotherPage() {
             var form = document.getElementById('formularionome');
@@ -1629,10 +1764,6 @@ font-size: small;
             });
         });
     </script>
-
-
-
-
     <script>
         $.fn.extend({
             treed: function(o) {
@@ -1754,24 +1885,7 @@ font-size: small;
             });
         });
 
-        const notifyMenu = document.querySelector('.notify-menu');
-        const notifications = notifyMenu.querySelectorAll('.notification');
-        let notifyCounter = 8;
-
-        function deleteNotification(event) {
-            event.preventDefault();
-            const notificationParent = event.currentTarget.parentNode;
-            if (notificationParent) {
-                notificationParent.remove();
-                notifyCounter--;
-                notifyMenu.dataset.notifyMenu = `Notification ${notifyCounter}`;
-                updateEmptyBoxDisplay();
-            }
-        }
-
-        notifications.forEach((notification) => {
-            notification.addEventListener('click', deleteNotification);
-        });
+      
 
         const emptyBox = document.querySelector('.empty-box');
 
@@ -1841,13 +1955,9 @@ font-size: small;
             updateIndicators(activeIndex);
         });
     </script>
-
     <script>
         autosize(document.getElementById('myTextarea'));
     </script>
-
-
-
     <script>
         var limiteAtual = 3; // O limite inicial é de 3 linhas
         var alturaOriginal; // Variável para armazenar a altura original da div
@@ -1871,7 +1981,6 @@ font-size: small;
             return false;
         }
     </script>
-
     <script>
         // Função para adicionar a classe de fundo quando o scroll ocorre
         function adicionarFundoComScroll() {
@@ -2132,8 +2241,19 @@ font-size: small;
 
         };
     </script>
+    
+    <script>
+        // JavaScript para clonar e adicionar cards novamente
+        const produtosFeed = document.getElementById('produtos-feed');
+        const cardProdutoUni = document.querySelectorAll('.card-produto-uni');
 
+        const cloneCards = () => {
+            const cardsClone = Array.from(cardProdutoUni).map((card) => card.cloneNode(true));
+            cardsClone.forEach((card) => produtosFeed.appendChild(card));
+        };
+
+        cloneCards();
+    </script>
 
 </body>
-
 </html>

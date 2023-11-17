@@ -1,5 +1,16 @@
 <?php
 include_once('../model/classes/conexao.php');
+include_once("../model/classes/tblBusiness.php");
+include_once('../model/classes/tblUserClients.php');
+
+if ( session_status() !== PHP_SESSION_ACTIVE )
+{
+    session_start();
+}
+if (!isset($_SESSION["id"])) {
+    header("Location: ../view/login.php");
+}
+
     if ($_POST["create"] != "") {
         
 
@@ -8,12 +19,25 @@ include_once('../model/classes/conexao.php');
         $CoreBusinessIdpost = $_POST["coreBusiness"];
 
         if($_POST["coreBusiness"] >= 6){
-         
-          $_POST["satellite"] = $_POST["coreBusiness"];
+
+
+          $operation = new Business($dbh);
+  
+          $operation->setidOperation($CoreBusinessIdpost);
+          $resultOperation = $operation->consulta('WHERE IdOperation = :IdOperation');
+
+          if($resultOperation != null){
+
+            foreach($resultOperation as $resultOperationUNID){
+
+              $_POST["satellite"] = $resultOperationUNID->idBusiness;
+
+            }
+
+          }
       
         }
       
-        include_once('../model/classes/tblUserClients.php');
       
         $userClients = new UserClients($dbh);
         $userClients-> setidClient($id);
@@ -60,7 +84,7 @@ include_once('../model/classes/conexao.php');
                 $_SESSION['fName'] = $rowlogin->FirstName;
                 $_SESSION['lName'] = $rowlogin->LastName;
 
-                if($operationIdG == "3" || $operationIdG == "4"){
+                if($CoreBusinessIdpost == "3" || $CoreBusinessIdpost == "4"){
                     header("Location: ../view/qualidistribuidor.php");
                 }else{
                     header("Location: ../view/profile.php");

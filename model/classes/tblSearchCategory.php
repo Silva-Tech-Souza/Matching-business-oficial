@@ -78,16 +78,11 @@ class SearchCategory{
         $sql = "SELECT * from tblSearchCategory ".$paramsExtra;
         $query = $this->dbh->prepare($sql);
         
-        if($this->idSearchCategory != null){
-            $query->bindParam(':idSearchCategory', $this->idSearchCategory, PDO::PARAM_INT);
-        }
+     
         if($this->idSearch != null){
             $query->bindParam(':idSearch', $this->idSearch, PDO::PARAM_INT);
         }
-        if($this->idCategory != null){
-            $query->bindParam(':idCategory', $this->idCategory, PDO::PARAM_INT);
-        }
-
+      
         $query->execute();
         $results = $query->fetchAll(PDO::FETCH_OBJ);
 

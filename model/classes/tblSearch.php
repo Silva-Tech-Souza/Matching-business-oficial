@@ -6,7 +6,6 @@ class Search{
     protected $coreBussinessID  = null;
     protected $Nome = null;
     protected $idClient = null;
-    protected $Estado = null;
     protected $dbh = null;
 
     function __construct($dbh)
@@ -32,14 +31,11 @@ class Search{
 
     public function getidClient(){return $this->idClient;}
 
-    public function setEstado($param){$this->Estado = $param;}
-
-    public function getEstado(){return $this->Estado;}
 
 
     public function cadastrar(){
 
-        $sql = "INSERT INTO tblSearch (coreBussinessID, idClient, Nome, Estado) VALUES (:coreBussinessID,:idClient, :Nome, :Estado)";
+        $sql = "INSERT INTO tblSearch (coreBussinessID, idClient, Nome) VALUES (:coreBussinessID,:idClient, :Nome)";
         $query = $this->dbh->prepare($sql);
 
 
@@ -52,10 +48,7 @@ class Search{
         if($this->idClient != null){
             $query->bindParam(':idClient', $this->idClient, PDO::PARAM_INT);
         }
-        if($this->Estado != null){
-            $query->bindParam(':Estado', $this->Estado, PDO::PARAM_BOOL);
-        }
-
+        
         $query->execute();
         return $this->dbh->lastInsertId();
 
@@ -81,9 +74,7 @@ class Search{
         if($this->idClient != null){
             $query->bindParam(':idClient', $this->idClient, PDO::PARAM_INT);
         }
-        if($this->Estado != null){
-            $query->bindParam(':Estado', $this->Estado, PDO::PARAM_BOOL);
-        }
+
 
         $query->execute();
         $results = $query->fetchAll(PDO::FETCH_OBJ);
@@ -112,9 +103,7 @@ class Search{
         if($this->idClient != null){
             $query->bindParam(':idClient', $this->idClient, PDO::PARAM_INT);
         }
-        if($this->Estado != null){
-            $query->bindParam(':Estado', $this->Estado, PDO::PARAM_BOOL);
-        }
+
 
         $query->execute();
         return $query;
@@ -141,9 +130,7 @@ class Search{
         if($this->idClient != null){
             $query->bindParam(':idClient', $this->idClient, PDO::PARAM_INT);
         }
-        if($this->Estado != null){
-            $query->bindParam(':Estado', $this->Estado, PDO::PARAM_BOOL);
-        }
+
 
         $query->execute();
         return $query;

@@ -1,5 +1,8 @@
 <?php 
 include_once('../../model/classes/conexao.php');
+include_once('../../model/classes/tblOperations.php');
+include_once('../../model/classes/tblBusiness.php');
+
 if ( session_status() !== PHP_SESSION_ACTIVE )
 {
    session_start();
@@ -13,7 +16,6 @@ date_default_timezone_set('America/Sao_Paulo');
 
 $idbusines = $_GET["q"];
 
-include_once('../../model/classes/tblOperations.php');
 
 $tblOperations1 = new Operations($dbh);
 $tblOperations1->setidOperation($idbusines);
@@ -35,7 +37,6 @@ if($FlagOperation  != "D"){
             <option value="0">Select</option>
             <?php 
             
-                include_once('../../model/classes/tblBusiness.php');
                 $tblBusiness = new Business($dbh);
                 $resultstblBusiness = $tblBusiness->consulta("WHERE FlagOperation = '0' ORDER BY NmBusiness ASC");
                

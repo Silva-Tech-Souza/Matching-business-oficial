@@ -1,7 +1,18 @@
+<?php 
+
+include_once('../model/classes/tblOperations.php');
+include_once('../model/classes/tblSearchProfile_Results.php');
+include_once('../model/classes/tblUserClients.php');
+
+?>
+
 <div class="header">
 
     <nav id="navbar" class="bg-light-alt container-fluid position-fixed" style="z-index: 9999999; padding-top: 10px;">
-
+            <!-- char-area -->
+  <script src="assets/js/jquery-3.2.1.min.js"></script>
+  <script src="assets/js/popper.min.js"></script>
+  <script src="assets/js/bootstrap.min.js"></script>
         <script>
            
 
@@ -67,7 +78,7 @@
                                 <datalist id="search-list">
                                     <?php
 
-                                    include_once('../model/classes/tblOperations.php');
+                                    
                                     $operations = new Operations($dbh);
                                     $resultsOperation = $operations->consulta("WHERE FlagOperation != '0'");
                                     if ($resultsOperation != null) {
@@ -100,7 +111,7 @@
                                                     echo "" . $imgperfil;
                                                 } else {
                                                     echo "assets/img/Avatar.png";
-                                                } ?>" alt="user" class="nav-profile-img" onclick="toggleMenu();"></li>
+                                                } ?>" alt="user" class="nav-profile-img" onclick="toggleMenu();" style="object-fit: cover; min-height: 35px !important; max-height: 41px;"></li>
                             </ul>
                         </div>
                     </div>
@@ -129,7 +140,7 @@
 
                                 <datalist id="search-list">
                                     <?php
-                                    include_once('../model/classes/tblOperations.php');
+                                    
 
                                     $operations = new Operations($dbh);
                                     $resultsOperation = $operations->consulta("WHERE FlagOperation != '0' LIMIT 8");
@@ -152,7 +163,7 @@
                                     echo "" . $imgperfil;
                                 } else {
                                     echo "assets/img/Avatar.png";
-                                } ?>" alt="user" class="nav-profile-img" onclick="toggleMenu();">
+                                } ?>" alt="user" class="nav-profile-img" onclick="toggleMenu();" style="object-fit: cover; min-height: 35px !important;">
                 </div>
 
                 <div class="col-9 mt-4 p-0 justify-content-start">
@@ -200,7 +211,6 @@
                 <?php
 
 
-                include_once('../model/classes/tblSearchProfile_Results.php');
                 $searchProfileResults = new SearchProfile_Results($dbh);
                 $searchProfileResults->setidClienteEncontrado($iduser);
                 $resultsSearchProfile = $searchProfileResults->consulta("WHERE idClienteEncontrado = :idClienteEncontrado ORDER BY datahora DESC");
@@ -218,13 +228,12 @@
                         $resultsSearchProfileUpdate = $searchProfileResultsUpdate->atualizar("estadoNotif = '1' WHERE id = :id");
 
 
-                        include_once('../model/classes/tblUserClients.php');
                         $userClients = new UserClients($dbh);
                         $userClients->setidClient($idCliente);
                         $resultsUserClients = $userClients->consulta("WHERE idClient = :idClient");
 
 
-
+                        $usernamepost ="";
 
                         if ($resultsUserClients != null) {
                             foreach ($resultsUserClients as $rowusernotif) {
@@ -235,6 +244,7 @@
                         }
 
                         $idTipoNotif = $rownotif->idTipoNotif;
+                      
                         if ($idTipoNotif == 5) {
                             $textNotif = "<p  class='d-inline' style='color: white; font-size: 11px;'>" . $usernamepost . " </p><p class='d-inline' style='color: #f2f2f2;'></p> <p class='d-inline' style='color: #62B7D8;'>liked</p><p class='d-inline' style='color: #f2f2f2;'> your post !</p><br>";
                         } else if ($idTipoNotif == 2) {
@@ -247,6 +257,10 @@
                             $textNotif = "<p  class='d-inline' style='color: white; font-size: 11px;'>" . $usernamepost . " </p><p class='d-inline' style='color: #f2f2f2;'></p> <p class='d-inline' style='color: #62B7D8;'>commented  </p><p class='d-inline' style='color: #f2f2f2;'>  on your post!</p><br>";
                         } else if ($idTipoNotif == 6) {
                             $textNotif = "<p  class='d-inline' style='color: white; font-size: 11px;'>" . $usernamepost . " </p><p class='d-inline' style='color: #f2f2f2;'></p> <p class='d-inline' style='color: #62B7D8;'>was found in  </p><p class='d-inline' style='color: #f2f2f2;'>  your search profile!</p><br>";
+                        
+                            
+                        } else if ($idTipoNotif == 9) {
+                            $textNotif = "<p  class='d-inline' style='color: white; font-size: 11px;'>" . $usernamepost . " </p><p class='d-inline' style='color: #f2f2f2;'></p> <p class='d-inline' style='color: #62B7D8;'>sent a message   </p><p class='d-inline' style='color: #f2f2f2;'>  to your profile!</p><br>";
                         }
                         $postDateTime = new DateTime($rownotif->datahora);
 
@@ -290,7 +304,7 @@
                                                                                                     ?>">
                             <input type="hidden" id="id" name="id" value="<?php echo $rownotif->id; ?>">
                             <input type="hidden" id="url" name="url" value="<?php echo $rownotif->url; ?>">
-                            <a class="notification notif-zoom" href="<?php echo $rownotif->url; ?>">
+                            <a class="notification notif-zoom" href="<?php if($idTipoNotif != 6 && $idTipoNotif != 9){ echo $rownotif->url; }else if ($idTipoNotif == 9){echo $rownotif->url."?idperfilchat=$idCliente";}else{ echo 'viewProfile.php?profile=' .$rownotif->url; }?>">
 
                                 <div class="row justify-content-start">
                                     <div class="col-2 ">
@@ -301,7 +315,7 @@
                                                         echo "assets/img/Avatar.png";
                                                     }
                                                     ?>
-                                            " alt="user" class="nav-profile-img">
+                                            " alt="user" style="min-height: 35px;    object-fit: cover;" class="nav-profile-img">
                                     </div>
                                     <div class="col-8 justify-itens-start" style="text-align: start; margin-left: 2px;">
                                         <span>
@@ -332,10 +346,9 @@
                     <div class="non-connections-container">
                         <br>
                         <p class="color-branco text-center text-recommend-conect">Recommended connections</p><br>
-                        <ul>
+                        <ul style="padding-left: 19px;">
                             <?php
 
-                            include_once('../model/classes/tblUserClients.php');
 
                             $userClientsAtual = new UserClients($dbh);
                             $userClientsAtual->setidClient($_SESSION["id"]);
@@ -370,7 +383,6 @@
                             if ($resultsUserClients != null) {
                                 foreach ($resultsUserClients as $rowcliente) {
 
-                                    include_once('../model/classes/tblOperations.php');
 
                                     $operations = new Operations($dbh);
                                     $operations->setidOperation($rowcliente->CoreBusinessId);
@@ -384,7 +396,7 @@
                             ?>
 
 
-                                            <li class="recommended-user icone-net mb-2">
+                                            <li class="recommended-user  mb-2" >
 
                                                 <div class="col-2 justify-content-center m-0 p-0">
                                                     <a href="viewProfile.php?profile=<?php echo $rowcliente->idClient; ?>">
@@ -392,7 +404,7 @@
                                                                         echo $rowcliente->PersonalUserPicturePath;
                                                                     } else {
                                                                         echo "assets/img/Avatar.png";
-                                                                    } ?>" alt="user" alt="An unknown user."></a>
+                                                                    } ?>" alt="user" style="min-height: 35px;    object-fit: cover;  min-width: 35px;" alt="An unknown user."></a>
                                                 </div>
                                                 <div class="col-8 ">
                                                     <a href="viewProfile.php?profile=<?php echo $rowcliente->idClient; ?>">
@@ -442,7 +454,7 @@
                 </a>
 
 
-                <a href="searchPage.php" class="profile-menu-link expand-zoom-menu">
+                <a href="listcompani.php?text=mysp" class="profile-menu-link expand-zoom-menu">
                     <i class="fa fa-search fa-1x" style="color: white;"></i>
                     <p style="color: #ffffff; margin-bottom: 0px !important; text-decoration: none;">&nbsp;&nbsp;&nbsp;&nbsp;My Search</p>
                     <i class="bi bi-caret-right-fill" style="color: white;"></i>
@@ -474,3 +486,34 @@
 
     </nav>
 </div>
+
+<script>
+    function updateNotificationCount() {
+            var xmlhttpnf = new XMLHttpRequest();
+            xmlhttpnf.onreadystatechange = function() {
+                if (this.readyState == 4 && this.status == 200) {
+
+
+                    var badgeElement = document.getElementById('notificationCount');
+                    var responseHtml = this.responseText.trim(); // Remove espaços em branco extras
+
+                    if (responseHtml != "" || responseHtml != undefined) {
+                        console.log("response");
+                        badgeElement.innerHTML = responseHtml; // Insere o HTML retornado pelo PHP
+                        responseHtml = '';
+                    } else {
+                        console.log("response NULL");
+                        badgeElement.innerHTML = ''; // Limpa o conteúdo do elemento
+                    }
+                } else {
+                    var badgeElement = document.getElementById('notificationCount');
+                    badgeElement.innerHTML = '';
+                    responseHtml = '';
+                }
+            };
+            xmlhttpnf.open("GET", "widget/atualizar_notificacoes.php", true);
+            xmlhttpnf.send();
+        }
+        updateNotificationCount()
+        setInterval(updateNotificationCount, 6000);
+</script>

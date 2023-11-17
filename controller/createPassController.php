@@ -2,6 +2,14 @@
 include_once('../model/classes/conexao.php');
 include_once('../model/classes/tblUserClients.php');
 
+if ( session_status() !== PHP_SESSION_ACTIVE )
+{
+    session_start();
+}
+if (!isset($_SESSION["id"])) {
+    header("Location: ../view/login.php");
+}
+
 if ($_POST["create"] != "") {
     $senha = $_POST["password"];
     $confmsenha = $_POST["password-confirm"];
@@ -39,8 +47,12 @@ if ($_POST["create"] != "") {
             $_SESSION['fName'] = $rowchekflag->FirstName;
             $_SESSION['lName'] = $rowchekflag->LastName;
 
-
-            header("Location: ../view/qualificacao.php");
+            if($rowchekflag->CoreBusinessId != null){
+                header("Location: ../view/qualificacao.php");
+            }else{
+                header("Location: ../view/home.php");
+            }
+            
         }
     } else {
         $errosenha = "The passwords are different";

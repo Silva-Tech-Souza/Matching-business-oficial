@@ -1,12 +1,20 @@
 <?php
 if ( session_status() !== PHP_SESSION_ACTIVE )
 {
-   
-   $_SESSION["n"] = 8;
+  $_SESSION["n"] = 8;
 }
-include_once('../model/classes/conexao.php');
-if (isset($_COOKIE["remember_me"])) {
-  header("Location: ../controller/loginController.php");
+include('../model/classes/conexao.php');
+try {
+    if (isset($_COOKIE["remember_me"])) {
+        if ($_COOKIE["remember_me"] != null) {
+            header("Location: ../controller/loginController.php");
+        } else {
+            // Assuming you have defined $cookie_name, $cookie_value, and $cookie_expire elsewhere in your code
+            setcookie($cookie_name, $cookie_value, $cookie_expire, "/");
+        }
+    }
+} catch (Exception $e) {
+ 
 }
 error_reporting(0);
 date_default_timezone_set('America/Sao_Paulo');
@@ -70,7 +78,7 @@ date_default_timezone_set('America/Sao_Paulo');
                     <div class="form-group" style="text-align: start;">
                       <label class="color-branco" for="password">Password</label>
                       <div class="password-container">
-                        <input class="inputlogin form-control" type="password" id="password" name="password" required placeholder="Type your password">
+                        <input class="inputlogin form-control input-low" type="password" id="password" name="password" required placeholder="Type your password">
                         <div class="input-group-text" id="togglePassword">
                           <i class="fas fa-eye"></i>
                         </div>

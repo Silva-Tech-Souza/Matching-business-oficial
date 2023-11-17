@@ -35,6 +35,12 @@ class UserClients
     protected $Vol_2Y = null;
     protected $Fob_1Y = null;
     protected $Vol_1Y = null;
+    protected $FobImports_3Y = null;
+    protected $VolImports_3Y = null;
+    protected $FobImports_2Y = null;
+    protected $VolImports_2Y = null;
+    protected $FobImports_1Y = null;
+    protected $VolImports_1Y = null;
     protected $dbh = null;
     private static $instancia;
 
@@ -363,7 +369,65 @@ class UserClients
     {
         return $this->Vol_1Y;
     }
+    public function setFobImports_3Y($param)
+    {
+        $this->FobImports_3Y = $param;
+    }
 
+    public function getFobImports_3Y()
+    {
+        return $this->FobImports_3Y;
+    }
+
+    public function setVolImports_3Y($param)
+    {
+        $this->VolImports_3Y = $param;
+    }
+
+    public function getVolImports_3Y()
+    {
+        return $this->VolImports_3Y;
+    }
+
+    public function setFobImports_2Y($param)
+    {
+        $this->FobImports_2Y = $param;
+    }
+
+    public function getFobImports_2Y()
+    {
+        return $this->FobImports_2Y;
+    }
+
+    public function setVolImports_2Y($param)
+    {
+        $this->VolImports_2Y = $param;
+    }
+
+    public function getVolImports_2Y()
+    {
+        return $this->VolImports_2Y;
+    }
+
+    public function setFobImports_1Y($param)
+    {
+        $this->FobImports_1Y = $param;
+    }
+
+    public function getFobImports_1Y()
+    {
+        return $this->FobImports_1Y;
+    }
+
+    public function setVolImports_1Y($param)
+    {
+        $this->VolImports_1Y = $param;
+    }
+
+    public function getVolImports_1Y()
+    {
+        return $this->VolImports_1Y;
+    }
     public function cadastrar()
     {
 
@@ -650,7 +714,24 @@ class UserClients
         if ($this->Pontos != null) {
             $query->bindParam(':Pontos', $this->Pontos, PDO::PARAM_INT);
         }
-
+        if ($this->FobImports_3Y !== null) {
+            $query->bindParam(':FobImports_3Y', $this->FobImports_3Y, PDO::PARAM_STR);
+        }
+        if ($this->VolImports_3Y !== null) {
+            $query->bindParam(':VolImports_3Y', $this->VolImports_3Y, PDO::PARAM_STR);
+        }
+        if ($this->FobImports_2Y !== null) {
+            $query->bindParam(':FobImports_2Y', $this->FobImports_2Y, PDO::PARAM_STR);
+        }
+        if ($this->VolImports_2Y !== null) {
+            $query->bindParam(':VolImports_2Y', $this->VolImports_2Y, PDO::PARAM_STR);
+        }
+        if ($this->FobImports_1Y !== null) {
+            $query->bindParam(':FobImports_1Y', $this->FobImports_1Y, PDO::PARAM_STR);
+        }
+        if ($this->VolImports_1Y !== null) {
+            $query->bindParam(':VolImports_1Y', $this->VolImports_1Y, PDO::PARAM_STR);
+        }
         $query->execute();
         return $query;
     }

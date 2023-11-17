@@ -436,3 +436,12 @@ div.attribution {
     border-color: #ffffff;
     margin-top: 10px;
 }
+
+@media (min-width: 794px) {
+    .fixed-on-desktop {
+        position: fixed;
+    }
+    .margemdesck {
+        margin-bottom: 144px !important;
+    }
+}

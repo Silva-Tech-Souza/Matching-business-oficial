@@ -1,8 +1,14 @@
 <?php
 
-include_once('../model/classes/conexao.php');
-include_once('../model/classes/tblUserClients.php');
-include_once('../model/classes/tblSearchResults.php');
+include('../model/classes/conexao.php');
+include('../model/classes/tblUserClients.php');
+include('../model/classes/tblSearchResults.php');
+include('../model/classes/tblOperations.php');
+include('../model/classes/tblSearchBusiness.php');
+include('../model/classes/tblBusiness.php'); 
+include('../model/classes/tblSearchCategory.php');
+include('../model/classes/tblCountry.php');
+
 date_default_timezone_set('America/Sao_Paulo');
 if ($_SESSION["id"] < 0 || $_SESSION["id"] == "") {
   header("Location: login.php");
@@ -423,7 +429,6 @@ if ($results != null) {
               <div class="row p-2 ml-0">
                 <ul id="tree1">
                   <?php
-                  include_once('../model/classes/tblOperations.php');
                   $operations = new Operations($dbh);
                   $resultsOperation = $operations->consulta("WHERE FlagOperation != '0'");
                   if ($resultsOperation != null) {
@@ -444,7 +449,6 @@ if ($results != null) {
                         <?php if ($rowOperation->FlagOperation != "D") { ?>
                           <ul>
                             <?php
-                            include_once('../model/classes/tblBusiness.php');
                             $business = new Business($dbh);
                             $resultsbusiness = $business->consulta("WHERE FlagOperation = '0' ORDER BY NmBusiness ASC");
                             if ($business != null) {
@@ -528,20 +532,28 @@ if ($results != null) {
                           <div class="item celularcard">
                             <div class="card rounded-4 shadow celularcard">
                               <div class="card-body p-0 m-0" style="min-height: 300px !IMPORTANT;">
-                                <div class="col-12 mh-25">
-                                  <img class="mh-25 rounded-top-3" src="<?php if ($rowOperationselect->LogoPicturePath != "Avatar.png" && $rowOperationselect->LogoPicturePath != "") {
-                                                                          echo "" . $rowOperationselect->LogoPicturePath;
-                                                                        } else {
-                                                                          echo "https://images2.alphacoders.com/131/1317606.jpeg";
-                                                                        } ?>" alt="Descrição da Imagem" style="max-height: 100px; width: 100%;">
-                                </div>
+                                 <div class="col-12 mh-25" style="    max-height: 100px;
+    width: 100%;
+    background-image: url(<?php if ($rowOperationselect->LogoPicturePath != "Avatar.png" && $rowOperationselect->LogoPicturePath != "" && $rowOperationselect->LogoPicturePath != null) {
+                                                        echo "" . $rowOperationselect->LogoPicturePath;
+                                                      } else {
+                                                        echo "https://images2.alphacoders.com/131/1317606.jpeg";
+                                                      } ?>);
+    min-height: 100px;
+    border-top-left-radius: var(--bs-border-radius-lg)!important;
+    border-top-right-radius: var(--bs-border-radius-lg)!important;
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center;">
+               
+              </div>
                                 <div class="row p-0 ml-0 m-0">
                                   <div class="col-6 d-flex justify-content-start p-0 m-0 " style="height: 0px;">
                                     <img src=" <?php if ($rowOperationselect->PersonalUserPicturePath != "Avatar.png" && $rowOperationselect->PersonalUserPicturePath != "") {
                                                   echo "" . $rowOperationselect->PersonalUserPicturePath;
                                                 } else {
                                                   echo "assets/img/Avatar.png";
-                                                } ?>" alt="user" class="border-2 mini-profile-img " onclick="toggleMenu()">
+                                                } ?>" alt="user" class="border-2 mini-profile-img " style="object-fit: cover;box-shadow: 0px -3px 11px #0000005e;" >
                                   </div>
                                   <div class="col-6">
                                     <h4 class="fonte-titulo cortardescricao mr-1"><?php echo  $rowOperationselect->FirstName . " " . $rowOperationselect->LastName; ?></h4>
@@ -554,7 +566,7 @@ if ($results != null) {
                                 <div class="row mt-3 pr-2" style="padding: 5px !important; margin: 0px !important; width: -webkit-fill-available;">
                                   <div class="col-9 m-0 p-0" style="width: auto;">
                                     <h5 class="fonte-principal "><i class="fa-solid fa-building icon-notif-zoom mini-profile-icon" style="font-size: 12px;"></i>&nbsp;&nbsp;<?php echo  $rowOperationselect->JobTitle . ' at ' . $rowOperationselect->CompanyName ?></h5>
-                                    <h5 class="fonte-principal"><i class="fa-solid fa-globe icon-notif-zoom mini-profile-icon" style="font-size: 12px;"></i>&nbsp;&nbsp;<?php include_once('../model/classes/tblCountry.php');
+                                    <h5 class="fonte-principal"><i class="fa-solid fa-globe icon-notif-zoom mini-profile-icon" style="font-size: 12px;"></i>&nbsp;&nbsp;<?php 
 
                                                                                                                                                                         $country = new Country($dbh);
 
@@ -621,20 +633,29 @@ if ($results != null) {
                         <div class="item celularcard">
                           <div class="card rounded-4 shadow celularcard">
                             <div class="card-body p-0 m-0" style="min-height: 300px !IMPORTANT;">
-                              <div class="col-12 mh-25">
-                                <img class="mh-25 rounded-top-3" src="<?php if ($rowOperationselect->LogoPicturePath != "Avatar.png" && $rowOperationselect->LogoPicturePath != "") {
-                                                                        echo "" . $rowOperationselect->LogoPicturePath;
-                                                                      } else {
-                                                                        echo "https://images2.alphacoders.com/131/1317606.jpeg";
-                                                                      } ?>" alt="Descrição da Imagem" style="max-height: 100px; width: 100%;">
-                              </div>
+                                
+                             <div class="col-12 mh-25" style="    max-height: 100px;
+    width: 100%;
+    background-image: url(<?php if ($rowOperationselect->LogoPicturePath != "Avatar.png" && $rowOperationselect->LogoPicturePath != "" && $rowOperationselect->LogoPicturePath != null) {
+                                                        echo "" . $rowOperationselect->LogoPicturePath;
+                                                      } else {
+                                                        echo "https://images2.alphacoders.com/131/1317606.jpeg";
+                                                      } ?>);
+    min-height: 100px;
+    border-top-left-radius: var(--bs-border-radius-lg)!important;
+    border-top-right-radius: var(--bs-border-radius-lg)!important;
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center;">
+               
+              </div>
                               <div class="row p-0 ml-0 m-0">
                                 <div class="col-6 d-flex justify-content-start p-0 m-0 " style="height: 0px;">
                                   <img src=" <?php if ($rowOperationselect->PersonalUserPicturePath != "Avatar.png" && $rowOperationselect->PersonalUserPicturePath != "") {
                                                 echo "" . $rowOperationselect->PersonalUserPicturePath;
                                               } else {
                                                 echo "assets/img/Avatar.png";
-                                              } ?>" alt="user" class="border-2 mini-profile-img " onclick="toggleMenu()">
+                                              } ?>" alt="user" class="border-2 mini-profile-img " style="object-fit: cover;box-shadow: 0px -3px 11px #0000005e;"  >
                                 </div>
                                 <div class="col-6">
                                   <h4 class="fonte-titulo cortardescricao mr-1"><?php echo  $rowOperationselect->FirstName . " " . $rowOperationselect->LastName; ?></h4>
@@ -647,7 +668,7 @@ if ($results != null) {
                               <div class="row mt-3 pr-2" style="padding: 5px !important; margin: 0px !important; width: -webkit-fill-available;">
                                 <div class="col-9 m-0 p-0" style="width: auto;">
                                   <h5 class="fonte-principal "><i class="fa-solid fa-building icon-notif-zoom mini-profile-icon" style="font-size: 12px;"></i>&nbsp;&nbsp;<?php echo  $rowOperationselect->JobTitle . ' at ' . $rowOperationselect->CompanyName ?></h5>
-                                  <h5 class="fonte-principal"><i class="fa-solid fa-globe icon-notif-zoom mini-profile-icon" style="font-size: 12px;"></i>&nbsp;&nbsp;<?php include_once('../model/classes/tblCountry.php');
+                                  <h5 class="fonte-principal"><i class="fa-solid fa-globe icon-notif-zoom mini-profile-icon" style="font-size: 12px;"></i>&nbsp;&nbsp;<?php 
 
                                                                                                                                                                       $country = new Country($dbh);
 
@@ -724,20 +745,29 @@ if ($results != null) {
                               <div class="item celularcard">
                                 <div class="card rounded-4 shadow celularcard">
                                   <div class="card-body p-0 m-0" style="min-height: 300px !IMPORTANT;">
-                                    <div class="col-12 mh-25">
-                                      <img class="mh-25 rounded-top-3" src="<?php if ($rowOperationselect->LogoPicturePath != "Avatar.png" && $rowOperationselect->LogoPicturePath != "") {
-                                                                              echo "" . $rowOperationselect->LogoPicturePath;
-                                                                            } else {
-                                                                              echo "https://images2.alphacoders.com/131/1317606.jpeg";
-                                                                            } ?>" alt="Descrição da Imagem" style="max-height: 100px; width: 100%;">
-                                    </div>
+                                        <div class="col-12 mh-25" style="    max-height: 100px;
+    width: 100%;
+    background-image: url(<?php if ($rowOperationselect->LogoPicturePath != "Avatar.png" && $rowOperationselect->LogoPicturePath != "" && $rowOperationselect->LogoPicturePath != null) {
+                                                        echo "" . $rowOperationselect->LogoPicturePath;
+                                                      } else {
+                                                        echo "https://images2.alphacoders.com/131/1317606.jpeg";
+                                                      } ?>);
+    min-height: 100px;
+    border-top-left-radius: var(--bs-border-radius-lg)!important;
+    border-top-right-radius: var(--bs-border-radius-lg)!important;
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center;">
+               
+              </div>
+                                    
                                     <div class="row p-0 ml-0 m-0">
                                       <div class="col-6 d-flex justify-content-start p-0 m-0 " style="height: 0px;">
                                         <img src=" <?php if ($rowOperationselect->PersonalUserPicturePath != "Avatar.png" && $rowOperationselect->PersonalUserPicturePath != "") {
                                                       echo "" . $rowOperationselect->PersonalUserPicturePath;
                                                     } else {
                                                       echo "assets/img/Avatar.png";
-                                                    } ?>" alt="user" class="border-2 mini-profile-img " onclick="toggleMenu()">
+                                                    } ?>" alt="user" class="border-2 mini-profile-img " style="object-fit: cover;box-shadow: 0px -3px 11px #0000005e;" >
                                       </div>
                                       <div class="col-6">
                                         <h4 class="fonte-titulo cortardescricao mr-1"><?php echo  $rowOperationselect->FirstName . " " . $rowOperationselect->LastName; ?></h4>
@@ -750,7 +780,7 @@ if ($results != null) {
                                     <div class="row mt-3 pr-2" style="padding: 5px !important; margin: 0px !important; width: -webkit-fill-available;">
                                       <div class="col-9 m-0 p-0" style="width: auto;">
                                         <h5 class="fonte-principal "><i class="fa-solid fa-building icon-notif-zoom mini-profile-icon" style="font-size: 12px;"></i>&nbsp;&nbsp;<?php echo  $rowOperationselect->JobTitle . ' at ' . $rowOperationselect->CompanyName ?></h5>
-                                        <h5 class="fonte-principal"><i class="fa-solid fa-globe icon-notif-zoom mini-profile-icon" style="font-size: 12px;"></i>&nbsp;&nbsp;<?php include_once('../model/classes/tblCountry.php');
+                                        <h5 class="fonte-principal"><i class="fa-solid fa-globe icon-notif-zoom mini-profile-icon" style="font-size: 12px;"></i>&nbsp;&nbsp;<?php 
 
                                                                                                                                                                             $country = new Country($dbh);
 
@@ -797,7 +827,7 @@ if ($results != null) {
               }
               if ($operation == null && $busines == null && $text != null) {
 
-                if ($text == "mysp") { ?>
+                if ($text == "mysp" || $text == "Seach Profile" || $text == "seach" || $text == "Seaches Profile" || $text == "seach profile" || $text == "seaches profile" || $text == "my seaches" || $text == "meu seaches" || $text == "seaches") { ?>
                   <div class="carousel-filmes">
                     <div class="row">
                       <div class="col-8 d-flex align-middle">
@@ -817,9 +847,9 @@ if ($results != null) {
                       foreach ($resultSearchcard as $resultConectUnidSearch) { ?>
                         <div class="carousel-filmes">
                           <h2 id="filme" class="titulo2 txthtitulo"><?php echo  $resultConectUnidSearch->Nome; ?> </h2><br>
-                          <div class="card col-12" style="height: fit-content;margin-left: 10px;margin-right: 10px;margin-bottom: 10px;">
+                          <div class="card col-12" style="height: fit-content;margin-left: 10px;margin-right: 10px;margin-bottom: 10px; width: -webkit-fill-available;box-shadow: 1px -1px 7px 0px #4343433d;">
                             <div class="row" style="padding: 4px;">
-                              <div style="font-size: small;"><?php include_once('../model/classes/tblOperations.php');
+                              <div style="font-size: small;"><?php 
                                     $operations = new Operations($dbh);
                                     $operations->setidOperation($resultConectUnidSearch->coreBussinessID);
                                     $resultsoperation = $operations->consulta("WHERE idOperation = :idOperation");
@@ -829,8 +859,7 @@ if ($results != null) {
                                       }
                                     } ?></div>
 
-                              <div style="font-size: small;"><?php include_once('../model/classes/tblSearchBusiness.php');
-                                    include_once('../model/classes/tblBusiness.php');
+                              <div style="font-size: small;"><?php 
                                     $tblSearchBusiness = new SearchBusiness($dbh);
                                     $tblSearchBusiness->setidSearch($resultConectUnidSearch->idSearch);
                                     $resultstblSearchBusiness = $tblSearchBusiness->consulta("WHERE idSearch = :idSearch");
@@ -858,16 +887,47 @@ if ($results != null) {
                                     }
                                     ?></div>
                               <div style="font-size: small;"><?php
-                                    include_once('../model/classes/tblSearchCategory.php');
-                                    include_once('../model/classes/tblBusiness.php');
                                     $tblSearchCategory = new SearchCategory($dbh);
                                     $tblSearchCategory->setidSearch($resultConectUnidSearch->idSearch);
                                     $resultstbltblSearchCategory = $tblSearchCategory->consulta("WHERE idSearch = :idSearch");
                                     $resultstblqtdnumcaeg = $tblSearchCategory->quantidade("WHERE idSearch = :idSearch");
-                                    if ($resultstblqtdnumcaeg != null) {
-                                      if ($resultstblqtdnumcaeg->rowCount() == 10) {
+                                    if ($resultstbltblSearchCategory != null) {
+                                        if($resultstblqtdnumcaeg->rowCount() >5 && $resultstblqtdnumcaeg->rowCount() < 378){
+                                              echo  "<b>Business Category: </b>".$resultstblqtdnumcaeg->rowCount();
+                                        }else if($resultstblqtdnumcaeg->rowCount() >= 378){
+                                             echo  "<b>Business Category: Todos</b>";
+                                        }else{
+                                             $namesbscateg3 = array();
+                                          
+                                            
+                                             foreach ($resultstbltblSearchCategory as $rowSearchBusinesscateg2) {
+                                                 include_once('../model/classes/tblBusinessCategory.php');
+                                                $BusinessCategory1 = new BusinessCategory($dbh);
+                                                $BusinessCategory1->setidBusinessCategory($rowSearchBusinesscateg2->idCategory);
+                                                $resultsBusinessCategory1 = $BusinessCategory1->consulta("WHERE idBusinessCategory = :idBusinessCategory");
+                                                 if ($resultsBusinessCategory1 != null) {
+                                                    
+                                                     foreach ($resultsBusinessCategory1 as $rowbusinesscateg3) {
+    
+                                                    $namesbscateg3[] = $rowbusinesscateg3->NmBusinessCategory;
+                                                  }
+                                                 }
+                                                 
+                                             }
+                                              if (!empty($namesbscateg3)) {
+                                                    echo "<b>Business Category: </b>" . implode(", ", $namesbscateg3);
+                                                  }
+                                        }
+                                      
+                                    }
+                                    
+                                   /* if ($resultstbltblSearchCategory != null) {}
+                                   
+                                      if ($resultstblqtdnumcaeg->rowCount() > 5 && $resultstblqtdnumcaeg->rowCount() < 378) {
                                         echo "<b>Business Category: </b>" . $resultstblqtdnumcaeg->rowCount();
-                                      } else if ($resultstblqtdnumcaeg->rowCount() > 0 && $resultstblqtdnumcaeg->rowCount() < 10) {
+                                      }else  if ($resultstblqtdnumcaeg->rowCount() >=378) {
+                                           echo "<b>Business Category: Todos</b>";
+                                      } else if ($resultstbltblSearchCategory->rowCount() > 0 && $resultstbltblSearchCategory->rowCount() < 10) {
                                         if ($resultstbltblSearchCategory != null) {
                                           $namesbscateg = array();
                                           foreach ($resultstbltblSearchCategory as $rowSearchBusinesscateg) {
@@ -888,8 +948,12 @@ if ($results != null) {
                                           }
                                         }
                                       }
-                                    }
+                                    }*/
                                     ?></div>
+                                      <div class="row mb-2" style="padding: 9px;margin: auto;justify-content: space-between;">
+                <a href="widget/deletarseach.php?idseach=<?php echo $resultConectUnidSearch->idSearch;?>" class="btn btn-outline-danger ms-1" style="width: 100px;max-height: 35px !important;" ><i class="fas fa-trash-alt " style="margin-right: 5px;"></i>&nbsp;Delete</a>
+              
+              </div>
                             </div>
                           </div>
                           <div class=" owl-carousel owl-thema ">
@@ -914,20 +978,29 @@ if ($results != null) {
                                     <div class="item celularcard">
                                       <div class="card rounded-4 shadow celularcard">
                                         <div class="card-body p-0 m-0" style="min-height: 300px !IMPORTANT;">
-                                          <div class="col-12 mh-25">
-                                            <img class="mh-25 rounded-top-3" src="<?php if ($rowOperationselect->LogoPicturePath != "Avatar.png" && $rowOperationselect->LogoPicturePath != "") {
-                                                                                    echo "" . $rowOperationselect->LogoPicturePath;
-                                                                                  } else {
-                                                                                    echo "https://images2.alphacoders.com/131/1317606.jpeg";
-                                                                                  } ?>" alt="Descrição da Imagem" style="max-height: 100px; width: 100%;">
-                                          </div>
+                                          
+                                           <div class="col-12 mh-25" style="    max-height: 100px;
+    width: 100%;
+    background-image: url(<?php if ($rowOperationselect->LogoPicturePath != "Avatar.png" && $rowOperationselect->LogoPicturePath != "" && $rowOperationselect->LogoPicturePath != null) {
+                                                        echo "" . $rowOperationselect->LogoPicturePath;
+                                                      } else {
+                                                        echo "https://images2.alphacoders.com/131/1317606.jpeg";
+                                                      } ?>);
+    min-height: 100px;
+    border-top-left-radius: var(--bs-border-radius-lg)!important;
+    border-top-right-radius: var(--bs-border-radius-lg)!important;
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center;">
+               
+              </div>
                                           <div class="row p-0 ml-0 m-0">
                                             <div class="col-6 d-flex justify-content-start p-0 m-0 " style="height: 0px;">
                                               <img src=" <?php if ($rowOperationselect->PersonalUserPicturePath != "Avatar.png" && $rowOperationselect->PersonalUserPicturePath != "") {
                                                             echo "" . $rowOperationselect->PersonalUserPicturePath;
                                                           } else {
                                                             echo "assets/img/Avatar.png";
-                                                          } ?>" alt="user" class="border-2 mini-profile-img " onclick="toggleMenu()">
+                                                          } ?>" alt="user" class="border-2 mini-profile-img " style="object-fit: cover;box-shadow: 0px -3px 11px #0000005e;" >
                                             </div>
                                             <div class="col-6">
                                               <h4 class="fonte-titulo cortardescricao mr-1"><?php echo  $rowOperationselect->FirstName . " " . $rowOperationselect->LastName; ?></h4>
@@ -940,7 +1013,7 @@ if ($results != null) {
                                           <div class="row mt-3 pr-2" style="padding: 5px !important; margin: 0px !important; width: -webkit-fill-available;">
                                             <div class="col-9 m-0 p-0" style="width: auto;">
                                               <h5 class="fonte-principal "><i class="fa-solid fa-building icon-notif-zoom mini-profile-icon" style="font-size: 12px;"></i>&nbsp;&nbsp;<?php echo  $rowOperationselect->JobTitle . ' at ' . $rowOperationselect->CompanyName ?></h5>
-                                              <h5 class="fonte-principal"><i class="fa-solid fa-globe icon-notif-zoom mini-profile-icon" style="font-size: 12px;"></i>&nbsp;&nbsp;<?php include_once('../model/classes/tblCountry.php');
+                                              <h5 class="fonte-principal"><i class="fa-solid fa-globe icon-notif-zoom mini-profile-icon" style="font-size: 12px;"></i>&nbsp;&nbsp;<?php 
 
                                                                                                                                                                                   $country = new Country($dbh);
 
@@ -1018,20 +1091,28 @@ padding-right: 6px;
                                 <div class="item celularcard">
                                   <div class="card rounded-4 shadow celularcard">
                                     <div class="card-body p-0 m-0" style="min-height: 300px !IMPORTANT;">
-                                      <div class="col-12 mh-25">
-                                        <img class="mh-25 rounded-top-3" src="<?php if ($rowOperationselect->LogoPicturePath != "Avatar.png" && $rowOperationselect->LogoPicturePath != "") {
-                                                                                echo "" . $rowOperationselect->LogoPicturePath;
-                                                                              } else {
-                                                                                echo "https://images2.alphacoders.com/131/1317606.jpeg";
-                                                                              } ?>" alt="Descrição da Imagem" style="max-height: 100px; width: 100%;">
-                                      </div>
+                                       <div class="col-12 mh-25" style="    max-height: 100px;
+    width: 100%;
+    background-image: url(<?php if ($rowOperationselect->LogoPicturePath != "Avatar.png" && $rowOperationselect->LogoPicturePath != "" && $rowOperationselect->LogoPicturePath != null) {
+                                                        echo "" . $rowOperationselect->LogoPicturePath;
+                                                      } else {
+                                                        echo "https://images2.alphacoders.com/131/1317606.jpeg";
+                                                      } ?>);
+    min-height: 100px;
+    border-top-left-radius: var(--bs-border-radius-lg)!important;
+    border-top-right-radius: var(--bs-border-radius-lg)!important;
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center;">
+               
+              </div>
                                       <div class="row p-0 ml-0 m-0">
                                         <div class="col-6 d-flex justify-content-start p-0 m-0 " style="height: 0px;">
                                           <img src=" <?php if ($rowOperationselect->PersonalUserPicturePath != "Avatar.png" && $rowOperationselect->PersonalUserPicturePath != "") {
                                                         echo "" . $rowOperationselect->PersonalUserPicturePath;
                                                       } else {
                                                         echo "assets/img/Avatar.png";
-                                                      } ?>" alt="user" class="border-2 mini-profile-img " onclick="toggleMenu()">
+                                                      } ?>" alt="user" class="border-2 mini-profile-img " style="object-fit: cover;box-shadow: 0px -3px 11px #0000005e;" >
                                         </div>
                                         <div class="col-6">
                                           <h4 class="fonte-titulo cortardescricao mr-1"><?php echo  $rowOperationselect->FirstName . " " . $rowOperationselect->LastName; ?></h4>
@@ -1044,7 +1125,7 @@ padding-right: 6px;
                                       <div class="row mt-3 pr-2" style="padding: 5px !important; margin: 0px !important; width: -webkit-fill-available;">
                                         <div class="col-9 m-0 p-0" style="width: auto;">
                                           <h5 class="fonte-principal "><i class="fa-solid fa-building icon-notif-zoom mini-profile-icon" style="font-size: 12px;"></i>&nbsp;&nbsp;<?php echo  $rowOperationselect->JobTitle . ' at ' . $rowOperationselect->CompanyName ?></h5>
-                                          <h5 class="fonte-principal"><i class="fa-solid fa-globe icon-notif-zoom mini-profile-icon" style="font-size: 12px;"></i>&nbsp;&nbsp;<?php include_once('../model/classes/tblCountry.php');
+                                          <h5 class="fonte-principal"><i class="fa-solid fa-globe icon-notif-zoom mini-profile-icon" style="font-size: 12px;"></i>&nbsp;&nbsp;<?php
 
                                                                                                                                                                               $country = new Country($dbh);
 
@@ -1116,20 +1197,28 @@ padding-right: 6px;
                                 <div class="item celularcard">
                                   <div class="card rounded-4 shadow celularcard">
                                     <div class="card-body p-0 m-0" style="min-height: 300px !IMPORTANT;">
-                                      <div class="col-12 mh-25">
-                                        <img class="mh-25 rounded-top-3" src="<?php if ($rowOperationselect->LogoPicturePath != "Avatar.png" && $rowOperationselect->LogoPicturePath != "") {
-                                                                                echo "" . $rowOperationselect->LogoPicturePath;
-                                                                              } else {
-                                                                                echo "https://images2.alphacoders.com/131/1317606.jpeg";
-                                                                              } ?>" alt="Descrição da Imagem" style="max-height: 100px; width: 100%;">
-                                      </div>
+                                       <div class="col-12 mh-25" style="    max-height: 100px;
+    width: 100%;
+    background-image: url(<?php if ($rowOperationselect->LogoPicturePath != "Avatar.png" && $rowOperationselect->LogoPicturePath != "" && $rowOperationselect->LogoPicturePath != null) {
+                                                        echo "" . $rowOperationselect->LogoPicturePath;
+                                                      } else {
+                                                        echo "https://images2.alphacoders.com/131/1317606.jpeg";
+                                                      } ?>);
+    min-height: 100px;
+    border-top-left-radius: var(--bs-border-radius-lg)!important;
+    border-top-right-radius: var(--bs-border-radius-lg)!important;
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center;">
+               
+              </div>
                                       <div class="row p-0 ml-0 m-0">
                                         <div class="col-6 d-flex justify-content-start p-0 m-0 " style="height: 0px;">
                                           <img src=" <?php if ($rowOperationselect->PersonalUserPicturePath != "Avatar.png" && $rowOperationselect->PersonalUserPicturePath != "") {
                                                         echo "" . $rowOperationselect->PersonalUserPicturePath;
                                                       } else {
                                                         echo "assets/img/Avatar.png";
-                                                      } ?>" alt="user" class="border-2 mini-profile-img " onclick="toggleMenu()">
+                                                      } ?>" alt="user" class="border-2 mini-profile-img " style="object-fit: cover;box-shadow: 0px -3px 11px #0000005e;"  >
                                         </div>
                                         <div class="col-6">
                                           <h4 class="fonte-titulo cortardescricao mr-1"><?php echo  $rowOperationselect->FirstName . " " . $rowOperationselect->LastName; ?></h4>
@@ -1212,20 +1301,28 @@ padding-right: 6px;
                                 <div class="item celularcard">
                                   <div class="card rounded-4 shadow celularcard">
                                     <div class="card-body p-0 m-0" style="min-height: 300px !IMPORTANT;">
-                                      <div class="col-12 mh-25">
-                                        <img class="mh-25 rounded-top-3" src="<?php if ($rowOperationselect->LogoPicturePath != "Avatar.png" && $rowOperationselect->LogoPicturePath != "") {
-                                                                                echo "" . $rowOperationselect->LogoPicturePath;
-                                                                              } else {
-                                                                                echo "https://images2.alphacoders.com/131/1317606.jpeg";
-                                                                              } ?>" alt="Descrição da Imagem" style="max-height: 100px; width: 100%;">
-                                      </div>
+                                      <div class="col-12 mh-25" style="    max-height: 100px;
+    width: 100%;
+    background-image: url(<?php if ($rowOperationselect->LogoPicturePath != "Avatar.png" && $rowOperationselect->LogoPicturePath != "" && $rowOperationselect->LogoPicturePath != null) {
+                                                        echo "" . $rowOperationselect->LogoPicturePath;
+                                                      } else {
+                                                        echo "https://images2.alphacoders.com/131/1317606.jpeg";
+                                                      } ?>);
+    min-height: 100px;
+    border-top-left-radius: var(--bs-border-radius-lg)!important;
+    border-top-right-radius: var(--bs-border-radius-lg)!important;
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center;">
+               
+              </div>
                                       <div class="row p-0 ml-0 m-0">
                                         <div class="col-6 d-flex justify-content-start p-0 m-0 " style="height: 0px;">
                                           <img src=" <?php if ($rowOperationselect->PersonalUserPicturePath != "Avatar.png" && $rowOperationselect->PersonalUserPicturePath != "") {
                                                         echo "" . $rowOperationselect->PersonalUserPicturePath;
                                                       } else {
                                                         echo "assets/img/Avatar.png";
-                                                      } ?>" alt="user" class="border-2 mini-profile-img " onclick="toggleMenu()">
+                                                      } ?>" alt="user" class="border-2 mini-profile-img " style="object-fit: cover;box-shadow: 0px -3px 11px #0000005e;" >
                                         </div>
                                         <div class="col-6">
                                           <h4 class="fonte-titulo cortardescricao mr-1"><?php echo  $rowOperationselect->FirstName . " " . $rowOperationselect->LastName; ?></h4>
@@ -1292,20 +1389,29 @@ padding-right: 6px;
                             <div class="item celularcard">
                               <div class="card rounded-4 shadow celularcard">
                                 <div class="card-body p-0 m-0" style="min-height: 300px !IMPORTANT;">
-                                  <div class="col-12 mh-25">
-                                    <img class="mh-25 rounded-top-3" src="<?php if ($rowOperationselect->LogoPicturePath != "Avatar.png" && $rowOperationselect->LogoPicturePath != "") {
-                                                                            echo "" . $rowOperationselect->LogoPicturePath;
-                                                                          } else {
-                                                                            echo "https://images2.alphacoders.com/131/1317606.jpeg";
-                                                                          } ?>" alt="Descrição da Imagem" style="max-height: 100px; width: 100%;">
-                                  </div>
+                                   <div class="col-12 mh-25" style="    max-height: 100px;
+    width: 100%;
+    background-image: url(<?php if ($rowOperationselect->LogoPicturePath != "Avatar.png" && $rowOperationselect->LogoPicturePath != "" && $rowOperationselect->LogoPicturePath != null) {
+                                                        echo "" . $rowOperationselect->LogoPicturePath;
+                                                      } else {
+                                                        echo "https://images2.alphacoders.com/131/1317606.jpeg";
+                                                      } ?>);
+    min-height: 100px;
+    border-top-left-radius: var(--bs-border-radius-lg)!important;
+    border-top-right-radius: var(--bs-border-radius-lg)!important;
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center;">
+               
+              </div>
+                    
                                   <div class="row p-0 ml-0 m-0">
                                     <div class="col-6 d-flex justify-content-start p-0 m-0 " style="height: 0px;">
                                       <img src=" <?php if ($rowOperationselect->PersonalUserPicturePath != "Avatar.png" && $rowOperationselect->PersonalUserPicturePath != "") {
                                                     echo "" . $rowOperationselect->PersonalUserPicturePath;
                                                   } else {
                                                     echo "assets/img/Avatar.png";
-                                                  } ?>" alt="user" class="border-2 mini-profile-img " onclick="toggleMenu()">
+                                                  } ?>" alt="user" class="border-2 mini-profile-img " style="object-fit: cover;box-shadow: 0px -3px 11px #0000005e;" >
                                     </div>
                                     <div class="col-6">
                                       <h4 class="fonte-titulo cortardescricao mr-1"><?php echo  $rowOperationselect->FirstName . " " . $rowOperationselect->LastName; ?></h4>
@@ -1318,7 +1424,8 @@ padding-right: 6px;
                                   <div class="row mt-3 pr-2" style="padding: 5px !important; margin: 0px !important; width: -webkit-fill-available;">
                                     <div class="col-9 m-0 p-0" style="width: auto;">
                                       <h5 class="fonte-principal "><i class="fa-solid fa-building icon-notif-zoom mini-profile-icon" style="font-size: 12px;"></i>&nbsp;&nbsp;<?php echo  $rowOperationselect->JobTitle . ' at ' . $rowOperationselect->CompanyName ?></h5>
-                                      <h5 class="fonte-principal"><i class="fa-solid fa-globe icon-notif-zoom mini-profile-icon" style="font-size: 12px;"></i>&nbsp;&nbsp;<?php include_once('../model/classes/tblCountry.php');
+                                      <h5 class="fonte-principal"><i class="fa-solid fa-globe icon-notif-zoom mini-profile-icon" style="font-size: 12px;"></i>&nbsp;&nbsp;<?php 
+
 
                                                                                                                                                                           $country = new Country($dbh);
 
@@ -1359,7 +1466,6 @@ padding-right: 6px;
                     <?php } ?>
 
                     <?php
-                    include_once('../model/classes/tblCountry.php');
                     $countrylike = new Country($dbh);
                     $resultsCountrylike = $countrylike->consulta("WHERE NmCountry LIKE '%" . $text . "%' ");
                     if ($resultsCountrylike != null) {
@@ -1377,20 +1483,28 @@ padding-right: 6px;
                                 <div class="item celularcard">
                                   <div class="card rounded-4 shadow celularcard">
                                     <div class="card-body p-0 m-0" style="min-height: 300px !IMPORTANT;">
-                                      <div class="col-12 mh-25">
-                                        <img class="mh-25 rounded-top-3" src="<?php if ($rowOperationselect->LogoPicturePath != "Avatar.png" && $rowOperationselect->LogoPicturePath != "") {
-                                                                                echo "" . $rowOperationselect->LogoPicturePath;
-                                                                              } else {
-                                                                                echo "https://images2.alphacoders.com/131/1317606.jpeg";
-                                                                              } ?>" alt="Descrição da Imagem" style="max-height: 100px; width: 100%;">
-                                      </div>
+                                       <div class="col-12 mh-25" style="    max-height: 100px;
+    width: 100%;
+    background-image: url(<?php if ($rowOperationselect->LogoPicturePath != "Avatar.png" && $rowOperationselect->LogoPicturePath != "" && $rowOperationselect->LogoPicturePath != null) {
+                                                        echo "" . $rowOperationselect->LogoPicturePath;
+                                                      } else {
+                                                        echo "https://images2.alphacoders.com/131/1317606.jpeg";
+                                                      } ?>);
+    min-height: 100px;
+    border-top-left-radius: var(--bs-border-radius-lg)!important;
+    border-top-right-radius: var(--bs-border-radius-lg)!important;
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center;">
+               
+              </div>
                                       <div class="row p-0 ml-0 m-0">
                                         <div class="col-6 d-flex justify-content-start p-0 m-0 " style="height: 0px;">
                                           <img src=" <?php if ($rowOperationselect->PersonalUserPicturePath != "Avatar.png" && $rowOperationselect->PersonalUserPicturePath != "") {
                                                         echo "" . $rowOperationselect->PersonalUserPicturePath;
                                                       } else {
                                                         echo "assets/img/Avatar.png";
-                                                      } ?>" alt="user" class="border-2 mini-profile-img " onclick="toggleMenu()">
+                                                      } ?>" alt="user" class="border-2 mini-profile-img " style="object-fit: cover;box-shadow: 0px -3px 11px #0000005e;" >
                                         </div>
                                         <div class="col-6">
                                           <h4 class="fonte-titulo cortardescricao mr-1"><?php echo  $rowOperationselect->FirstName . " " . $rowOperationselect->LastName; ?></h4>
@@ -1403,7 +1517,7 @@ padding-right: 6px;
                                       <div class="row mt-3 pr-2" style="padding: 5px !important; margin: 0px !important; width: -webkit-fill-available;">
                                         <div class="col-9 m-0 p-0" style="width: auto;">
                                           <h5 class="fonte-principal "><i class="fa-solid fa-building icon-notif-zoom mini-profile-icon" style="font-size: 12px;"></i>&nbsp;&nbsp;<?php echo  $rowOperationselect->JobTitle . ' at ' . $rowOperationselect->CompanyName ?></h5>
-                                          <h5 class="fonte-principal"><i class="fa-solid fa-globe icon-notif-zoom mini-profile-icon" style="font-size: 12px;"></i>&nbsp;&nbsp;<?php include_once('../model/classes/tblCountry.php');
+                                          <h5 class="fonte-principal"><i class="fa-solid fa-globe icon-notif-zoom mini-profile-icon" style="font-size: 12px;"></i>&nbsp;&nbsp;<?php 
 
                                                                                                                                                                               $country = new Country($dbh);
 

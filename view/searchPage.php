@@ -1,9 +1,10 @@
 <?php
 
-include_once('../model/classes/conexao.php');
-include_once('../model/ErrorLog.php');
-include_once('../model/classes/tblUserClients.php');
-include_once('../model/classes/tblOperations.php');
+include('../model/classes/conexao.php');
+include('../model/ErrorLog.php');
+include('../model/classes/tblUserClients.php');
+include('../model/classes/tblOperations.php');
+include('../model/classes/tblCountry.php');
 
 date_default_timezone_set('America/Sao_Paulo');
 
@@ -217,10 +218,10 @@ if ($resultsoperation != null) {
                                     <div class="col-sm-12">
 
                                         <div class="form-floating">
-                                            <select required class="form-select border-dark inputtamanho selecttamanho" name="corbusiness" onchange="showcorbusiness(this.value)" id="floatingSelectGrid" aria-label="Floating label select example">
+                                            <select required class="form-select border-dark inputtamanho selecttamanho selectsp1" name="corbusiness" onchange="showcorbusiness(this.value)" id="floatingSelectGrid" aria-label="Floating label select example">
                                                 <option valid="">Select</option>
                                                 <?php
-                                                include_once('../model/classes/tblOperations.php');
+                                                
                                                 $operations = new Operations($dbh);
                                                 $resultsoperation = $operations->consulta(" WHERE idOperation != '1'");
                                                 if ($resultsoperation != null) {
@@ -264,7 +265,7 @@ if ($resultsoperation != null) {
 
                                             <select required name="country[]" class=" form-select categmulti border-dark inputtamanho" multiple id="floatingSelectGrid" aria-label="Floating label select example">
                                                 <?php
-                                                include('../model/classes/tblCountry.php');
+                                                
 
                                                 $country = new Country($dbh);
 
@@ -491,13 +492,23 @@ if ($resultsoperation != null) {
             $(".next").click(function() {
 
                 var inputField = $(this).parent().find('.inputtamanho');
-                var selectField = $(this).parent().find('.selecttamanho');
-                console.log(selectField.val());
-                if (inputField.val() === '' || inputField.val() === null || inputField.val() === "" || selectField.val() == 'Select') {
-                    // Se o campo estiver vazio, não avance e mostre uma mensagem de erro
-                    alert("Fill in the field before waiting.");
-                    return;
-                }
+                var dataano = $(this).parent().find('.dataano');
+                var selectsp1 = $(this).parent().find('.selectsp1');
+                var selectsp2 = $(this).parent().find('.selectsp2');
+                var selectsp3 = $(this).parent().find('.selectsp3');
+                console.log(dataano.val());
+               
+        var sp1Value = Array.isArray(selectsp1.val()) ? selectsp1.val().length : selectsp1.val() ? 1 : 0;
+        var sp2Value = Array.isArray(selectsp2.val()) ? selectsp2.val().length : selectsp2.val() ? 1 : 0;
+        var sp3Value = Array.isArray(selectsp3.val()) ? selectsp3.val().length : selectsp3.val() ? 1 : 0;
+        
+        if (inputField.val() === '' || inputField.val() === null || sp1Value === 0 || sp2Value === 0 || sp3Value === 0 || selectsp1.val() == 'Select' || selectsp2.val() == 'Select' || selectsp3.val() == 'Select') {
+            if(dataano.val() == ""){
+                alert("Fill in the field before waiting.");
+            return;
+            }
+            
+        }
 
 
                 current_fs = $(this).parent();
@@ -573,11 +584,7 @@ if ($resultsoperation != null) {
             })
 
         });
-        let profileMenu = document.getElementById("profileMenu");
-
-        function toggleMenu() {
-            profileMenu.classList.toggle("open-menu");
-        }
+       
         /* Set the width of the sidebar to 250px (show it) */
         function openNav() {
             document.getElementById("mySidepanel").style.width = "250px";
@@ -589,10 +596,7 @@ if ($resultsoperation != null) {
         }
 
 
-        function toggleNotifyMenu() {
-            const notifyMenu = document.getElementById('notifyMenu')
-            notifyMenu.classList.toggle("open-menu");
-        }
+    
 
 
         const notifyMenu = document.querySelector('.notify-menu');
@@ -687,6 +691,35 @@ if ($resultsoperation != null) {
             element5.classList.remove('ms-active');
             element6.classList.remove('ms-active');
         });
+        
+         function updateNotificationCount() {
+            var xmlhttpnf = new XMLHttpRequest();
+            xmlhttpnf.onreadystatechange = function() {
+                if (this.readyState == 4 && this.status == 200) {
+
+
+                    var badgeElement = document.getElementById('notificationCount');
+                    var responseHtml = this.responseText.trim(); // Remove espaços em branco extras
+
+                    if (responseHtml != "" || responseHtml != undefined) {
+                        console.log("response");
+                        badgeElement.innerHTML = responseHtml; // Insere o HTML retornado pelo PHP
+                        responseHtml = '';
+                    } else {
+                        console.log("response NULL");
+                        badgeElement.innerHTML = ''; // Limpa o conteúdo do elemento
+                    }
+                } else {
+                    var badgeElement = document.getElementById('notificationCount');
+                    badgeElement.innerHTML = '';
+                    responseHtml = '';
+                }
+            };
+            xmlhttpnf.open("GET", "widget/atualizar_notificacoes.php", true);
+            xmlhttpnf.send();
+        }
+        updateNotificationCount()
+        setInterval(updateNotificationCount, 6000);
     </script>
 </body>
 

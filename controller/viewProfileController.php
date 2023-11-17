@@ -3,6 +3,14 @@ include_once('../model/classes/conexao.php');
 include_once('../model/classes/tblConect.php');
 include_once('../model/classes/tblSearchProfile_Results.php');
 
+if ( session_status() !== PHP_SESSION_ACTIVE )
+{
+    session_start();
+}
+if (!isset($_SESSION["id"])) {
+    header("Location: ../view/login.php");
+}
+
 if ($_POST["conectar"] != "") {
 
     $geral= $_POST["geral"];
@@ -13,7 +21,7 @@ if ($_POST["conectar"] != "") {
     $conect->cadastrar();
   
   
-    $url = "viewProfile.php?profile=$iduser";
+    $url = "viewProfile.php?profile=$geral";
     $searchProfile_results = new SearchProfile_Results($dbh);
     $searchProfile_results->setidUsuario($geral);
     $searchProfile_results->setidClienteEncontrado($iduser); 
@@ -45,35 +53,25 @@ if ($_POST["desconectar"] != "") {
 
     $conect->deletar("WHERE id = :id");
 
-    header("Location: ../view/viewProfile.php?profile=".$geral);
+    header("Location: ../view/viewProfile.php?profile=" . $geral);
 }
-
-if ($_POST["aceitarConexao"] != "") {
-
-    $geral= $_POST["geral"];
+  
+if ($_POST["aceitar"] != "") {
+    $idconect = $_POST["idconectar"];
     $iduser =$_POST["iduser"];
-    $idconectar =$_POST["idconectar"];
+
+
+    //$sqlconectdelet = "DELETE FROM tblconect WHERE  id = :id";
+    //$queryconectdelet = $dbh->prepare($sqlconectdelet);
+    //$queryconectdelet->bindParam(':id', $idconect, PDO::PARAM_INT);
+    //$queryconectdelet->execute();
 
     $conect = new Conect($dbh);
-    $conect->setid($idconectar);
-    $conect->setstatus("1");
-    $conect->atualizar('status = :status WHERE id = :id');
-  
-    //notificação de conexão aceita
-    $url = "viewProfile.php?profile=$iduser";
-    $searchProfile_results = new SearchProfile_Results($dbh);
-    $searchProfile_results->setidUsuario($geral);
-    $searchProfile_results->setidClienteEncontrado($iduser); 
-    $searchProfile_results->seturl($url);
-    $searchProfile_results->setpostId('0');
-    $searchProfile_results->setidTipoNotif('7');
-    $searchProfile_results->setestadoNotif("0");
-    $searchProfile_results->cadastrar();
 
-   
+    $conect->setid($idconect);
 
+    $conect->atualizar("status = '1' WHERE id = :id");
 
     header("Location: ../view/viewProfile.php?profile=$iduser");
 }
-
 ?>

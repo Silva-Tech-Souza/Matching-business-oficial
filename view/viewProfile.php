@@ -1,11 +1,24 @@
 <?php
+include('../model/classes/conexao.php');
+include('../model/ErrorLog.php');
+include('../model/classes/tblUserClients.php');
+include('../model/classes/tblCountry.php');
+include('../model/classes/tblOperations.php');
+include('../model/classes/tblBusiness.php');
+include('../model/classes/tblBusinessCategory.php');
+include('../model/classes/tblViews.php');
+include('../model/classes/tblSearchProfile_Results.php');
+include('../model/classes/tblConect.php');
+include('../model/classes/tblProducts.php');
+include('../model/classes/tblProductPictures.php');
+include('../model/classes/tblFeeds.php');
+include('../model/classes/tblCurtidas.php');
+include('../model/classes/tbPostComent.php');
+
 if ( session_status() !== PHP_SESSION_ACTIVE )
 {
    session_start();
 }
-error_reporting(0);
-include_once('../model/classes/conexao.php');
-include_once('../model/ErrorLog.php');
 date_default_timezone_set('America/Sao_Paulo');
 
 if ($_SESSION["id"] < 0 || $_SESSION["id"] == "") {
@@ -20,17 +33,8 @@ $idusers = $_GET["profile"];
 
 $geral = $_SESSION["id"];
 
-//$sqlgeral = "SELECT * from tblUserClients WHERE idClient = :idClient";
-//$querygeral = $dbh->prepare($sqlgeral);
-//$querygeral->bindParam(':idClient', $geral, PDO::PARAM_INT);
-//$querygeral->execute();
-//$resultsgeral = $querygeral->fetchAll(PDO::FETCH_OBJ);
-//if ($querygeral->rowCount() > 0) {
-//  foreach ($resultsgeral as $rowgeral) {
-//    $imgperfilgeral = $rowgeral->PersonalUserPicturePath;
-//  }
-//}
-include_once('../model/classes/tblUserClients.php');
+
+
 
 $UserClient = new UserClients($dbh);
 $UserClient->setidClient($idusers);
@@ -43,27 +47,7 @@ if ($resultsgeral != null) {
 }
 
 $_SESSION["n"] = 5;
-//$sql = "SELECT * from tblUserClients WHERE idClient = :idClient";
-//$query = $dbh->prepare($sql);
-//$query->bindParam(':idClient', $iduser1, PDO::PARAM_INT);
-//$query->execute();
-//$results = $query->fetchAll(PDO::FETCH_OBJ);
-//if ($query->rowCount() > 0) {
-//  foreach ($results as $row) {
-//    $username =  $row->FirstName . " " . $row->LastName;
-//    $FirstName = $row->FirstName;
-//    $LastName = $row->LastName;
-//    $jobtitle = $row->JobTitle;
-//    $idcountry = $row->idCountry;
-//    $idoperation = $row->IdOperation;
-//    $corebusiness = $row->CoreBusinessId;
-//    $satBusinessId =  $row->SatBusinessId;
-//    $companyname = $row->CompanyName;
-//    $imgperfil = $row->PersonalUserPicturePath;
-//    $imgcapa = $row->LogoPicturePath;
-//    $descricao =  $row->descricao;
-//  }
-//}
+
 
 $UserClient = new UserClients($dbh);
 $UserClient->setidClient($idusers);
@@ -98,18 +82,6 @@ if ($resultsreal != null) {
   }
 }
 
-//$sqlCountry = "SELECT * from tblCountry WHERE idCountry = :idCountry";
-//$queryCountry = $dbh->prepare($sqlCountry);
-//$queryCountry->bindParam(':idCountry', $idcountry, PDO::PARAM_INT);
-//$queryCountry->execute();
-//$resultsCountry = $queryCountry->fetchAll(PDO::FETCH_OBJ);
-//if ($queryCountry->rowCount() > 0) {
-//  foreach ($resultsCountry as $rowCountry) {
-//    $pais =  $rowCountry->NmCountry;
-//  }
-//}
-
-include_once('../model/classes/tblCountry.php');
 
 $Country = new Country($dbh);
 $Country->setidCountry($idcountry);
@@ -121,18 +93,6 @@ if ($resultsCountry != null) {
   }
 }
 
-//$sqlbusiness = "SELECT * from tblOperations WHERE idOperation = :idOperation";
-//$querybusiness = $dbh->prepare($sqlbusiness);
-//$querybusiness->bindParam(':idOperation', $corebusiness, PDO::PARAM_INT);
-//$querybusiness->execute();
-//$resultsbusiness = $querybusiness->fetchAll(PDO::FETCH_OBJ);
-//if ($querybusiness->rowCount() > 0) {
-//  foreach ($resultsbusiness as $rowbusiness) {
-//    $NmBusiness =  $rowbusiness->NmOperation;
-//  }
-//}
-
-include_once('../model/classes/tblOperations.php');
 
 $Operations = new Operations($dbh);
 $Operations->setidOperation($corebusiness);
@@ -145,19 +105,7 @@ if ($resultsbusiness != null) {
 }
 
 
-//$sqlbusinesscor = "SELECT * from tblBusiness WHERE idBusiness = :idBusiness";
-//$querybusinesscor = $dbh->prepare($sqlbusinesscor);
-//$querybusinesscor->bindParam(':idBusiness', $satBusinessId, PDO::PARAM_INT);
-//$querybusinesscor->execute();
-//$resultsbusinesscor = $querybusinesscor->fetchAll(PDO::FETCH_OBJ);
-//if ($querybusinesscor->rowCount() > 0) {
-// foreach ($resultsbusinesscor as $rowbusinesscor) {
-//    $NmBusinesscor =  $rowbusinesscor->NmBusiness;
-//  }
-//}
-
 if ($satBusinessId != null) {
-  include_once('../model/classes/tblBusiness.php');
 
   $Business = new Business($dbh);
   $Business->setidBusiness($satBusinessId);
@@ -170,19 +118,8 @@ if ($satBusinessId != null) {
   }
 }
 
-//$sqlbusinesscateg = "SELECT * from tblBusinessCategory WHERE idBusinessCategory = :idBusinessCategory";
-//$querybusinesscateg = $dbh->prepare($sqlbusinesscateg);
-//$querybusinesscateg->bindParam(':idBusinessCategory', $idoperation, PDO::PARAM_INT);
-//$querybusinesscateg->execute();
-//$resultsbusinesscateg = $querybusinesscateg->fetchAll(PDO::FETCH_OBJ);
-//if ($querybusinesscateg->rowCount() > 0) {
-//  foreach ($resultsbusinesscateg as $rowbusinesscateg) {
-//    $NmBusinessCategory =  $rowbusinesscateg->NmBusinessCategory;
-//    $idbusinesscateg = $rowbusinesscateg->idBusiness;
-//  }
-//}
 
-include_once('../model/classes/tblBusinessCategory.php');
+
 
 $BusinessCategory = new BusinessCategory($dbh);
 $BusinessCategory->setidBusinessCategory($idoperation);
@@ -195,14 +132,8 @@ if ($resultsbusinesscateg != null) {
   }
 }
 
-//$sqlView = "SELECT * FROM tblviews WHERE idUser = :idUser AND idView = :idView AND  DATE(datacriacao) = CURDATE()";
-//$queryView = $dbh->prepare($sqlView);
-//$queryView->bindParam(':idUser', $geral, PDO::PARAM_INT);
-//$queryView->bindParam(':idView', $iduser, PDO::PARAM_INT);
-//$queryView->execute();
-//$resultView = $queryView->fetchAll(PDO::FETCH_OBJ);
 
-include_once('../model/classes/tblViews.php');
+
 
 $Views = new Views($dbh);
 $Views->setidUser($geral);
@@ -211,13 +142,6 @@ $resultView = $Views->consulta("WHERE idUser = :idUser AND idView = :idView AND 
 
 if ($resultView == null) {
 
-  //$sqlViewinsert = "INSERT INTO tblviews(idUser, idView) VALUES (:idUser, :idView)";
-  //$queryViewinsert = $dbh->prepare($sqlViewinsert);
-  //$queryViewinsert->bindParam(':idUser', $geral, PDO::PARAM_INT);
-  //$queryViewinsert->bindParam(':idView', $iduser, PDO::PARAM_INT);
-  //$queryViewinsert->execute();
-
-  include_once('../model/classes/tblViews.php');
 
   $Views = new Views($dbh);
   $Views->setidUser($geral);
@@ -226,13 +150,8 @@ if ($resultView == null) {
 
   $Views->cadastrar();
 
-  //$sqlinsertpost = "INSERT INTO tblsearchprofile_results (idUsuario, idClienteEncontrado, idTipoNotif) VALUES (:idUsuario, :idClienteEncontrado, '2')";
-  //$queryinsertpost = $dbh->prepare($sqlinsertpost);
-  //$queryinsertpost->bindParam(':idUsuario', $geral, PDO::PARAM_INT);
-  //$queryinsertpost->bindParam(':idClienteEncontrado', $iduser, PDO::PARAM_INT);
-  //$queryinsertpost->execute();
 
-  include_once('../model/classes/tblSearchProfile_Results.php');
+
 
   $searchprofile_results = new SearchProfile_Results($dbh);
 
@@ -245,73 +164,23 @@ if ($resultView == null) {
   $searchprofile_results->cadastrar();
 }
 
-//$sqlconect = "SELECT * FROM tblconect WHERE idUserPed = :idUserPed AND idUserReceb = :idUserReceb ";
-//$queryconect = $dbh->prepare($sqlconect);
-//$queryconect->bindParam(':idUserPed', $geral, PDO::PARAM_INT);
-//$queryconect->bindParam(':idUserReceb', $iduser, PDO::PARAM_INT);
-//$queryconect->execute();
-//$respoconect = $queryconect->fetchAll(PDO::FETCH_OBJ);
-//if ($queryconect->rowCount() > 0) {
-//  foreach ($respoconect as $rowconnect) {
-//    $temconexao = $rowconnect->status;
-//  }
-//} else {
-//  $temconexao = "";
-//}
 
-include_once('../model/classes/tblConect.php');
+
 
 $connecttem = new Conect($dbh);
 
-$connecttem->setidUserPed($geral);
-$connecttem->setidUserReceb($idusers);
+$connecttem->setidUserPed($idusers);
+$connecttem->setidUserReceb($geral);
 
 $respoconect = $connecttem->consulta("WHERE idUserPed = :idUserPed AND idUserReceb = :idUserReceb");
 
 if ($respoconect != null) {
   foreach ($respoconect as $rowconnect) {
-    $status = $rowconnect->status;
+    $temconexao = $rowconnect->status;
     $idconect = $rowconnect->id;
   }
-
-  if($status == 0){
-
-    $temconexao = "0";
-
-  }else{
-
-    $temconexao = "1";
-
-  }
-
 } else {
-
-  $connecttem->setidUserPed($idusers);
-  $connecttem->setidUserReceb($geral);
-
-  $respoconect = $connecttem->consulta("WHERE idUserPed = :idUserPed AND idUserReceb = :idUserReceb");
-
-  if ($respoconect != null) {
-    foreach ($respoconect as $rowconnect) {
-      $status = $rowconnect->status;
-      $idconect = $rowconnect->id;
-    }
-
-    if($status == 0){
-
-      $temconexao = "2";
-
-    }else{
-
-      $temconexao = "1";
-
-    }
-
-  } else {
-
-    $temconexao = "";
-
-  }
+  $temconexao = "";
 }
 
 ?>
@@ -579,6 +448,8 @@ if ($respoconect != null) {
       }
     }
   </style>
+  
+ 
 </head>
 
 <body class="funcolinhas">
@@ -746,7 +617,6 @@ if ($respoconect != null) {
                       <?php if ($rowOperation->FlagOperation != "D") { ?>
                         <ul>
                           <?php
-                          include_once('../model/classes/tblBusiness.php');
                           $business1 = new Business($dbh);
                           $resultsbusiness1 = $business1->consulta("WHERE FlagOperation = '0' ORDER BY NmBusiness ASC");
                           if ($resultsbusiness1 != null) {
@@ -784,16 +654,25 @@ if ($respoconect != null) {
       <div class="row telacheia margemmnavbar">
 
         <!-- Esquerda -->
-        <div id="profile-column" class="shadow col-12 col-md-12 col-lg-3 justify-content-start overflow-auto scrollable-column">
+        <div id="profile-column" class="shadow col-12 col-md-12 col-lg-3 justify-content-start overflow-auto scrollable-column fixed-on-desktop">
           <div class="card rounded-4 shadow">
             <div class="card-body p-0 m-0">
-              <div class="col-12 mh-25">
-                <img class="mh-25 rounded-top-3" src="<?php if ($imgcapas != "Avatar.png" && $imgcapas != "" && $imgcapas != null) {
+                 <div class="col-12 mh-25" style="    max-height: 100px;
+    width: 100%;
+    background-image: url(<?php if ($imgcapas != "Avatar.png" && $imgcapas != "" && $imgcapas != null) {
                                                         echo "" . $imgcapas;
                                                       } else {
                                                         echo "https://images2.alphacoders.com/131/1317606.jpeg";
-                                                      } ?>" alt="Descrição da Imagem" style="max-height: 100px; width: 100%;">
+                                                      } ?>);
+    min-height: 100px;
+    border-top-left-radius: var(--bs-border-radius-lg)!important;
+    border-top-right-radius: var(--bs-border-radius-lg)!important;
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center;">
+               
               </div>
+             
               <div class="row p-0 ml-0">
                 <div class="col-5 d-flex justify-content-start p-0 m-0 " style="height: 0px;">
                   <img src=" <?php if ($imgperfils != "Avatar.png" && $imgperfils != "") {
@@ -872,46 +751,47 @@ if ($respoconect != null) {
                 </div>
               <?php } ?>
               <div class="row pr-2  mb-2">
+                  <?php if($idusers != $geral){?>
                 <form method="POST" action="../controller/viewProfileController.php" enctype="multipart/form-data">
                   <input type="hidden" value="<?php echo $idusers; ?>" name="iduser">
                   <input type="hidden" value="<?php echo $geral; ?>" name="geral">
                   <input type="hidden" value="<?php echo $idconect; ?>" name="idconectar">
                   <div class="col-12 m-0 p-0 mr-2">
 
-                    <?php if ($temconexao == "1") { ?>
-
+                    <?php if ($temconexao == "1" && $temconexao != "") { ?>
                       <button type="submit" name="desconectar" value="desconectar" class="btn btn-outline-danger ms-1 m-1"><i class="bi bi-person-x-fill icon-btn-card"></i>&nbsp;Disconnect</button>
-                      <a href="chatPage.php?idClientConversa=<?php echo $idusers; ?>" class="btn btn-outline-primary ms-1 m-1"><i class="bi bi-chat-dots-fill icon-btn-card"></i>&nbsp;Message</a>
-
-                    <?php } else if ($temconexao == "0") { ?>
-
-                      <button type="submit" name="desconectar" value="desconectar" class="btn btn-outline-warning ms-1 m-1"><i class="bi bi-person-x-fill icon-btn-card"></i>&nbsp;Pending</button>
-
+                    <?php   } else 
+                  if ($temconexao == "0" && $temconexao != "") { ?>
+                      <button type="submit" name="aceitar" value="aceitar" class="btn btn-outline-warning ms-1 m-1"><i class="bi bi-person-x-fill icon-btn-card"></i>&nbsp;Accept connection</button>
                     <?php   } else if ($temconexao == "" || $temconexao == "#" || $temconexao == null) { ?>
-
                       <button type="submit" name="conectar" value="conectar" class="btn btn-outline-primary ms-1 m-1"><i class="bi bi-person-plus-fill icon-btn-card"></i>&nbsp;Connect</button>
-
-                    <?php   } else if($temconexao == "2") {?>
-
-                      <form>
-                        <button type="submit" name="aceitarConexao" value="aceitarConexao" class="btn btn-outline-primary ms-1 m-1"><i class="bi bi-person-plus-fill icon-btn-card"></i>&nbsp;Aceitar conexão</button>
-                      </form>
-
-                    <?php   }?>
+                    <?php   } ?>
+                    <?php if ($temconexao == "1" && $temconexao != "") { ?>
+                      <a href="chatPage.php?idClientConversa=<?php echo $idusers; ?>" class="btn btn-outline-primary ms-1 m-1"><i class="bi bi-chat-dots-fill icon-btn-card"></i>&nbsp;Message</a>
+                    <?php } ?>
 
                   </div>
                 </form>
+                <?php }?>
               </div>
             </div>
           </div>
-          <div class="card rounded-4 shadow mt-2">
-            <div class="card-body p-0 m-0">
+         <div class="card rounded-4 shadow mt-2 margemdesck">
+            <div class="card-body p-0 m-0" style="overflow-y: auto !important;
+    max-height: 312px !important;
+    overflow-x: hidden !important;
+    min-height: 312px !important;">
               <div class="row ">
-              <div class="col-12 ">
+                <div class="col-12 ">
+
                   <p class="fonte-titulo" style="padding: 7px; font-size: 17px;">Description</p>
+
                 </div>
                 <div class="col-12 ">
-                  <p class="fonte-principal" style="padding: 7px; font-size: 14px;"><?php echo $descricao; ?></p>
+
+                  <p class="fonte-principal" style="padding: 7px; font-size: 14px;" id="descricao"><?php echo $descricao; ?></p>
+
+
                 </div>
                 <div class="col-3 m-0 p-0">
                 </div>
@@ -923,7 +803,7 @@ if ($respoconect != null) {
         <div class="col-3"></div>
 
         <!-- Meio -->
-        <div class="col-lg-8 col-12 justify-content-center">
+        <div class="col-lg-9 col-12 justify-content-center">
           <div class="col-md-12  justify-content-center">
             <div class="col-md-12">
               <?php if ($corebusiness != "3" && $corebusiness != "4") {
@@ -939,7 +819,6 @@ if ($respoconect != null) {
                       </div>
                       <div class="row rowProduct overflow-auto">
                         <?php
-                        include_once('../model/classes/tblProducts.php');
                         $products = new Products($dbh);
                         $products->setidClient($idusers);
                         $resultsProdutos = $products->consulta("WHERE idClient = :idClient  ORDER BY idProduct ASC ");
@@ -947,12 +826,12 @@ if ($respoconect != null) {
                           if (is_array($resultsProdutos) || is_object($resultsProdutos)) {
                             foreach ($resultsProdutos as $rowProdutos) {
                         ?>
-                              <div class="mb-4 " style="width: auto;">
-                                <div class="card-container">
-                                  <a data-toggle="modal" data-target="#modalViewProduto" data-toggle="modal" data-id="<?php echo $rowProdutos->idProduct; ?>" class="hero-image-container">
-                                    <img class="hero-image produto-img" src="<?php
+                        
+                            <div class="card-container bcolor-azul-escuro rounded-4" style="width: -webkit-fill-available; height: 274px; margin-left: 10px !important;">
+                                <div class="col-12" style="display: flex; flex-direction: column; min-height: 140px; max-height: 140px; padding: 4px; width: -webkit-fill-available;">
+                                    <a data-toggle="modal" data-target="#modalViewProduto" data-toggle="modal" data-id="<?php echo $rowProdutos->idProduct; ?>" class="hero-image-container">
+                                        <img class="hero-image produtos-img rounded-4" style=" user-drag: none;" src="<?php
 
-                                                                              include_once('../model/classes/tblProductPictures.php');
                                                                               $productsPicture = new ProductPictures($dbh);
                                                                               $productsPicture->setidProduct($rowProdutos->idProduct);
 
@@ -962,16 +841,28 @@ if ($respoconect != null) {
                                                                               if ($resultsProductsPicture != null) {
                                                                                 foreach ($resultsProductsPicture as $rowProdutos1) {
                                                                                   echo $rowProdutos1->tblProductPicturePath;
+                                                                                  break;
                                                                                 }
                                                                               } else {
                                                                                 echo "https://images.unsplash.com/photo-1507608158173-1dcec673a2e5?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1470&q=80";
                                                                               }
                                                                               ?>" alt="Spinning glass cube" />
                                   </a>
-                                  <div class="col-12 mt-0 ">
-                                    <h1 class="mb-0"><a class="cortardescricao color-branco desc-perfil-text" href="#"><?php echo $rowProdutos->ProductName; ?></a></h1>
-                                    <p class="cortardescricao color-cinza-b produto-desc-text texto-desc"><?php echo $rowProdutos->ProdcuctDescription; ?></p>
-                                  </div>
+                                   <div class="col-12" style="padding: 6px;">
+                                    <div class="col-12">
+                                        <a data-toggle="modal" data-target="#modalViewProduto" data-toggle="modal" data-id="<?php echo $rowProdutos->idProduct; ?>" class="">
+                                            <h5 class="mb-0 fonte-titulo" style="white-space: pre-line; color: #fff;text-transform: uppercase; font-weight: 800 !important;"><?php echo $rowProdutos->ProductName; ?></h5>
+                                        </a>
+                                    </div>
+                                    <div class="col-12 mt-2">
+                                        <a data-toggle="modal" data-target="#modalViewProduto" data-toggle="modal" data-id="<?php echo $rowProdutos->idProduct; ?>" class="" style="color: #ffffff !important;">
+                                            <p class="color-cinza-b fonte-principal" style="color: #fff !important; max-height: 7em; overflow: hidden;">
+                                                <?php echo $rowProdutos->ProdcuctDescription; ?>
+                                            </p>
+                                        </a>
+                                        </div>
+
+                                </div>
                                 </div>
                               </div>
 
@@ -998,7 +889,6 @@ if ($respoconect != null) {
                 //$queryfeed->execute();
                 //$resultsfeed = $queryfeed->fetchAll(PDO::FETCH_OBJ);
 
-                include_once('../model/classes/tblFeeds.php');
 
                 $feeds = new Feeds($dbh);
                 $feeds->setidClient($idusers);
@@ -1035,7 +925,7 @@ if ($respoconect != null) {
                     //$queryuserpost->execute();
                     //$resultsuserpost = $queryuserpost->fetchAll(PDO::FETCH_OBJ);
 
-                    include_once("../model/classes/tblUserClients.php");
+                    
 
                     $userClients = new UserClients($dbh);
 
@@ -1061,7 +951,7 @@ if ($respoconect != null) {
                                           echo "" . $imgpostuser;
                                         } else {
                                           echo "assets/img/Avatar.png";
-                                        } ?>" alt="user" class="nav-profile-img  " onerror="this.onerror=null; this.src='/assets/img/Avatar.png'">
+                                        } ?>" alt="user" class="nav-profile-img  " style="min-height: 35px;" onerror="this.onerror=null; this.src='/assets/img/Avatar.png'">
 
                             </div>
                             <div class="col-8 p-2 color-preto" style="padding-left: 26px !important;">
@@ -1080,7 +970,6 @@ if ($respoconect != null) {
                               //$queryOperationpost->execute();
                               //$resultsOperationpost = $queryOperationpost->fetchAll(PDO::FETCH_OBJ);
 
-                              include_once("../model/classes/tblOperations.php");
 
                               $operations = new Operations($dbh);
 
@@ -1156,7 +1045,6 @@ if ($respoconect != null) {
                           //$queryOperationpost->execute();
                           //$resultsOperationpost = $queryOperationpost->fetchAll(PDO::FETCH_OBJ);
 
-                          include_once('../model/classes/tblCurtidas.php');
 
                           $curtidas = new Curtidas($dbh);
 
@@ -1179,7 +1067,6 @@ if ($respoconect != null) {
                           //$queryOperationpost->execute();
                           //$resultsOperationpost = $queryOperationpost->fetchAll(PDO::FETCH_OBJ);
 
-                          include_once('../model/classes/tblCurtidas.php');
 
                           $curtidas = new Curtidas($dbh);
 
@@ -1232,7 +1119,8 @@ if ($respoconect != null) {
                             <a id="btnCommnet" data-toggle="modal" data-target="#modalEditarProduto" data-id="<?php echo $rowfeed->IdFeed;
                                                                                                               ?>" class="btn like-comment-btn pl-4 pr-4 no-border p-3 hero-image-container2"><span class="btn-comment-post">
                                 <?php
-                                include_once('../model/classes/tbPostComent.php');
+
+
                                 $tbPostComentcont2 = new PostComent($dbh);
                                 $tbPostComentcont2->setidpost($rowfeed->IdFeed);
                                 echo  $tbPostComentcont2->quantidade(" WHERE idpost = :idpost");
@@ -1286,6 +1174,79 @@ if ($respoconect != null) {
   </div>
 
   <script>
+  
+  function initSlider() {
+            var slider1 = document.getElementsByClassName("sliderBlock_items");
+            var slides1 = document.getElementsByClassName("sliderBlockitemsitemPhoto");
+            var next1 = document.getElementsByClassName("sliderBlockcontrolsarrowForward")[0];
+            var previous1 = document.getElementsByClassName("sliderBlockcontrolsarrowBackward")[0];
+            var items1 = document.getElementsByClassName("sliderBlock_positionControls")[0];
+            var currentSlideItem1 = document.getElementsByClassName("sliderBlock_positionControls__paginatorItem");
+            var currentSlide1 = 0;
+            var slideInterval1 = setInterval(nextSlide, 5000); /// Delay time of slides
+            function nextSlide() {
+                goToSlide(currentSlide1 + 1);
+            }
+
+            function previousSlide() {
+                goToSlide(currentSlide1 - 1);
+            }
+
+            function goToSlide(n) {
+                slides1[currentSlide1].className = 'sliderBlockitemsitemPhoto';
+                items1.children[currentSlide1].className = 'sliderBlock_positionControls__paginatorItem';
+                currentSlide1 = (n + slides1.length) % slides1.length;
+                slides1[currentSlide1].className = 'sliderBlockitemsitemPhoto sliderBlock_items__showing';
+                items1.children[currentSlide1].className = 'sliderBlock_positionControls__paginatorItem sliderBlock_positionControls__active';
+            }
+            next1.onclick = function() {
+                nextSlide();
+            };
+            previous1.onclick = function() {
+                previousSlide();
+            };
+
+            function goToSlideAfterPushTheMiniBlock() {
+                for (var i = 0; i < currentSlideItem1.length; i++) {
+                    currentSlideItem1[i].onclick = function(i) {
+                        var index1 = Array.prototype.indexOf.call(currentSlideItem1, this);
+                        goToSlide(index1);
+                    }
+                }
+            }
+            goToSlideAfterPushTheMiniBlock();
+            var buttonFullSpecification1 = document.getElementsByClassName("block_specification")[0];
+            var buttonSpecification1 = document.getElementsByClassName("block_specification__specificationShow")[0];
+            var buttonInformation1 = document.getElementsByClassName("block_specification__informationShow")[0];
+            var blockCharacteristiic1 = document.querySelector(".block_descriptionCharacteristic");
+            var activeCharacteristic1 = document.querySelector(".block_descriptionCharacteristic__active");
+
+            buttonFullSpecification1.onclick = function() {
+                console.log("OK");
+                buttonSpecification1.classList.toggle("hide");
+                buttonInformation1.classList.toggle("hide");
+                blockCharacteristiic1.classList.toggle("block_descriptionCharacteristic__active");
+            };
+            var up1 = document.getElementsByClassName('block_quantity__up')[0],
+                down1 = document.getElementsByClassName('block_quantity__down')[0],
+                input1 = document.getElementsByClassName('block_quantity__number')[0];
+
+            function getValue() {
+                return parseInt(input1.value);
+            }
+            up1.onclick = function(event) {
+                input1.value = getValue() + 1;
+            };
+            down1.onclick = function(event) {
+                if (input1.value <= 1) {
+                    return 1;
+                } else {
+                    input1.value = getValue() - 1;
+                }
+            }
+
+        }
+        
      function redirectToAnotherPage() {
             var form = document.getElementById('formularionome');
             var textValue = form.querySelector('[name="text"]').value;
@@ -1360,6 +1321,34 @@ if ($respoconect != null) {
         }
       });
     });
+     function updateNotificationCount() {
+            var xmlhttpnf = new XMLHttpRequest();
+            xmlhttpnf.onreadystatechange = function() {
+                if (this.readyState == 4 && this.status == 200) {
+
+
+                    var badgeElement = document.getElementById('notificationCount');
+                    var responseHtml = this.responseText.trim(); // Remove espaços em branco extras
+
+                    if (responseHtml != "" || responseHtml != undefined) {
+                        console.log("response");
+                        badgeElement.innerHTML = responseHtml; // Insere o HTML retornado pelo PHP
+                        responseHtml = '';
+                    } else {
+                        console.log("response NULL");
+                        badgeElement.innerHTML = ''; // Limpa o conteúdo do elemento
+                    }
+                } else {
+                    var badgeElement = document.getElementById('notificationCount');
+                    badgeElement.innerHTML = '';
+                    responseHtml = '';
+                }
+            };
+            xmlhttpnf.open("GET", "widget/atualizar_notificacoes.php", true);
+            xmlhttpnf.send();
+        }
+        updateNotificationCount()
+        setInterval(updateNotificationCount, 6000);
   </script>
 </body>
 

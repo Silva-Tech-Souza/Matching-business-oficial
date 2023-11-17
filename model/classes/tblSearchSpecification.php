@@ -7,7 +7,8 @@ class SearchSpecification{
     protected $idNumEmpregados = null;
     protected $idlRangeValue = null;
     protected $idNivelOperacao = null;
-    protected $DataDeAbertura = null;
+    protected $idTotalImportacao = null;
+    protected $idtotalSalesRep = null;
     protected $dbh = null;
 
     function __construct($dbh)
@@ -35,30 +36,37 @@ class SearchSpecification{
 
     public function getidNivelOperacao(){return $this->idNivelOperacao;}
 
-    public function setDataDeAbertura($param){$this->DataDeAbertura = $param;}
+    public function setidTotalImportacao($param){$this->idTotalImportacao = $param;}
 
-    public function getDataDeAbertura(){return $this->DataDeAbertura;}
+    public function getidTotalImportacao(){return $this->idTotalImportacao;}
+
+    public function setidtotalSalesRep($param){$this->idtotalSalesRep = $param;}
+
+    public function getidtotalSalesRep(){return $this->idtotalSalesRep;}
 
 
     public function cadastrar(){
 
-        $sql = "INSERT INTO tblSearchSpecification (idSearch, idNumEmpregados, `idlRangeValue`, idNivelOperacao, DataDeAbertura) VALUES ( :idSearch, :idNumEmpregados, :idlRangeValue, :idNivelOperacao, :DataDeAbertura)";
+        $sql = "INSERT INTO tblSearchSpecification (idSearch, idNumEmpregados, `idlRangeValue`, idNivelOperacao, idTotalImportacao, idtotalSalesRep) VALUES ( :idSearch, :idNumEmpregados, :idlRangeValue, :idNivelOperacao, :idTotalImportacao, :idtotalSalesRep)";
         $query = $this->dbh->prepare($sql);
 
         if($this->idSearch != null){
             $query->bindParam(':idSearch', $this->idSearch, PDO::PARAM_INT);
         }
         if($this->idNumEmpregados != null){
-            $query->bindParam(':idNumEmpregados', $this->idNumEmpregados,PDO::PARAM_INT);
+            $query->bindParam(':idNumEmpregados', $this->idNumEmpregados,PDO::PARAM_STR);
         }
         if($this->idlRangeValue != null){
             $query->bindParam(':idlRangeValue', $this->idlRangeValue,PDO::PARAM_INT);
         }
         if($this->idNivelOperacao != null){
-            $query->bindParam(':idNivelOperacao', $this->idNivelOperacao,  PDO::PARAM_INT);
+            $query->bindParam(':idNivelOperacao', $this->idNivelOperacao,  PDO::PARAM_STR);
         }
-        if($this->DataDeAbertura != null){
-            $query->bindParam(':DataDeAbertura', $this->DataDeAbertura,  PDO::PARAM_STR);
+        if($this->idTotalImportacao != null){
+            $query->bindParam(':idTotalImportacao', $this->idTotalImportacao, PDO::PARAM_INT);
+        }
+        if($this->idtotalSalesRep != null){
+            $query->bindParam(':idtotalSalesRep', $this->idtotalSalesRep,  PDO::PARAM_STR);
         }
 
         $query->execute();
@@ -81,16 +89,19 @@ class SearchSpecification{
             $query->bindParam(':idSearch', $this->idSearch, PDO::PARAM_INT);
         }
         if($this->idNumEmpregados != null){
-            $query->bindParam(':idNumEmpregados', $this->idNumEmpregados,PDO::PARAM_INT);
+            $query->bindParam(':idNumEmpregados', $this->idNumEmpregados,PDO::PARAM_STR);
         }
         if($this->idlRangeValue != null){
             $query->bindParam(':idlRangeValue', $this->idlRangeValue,PDO::PARAM_INT);
         }
         if($this->idNivelOperacao != null){
-            $query->bindParam(':idNivelOperacao', $this->idNivelOperacao,  PDO::PARAM_INT);
+            $query->bindParam(':idNivelOperacao', $this->idNivelOperacao,  PDO::PARAM_STR);
         }
-        if($this->DataDeAbertura != null){
-            $query->bindParam(':DataDeAbertura', $this->DataDeAbertura,  PDO::PARAM_STR);
+        if($this->idTotalImportacao != null){
+            $query->bindParam(':idTotalImportacao', $this->idTotalImportacao, PDO::PARAM_INT);
+        }
+        if($this->idtotalSalesRep != null){
+            $query->bindParam(':idtotalSalesRep', $this->idtotalSalesRep,  PDO::PARAM_STR);
         }
 
         $query->execute();
@@ -115,16 +126,19 @@ class SearchSpecification{
             $query->bindParam(':idSearch', $this->idSearch, PDO::PARAM_INT);
         }
         if($this->idNumEmpregados != null){
-            $query->bindParam(':idNumEmpregados', $this->idNumEmpregados,PDO::PARAM_INT);
+            $query->bindParam(':idNumEmpregados', $this->idNumEmpregados,PDO::PARAM_STR);
         }
         if($this->idlRangeValue != null){
             $query->bindParam(':idlRangeValue', $this->idlRangeValue,PDO::PARAM_INT);
         }
         if($this->idNivelOperacao != null){
-            $query->bindParam(':idNivelOperacao', $this->idNivelOperacao,  PDO::PARAM_INT);
+            $query->bindParam(':idNivelOperacao', $this->idNivelOperacao,  PDO::PARAM_STR);
         }
-        if($this->DataDeAbertura != null){
-            $query->bindParam(':DataDeAbertura', $this->DataDeAbertura,  PDO::PARAM_STR);
+        if($this->idTotalImportacao != null){
+            $query->bindParam(':idTotalImportacao', $this->idTotalImportacao, PDO::PARAM_INT);
+        }
+        if($this->idtotalSalesRep != null){
+            $query->bindParam(':idtotalSalesRep', $this->idtotalSalesRep,  PDO::PARAM_STR);
         }
 
 
@@ -148,16 +162,19 @@ class SearchSpecification{
             $query->bindParam(':idSearch', $this->idSearch, PDO::PARAM_INT);
         }
         if($this->idNumEmpregados != null){
-            $query->bindParam(':idNumEmpregados', $this->idNumEmpregados,PDO::PARAM_INT);
+            $query->bindParam(':idNumEmpregados', $this->idNumEmpregados,PDO::PARAM_STR);
         }
         if($this->idlRangeValue != null){
             $query->bindParam(':idlRangeValue', $this->idlRangeValue,PDO::PARAM_INT);
         }
         if($this->idNivelOperacao != null){
-            $query->bindParam(':idNivelOperacao', $this->idNivelOperacao,  PDO::PARAM_INT);
+            $query->bindParam(':idNivelOperacao', $this->idNivelOperacao,  PDO::PARAM_STR);
         }
-        if($this->DataDeAbertura != null){
-            $query->bindParam(':DataDeAbertura', $this->DataDeAbertura,  PDO::PARAM_STR);
+        if($this->idTotalImportacao != null){
+            $query->bindParam(':idTotalImportacao', $this->idTotalImportacao, PDO::PARAM_INT);
+        }
+        if($this->idtotalSalesRep != null){
+            $query->bindParam(':idtotalSalesRep', $this->idtotalSalesRep,  PDO::PARAM_STR);
         }
 
 

@@ -1,28 +1,40 @@
 <?php
 include_once('../model/classes/conexao.php');
-if ( session_status() !== PHP_SESSION_ACTIVE )
-{
-   session_start();
-}else{
-  if ($_SESSION["id"] > 0 &&  $_SESSION["id"] != "") {
-    header("Location: home.php");
-  }
-}
-
-$txaid = $_GET["taxid"];
-date_default_timezone_set('America/Sao_Paulo');
+include_once('../model/classes/tblUserClients.php');
 include_once('../model/classes/tblEmpresas.php');
+include_once('../model/classes/tblCountry.php');
+
+date_default_timezone_set('America/Sao_Paulo');
+if ($_SESSION["id"] < 0 || $_SESSION["id"] == "") {
+  header("Location: login.php");
+}
+$txaid = openssl_decrypt($_GET["dixat"], openssl_get_cipher_methods()[2] ,"matchingBussinessMelhorSistema");
+
 $NOMEEMRPESA = "";
-$empresas = new Empresasview($dbh); 
+$empresas = new Empresas($dbh);
 
 $empresas->setTaxid($txaid);
 
 $resultsempresas = $empresas->consulta("WHERE taxid = :taxid");
-if ($resultsempresas != null && is_array($resultsempresas)) {
+if ($resultsempresas != null && is_array($resultsempresas)) {  
   foreach ($resultsempresas as $rowempresa) {
     $NOMEEMRPESA = $rowempresa->nome;
+    $colab1 = $row->colab1;
   }
 }
+
+
+$userClientscolab = new UserClients($dbh);
+$userClientscolab->setidClient($colab1);
+$resultscolab = $userClientscolab->consulta("WHERE idClient = :idClient");
+if ($resultscolab != null) {
+    foreach ($resultscolab as $row) {
+        $idoperation = $row->IdOperation;
+        $corebusiness = $row->CoreBusinessId;
+        $satBusinessId =  $row->SatBusinessId;
+    }
+}
+$qtdcolab = openssl_decrypt($_GET["balocdtq"], openssl_get_cipher_methods()[2] ,"matchingBussinessMelhorSistema");
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -89,55 +101,67 @@ if ($resultsempresas != null && is_array($resultsempresas)) {
   <div class="container m-auto">
     <div class="col-12">
       <div class="row">
-        <div class="col-lg-8 col-12">
+        <div class="col-lg-7 col-12">
           <div class="mt-5">
             <h1 class="color-branco titulologin" style="font-size: 40px;">Welcome to <span style="color:#0057e4;">Matching Business Online.</span></h1>
-            <p class="color-branco desclogin d-none d-md-block">Dear user,<br>
+            <p class="color-branco desclogin d-none d-md-block"><br>Dear user,<br><br>
 
-              Your account is linked to a Legal Entity (PJ). Each PJ account can have up to 5 users. This restriction aims to ensure security and proper control of the company's activities. <br>
+              It is with great pleasure that we welcome you to <?php echo $NOMEEMRPESA; ?>! We are delighted to have you as part of our team and confident that together we will achieve great accomplishments. <br><br>
 
-              The difference between verified and unverified accounts is simple: verified accounts submit the required documentation to prove their legitimacy, gaining benefits such as increased trust, access to advanced features, and priority support. Unverified accounts have some limitations and may not have full access to all features. <br>
-
-              To make the most of our platform, we recommend verifying your PJ account and enjoying all available benefits.<br>
-
-              If you have any questions, our support team is ready to assist.<br>
-
-              Best regards.</p>
+              To get started, we kindly request you to complete your registration in the Matching Business Official system. This will help us ensure that you have access to all the necessary tools and resources to perform your duties to the best of your ability<br><br>
+            </p>
           </div>
         </div>
 
-        <div class="col-lg-4 col-12 ">
-          <div class="cardcadastro">
+        <div class="col-lg-5 col-12 ">
+          <div class="cardcadastro mt-5">
             <form action="../controller/signUpCoolabController.php" method="POST" enctype="multipart/form-data">
               <div class="row">
+                  
                 <div class="col-sm-12">
                   <div class="form-group" style="text-align: start;">
-                    <label class="color-branco labelcadastro h2" for="company-name">Company</label><hr class="color-branco">
+                    <label class="color-branco labelcadastro h2" for="company-name">Company</label>
+                    <hr class="color-branco">
+                    <input type="hidden" class="form-control inputtamanho" value="<?PHP echo $qtdcolab; ?>" name="qtdcolab" >
+                     <input type="hidden" class="form-control inputtamanho" value="<?PHP echo $idoperation; ?>" name="idoperation" >
+                      <input type="hidden" class="form-control inputtamanho" value="<?PHP echo $corebusiness; ?>" name="corebusiness" >
+                      <input type="hidden" class="form-control inputtamanho" value="<?PHP echo $satBusinessId; ?>" name="satBusinessId" >
                   </div>
                 </div>
-                
+
                 <div class="col-sm-12">
                   <div class="form-group" style="text-align: start;">
                     <label class="color-branco labelcadastro" for="company-name">Company name </label>
-                    <input type="hidden" class="form-control inputtamanho" value="<?PHP echo $NOMEEMRPESA;?>" name="nomeEmpresa" id="nomeEmpresa" placeholder="ex: Devloper" required><br><br>
-                    <input type="text" disabled name="nomeEmpresa" value="<?PHP echo $NOMEEMRPESA;?>" class="form-control inputtamanho" id="nomeEmpresa" placeholder="ex: Devloper" required><br>
+                    <input type="hidden" class="form-control inputtamanho" value="<?PHP echo $NOMEEMRPESA; ?>" name="nomeEmpresa" id="nomeEmpresa" placeholder="ex: Devloper" required><br><br>
+                    <input type="text" disabled name="nomeEmpresa" value="<?PHP echo $NOMEEMRPESA; ?>" class="form-control inputtamanho" id="nomeEmpresa" placeholder="ex: Devloper" required><br>
                   </div>
                 </div>
 
                 <div class="col-sm-12">
                   <div class="form-group" style="text-align: start;">
                     <label class="color-branco labelcadastro" for="taxid">TAX ID </label>
-                    <input type="hidden" class="form-control inputtamanho" value="<?PHP if(isset($_GET["taxid"])){ echo $_GET["taxid"]; }?>" name="taxid" id="taxid" placeholder="ex: Devloper" required><br><br>
-                    <input type="text" disabled class="form-control inputtamanho" value="<?PHP if(isset($_GET["taxid"])){ echo $_GET["taxid"]; }?>" name="taxid" id="taxid" placeholder="ex: Devloper" required><br><br>
+                    <input type="hidden" class="form-control inputtamanho" value="<?PHP if (isset($txaid)) {
+                                                                                    echo $txaid;
+                                                                                  } ?>" name="taxid" id="taxid" placeholder="ex: Devloper" required><br><br>
+                    <input type="text" disabled class="form-control inputtamanho" value="<?PHP if (isset($txaid)) {
+                                                                                            echo $txaid;
+                                                                                          } ?>" name="taxid" id="taxid" placeholder="ex: Devloper" required><br><br>
                   </div>
                 </div>
+              </div>
+          </div>
+          <div class="cardcadastro mt-2">
+            <form action="../controller/signUpCoolabController.php" method="POST" enctype="multipart/form-data">
+              <div class="row">
+
 
                 <div class="col-sm-12">
                   <div class="form-group" style="text-align: start;">
-                    <label class="color-branco labelcadastro h2" for="company-name">User</label><hr class="color-branco">
+                    <label class="color-branco labelcadastro h2" for="company-name">User</label>
+                    <hr class="color-branco">
                   </div>
                 </div>
-                
+
                 <div class="col-sm-12">
                   <div class="form-group" style="text-align: start;">
                     <label class="color-branco labelcadastro" for="job-tittle">Job tittle</label>
@@ -162,7 +186,12 @@ if ($resultsempresas != null && is_array($resultsempresas)) {
                 <div class="col-sm-12">
                   <div class="form-group" style="text-align: start;">
                     <label class="color-branco labelcadastro" for="email-address">Email address</label>
-                    <input type="hidden" class=" form-control inputtamanho inputtamanho" value="<?PHP if(isset($_GET["email"])){ echo $_GET["email"]; }?>" name="email" id="email" placeholder="ex: email@email.com" required><br>
+                    <input type="hidden" class=" form-control inputtamanho inputtamanho" value="<?PHP if (isset($_GET["email"])) {
+                                                                                                  echo $_GET["email"];
+                                                                                                } ?>" name="email" id="email" placeholder="ex: email@email.com" required><br>
+                    <input type="text" disabled class=" form-control inputtamanho inputtamanho" value="<?PHP if (isset($_GET["email"])) {
+                                                                                                          echo $_GET["email"];
+                                                                                                        } ?>" name="email" id="email" placeholder="ex: email@email.com" required><br>
                   </div>
                 </div>
                 <div class="col-sm-12">
@@ -172,12 +201,7 @@ if ($resultsempresas != null && is_array($resultsempresas)) {
                   </div>
                 </div>
 
-                <div class="col-sm-12">
-                  <div class="form-group" style="text-align: start;">
-                    <label class="color-branco labelcadastro">Senha </label>
-                    <input class="inputauto form-control inputtamanho" name="senha" id="senha" placeholder="Senha" required><br>
-                  </div>
-                </div>
+
 
                 <div class="col-sm-12">
                   <div class="form-group" style="text-align: start;">
@@ -185,7 +209,7 @@ if ($resultsempresas != null && is_array($resultsempresas)) {
                     <select class="inputtamanho form-select selectfontsize" id="country-select" name="country" required>
                       <option value="">Select a country</option>
                       <?php
-                      include_once('../model/classes/tblCountry.php');
+                      
 
                       $tblCountry = new Country($dbh);
 
@@ -203,16 +227,15 @@ if ($resultsempresas != null && is_array($resultsempresas)) {
                   </div>
                 </div>
 
-                <p class="errologintxt"><?php echo $_SESSION['signuperro']; ?></p>
-                <div class="col-sm-12">
+
+                <div class="col-sm-12 mt-2">
                   <div class="form-group" style="text-align: center;">
                     <button type="submit" class="btn btn-primary login-btn inputtamanho" value="cadastro" name="signupsubmitcoolab">Signup</button>
                   </div>
                 </div>
 
 
-                <a href="login.php" style="display: flex; flex-direction: column; text-align: center; margin-top: 1rem; margin-left: 1rem; 
-                            font-size: 1.5rem; text-decoration: none; ">(Go back to homepage instead)</a>
+                
               </div>
             </form>
           </div>

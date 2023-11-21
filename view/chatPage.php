@@ -1,12 +1,8 @@
 <?php
 
-include('../model/classes/conexao.php');
-include('../model/classes/tblLogErrorCode.php');
-include('../model/ErrorLog.php');
-include('../model/classes/tblOperations.php');
-include('../model/classes/tblUserClients.php');
-include('../model/classes/tblConect.php');
-
+include_once('../model/classes/conexao.php');
+include_once('../model/classes/tblLogErrorCode.php');
+include_once('../model/ErrorLog.php');
 error_reporting(0);
 date_default_timezone_set('America/Sao_Paulo');
 if ($_SESSION["id"] < 0 || $_SESSION["id"] == "") {
@@ -18,12 +14,13 @@ $_SESSION["n"] = 5;
 if (isset($_GET["idperfilchat"])) {
 
   $idClientConversa = $_GET["idperfilchat"];
+ 
 } else {
-
+$idClientConversa = "7";
 }
 
 
-
+include_once('../model/classes/tblUserClients.php');
 
 $userClients = new UserClients($dbh);
 
@@ -44,7 +41,7 @@ if ($results != null) {
   }
 }
 
-
+include_once('../model/classes/tblOperations.php');
 $operations = new Operations($dbh);
 
 $operations->setidOperation($idoperation);
@@ -93,7 +90,16 @@ if ($resultsoperation != null) {
 </head>
 
 <body class="funcolinhas">
-
+<script>
+     function scrollToBottom() {
+      var msgBody = document.querySelector('.msg-body');
+      msgBody.scrollTop = msgBody.scrollHeight;
+    }
+   document.addEventListener('DOMContentLoaded', function() {
+    // Esta função será chamada quando a página for completamente carregada
+    scrollToBottom();
+});
+</script>
   <?php include_once("widget/navbar.php"); ?>
 
   <!-- char-area -->
@@ -126,7 +132,7 @@ if ($resultsoperation != null) {
                         <div class="tab-pane fade show active" id="Open" role="tabpanel" aria-labelledby="Open-tab">
                           <!-- chat-list -->
                           <div class="chat-list"><?php
-                                                  
+                                                  include_once('../model/classes/tblConect.php');
                                                   $conects = new Conect($dbh);
                                                   $conects->setidUserPed($iduser);
                                                   $conects->setidUserReceb($iduser);
@@ -138,7 +144,7 @@ if ($resultsoperation != null) {
                                                       } else {
                                                         $idconectado = $row->idUserReceb;
                                                       }
-                                                      
+                                                      include_once('../model/classes/tblUserClients.php');
                                                       $userClients = new UserClients($dbh);
                                                       $userClients->setidClient($idconectado);
                                                       $resultsUserClients = $userClients->consulta("WHERE idClient = :idClient");
@@ -147,7 +153,7 @@ if ($resultsoperation != null) {
 
                                                           $imgchatuserS = $rowCon->PersonalUserPicturePath;
                                                   ?>
-                                    <a href="#" class="d-flex align-items-center" onclick="atualizarMensagens(<?php echo $idconectado; ?>);ativarDiv()">
+                                    <a href="#" class="d-flex align-items-center" onclick="scrollToBottom();atualizarMensagens(<?php echo $idconectado; ?>);scrollToBottom();ativarDiv();scrollToBottom();scrollToBottom();">
                                       <div class="flex-shrink-0">
                                         <img class="imgavatar" src="<?php if ($imgchatuserS != "Avatar.png" && $imgchatuserS != "" && file_exists("" . $imgchatuserS)) {
                                                                       echo "" . $imgchatuserS;
@@ -159,7 +165,8 @@ if ($resultsoperation != null) {
                                       <div class="flex-grow-1 ms-3">
                                         <h3><?php echo $rowCon->FirstName . " " . $rowCon->LastName; ?></h3>
                                         <p><?php
-                                                          
+                                                          include_once('../model/classes/tblOperations.php');
+
                                                           $Operations = new Operations($dbh);
                                                           $Operations->setidOperation($rowCon->CoreBusinessId);
                                                           $resultsbusiness = $Operations->consulta("WHERE idOperation = :idOperation");
@@ -221,7 +228,7 @@ if ($resultsoperation != null) {
                         <input type="hidden" value="<?php echo $idClientConversa; ?>" name="idClientConversa">
 
                         <input type="hidden" value="cadastrar" name="acao">
-                        <button type="submit" name="envarmsg" value="Send"><i class="fa fa-paper-plane" aria-hidden="true"></i> Send</button>
+                        <button type="submit" name="envarmsg" onclick="scrollToBottom();" value="Send"><i class="fa fa-paper-plane" aria-hidden="true"></i> Send</button>
                       </form>
                     </div>
                   </div>
@@ -261,11 +268,13 @@ if ($resultsoperation != null) {
 
     var idConversaAtiva = "";
     function ativarDiv() {
+        scrollToBottom();
     var minhaDiv = document.getElementById('minhaDiv');
     minhaDiv.style.display = 'none';
-    
+    scrollToBottom();
     var minhaDiv = document.getElementById('minhaDiv2');
     minhaDiv.style.display = 'flex';
+    scrollToBottom();
 }
     function atualizarMensagens(idconectado) {
 
@@ -278,7 +287,7 @@ if ($resultsoperation != null) {
         var idClientConversa = idconectado;
 
       }
-      scrollToBottom();
+ 
       $.ajax({
         url: 'widget/atualizarnamechat.php',
         type: 'POST',
@@ -287,7 +296,7 @@ if ($resultsoperation != null) {
           idClientConversa: idClientConversa
         },
         success: function(data) {
-          scrollToBottom();
+         
           var henderchat = $('#henderchat');
           henderchat.empty();
           console.log(data);
@@ -320,7 +329,7 @@ if ($resultsoperation != null) {
                 '</div>' +
                 '</div>');
             });
-            scrollToBottom();
+         
           }
         }
       });
@@ -354,9 +363,9 @@ if ($resultsoperation != null) {
     }
 
     function chamarAtualizarMensagens() {
-      scrollToBottom();
+     
       atualizarMensagens(idConversaAtiva);
-      scrollToBottom();
+     
     }
     setInterval(chamarAtualizarMensagens, 1000);
 
@@ -617,10 +626,7 @@ if ($resultsoperation != null) {
 
     });
 
-    function scrollToBottom() {
-      var msgBody = document.querySelector('.msg-body');
-      msgBody.scrollTop = msgBody.scrollHeight;
-    }
+   
     document.addEventListener('DOMContentLoaded', function() {
       scrollToBottom();
     });
@@ -652,10 +658,18 @@ if ($resultsoperation != null) {
         }
         updateNotificationCount()
         setInterval(updateNotificationCount, 6000);
+document.addEventListener('DOMContentLoaded', function() {
+    // Esta função será chamada quando a página for completamente carregada
+    scrollToBottom();
+});
   </script>
   
   
-
+<?php 
+if (isset($_GET["idperfilchat"])) {
+echo "<script>ativarDiv()</script>";
+}
+?>
 </body>
 
 </html>

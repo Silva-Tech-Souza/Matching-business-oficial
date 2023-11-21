@@ -1,22 +1,21 @@
 <?php
 
 //error_reporting(0);
-include('../model/classes/conexao.php');
+include_once('../model/classes/conexao.php');
 
-include("../model/classes/tblEmpresas.php");
-include('../model/classes/tblUserClients.php');
-include('../model/classes/tblOperations.php');
-include('../model/classes/tblBusiness.php');
-include('../model/classes/tblViews.php');
-include('../model/classes/tblConect.php');
-include('../model/classes/tblSearch.php');
-include('../model/classes/tblProducts.php');
-include('../model/classes/tblProductPictures.php');
-include('../model/classes/tblFeeds.php');
-include('../model/classes/tblCurtidas.php');
-include('../model/classes/tbPostComent.php');
-include('../model/classes/tblCountry.php'); 
-
+include_once("../model/classes/tblEmpresas.php");
+include_once('../model/classes/tblUserClients.php');
+include_once('../model/classes/tblOperations.php');
+include_once('../model/classes/tblBusiness.php');
+include_once('../model/classes/tblViews.php');
+include_once('../model/classes/tblConect.php');
+include_once('../model/classes/tblSearch.php');
+include_once('../model/classes/tblProducts.php');
+include_once('../model/classes/tblProductPictures.php');
+include_once('../model/classes/tblFeeds.php');
+include_once('../model/classes/tblCurtidas.php');
+include_once('../model/classes/tbPostComent.php');
+include_once('../model/classes/tblEmpresas.php');
 
 date_default_timezone_set('America/Sao_Paulo');
 if ($_SESSION["id"] < 0 || $_SESSION["id"] == "") {
@@ -49,6 +48,7 @@ if ($results != null) {
         $companyname = $row->CompanyName;
         $imgperfil = $row->PersonalUserPicturePath;
         $imgcapa = $row->LogoPicturePath;
+         $taxidempresa =  $row->taxid;
     }
 }
 
@@ -62,7 +62,7 @@ if($corebusiness == "" || $corebusiness == null || $corebusiness == 0){
 //$queryCountry->execute();
 //$resultsCountry = $queryCountry->fetchAll(PDO::FETCH_OBJ);
 
-
+include('../model/classes/tblCountry.php');
 
 $country = new Country($dbh);
 
@@ -76,6 +76,52 @@ if ($resultsCountry != null) {
     }
 }
 
+
+
+$adm = false;
+$qtdcolab = 0;
+$empresaDados = new Empresas($dbh);
+$empresaDados->setTaxid($taxidempresa);
+$resultss = $empresaDados->consulta("WHERE taxid = :taxid");
+if ($resultss != null) {
+  foreach ($resultss as $row) {
+    $idempresa = $row->id;
+    $nomeempresa = $row->nome;
+    $colab1 = $row->colab1;
+    $colab2 = $row->colab2;
+    $colab3 = $row->colab3;
+    $colab4 = $row->colab4;
+    $colab5 = $row->colab5;
+  }
+}
+
+if ($iduser !=  $colab1) {
+  $adm = false;
+} else {
+  $adm = true;
+}
+if ($colab2 != 0) {
+  $qtdcolab++;
+}
+if ($colab3 != 0) {
+  $qtdcolab++;
+}
+if ($colab4 != 0) {
+  $qtdcolab++;
+}
+if ($colab5 != 0) {
+  $qtdcolab++;
+}
+
+$userClients2colabteste = new UserClients($dbh);
+$userClients2colabteste->setidClient($colab1);
+$results2colabteste = $userClients2colabteste->consulta("WHERE idClient = :idClient");
+if ($results2colabteste != null) {
+    foreach ($results2colabteste as $row) {
+    $imgcapa = $row->LogoPicturePath;
+   
+    }
+}
 ?>
 
 <!DOCTYPE html>
@@ -351,8 +397,8 @@ if ($resultsCountry != null) {
         }
 
         .mobile_btn {
-            display: none;
-            float: left;
+          
+          
         }
 
 
@@ -522,6 +568,23 @@ if ($resultsCountry != null) {
         ::-webkit-scrollbar-thumb {
     background: transparent !important;
 }
+
+.finaldapagina{
+       position: absolute;
+        font-size: larger;
+    bottom: 0;
+    width: -webkit-fill-available;
+    z-index: 10000000000000000000000;
+    
+    padding: 10px;
+}
+
+
+        @media (max-width: 992px) {
+            .idtamanhocelular {
+                display: none !important;
+            }
+        }
     </style>
 </head>
 
@@ -601,24 +664,21 @@ if ($resultsCountry != null) {
             <div class="row telacheia margemmnavbar">
 
                 <!-- Esquerda -->
-                <div class="col-3 d-none d-md-block justify-content-start position-fixed overflow-auto scrollable-column" style="
+                <div class="col-3 idtamanhocelular d-none d-md-block d-lg-block justify-content-start position-fixed overflow-auto scrollable-column" style="
     height: 100%;
 ">
                     <div class="card rounded-4 shadow">
                         <div class="card-body p-0 m-0">
-                             <div class="col-12 mh-25" style="max-height: 100px;
-    width: 100%;
-    background-image: url(<?php if ($imgcapa != "Avatar.png" && $imgcapa != "" && $imgcapa != null) {
-                                                        echo "" . $imgcapa;
-                                                      } else {
-                                                        echo "https://images2.alphacoders.com/131/1317606.jpeg";
-                                                      } ?>);
-    min-height: 100px;
-    border-top-left-radius: var(--bs-border-radius-lg)!important;
-    border-top-right-radius: var(--bs-border-radius-lg)!important;
-    background-size: cover;
-    background-repeat: no-repeat;
-    background-position: center;">
+                             <div class="col-12 mh-25" >
+<img src="<?php if ($imgcapa != "Avatar.png" && $imgcapa != "" && $imgcapa != null) {
+                            echo "" . $imgcapa . "?" . uniqid(); 
+                          } else {
+                            echo "https://images2.alphacoders.com/131/1317606.jpeg";
+                          } ?>" style="
+                           width: -webkit-fill-available;
+    height: -webkit-fill-available;
+    min-height: 126px;
+    max-height: 139px;     border-radius: 7px;">
                
               </div>
                             <div class="row p-0 ml-0">
@@ -834,7 +894,7 @@ if ($resultsCountry != null) {
                                     </form>
                                 </div>
                             </div>
-                            <div class="card shadow rounded-4 card-post-style  mt-4 produtos-feed-scrollbar">
+                            <div class="card shadow rounded-4 card-post-style  mt-4 produtos-feed-scrollbar produtoscard">
                                 <h3 class="texto-titulo" style="margin: inherit;"> &nbsp;&nbsp;Featured Products</h3>
                                  <div class="rowProduct overflow-auto produtos-feed-scrollbar row-produto-card-pro" style="margin-bottom: 17px;padding: 10px;" id="produtos-feed">
                                     <?php
@@ -868,10 +928,10 @@ if ($resultsCountry != null) {
 
                                         foreach ($resultsProdutoss as $rowProdutos) { ?>
                                             <div class="card-produto-uni">
-                                                <div class="card-container bcolor-azul-escuro rounded-4" style="width: -webkit-fill-available; height: 274px">
-                                                    <div class="col-12" style="display: flex; flex-direction: column; min-height: 140px; max-height: 140px; padding: 4px; width: -webkit-fill-available;">
+                                                <div class="card-container bcolor-azul-escuro rounded-4 uniprodutocard" style="width: -webkit-fill-available;">
+                                                    <div class="col-12 imagemproduto" style="display: flex; flex-direction: column; min-height: 140px; max-height: 140px; padding: 4px; width: -webkit-fill-available;">
                                                         <a data-toggle="modal" data-target="#modalViewProduto" data-toggle="modal" data-id="<?php echo $rowProdutos->idProduct; ?>" class="hero-image-container">
-                                                            <img class="hero-image produtos-img rounded-4" style=" user-drag: none;" src="<?php
+                                                            <img class="hero-image produtos-img rounded-4 imgprodutotamanho" style=" user-drag: none;object-fit: cover;" src="<?php
 
                                                                                                                                             $productsPictures = new ProductPictures($dbh);
                                                                                                                                             $productsPictures->setidProduct($rowProdutos->idProduct);
@@ -887,10 +947,10 @@ if ($resultsCountry != null) {
                                                                                                                                             ?>" alt="Spinning glass cube">
                                                         </a>
                                                     </div>
-                                                    <div class="col-12" style="padding: 6px;">
+                                                    <div class="col-12 mt-2 txtprodutos" style="padding: 6px;">
                                                         <div class="col-12">
                                                             <a data-toggle="modal" data-target="#modalViewProduto" data-toggle="modal" data-id="<?php echo $rowProdutos->idProduct; ?>" class="hero-image-container">
-                                                                <h5 class="mb-0" style="white-space: pre-line; color: #fff;text-transform: uppercase;"><?php echo $rowProdutos->ProductName; ?></h5>
+                                                                <h5 class="tituloproduto mb-0" style="white-space: pre-line; color: #fff;text-transform: uppercase;"><?php echo $rowProdutos->ProductName; ?></h5>
                                                             </a>
                                                         </div>
                                                         <div class="col-12 mt-2">
@@ -921,6 +981,8 @@ if ($resultsCountry != null) {
 
                                                 $x = 0;
 
+                                                include_once('../model/classes/conexao.php');
+                                                include_once("../model/classes/tblEmpresas.php");
 
                                                 $empresas = new Empresas($dbh);
                                                 $resultsempresas = $empresas->consulta("");
@@ -1324,34 +1386,37 @@ if ($resultsCountry != null) {
 
                 <!-- Direita -->
                 <div class="col-3">
-                    <div class="col-3 justify-content-end position-fixed">
+                    <div class="col-3 idtamanhocelular d-none d-md-block d-lg-block justify-content-end position-fixed" style="height: -webkit-fill-available;">
 
-                        <div class="col-12  d-none d-md-block">
+                        <div class="col-12  d-none d-md-block" style="height: -webkit-fill-available;">
                             <h2>Sponsored</h2>
                             <div class="col-12" id="sponsored-container">
 
                             </div>
-                            <div class="row" style=" text-align: center;">
+                           <div class="finaldapagina" style="    color: black;">
+                                <div class="row" style=" text-align: center;">
                                 <div class="col-sm-12, p_results">
-                                    <a href="#" style="
-font-size: small;
-"> Privacy Policy </a>|
-                                    <a href="" style="
-font-size: small;
-"> User Agreement </a>|
-                                    <a href="" style="
-font-size: small;
-"> Cookie Policy </a>|
-                                    <a href="" style="
-font-size: small;
-"> Copyright Policy</a>
+                                     <a href="#" id="openModalLink" data-toggle="modal" data-target="#exampleModalLong" style="
+                                    font-size: small; color: black !important;
+                                    "> Privacy Policy </a>|
+                                        <a href="#" id="openModalLink" data-toggle="modal" data-target="#exampleModalLong4"   style="
+                                    font-size: small;color: black !important;
+                                    "> User Agreement </a>|
+                                        <a href="#" id="openModalLink" data-toggle="modal" data-target="#exampleModalLong2"  style="
+                                    font-size: small;color: black !important;
+                                    "> Cookie Policy </a>|
+                                        <a href="#" id="openModalLink" data-toggle="modal" data-target="#exampleModalLong3"style="
+                                    font-size: small;color: black !important;  
+                                    "> Copyright Policy</a>
                                 </div>
 
                             </div>
                             <div class="text-center span-3 bottom-bar-style">
                                 © 2023 All Rights Reserved:
-                                <span class="text-white">LABD - Latin America Business Development</span>
+                                <span class="">LABD - Latin America Business Development</span>
                             </div>
+                            </div>
+                            
                         </div>
 
                     </div>
@@ -1457,7 +1522,12 @@ font-size: small;
                                                                                 echo "" . $rowcliente->PersonalUserPicturePath;
                                                                             } else {
                                                                                 echo "assets/img/Avatar.png";
-                                                                            } ?>" alt="user" alt="An unknown user." onerror="this.onerror=null; this.src='assets/img/Avatar.png'" class="nav-profile-img"></a>
+                                                                            } ?>" alt="user" alt="An unknown user." style="object-fit: cover; min-height: 35px;
+    min-width: 35px;
+    max-width: 35px;
+    max-height: 35px;
+    width: 35px;
+    height: 35px;" onerror="this.onerror=null; this.src='assets/img/Avatar.png'" class="nav-profile-img"></a>
                                                         </div>
                                                         <div class="col-8 p-0 justify-content-start align-items-center">
                                                             <p class="network-username-text"><a class="color-preto" href="viewProfile.php?profile=<?php echo $rowcliente->idClient; ?>"><b><?php echo $rowcliente->FirstName; ?><b> </a></p>
@@ -1517,7 +1587,105 @@ font-size: small;
 
     </div>
     <!-- footer -->
+    <div class="modal custom-modal fade" id="exampleModalLong" tabindex="-1" role="dialog" aria-labelledby="exampleModalLongTitle" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable" role="document">
+      <div class="modal-content">
+        <div class="modal-header" style="color: black;">
+          <h5 class="modal-title privacetexttitle" id="exampleModalLongTitle">Privacy Police</h5>
+          <button type="button" class="close rounded-2 border-0 bcolor-azul-escuro m-2" data-dismiss="modal" aria-label="Close" style="width: 25px; height: 25px;">
+                            <span aria-hidden="false" data-dismiss="modal" class="color-branco">x</span>
+                        </button>
+        </div>
+        <div class="modal-body privacetext" style="color: black;line-height: 20px;font-weight: 500;text-align: justify;">
+          <?php
 
+
+          include_once('../model/classes/tblContract.php');
+
+          $conect = new Contract($dbh);
+
+          $resultscontrato = $conect->consulta("WHERE idContract = 6 ");
+
+          if ($resultscontrato != null) {
+            foreach ($resultscontrato as $rowcontrato) {
+              echo $rowcontrato->ContractText;
+            }
+          }
+          ?>
+        </div>
+        <div class="modal-footer">
+
+          <button type="button" class="btn btn-primary closes privacetextbtn" data-dismiss="modal" aria-label="Close">Accept</button>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="modal custom-modal fade" id="exampleModalLong2" tabindex="-1" role="dialog" aria-labelledby="exampleModalLongTitle" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable" role="document">
+      <div class="modal-content">
+        <div class="modal-header" style="color: black;">
+          <h5 class="modal-title privacetexttitle" id="exampleModalLongTitle">Cookie Policy</h5>
+          <button type="button" class="close rounded-2 border-0 bcolor-azul-escuro m-2" data-dismiss="modal" aria-label="Close" style="width: 25px; height: 25px;">
+                            <span aria-hidden="false" data-dismiss="modal" class="color-branco">x</span>
+                        </button>
+        </div>
+        <div class="modal-body privacetext" style="color: black;line-height: 20px;font-weight: 500;text-align: justify;">
+          <?php
+
+
+          include_once('../model/classes/tblContract.php');
+
+          $conect = new Contract($dbh);
+
+          $resultscontrato = $conect->consulta("WHERE idContract = 8 ");
+
+          if ($resultscontrato != null) {
+            foreach ($resultscontrato as $rowcontrato) {
+              echo $rowcontrato->ContractText;
+            }
+          }
+          ?>
+        </div>
+        <div class="modal-footer">
+
+          <button type="button" class="btn btn-primary closes privacetextbtn" data-dismiss="modal" aria-label="Close">Accept</button>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="modal custom-modal fade" id="exampleModalLong3" tabindex="-1" role="dialog" aria-labelledby="exampleModalLongTitle" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable" role="document">
+      <div class="modal-content">
+        <div class="modal-header" style="color: black;">
+          <h5 class="modal-title privacetexttitle" id="exampleModalLongTitle">Copyright Policy</h5>
+          <button type="button" class="close rounded-2 border-0 bcolor-azul-escuro m-2" data-dismiss="modal" aria-label="Close" style="width: 25px; height: 25px;">
+                            <span aria-hidden="false" data-dismiss="modal" class="color-branco">x</span>
+                        </button>
+        </div>
+        <div class="modal-body privacetext" style="color: black;line-height: 20px;font-weight: 500;text-align: justify;">
+          <?php
+
+
+          include_once('../model/classes/tblContract.php');
+
+          $conect = new Contract($dbh);
+
+          $resultscontrato = $conect->consulta("WHERE idContract = 7 ");
+
+          if ($resultscontrato != null) {
+            foreach ($resultscontrato as $rowcontrato) {
+              echo $rowcontrato->ContractText;
+            }
+          }
+          ?>
+        </div>
+        <div class="modal-footer">
+
+          <button type="button" class="btn btn-primary closes privacetextbtn" data-dismiss="modal" aria-label="Close">Accept</button>
+        </div>
+      </div>
+    </div>
+  </div>
     <div class="modal custom-modal fade" id="exampleModalconect" role="dialog">
         <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
             <div class="modal-content">
@@ -1568,7 +1736,12 @@ font-size: small;
                                                                                 echo "" . $rowcliente->PersonalUserPicturePath;
                                                                             } else {
                                                                                 echo "assets/img/Avatar.png";
-                                                                            } ?>" alt="user" alt="An unknown user." onerror="this.onerror=null; this.src='assets/img/Avatar.png'"></a>
+                                                                            } ?>" alt="user" alt="An unknown user." style="object-fit: cover; min-height: 35px;
+    min-width: 35px;
+    max-width: 35px;
+    max-height: 35px;
+    width: 35px;
+    height: 35px;" onerror="this.onerror=null; this.src='assets/img/Avatar.png'"></a>
                                                         </div>
                                                         <div class="col-7 p-0">
                                                             <p class="mb-0 network-username-text"><b><a href="viewProfile.php?profile=<?php echo $rowcliente->idClient; ?>"><?php echo $rowcliente->FirstName; ?><b> </a></p>
@@ -1620,7 +1793,39 @@ font-size: small;
             </div>
         </div>
     </div>
+  <div class="modal custom-modal fade" id="exampleModalLong4" tabindex="-1" role="dialog" aria-labelledby="exampleModalLongTitle" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable" role="document">
+      <div class="modal-content">
+        <div class="modal-header" style="color: black;">
+          <h5 class="modal-title privacetexttitle" id="exampleModalLongTitle">User Agreement</h5>
+          <button type="button" class="close rounded-2 border-0 bcolor-azul-escuro m-2" data-dismiss="modal" aria-label="Close" style="width: 25px; height: 25px;">
+                            <span aria-hidden="false" data-dismiss="modal" class="color-branco">x</span>
+                        </button>
+        </div>
+        <div class="modal-body privacetext" style="color: black;line-height: 20px;font-weight: 500;text-align: justify;">
+          <?php
 
+
+          include_once('../model/classes/tblContract.php');
+
+          $conect = new Contract($dbh);
+
+          $resultscontrato = $conect->consulta("WHERE idContract = 15 ");
+
+          if ($resultscontrato != null) {
+            foreach ($resultscontrato as $rowcontrato) {
+              echo $rowcontrato->ContractText;
+            }
+          }
+          ?>
+        </div>
+        <div class="modal-footer">
+
+          <button type="button" class="btn btn-primary closes privacetextbtn" data-dismiss="modal" aria-label="Close">Accept</button>
+        </div>
+      </div>
+    </div>
+  </div>
     <div id="modalEditarProduto" class="modal custom-modal fade show comment-modal-primary" role="dialog">
         <div class="modal-dialog modal-dialog-centered modal-lg">
             <div class="modal-content" style="background-color: #f0f0f0 !important;">

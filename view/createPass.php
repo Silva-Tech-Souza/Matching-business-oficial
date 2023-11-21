@@ -1,9 +1,15 @@
 <?php
-include('../model/classes/conexao.php');
-include('../model/classes/tblContract.php');
+include_once('../model/classes/conexao.php');
 error_reporting(0);
 date_default_timezone_set('America/Sao_Paulo');
 
+if(isset($_GET['erro'])){
+
+  $errosenha = $_GET['erro'];
+
+  echo '<script>window.alert('.$errosenha.');</script>';
+
+}
 
 $email = "";
 $codigoVerifEmail = $_GET['codigoCadastroIncompleto'];
@@ -55,6 +61,12 @@ if ($codigoVerifEmail != "" && $codigoVerifEmail != '0') {
         <form method="POST" action="../controller/createPassController.php" onsubmit="return validarSenha(this);" enctype="multipart/form-data" style="text-align: center;justify-content: center;align-items: center;">
           <h1 class="color-branco titulologin" style="font-size: 40px;">Create your password: </h1>
           <fieldset>
+          <?php if(isset($_GET["alteracao"])){
+              ?>
+                <input type="hidden" name="alteracao" id="alteracao" value="<?php echo $_GET["alteracao"]?>" required>;
+              <?php
+              }
+              ?>
             <input type="hidden" name="email" id="email" value="<?php echo $email; ?>" required>
             <div class="col-12" style="text-align: initial; font-size: large;">
               <label class="color-branco" for="password">Password </label>
@@ -127,7 +139,7 @@ if ($codigoVerifEmail != "" && $codigoVerifEmail != '0') {
           <?php
 
 
-          
+          include_once('../model/classes/tblContract.php');
 
           $conect = new Contract($dbh);
 

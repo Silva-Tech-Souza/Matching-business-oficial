@@ -1,9 +1,10 @@
 <?php
 if ( session_status() !== PHP_SESSION_ACTIVE )
 {
-  $_SESSION["n"] = 8;
+   
+   $_SESSION["n"] = 8;
 }
-include('../model/classes/conexao.php');
+include_once('../model/classes/conexao.php');
 try {
     if (isset($_COOKIE["remember_me"])) {
         if ($_COOKIE["remember_me"] != null) {
@@ -95,6 +96,12 @@ date_default_timezone_set('America/Sao_Paulo');
                   <p class="border-rounded txterrologin errologintxt"><?php echo $_SESSION['loginerro']; ?>&nbsp;&nbsp;<i class="fa fa-exclamation"></i></p>
                   <?php }?>
                   <button type="submit" name="signupsubmit" class="login-btn">Login</button><br><br>
+                  <div class="cancel-login">
+                    <span class="color-branco">Or</span><br>
+                    <a href="esqueceuSenha.php" class="createaccounttxt btn btn-primary create-btn-modal ">
+                    Forgot your password?
+                    </a>
+                  </div>
                   <div class="social-media-icons m-0">
                     <a href="#" class="btn btn-outline-light btn-floating m-0 btn-mobile" id="meuBotaoDeDownload" role="button"><i class="fa fa-android icone-btn-mobile"></i></a>
                     <a href="#" onclick="alert('Para adicionar este aplicativo à tela inicial, acesse o botão de compartilhar e selecione Adicionar à tela inicial')" class="btn btn-outline-light btn-floating m-0 btn-mobile" role="button"><i class="fa-brands fa-apple icone-btn-mobile"></i></a>

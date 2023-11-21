@@ -1,8 +1,5 @@
 <?php
 include_once('../../model/classes/conexao.php');
-include_once('../../model/classes/tbPostComent.php');
-include_once('../../model/classes/tblUserClients.php');
-include_once('../../model/classes/tblOperations.php');
 if (session_status() !== PHP_SESSION_ACTIVE) {
     session_start();
 }
@@ -12,17 +9,12 @@ if (session_status() !== PHP_SESSION_ACTIVE) {
 */
 date_default_timezone_set('America/Sao_Paulo');
 
-if(isset($_GET['idComentario'])){
-    $idComentario = $_GET['idComentario'];
-}else{
-
-    $idComentario = "";
-
-}
+$idComentario = $_GET['idComentario'];
 
 
 $idPost = $_GET['idFeed'];
 $iduser = $_SESSION["id"];
+include_once('../../model/classes/tbPostComent.php');
 
 if($idComentario != "" && $_GET["texto"] == "apagar"){
     $tbPostComent = new PostComent($dbh);
@@ -87,6 +79,7 @@ if($idComentario != "" && $_GET["texto"] == "apagar"){
             } else {
                 $timeAgoC = "A few seconds ago";
             }
+            include_once('../../model/classes/tblUserClients.php');
             $userClients2 = new UserClients($dbh);
 
             $userClients2->setidClient($rowfeed->iduser);
@@ -119,6 +112,7 @@ if($idComentario != "" && $_GET["texto"] == "apagar"){
                                 <h4><?php echo $usernamepost; ?></h4>
                             </a>
                             <?php
+                            include_once('../../model/classes/tblOperations.php');
                             $operations = new Operations($dbh);
                             $operations->setidOperation($idpostoperation);
                             $resultsoperation = $operations->consulta("WHERE FlagOperation != '0' AND idOperation = :idOperation");

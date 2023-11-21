@@ -1,10 +1,3 @@
-
-<?php 
-
-include_once('../model/classes/tblOperations.php');
-
-?>
-
 <style>
         .image-preview img {
             width: 150px;
@@ -35,7 +28,7 @@ include_once('../model/classes/tblOperations.php');
     
 </script>
 
-<div id="add_produto" class="modal custom-modal fade" role="dialog">
+<div id="add_produto" class="modal custom-modal fade" role="dialog" data-backdrop="static" data-keyboard="false">
     <div class="modal-dialog modal-dialog-centered modal-lg">
         <div class="modal-content">
             <div class="modal-header">
@@ -102,6 +95,7 @@ include_once('../model/classes/tblOperations.php');
                                   
                                     <?php
 
+                                    include_once('../model/classes/tblOperations.php');
                                     $operations = new Operations($dbh);
 
                                     $resultsOperation = $operations->consulta("WHERE FlagOperation = '0'");

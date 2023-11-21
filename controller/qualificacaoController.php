@@ -1,16 +1,5 @@
 <?php
 include_once('../model/classes/conexao.php');
-include_once("../model/classes/tblBusiness.php");
-include_once('../model/classes/tblUserClients.php');
-
-if ( session_status() !== PHP_SESSION_ACTIVE )
-{
-    session_start();
-}
-if (!isset($_SESSION["id"])) {
-    header("Location: ../view/login.php");
-}
-
     if ($_POST["create"] != "") {
         
 
@@ -20,6 +9,7 @@ if (!isset($_SESSION["id"])) {
 
         if($_POST["coreBusiness"] >= 6){
 
+          include_once("../model/classes/tblBusiness.php");
 
           $operation = new Business($dbh);
   
@@ -38,6 +28,7 @@ if (!isset($_SESSION["id"])) {
       
         }
       
+        include_once('../model/classes/tblUserClients.php');
       
         $userClients = new UserClients($dbh);
         $userClients-> setidClient($id);

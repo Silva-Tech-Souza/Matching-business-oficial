@@ -1,13 +1,5 @@
 <?php
 
-if ( session_status() !== PHP_SESSION_ACTIVE )
-{
-    session_start();
-}
-if (!isset($_SESSION["id"])) {
-    header("Location: ../view/login.php");
-}
-
 
  $from = "noreplay@matchingbusiness.online";
             $to = "llucas.silva2231@gmail.com";

@@ -1,20 +1,20 @@
 <?php
-include('../model/classes/conexao.php');
+include_once('../model/classes/conexao.php');
 
 date_default_timezone_set('America/Sao_Paulo');
 if ($_SESSION["id"] < 0 || $_SESSION["id"] == "") {
     header("Location: login.php");
 }
 $iduser = $_SESSION["id"];
-include('../model/classes/tblUserClients.php');
-include('../model/classes/tblFeeds.php');
-include('../model/classes/tblCurtidas.php');
-include('../model/classes/tbPostComent.php');
-include('../model/classes/tblEmpresas.php');
-include('../model/classes/tblOperations.php');
-include('../model/classes/tblBusiness.php');
-include('../model/classes/tblProducts.php');
-include('../model/classes/tblProductPictures.php');
+include_once('../model/classes/tblUserClients.php');
+include_once('../model/classes/tblFeeds.php');
+include_once('../model/classes/tblCurtidas.php');
+include_once('../model/classes/tbPostComent.php');
+include_once('../model/classes/tblEmpresas.php');
+include_once('../model/classes/tblCountry.php');
+include_once('../model/classes/tblOperations.php');
+include_once('../model/classes/tblBusiness.php');
+include_once('../model/classes/tblBusinessCategory.php');
 $qtdcolab = 0;
 $userClients = new UserClients($dbh);
 $userClients->setidClient($iduser);
@@ -27,18 +27,18 @@ if ($results != null) {
         $jobtitle = $row->JobTitle;
         $email = $row->email;
         $numberfone  = $row->WhatsAppNumber;
-        $idcountry = $row->idCountry;
+       
         $idoperation = $row->IdOperation;
         $corebusiness = $row->CoreBusinessId;
         $satBusinessId =  $row->SatBusinessId;
         $companyname = $row->CompanyName;
-        $imgperfil = $row->PersonalUserPicturePath;
-        $imgcapa = $row->LogoPicturePath;
+        
+      
         $descricao =  $row->descricao;
         $taxidempresa =  $row->taxid;
     }
 }
-$adm = "";
+$adm = false;
 if ($_GET["idtax"] != null) {
     $taxidempresa = $_GET["idtax"];
 }
@@ -60,29 +60,16 @@ if ($results != null) {
         $colab3 = $row->colab3;
         $colab4 = $row->colab4;
         $colab5 = $row->colab5;
-        $site = $row->site;
+       
     }
 }
 
-$userClients2 = new UserClients($dbh);
-$userClients2->setidClient($colab1);
-$results2 = $userClients2->consulta("WHERE idClient = :idClient");
-if ($results2 != null) {
-    foreach ($results2 as $row) {
-        $emailcolab1 = $row->email;
-        $numberfonecolab1  = $row->WhatsAppNumber;
-        $idoperationcolab1 = $row->IdOperation;
-        $corebusinesscolab1 = $row->CoreBusinessId;
-        $satBusinessIdcolab1 =  $row->SatBusinessId;
-        $imgperfilcolab1 = $row->PersonalUserPicturePath;
-        $imgcapacolab1 = $row->LogoPicturePath;
-        $descricaocolab1 =  $row->descricao;
-    }
-}
+
+
 if ($iduser !=  $colab1) {
-    $adm = "false";
+    $adm = false;
 } else {
-    $adm = "true";
+    $adm = true;
 }
 if ($colab1 != 0) {
     $qtdcolab++;
@@ -99,7 +86,26 @@ if ($colab4 != 0) {
 if ($colab5 != 0) {
     $qtdcolab++;
 }
-include_once('../model/classes/tblCountry.php');
+
+$userClients2 = new UserClients($dbh);
+$userClients2->setidClient($colab1);
+$results2 = $userClients2->consulta("WHERE idClient = :idClient");
+if ($results2 != null) {
+    foreach ($results2 as $row) {
+        $emailcolab1 = $row->email;
+        $numberfonecolab1  = $row->WhatsAppNumber;
+        $idoperationcolab1 = $row->IdOperation;
+        $corebusinesscolab1 = $row->CoreBusinessId;
+        $satBusinessIdcolab1 =  $row->SatBusinessId;
+        $imgperfilcolab1 = $row->PersonalUserPicturePath;
+        $imgcapacolab1 = $row->LogoPicturePath;
+        $descricaocolab1 =  $row->descricao;
+        $idcountry = $row->idCountry;
+    }
+}
+
+///
+
 $country = new Country($dbh);
 $country->setidCountry($idcountry);
 $resultsCountry = $country->consulta("WHERE idCountry = :idCountry");
@@ -110,14 +116,8 @@ if ($resultsCountry != null) {
 }
 
 
-$country = new Country($dbh);
-$country->setidCountry($paisempresa);
-$resultsCountry = $country->consulta("WHERE idCountry = :idCountry");
-if ($resultsCountry != null) {
-    foreach ($resultsCountry as $rowCountry) {
-        $paisempresa =  $rowCountry->NmCountry;
-    }
-}
+
+
 
 $operations = new Operations($dbh);
 $operations->setidOperation($corebusinesscolab1);
@@ -127,6 +127,7 @@ if ($resultsoperation != null) {
         $NmBusiness =  $rowoperation->NmOperation;
     }
 }
+
 
 
 $business = new Business($dbh);
@@ -140,8 +141,8 @@ if ($resultsbusiness != null) {
 
 
 $NmBusinessCategory = "";
-if ($idoperation != 0) {
-    include_once('../model/classes/tblBusinessCategory.php');
+if ($idoperationcolab1 != 0) {
+    
     $BusinessCategory = new BusinessCategory($dbh);
     $BusinessCategory->setidBusinessCategory($idoperationcolab1);
     $resultsBusinessCategory = $BusinessCategory->consulta("WHERE idBusinessCategory = :idBusinessCategory");
@@ -348,7 +349,7 @@ if ($idoperation != 0) {
             <div class="row telacheia margemmnavbar">
 
                 <!-- Esquerda -->
-                <div id="profile-column" class="shadow col-12 col-md-12 col-lg-3 justify-content-start overflow-auto scrollable-column fixed-on-desktop">
+                <div id="profile-column"  class=" col-12 col-md-12 col-lg-3 mr-4 justify-content-start overflow-auto scrollable-column fixed-on-desktop"  style="height: -webkit-fill-available;margin-right: 20px important;">
                     <div class="card rounded-4 shadow">
                         <div class="card-body p-0 m-0">
                             <div class="col-12 mh-25" style="    max-height: 100px;
@@ -386,7 +387,7 @@ if ($idoperation != 0) {
                             <div class="row m-0 p-0">
                                 <div class="col-12 m-0 p-0">
 
-                                    <h4 class="fonte-principal">&nbsp;&nbsp;&nbsp;&nbsp;<i class="fa-solid fa-envelope "></i>&nbsp;&nbsp;<?php echo $email; ?></h4>
+                                    <h4 class="fonte-principal" style="overflow: hidden;white-space: nowrap;text-overflow: ellipsis;">&nbsp;&nbsp;&nbsp;&nbsp;<i class="fa-solid fa-envelope "></i>&nbsp;&nbsp;<?php echo $email; ?></h4>
 
                                 </div>
                                 <div class="col-12 m-0 p-0">
@@ -399,16 +400,8 @@ if ($idoperation != 0) {
                                     <h4 class="fonte-principal">&nbsp;&nbsp;&nbsp;&nbsp;<i class="fa-solid fa-globe "></i>&nbsp;&nbsp;<?php echo $paisempresa; ?></h4>
 
                                 </div>
-                                <div class="col-12 m-0 p-0">
-
-                                    <h4 class="fonte-principal">&nbsp;&nbsp;&nbsp;&nbsp;<i class="fa fa-desktop"></i>&nbsp;&nbsp;<?php echo $site; ?></h4>
-
-                                </div>
-                                <div class="col-12 m-0 p-0">
-
-                                    <h4 class="fonte-principal">&nbsp;&nbsp;&nbsp;&nbsp;<i class="fa fa-linkedin-square"></i>&nbsp;&nbsp;<?php echo $redesocial; ?></h4>
-
-                                </div>
+                             
+                               
                                 <div class="col-12 m-0 p-0">
 
                                     <h4 class="fonte-principal">&nbsp;&nbsp;&nbsp;&nbsp;<i class="fa-solid fa-building "></i>&nbsp;&nbsp;<?php echo $NmBusiness; ?></h4>
@@ -433,21 +426,25 @@ if ($idoperation != 0) {
                             <div class="row mb-2" style="padding: 9px;margin: auto;">
                                 <?php if ($adm == "true") { ?>
                                     <a href="#" class="btn btn-outline-primary ms-1" style="width: 100px;" data-toggle="modal" data-target="#add_perfil"><i class="bi bi-pen icon-btn-card"></i>&nbsp;Edit</a>
+                                <?php }else if($iduser == $colab2 || $iduser == $colab3 || $iduser == $colab4 || $iduser == $colab5){ ?>
+                                
+                                <a href="profile.php" class="btn btn-outline-primary ms-1" style="width: 100px;"><i class="bi bi-arrow-90deg-left"></i>&nbsp;Voltar</a>
                                 <?php } ?>
                             </div>
                         </div>
                     </div>
                     <div class="card rounded-4 shadow mt-2 margemdesck">
-                        <div class="card-body p-0 m-0" style="overflow-y: auto !important; max-height: 312px !important; overflow-x: hidden !important; min-height: 312px !important;">
+                        <div class="card-body p-0 m-0" style="overflow-y: auto !important; max-height: -webkit-fill-available; height: fit-content; overflow-x: hidden !important; min-height: -webkit-fill-available;">
                             <div class="row ">
                                 <div class="col-12 ">
 
                                     <p class="fonte-titulo" style="padding: 7px; font-size: 17px;">Description</p>
 
                                 </div>
-                                <div class="col-12 ">
+                                <div class="col-12 " style="width: -webkit-fill-available;    padding-left: 17px;
+    padding-right: 20px; font-size: small;">
 
-                                    <p class="fonte-principal" style="padding: 7px; font-size: 14px;" id="descricao"><?php echo $descempresa; ?></p>
+                                    <p class="fonte-principal" style="font-size: 14px;" id="descricao"><?php echo $descricaocolab1; ?></p>
 
 
                                 </div>
@@ -475,7 +472,7 @@ if ($idoperation != 0) {
                                                             echo $rowcolab1->PersonalUserPicturePath;
                                                         } else {
                                                             echo "";
-                                                        } ?>" alt="user" class="nav-profile-img" onerror="this.onerror=null; this.src='assets/img/Avatar.png'">
+                                                        } ?>" alt="user" style="min-height: 35px;object-fit: cover;" class="nav-profile-img" onerror="this.onerror=null; this.src='assets/img/Avatar.png'">
 
                                         </div>
                                         <div class="col-6 justify-content-start align-items-start">
@@ -505,7 +502,7 @@ if ($idoperation != 0) {
                                                             echo $rowcolab2->PersonalUserPicturePath;
                                                         } else {
                                                             echo "";
-                                                        } ?>" alt="user" class="nav-profile-img" onerror="this.onerror=null; this.src='assets/img/Avatar.png'">
+                                                        } ?>" alt="user" class="nav-profile-img" style="min-height: 35px;object-fit: cover;" onerror="this.onerror=null; this.src='assets/img/Avatar.png'">
 
                                         </div>
                                         <div class="col-6 justify-content-start align-items-start">
@@ -551,7 +548,7 @@ if ($idoperation != 0) {
                                                             echo $rowcolab3->PersonalUserPicturePath;
                                                         } else {
                                                             echo "";
-                                                        } ?>" alt="user" class="nav-profile-img" onerror="this.onerror=null; this.src='assets/img/Avatar.png'">
+                                                        } ?>" alt="user" class="nav-profile-img"style="min-height: 35px;object-fit: cover;" onerror="this.onerror=null; this.src='assets/img/Avatar.png'">
 
                                         </div>
                                         <div class="col-6 justify-content-start align-items-start">
@@ -597,7 +594,7 @@ if ($idoperation != 0) {
                                                             echo $rowcolab4->PersonalUserPicturePath;
                                                         } else {
                                                             echo "";
-                                                        } ?>" alt="user" class="nav-profile-img" onerror="this.onerror=null; this.src='assets/img/Avatar.png'">
+                                                        } ?>" alt="user" class="nav-profile-img" style="min-height: 35px;object-fit: cover;" onerror="this.onerror=null; this.src='assets/img/Avatar.png'">
 
                                         </div>
                                         <div class="col-6 justify-content-start align-items-start">
@@ -643,7 +640,7 @@ if ($idoperation != 0) {
                                                             echo $rowcolab5->PersonalUserPicturePath;
                                                         } else {
                                                             echo "";
-                                                        } ?>" alt="user" class="nav-profile-img" onerror="this.onerror=null; this.src='assets/img/Avatar.png'">
+                                                        } ?>" alt="user" class="nav-profile-img"style="min-height: 35px;object-fit: cover;" onerror="this.onerror=null; this.src='assets/img/Avatar.png'">
 
                                         </div>
                                         <div class="col-6 justify-content-start align-items-start">
@@ -678,7 +675,7 @@ if ($idoperation != 0) {
 
                         <?php if ($corebusinesscolab1 != "3" && $corebusinesscolab1 != "4") {
                         ?>
-                            <div class="row">
+                            <div class="row mt-3">
                                 <div class="col-12">
                                     <div class="card card-body shadow">
                                         <div class="row">
@@ -689,8 +686,7 @@ if ($idoperation != 0) {
                                         </div>
                                         <div class="row rowProduct overflow-auto">
                                             <?php
-                                            
-
+                                            include_once('../model/classes/tblProducts.php');
                                             $products = new Products($dbh);
                                             $products->setidClient($colab1);
                                             $resultsProdutos = $products->consulta("WHERE idClient = :idClient  ORDER BY idProduct ASC ");
@@ -704,6 +700,7 @@ if ($idoperation != 0) {
                                                                 <a data-toggle="modal" data-target="#modalViewProduto" data-toggle="modal" data-id="<?php echo $rowProdutos->idProduct; ?>" class="hero-image-container">
                                                                     <img class="hero-image produtos-img rounded-4" style=" user-drag: none;" src="<?php
 
+                                                                                                                                                    include_once('../model/classes/tblProductPictures.php');
                                                                                                                                                     $productsPicture = new ProductPictures($dbh);
                                                                                                                                                     $productsPicture->setidProduct($rowProdutos->idProduct);
 

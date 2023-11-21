@@ -3,14 +3,6 @@ include_once('../model/classes/conexao.php');
 include_once('../model/classes/tblConect.php');
 include_once('../model/classes/tblSearchProfile_Results.php');
 
-if ( session_status() !== PHP_SESSION_ACTIVE )
-{
-    session_start();
-}
-if (!isset($_SESSION["id"])) {
-    header("Location: ../view/login.php");
-}
-
 if ($_POST["conectar"] != "") {
 
     $geral= $_POST["geral"];

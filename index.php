@@ -1,8 +1,17 @@
 <?php
 session_start();
-if (isset($_COOKIE["remember_me"])) {
 
-  header("Location: controller/loginController.php");
+try {
+    if (isset($_COOKIE["remember_me"])) {
+        if ($_COOKIE["remember_me"] != null) {
+            header("Location: controller/loginController.php");
+        } else {
+            // Assuming you have defined $cookie_name, $cookie_value, and $cookie_expire elsewhere in your code
+            setcookie($cookie_name, $cookie_value, $cookie_expire, "/");
+        }
+    }
+} catch (Exception $e) {
+ 
 }
 error_reporting(0);
 date_default_timezone_set('America/Sao_Paulo');
@@ -82,9 +91,9 @@ if ('serviceWorker' in navigator) {
             <nav id="navbar" class="navbar">
                 <ul>
                     <li><a href="#" class="active">Home</a></li>
-                    <li><a href="#">About</a></li>
-                    <li><a href="#">Seach Profile</a></li>
-                    <li><a href="#">Contact</a></li>
+                    <li><a href="#about">About</a></li>
+                    <li><a href="#seach">Seach Profile</a></li>
+                    <li><a href="#footer">Contact</a></li>
                     <li><a class="" href="view/login.php"><u>Login</u></a></li>
                     <li><a class="get-a-quote" href="view/signup.php">Sign up</a></li>
                 </ul>
@@ -157,7 +166,7 @@ if ('serviceWorker' in navigator) {
    
 
         <!-- ======= About Us Section ======= -->
-        <section id="about " class="about pt-0 ">
+        <section   id="about"  class="about pt-0 ">
             <div class="container " data-aos="fade-up ">
 
                 <div class="row gy-4 ">
@@ -338,7 +347,7 @@ if ('serviceWorker' in navigator) {
         <!-- End Services Section -->
 
         <!-- ======= Call To Action Section ======= -->
-        <section id="call-to-action " class="call-to-action ">
+        <section id="seach" class="call-to-action ">
             <div class="container " data-aos="zoom-out ">
 
                 <div class="row justify-content-center ">
@@ -452,7 +461,7 @@ if ('serviceWorker' in navigator) {
     <!-- End #main -->
 
     <!-- ======= Footer ======= -->
-    <footer id="footer " class="footer ">
+    <footer id="footer" class="footer ">
 
         <div class="container ">
             <div class="row gy-4 " style="
@@ -477,7 +486,7 @@ if ('serviceWorker' in navigator) {
                     <h4>Useful Links</h4>
                     <ul>
                         <li><a href="# ">Home</a></li>
-                        <li><a href="# ">About us</a></li>
+                        <li><a href="#about">About us</a></li>
                         <li><a href="# ">Terms of service</a></li>
                         <li><a href="# ">Privacy policy</a></li>
                     </ul>
@@ -514,7 +523,8 @@ if ('serviceWorker' in navigator) {
     <!-- End Footer -->
 
 
-
+ <script src="https://code.jquery.com/jquery-3.6.3.slim.js" integrity="sha256-DKU1CmJ8kBuEwumaLuh9Tl/6ZB6jzGOBV/5YpNE2BWc=" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
     <!-- Vendor JS Files -->
     <script src="assets2/vendor/bootstrap/js/bootstrap.bundle.min.js "></script>
     <script src="assets2/vendor/purecounter/purecounter_vanilla.js "></script>
@@ -534,7 +544,7 @@ let deferredPrompt;
   deferredPrompt = event;
   
   // Exibir o botão de download ou realizar outra ação
-  showDownloadButton();
+  //showDownloadButton();
 });
 const downloadButton = document.querySelector('#meuBotaoDeDownload');
 downloadButton.addEventListener('click', () => {

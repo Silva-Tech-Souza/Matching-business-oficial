@@ -1,10 +1,7 @@
 <?php
 
-include('../model/classes/conexao.php');
-include('../model/ErrorLog.php');
-include('../model/classes/tblRangeValues.php');
-include('../model/classes/tblNivelOperacao.php');
-include('../model/classes/tblNumEmpregados.php');
+include_once('../model/classes/conexao.php');
+include_once('../model/ErrorLog.php');
 header("Access-Control-Allow-Origin: *");
 date_default_timezone_set('America/Sao_Paulo');
 
@@ -66,11 +63,18 @@ $lastYear3 = $currentYear - 3;
                                 <input type="hidden" name="labelfob2" value="<?php echo $lastYear2; ?>">
                                 <input type="hidden" name="labelfob3" value="<?php echo $lastYear3; ?>">
 
-                              
+                                <div class="col-sm-12">
+                                    <div class="form-floating mb-3">
+                                        
+                                        <input style="font-size: small;height: 4rem !important;" required type="date" id="yearInput" name="year" min="1900" max="2024" class="form-control inputstyle border-dark inputtamanho" >
+                                        <label for="yearInput" style=" font-size: larger;">Founded in:</label>
+                                    </div>
+                                </div>
                                 <div class="col-sm-12">
                                     <div class="form-floating mb-3">
                                         <select style="font-size: small;height: 4rem !important;" required name="numEmpregados" class=" form-select  border-dark inputtamanho" id="floatingSelectGrid" aria-label="Floating label select example">
                                             <?php
+                                            include_once('../model/classes/tblNumEmpregados.php');
                                             $tblNumEmpregados = new NumEmpregados($dbh);
                                             $resultsNumEmpregados = $tblNumEmpregados->consulta("ORDER BY ValorInicial ASC");
                                             if ($resultsNumEmpregados != null) {
@@ -84,18 +88,12 @@ $lastYear3 = $currentYear - 3;
                                     </div>
                                 </div>
 
+                              
                                 <div class="col-sm-12">
                                     <div class="form-floating mb-3">
-                                        
-                                        <input style="font-size: small;height: 4rem !important;" required type="date" id="yearInput" name="year" min="1900" max="2024" class="form-control inputstyle border-dark inputtamanho" value="<?php echo $currentDate = date('Y-m-d');?>">
-                                        <label for="yearInput" style=" font-size: larger;">Founded in:</label>
-                                    </div>
-                                </div>
-                                <div class="col-sm-12">
-                                    <div class="form-floating mb-3">
-                                        <select style="font-size: small;height: 4rem !important;" required name="numSellers" class=" form-select  border-dark inputtamanho" id="floatingSelectGrid" aria-label="Floating label select example">
+                                        <select style="font-size: small;height: 4rem !important;" required name="numSellers1" class=" form-select  border-dark inputtamanho" id="floatingSelectGrid" aria-label="Floating label select example">
                                             <?php
-                                            
+                                            include_once('../model/classes/tblNumEmpregados.php');
                                             $tblNumEmpregados = new NumEmpregados($dbh);
                                             $resultsNumEmpregados = $tblNumEmpregados->consulta("ORDER BY ValorInicial ASC");
                                             if ($resultsNumEmpregados != null) {
@@ -113,7 +111,7 @@ $lastYear3 = $currentYear - 3;
 
                                         <select style="font-size: small;height: 4rem !important;" required name="nivelOperacao" class=" form-select  border-dark inputtamanho" id="floatingSelectGrid" aria-label="Floating label select example">
                                             <?php
-                                            
+                                            include_once('../model/classes/tblNivelOperacao.php');
                                             $tblNivelOperacao = new NivelOperacao($dbh);
                                             $resultstblNivelOperacao = $tblNivelOperacao->consulta("");
                                             if ($resultstblNivelOperacao != null) {
@@ -138,7 +136,7 @@ $lastYear3 = $currentYear - 3;
 
                                         <select style="font-size: small;height: 4rem !important;" required name="ano1" class=" form-select  border-dark inputtamanho" id="floatingSelectGrid" aria-label="Floating label select example">
                                             <?php
-                                            
+                                            include_once('../model/classes/tblRangeValues.php');
                                             $tblRangeValues = new RangeValues($dbh);
                                             $resultstblRangeValues = $tblRangeValues->consulta("");
                                             if ($resultstblRangeValues != null) {
@@ -155,7 +153,7 @@ $lastYear3 = $currentYear - 3;
                                     <div class="form-floating mb-3">
                                         <select style="font-size: small;height: 4rem !important;" required name="ano2" class=" form-select  border-dark inputtamanho" id="floatingSelectGrid" aria-label="Floating label select example">
                                             <?php
-                                            
+                                            include_once('../model/classes/tblRangeValues.php');
                                             $tblRangeValues = new RangeValues($dbh);
                                             $resultstblRangeValues = $tblRangeValues->consulta("");
                                             if ($resultstblRangeValues != null) {
@@ -172,7 +170,7 @@ $lastYear3 = $currentYear - 3;
                                     <div class="form-floating mb-3">
                                         <select style="font-size: small;height: 4rem !important;" required name="ano3" class=" form-select  border-dark inputtamanho" id="floatingSelectGrid" aria-label="Floating label select example">
                                             <?php
-                                            
+                                            include_once('../model/classes/tblRangeValues.php');
                                             $tblRangeValues = new RangeValues($dbh);
                                             $resultstblRangeValues = $tblRangeValues->consulta("");
                                             if ($resultstblRangeValues != null) {
@@ -197,7 +195,7 @@ $lastYear3 = $currentYear - 3;
                                     <div class="form-floating mb-3">
                                         <select style="font-size: small;height: 4rem !important;" required name="ano11" class=" form-select  border-dark inputtamanho" id="floatingSelectGrid" aria-label="Floating label select example">
                                             <?php
-                                            
+                                            include_once('../model/classes/tblRangeValues.php');
                                             $tblRangeValues = new RangeValues($dbh);
                                             $resultstblRangeValues = $tblRangeValues->consulta("");
                                             if ($resultstblRangeValues != null) {
@@ -214,7 +212,7 @@ $lastYear3 = $currentYear - 3;
                                     <div class="form-floating mb-3">
                                         <select style="font-size: small;height: 4rem !important;" required name="ano22" class=" form-select  border-dark inputtamanho" id="floatingSelectGrid" aria-label="Floating label select example">
                                             <?php
-                                            
+                                            include_once('../model/classes/tblRangeValues.php');
                                             $tblRangeValues = new RangeValues($dbh);
                                             $resultstblRangeValues = $tblRangeValues->consulta("");
                                             if ($resultstblRangeValues != null) {
@@ -231,7 +229,7 @@ $lastYear3 = $currentYear - 3;
                                     <div class="form-floating mb-3">
                                         <select style="font-size: small;height: 4rem !important;" required name="ano33" class=" form-select  border-dark inputtamanho" id="floatingSelectGrid" aria-label="Floating label select example">
                                             <?php
-                                            
+                                            include_once('../model/classes/tblRangeValues.php');
                                             $tblRangeValues = new RangeValues($dbh);
                                             $resultstblRangeValues = $tblRangeValues->consulta("");
                                             if ($resultstblRangeValues != null) {

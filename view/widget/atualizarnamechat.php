@@ -1,12 +1,11 @@
 
 <?php
 include_once('../../model/classes/conexao.php');
-include_once('../../model/classes/tblUserClients.php');
-include_once('../../model/classes/tblOperations.php');
-
 header('Content-Type: application/json');
 header("Access-Control-Allow-Origin: *");
 
+include('../../model/classes/tblUserClients.php');
+include_once('../../model/classes/tblOperations.php');
 $idClientConversa = $_POST['idClientConversa'];
 
 $userClients = new UserClients($dbh);

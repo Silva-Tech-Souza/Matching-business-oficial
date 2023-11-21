@@ -1,11 +1,3 @@
-<?php 
-
-include_once('../model/classes/tblOperations.php');
-include_once('../model/classes/tblSearchProfile_Results.php');
-include_once('../model/classes/tblUserClients.php');
-
-?>
-
 <div class="header">
 
     <nav id="navbar" class="bg-light-alt container-fluid position-fixed" style="z-index: 9999999; padding-top: 10px;">
@@ -78,7 +70,7 @@ include_once('../model/classes/tblUserClients.php');
                                 <datalist id="search-list">
                                     <?php
 
-                                    
+                                    include_once('../model/classes/tblOperations.php');
                                     $operations = new Operations($dbh);
                                     $resultsOperation = $operations->consulta("WHERE FlagOperation != '0'");
                                     if ($resultsOperation != null) {
@@ -108,7 +100,7 @@ include_once('../model/classes/tblUserClients.php');
                                     </a>
                                 </li>
                                 <li><img src=" <?php if ($imgperfil != "Avatar.png" && $imgperfil != "") {
-                                                    echo "" . $imgperfil;
+                                                    echo "" . $imgperfil."?" . uniqid(); 
                                                 } else {
                                                     echo "assets/img/Avatar.png";
                                                 } ?>" alt="user" class="nav-profile-img" onclick="toggleMenu();" style="object-fit: cover; min-height: 35px !important; max-height: 41px;"></li>
@@ -131,7 +123,55 @@ include_once('../model/classes/tblUserClients.php');
 
                     </div>
                 </div>
-                <div class="col-8 p-0">
+              <div class="col-8 mt-3 p-0 justify-content-start">
+
+
+                    <div class="navbarcenter " style="
+    width: -webkit-fill-available;
+    justify-content: space-between;
+">
+                        <ul class="p-0" style="
+    width: -webkit-fill-available;
+    justify-content: space-evenly
+">
+                           
+                          
+                            <li>
+                                <a href="searchPage.php"><i class="fa-solid  fa-address-card icon-small-screen-navbar" style="font-size: x-large;"></i>
+                                <span style="font-size: 12px;">&nbsp;Search&nbsp;Profile</span></a>
+                            </li>
+                            <li>
+                                <a href="#" onclick="toggleMenuNetwork();"><i class="fa-solid fa-globe icon-small-screen-navbar"style="font-size: x-large;"></i>
+                                <span style="font-size: 12px;">&nbsp;Network</span></a></li>
+                            </li>
+                            <li>
+                                <a href="chatPage.php"><i class="fa-solid fa-comment icon-small-screen-navbar"style="font-size: x-large;"></i>
+                                <span style="font-size: 12px;">&nbsp;Messaging</span></a>
+                            </li>
+                            <li>
+                                <a href="#" onclick="toggleNotifyMenu()"><i class="fa-solid fa-bell icon-small-screen-navbar"style="font-size: x-large;"></i>
+                                <span style="font-size: 20px;">&nbsp;Notifications&nbsp;&nbsp;&nbsp;
+                                <span id="notificationCount" class="badge rounded-pill badge-notification bg-danger"></span></a>
+                            </li>
+
+                        </ul>
+                    </div>
+
+                </div>
+
+                <div class="col-2 p-0 justify-content-center align-items-center d-flex">
+                    <img src=" <?php if ($imgperfil != "Avatar.png" && $imgperfil != "") {
+                                    echo "" . $imgperfil."?" . uniqid();
+                                } else {
+                                    echo "assets/img/Avatar.png";
+                                } ?>" alt="user" class="nav-profile-img" onclick="toggleMenu();" style="object-fit: cover; min-height: 35px !important;">
+                </div>
+
+                
+  <div class="col-1 p-0 mt-2" style="justify-content: center;display: flex;" >
+      <a id="mobile_btn" class="mobile_btn" style="font-size: x-large;margin-top: 4px;margin-right: 15px;" href="#sidebar" style="font-size: xx-large;"><i class="fa fa-bars"></i></a>
+        </div>
+  <div class="col-10  mt-3" style="padding-right: 14px !important;">
                     <div class="d-flex card card-body mb-0 rounded-5" style="max-height: 42px;">
                         <div class="">
                             <form method="POST" action="../listcompani.php" enctype="multipart/form-data" onsubmit="redirectToAnotherPage(); return false;">
@@ -140,7 +180,7 @@ include_once('../model/classes/tblUserClients.php');
 
                                 <datalist id="search-list">
                                     <?php
-                                    
+                                    include_once('../model/classes/tblOperations.php');
 
                                     $operations = new Operations($dbh);
                                     $resultsOperation = $operations->consulta("WHERE FlagOperation != '0' LIMIT 8");
@@ -158,46 +198,6 @@ include_once('../model/classes/tblUserClients.php');
                         </div>
                     </div>
                 </div>
-                <div class="col-2 p-0 justify-content-center align-items-center d-flex">
-                    <img src=" <?php if ($imgperfil != "Avatar.png" && $imgperfil != "") {
-                                    echo "" . $imgperfil;
-                                } else {
-                                    echo "assets/img/Avatar.png";
-                                } ?>" alt="user" class="nav-profile-img" onclick="toggleMenu();" style="object-fit: cover; min-height: 35px !important;">
-                </div>
-
-                <div class="col-9 mt-4 p-0 justify-content-start">
-
-
-                    <div class="navbarcenter ">
-                        <ul class="p-0">
-                            <li><a id="mobile_btn" class="mobile_btn" href="#sidebar"><i class="fa fa-bars"></i></a></li>&nbsp;&nbsp;
-                            <li><a href="#"><i class="fa-solid fa-crown icon-small-screen-navbar"></i><span style="font-size: 12px;">&nbsp;Premium&nbsp;Plan</span></a></li>&nbsp;&nbsp;
-                            <li><a href="searchPage.php"><i class="fa-solid  fa-address-card icon-small-screen-navbar"></i><span style="font-size: 12px;">&nbsp;Search&nbsp;Profile</span></a></li>&nbsp;&nbsp;
-                            <li><a href="#" onclick="toggleMenuNetwork();"><i class="fa-solid fa-globe icon-small-screen-navbar"></i><span style="font-size: 12px;">&nbsp;Network</span></a></li>&nbsp;&nbsp;
-                            </li>
-
-                        </ul>
-                    </div>
-
-                </div>
-                <div class="col-2 mt-4 p-0 d-flex justify-content-start">
-
-
-                    <div class="navbarcenter ">
-                        <ul class="p-0">
-                            <li><a href="chatPage.php"><i class="fa-solid fa-comment icon-small-screen-navbar"></i><span style="font-size: 12px;">&nbsp;Messaging</span></a></li>
-                            <li><a href="#" onclick="toggleNotifyMenu()"><i class="fa-solid fa-bell icon-small-screen-navbar"></i><span style="font-size: 20px;">&nbsp;Notifications&nbsp;&nbsp;&nbsp;
-                                        <span id="notificationCount" class="badge rounded-pill badge-notification bg-danger"></span></a>
-                            </li>&nbsp;&nbsp;&nbsp;&nbsp;
-
-                        </ul>
-                    </div>
-
-                </div>
-
-
-
             </div>
         </div>
 
@@ -211,6 +211,7 @@ include_once('../model/classes/tblUserClients.php');
                 <?php
 
 
+                include_once('../model/classes/tblSearchProfile_Results.php');
                 $searchProfileResults = new SearchProfile_Results($dbh);
                 $searchProfileResults->setidClienteEncontrado($iduser);
                 $resultsSearchProfile = $searchProfileResults->consulta("WHERE idClienteEncontrado = :idClienteEncontrado ORDER BY datahora DESC");
@@ -228,6 +229,7 @@ include_once('../model/classes/tblUserClients.php');
                         $resultsSearchProfileUpdate = $searchProfileResultsUpdate->atualizar("estadoNotif = '1' WHERE id = :id");
 
 
+                        include_once('../model/classes/tblUserClients.php');
                         $userClients = new UserClients($dbh);
                         $userClients->setidClient($idCliente);
                         $resultsUserClients = $userClients->consulta("WHERE idClient = :idClient");
@@ -346,9 +348,10 @@ include_once('../model/classes/tblUserClients.php');
                     <div class="non-connections-container">
                         <br>
                         <p class="color-branco text-center text-recommend-conect">Recommended connections</p><br>
-                        <ul style="padding-left: 19px;">
+                        <ul style="padding-left: 19px !important;">
                             <?php
 
+                            include_once('../model/classes/tblUserClients.php');
 
                             $userClientsAtual = new UserClients($dbh);
                             $userClientsAtual->setidClient($_SESSION["id"]);
@@ -383,6 +386,7 @@ include_once('../model/classes/tblUserClients.php');
                             if ($resultsUserClients != null) {
                                 foreach ($resultsUserClients as $rowcliente) {
 
+                                    include_once('../model/classes/tblOperations.php');
 
                                     $operations = new Operations($dbh);
                                     $operations->setidOperation($rowcliente->CoreBusinessId);
@@ -422,7 +426,7 @@ include_once('../model/classes/tblUserClients.php');
                                                 </div>
 
                                             </li>
-
+<hr>
 
                             <?php
 
@@ -465,6 +469,31 @@ include_once('../model/classes/tblUserClients.php');
                     <p style="color: #ffffff; margin-bottom: 0px !important; text-decoration: none;">&nbsp;&nbsp;&nbsp;&nbsp;Settings & Privacy</p>
                     <i class="bi bi-caret-right-fill" style="color: white;"></i>
                 </a>
+
+    <?php
+                    
+                    $userClientsAtual = new UserClients($dbh);
+                    $userClientsAtual->setidClient($_SESSION["id"]);
+                    $resultsUsuarioAtual = $userClientsAtual->consulta("WHERE idClient = :idClient LIMIT 1");
+
+                    if($resultsUsuarioAtual != null){
+
+                        foreach($resultsUsuarioAtual as $resultsUsuarioAtualUnid){
+                            $codigoCadastroIncompleto = "4matching7" . urlencode($resultsUsuarioAtualUnid->email) . "274bussiness5";
+                            ?>
+
+                <a href="createPass.php?codigoCadastroIncompleto=<?php echo $codigoCadastroIncompleto; ?>&alteracao=1" class="profile-menu-link expand-zoom-menu">
+                    <i class="fa-solid fa-envelope" style="color: white;"></i>
+                    <p style="color: #ffffff; margin-bottom: 0px !important; text-decoration: none;">&nbsp;&nbsp;&nbsp;&nbsp;Reset Password</p>
+                    <i class="bi bi-caret-right-fill" style="color: white;"></i>
+                </a>
+
+<?php
+                        }
+
+                    }
+                
+                ?>
 
                 <a href="#" class="profile-menu-link expand-zoom-menu">
                     <i class="fa fa-certificate fa-1x" style="color: white;"></i>

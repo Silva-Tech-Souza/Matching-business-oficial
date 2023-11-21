@@ -1,14 +1,7 @@
 <?php
 include_once('../model/classes/conexao.php');
-include_once('../model/classes/tblUserClients.php');
-include_once('../model/classes/tblEmpresas.php');
-
-if ( session_status() !== PHP_SESSION_ACTIVE )
-{
-    session_start();
-}
-
-
+    include_once('../model/classes/tblUserClients.php');
+    include_once('../model/classes/tblEmpresas.php');
     if ($_POST["signupsubmit"] != "") {
         $_POST["signupsubmit"]=="";
 

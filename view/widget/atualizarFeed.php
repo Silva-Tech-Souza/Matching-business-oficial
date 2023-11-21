@@ -2,10 +2,6 @@
 include_once('../../model/classes/conexao.php');
 include_once('../../model/classes/tblFeeds.php');
 include_once('../../model/classes/tblUserClients.php');
-include_once("../../model/classes/tblEmpresas.php");
-include_once("../../model/classes/tblOperations.php");
-include_once('../../model/classes/tblCurtidas.php');
-include_once('../../model/classes/tbPostComent.php');
 
 error_reporting(0);
 
@@ -44,7 +40,8 @@ $iduser = $_SESSION["id"];
 
                 $x = 0;
 
-                
+                include_once('../../model/classes/conexao.php');
+                include_once("../../model/classes/tblEmpresas.php");
 
                 $empresas = new Empresas($dbh);
                 $resultsempresas = $empresas->consulta("LIMIT 1");
@@ -163,7 +160,7 @@ $iduser = $_SESSION["id"];
             //$queryuserpost->execute();
             //$resultsuserpost = $queryuserpost->fetchAll(PDO::FETCH_OBJ);
 
-
+            include_once("../../model/classes/tblUserClients.php");
 
             $userClients = new UserClients($dbh);
 
@@ -210,6 +207,7 @@ $iduser = $_SESSION["id"];
                                 //$queryOperationpost->execute();
                                 //$resultsOperationpost = $queryOperationpost->fetchAll(PDO::FETCH_OBJ);
 
+                                include_once("../../model/classes/tblOperations.php");
 
                                 $operations = new Operations($dbh);
 
@@ -305,6 +303,7 @@ $iduser = $_SESSION["id"];
                         //$queryOperationpost->execute();
                         //$resultsOperationpost = $queryOperationpost->fetchAll(PDO::FETCH_OBJ);
 
+                        include_once('../../model/classes/tblCurtidas.php');
 
                         $curtidas = new Curtidas($dbh);
 
@@ -327,6 +326,7 @@ $iduser = $_SESSION["id"];
                         //$queryOperationpost->execute();
                         //$resultsOperationpost = $queryOperationpost->fetchAll(PDO::FETCH_OBJ);
 
+                        include_once('../../model/classes/tblCurtidas.php');
 
                         $curtidas = new Curtidas($dbh);
 
@@ -379,7 +379,7 @@ $iduser = $_SESSION["id"];
                             <a id="btnCommnet" data-toggle="modal" data-target="#modalEditarProduto" data-id="<?php echo $rowfeed->IdFeed;
                                                                                                                 ?>" class="btnCommnet btn like-comment-btn pl-4 pr-4 no-border p-3 hero-image-container2"><span class="btn-comment-post">
                                     <?php
-
+                                    include_once('../../model/classes/tbPostComent.php');
                                     $tbPostComentcont2 = new PostComent($dbh);
                                     $tbPostComentcont2->setidpost($rowfeed->IdFeed);
                                     echo  $tbPostComentcont2->quantidade(" WHERE idpost = :idpost");

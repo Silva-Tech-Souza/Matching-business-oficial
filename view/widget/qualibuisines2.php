@@ -1,7 +1,5 @@
 <?php
 include_once('../../model/classes/conexao.php');
-include_once('../../model/classes/tblBusiness.php');
-include_once('../../model/classes/tblBusinessCategory.php');
 if ( session_status() !== PHP_SESSION_ACTIVE )
 {
    session_start();
@@ -15,6 +13,7 @@ date_default_timezone_set('America/Sao_Paulo');
 
 $idbusines2 = $_GET["q"];
 
+include_once('../../model/classes/tblBusiness.php');
 $tblBusiness1 = new Business($dbh);
 $tblBusiness1->setidBusiness($idbusines2);
 $resultstblBusiness1 = $tblBusiness1->consulta("WHERE idBusiness = :idBusiness");
@@ -33,6 +32,7 @@ if ($tblBusiness1 != null) {
     <option value="0">Select</option>
     <?php
 
+include_once('../../model/classes/tblBusinessCategory.php');
 $tblBusinessCategory = new BusinessCategory($dbh);
 $tblBusinessCategory->setidBusiness($idBusiness);
 $resultstblBusinessCategory = $tblBusinessCategory->consulta("WHERE idBusiness = :idBusiness ORDER BY NmBusinessCategory ASC");

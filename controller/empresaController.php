@@ -1,16 +1,7 @@
 <?php
 
-include_once("../model/classes/conexao.php");
+include("../model/classes/conexao.php");
 include_once('../model/classes/tblEmpresas.php');
-
-if ( session_status() !== PHP_SESSION_ACTIVE )
-{
-    session_start();
-}
-if (!isset($_SESSION["id"])) {
-    header("Location: ../view/login.php");
-}
-
 if(isset($_POST["editarPerfilempresa"])){
     $idempresa = $_POST["idempresa"];
     $arquivoUser = $_FILES['user-image'];

@@ -1,10 +1,5 @@
 <?php
 include_once('../../model/classes/conexao.php');
-include_once("../../model/classes/tblCurtidas.php");
-include_once("../../model/classes/tblUserClients.php");
-include_once("../../model/classes/tblFeeds.php");
-include_once("../../model/classes/tblSearchProfile_Results.php");
-
 if ( session_status() !== PHP_SESSION_ACTIVE )
 {
    session_start();
@@ -20,7 +15,9 @@ $dataAtual = date('Y-m-d');
 $horaAtual = date('H:i');
 
 //cria
+include_once("../../model/classes/tblCurtidas.php");
 
+include_once("../../model/classes/tblUserClients.php");
 
 $tbcurtida = new Curtidas($dbh);
 $tbcurtida->setidusuario($iduser);
@@ -53,7 +50,7 @@ if ($tbcurtidaSeResults != null) {
 
 //parte 3 notif
 
-
+include_once("../../model/classes/tblFeeds.php");
 
 $tblfeedsNotif = new Feeds($dbh);;
 $tblfeedsNotif->setidIdFeed($idPost);
@@ -64,6 +61,7 @@ if ($tblfeedsNotifResults != null) {
     }
 }
 
+include_once("../../model/classes/tblSearchProfile_Results.php");
 
 $searchProfile = new SearchProfile_Results($dbh);;
 

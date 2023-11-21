@@ -1,25 +1,13 @@
 <?php
-include('../model/classes/conexao.php');
-include('../model/ErrorLog.php');
-include('../model/classes/tblUserClients.php');
-include('../model/classes/tblCountry.php');
-include('../model/classes/tblOperations.php');
-include('../model/classes/tblBusiness.php');
-include('../model/classes/tblBusinessCategory.php');
-include('../model/classes/tblViews.php');
-include('../model/classes/tblSearchProfile_Results.php');
-include('../model/classes/tblConect.php');
-include('../model/classes/tblProducts.php');
-include('../model/classes/tblProductPictures.php');
-include('../model/classes/tblFeeds.php');
-include('../model/classes/tblCurtidas.php');
-include('../model/classes/tbPostComent.php');
-
 if ( session_status() !== PHP_SESSION_ACTIVE )
 {
    session_start();
 }
+error_reporting(0);
+include_once('../model/classes/conexao.php');
+include_once('../model/ErrorLog.php');
 date_default_timezone_set('America/Sao_Paulo');
+include_once('../model/classes/tblEmpresas.php');
 
 if ($_SESSION["id"] < 0 || $_SESSION["id"] == "") {
   header("Location: index.php");
@@ -34,7 +22,7 @@ $idusers = $_GET["profile"];
 $geral = $_SESSION["id"];
 
 
-
+include_once('../model/classes/tblUserClients.php');
 
 $UserClient = new UserClients($dbh);
 $UserClient->setidClient($idusers);
@@ -70,6 +58,7 @@ if ($results != null) {
     $imgperfils = $row->PersonalUserPicturePath;
     $imgcapas = $row->LogoPicturePath;
     $descricao =  $row->descricao;
+     $taxidempresa =  $row->taxid;
   }
 }
 
@@ -83,6 +72,9 @@ if ($resultsreal != null) {
 }
 
 
+
+include_once('../model/classes/tblCountry.php');
+
 $Country = new Country($dbh);
 $Country->setidCountry($idcountry);
 $resultsCountry = $Country->consulta("WHERE idCountry = :idCountry");
@@ -93,6 +85,8 @@ if ($resultsCountry != null) {
   }
 }
 
+
+include_once('../model/classes/tblOperations.php');
 
 $Operations = new Operations($dbh);
 $Operations->setidOperation($corebusiness);
@@ -106,6 +100,7 @@ if ($resultsbusiness != null) {
 
 
 if ($satBusinessId != null) {
+  include_once('../model/classes/tblBusiness.php');
 
   $Business = new Business($dbh);
   $Business->setidBusiness($satBusinessId);
@@ -119,7 +114,7 @@ if ($satBusinessId != null) {
 }
 
 
-
+include_once('../model/classes/tblBusinessCategory.php');
 
 $BusinessCategory = new BusinessCategory($dbh);
 $BusinessCategory->setidBusinessCategory($idoperation);
@@ -134,6 +129,7 @@ if ($resultsbusinesscateg != null) {
 
 
 
+include_once('../model/classes/tblViews.php');
 
 $Views = new Views($dbh);
 $Views->setidUser($geral);
@@ -142,6 +138,7 @@ $resultView = $Views->consulta("WHERE idUser = :idUser AND idView = :idView AND 
 
 if ($resultView == null) {
 
+  include_once('../model/classes/tblViews.php');
 
   $Views = new Views($dbh);
   $Views->setidUser($geral);
@@ -152,6 +149,7 @@ if ($resultView == null) {
 
 
 
+  include_once('../model/classes/tblSearchProfile_Results.php');
 
   $searchprofile_results = new SearchProfile_Results($dbh);
 
@@ -166,6 +164,7 @@ if ($resultView == null) {
 
 
 
+include_once('../model/classes/tblConect.php');
 
 $connecttem = new Conect($dbh);
 
@@ -183,6 +182,51 @@ if ($respoconect != null) {
   $temconexao = "";
 }
 
+$adm = false;
+$qtdcolab = 0;
+$empresaDados = new Empresas($dbh);
+$empresaDados->setTaxid($taxidempresa);
+$resultss = $empresaDados->consulta("WHERE taxid = :taxid");
+if ($resultss != null) {
+  foreach ($resultss as $row) {
+    $idempresa = $row->id;
+    $nomeempresa = $row->nome;
+    $colab1 = $row->colab1;
+    $colab2 = $row->colab2;
+    $colab3 = $row->colab3;
+    $colab4 = $row->colab4;
+    $colab5 = $row->colab5;
+  }
+}
+
+if ($iduser !=  $colab1) {
+  $adm = false;
+} else {
+  $adm = true;
+}
+if ($colab2 != 0) {
+  $qtdcolab++;
+}
+if ($colab3 != 0) {
+  $qtdcolab++;
+}
+if ($colab4 != 0) {
+  $qtdcolab++;
+}
+if ($colab5 != 0) {
+  $qtdcolab++;
+}
+
+
+$userClients2colabteste = new UserClients($dbh);
+$userClients2colabteste->setidClient($colab1);
+$results2colabteste = $userClients2colabteste->consulta("WHERE idClient = :idClient");
+if ($results2colabteste != null) {
+    foreach ($results2colabteste as $row) {
+    $imgcapa = $row->LogoPicturePath;
+   $imgcapas = $row->LogoPicturePath;
+    }
+}
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -447,6 +491,9 @@ if ($respoconect != null) {
         display: block;
       }
     }
+      ::-webkit-scrollbar-thumb {
+    background: transparent !important;
+}
   </style>
   
  
@@ -617,6 +664,7 @@ if ($respoconect != null) {
                       <?php if ($rowOperation->FlagOperation != "D") { ?>
                         <ul>
                           <?php
+                          include_once('../model/classes/tblBusiness.php');
                           $business1 = new Business($dbh);
                           $resultsbusiness1 = $business1->consulta("WHERE FlagOperation = '0' ORDER BY NmBusiness ASC");
                           if ($resultsbusiness1 != null) {
@@ -657,19 +705,16 @@ if ($respoconect != null) {
         <div id="profile-column" class="shadow col-12 col-md-12 col-lg-3 justify-content-start overflow-auto scrollable-column fixed-on-desktop">
           <div class="card rounded-4 shadow">
             <div class="card-body p-0 m-0">
-                 <div class="col-12 mh-25" style="    max-height: 100px;
-    width: 100%;
-    background-image: url(<?php if ($imgcapas != "Avatar.png" && $imgcapas != "" && $imgcapas != null) {
-                                                        echo "" . $imgcapas;
-                                                      } else {
-                                                        echo "https://images2.alphacoders.com/131/1317606.jpeg";
-                                                      } ?>);
-    min-height: 100px;
-    border-top-left-radius: var(--bs-border-radius-lg)!important;
-    border-top-right-radius: var(--bs-border-radius-lg)!important;
-    background-size: cover;
-    background-repeat: no-repeat;
-    background-position: center;">
+             <div class="col-12 mh-25" >
+<img src="<?php if ($imgcapa != "Avatar.png" && $imgcapa != "" && $imgcapa != null) {
+                            echo "" . $imgcapa . "?" . uniqid(); 
+                          } else {
+                            echo "https://images2.alphacoders.com/131/1317606.jpeg";
+                          } ?>" style="
+                           width: -webkit-fill-available;
+    height: -webkit-fill-available;
+    min-height: 126px;
+    max-height: 139px;     border-radius: 7px;">
                
               </div>
              
@@ -699,16 +744,16 @@ if ($respoconect != null) {
 
                 </div>
               </div>
-              <div class="row pr-2">
-                <div class="col-9 m-0 p-0 mr-2">
+             <!--<div class="row pr-2">
+                 <div class="col-12 m-0 p-0 mr-2">
                   <div class="col-12 m-0 p-0">
 
-                    <h5 class="fonte-principal">&nbsp;&nbsp;&nbsp;&nbsp;<i class="fa-solid fa-envelope "></i>&nbsp;&nbsp;<?php echo $email; ?></h5>
+                    <h5 class="fonte-principal" style="overflow: hidden;white-space: nowrap;text-overflow: ellipsis;">&nbsp;&nbsp;&nbsp;&nbsp;<i class="fa-solid fa-envelope "></i>&nbsp;&nbsp;<?php echo $email; ?></h5>
 
                   </div>
                 </div>
 
-              </div>
+              </div>-->
               <div class="row pr-2  mb-2">
                 <div class="col-9 m-0 p-0 mr-2">
 
@@ -787,9 +832,10 @@ if ($respoconect != null) {
                   <p class="fonte-titulo" style="padding: 7px; font-size: 17px;">Description</p>
 
                 </div>
-                <div class="col-12 ">
+                <div class="col-12 " style="width: -webkit-fill-available;    padding-left: 17px;
+    padding-right: 20px; font-size: small;">
 
-                  <p class="fonte-principal" style="padding: 7px; font-size: 14px;" id="descricao"><?php echo $descricao; ?></p>
+                  <p class="fonte-principal" style="font-size: 14px;" id="descricao"><?php echo $descricao; ?></p>
 
 
                 </div>
@@ -806,76 +852,80 @@ if ($respoconect != null) {
         <div class="col-lg-9 col-12 justify-content-center">
           <div class="col-md-12  justify-content-center">
             <div class="col-md-12">
-              <?php if ($corebusiness != "3" && $corebusiness != "4") {
-              ?>
-                <div class="row">
-                  <div class="col-12">
-                    <div class="card card-body shadow">
-                      <div class="row">
-                        <div class="col-sm-12">
-                          <h2 class="text-muted valoresinsi"><b>Products</b></h2>
-                        </div>
+            <?php if ($corebusiness != "3" && $corebusiness != "4") {?>
+                            <div class="row mt-3">
+                                <div class="col-12">
+                                    <div class="card card-body shadow">
+                                        <div class="row">
+                                            <div class="col-sm-12">
+                                                <h2 class="text-muted valoresinsi"><b>Products</b></h2>
+                                            </div>
 
-                      </div>
-                      <div class="row rowProduct overflow-auto">
-                        <?php
-                        $products = new Products($dbh);
-                        $products->setidClient($idusers);
-                        $resultsProdutos = $products->consulta("WHERE idClient = :idClient  ORDER BY idProduct ASC ");
-                        if ($resultsProdutos != null) {
-                          if (is_array($resultsProdutos) || is_object($resultsProdutos)) {
-                            foreach ($resultsProdutos as $rowProdutos) {
-                        ?>
-                        
-                            <div class="card-container bcolor-azul-escuro rounded-4" style="width: -webkit-fill-available; height: 274px; margin-left: 10px !important;">
-                                <div class="col-12" style="display: flex; flex-direction: column; min-height: 140px; max-height: 140px; padding: 4px; width: -webkit-fill-available;">
-                                    <a data-toggle="modal" data-target="#modalViewProduto" data-toggle="modal" data-id="<?php echo $rowProdutos->idProduct; ?>" class="hero-image-container">
-                                        <img class="hero-image produtos-img rounded-4" style=" user-drag: none;" src="<?php
-
-                                                                              $productsPicture = new ProductPictures($dbh);
-                                                                              $productsPicture->setidProduct($rowProdutos->idProduct);
-
-                                                                              $resultsProductsPicture = $productsPicture->consulta("WHERE idProduct = :idProduct");
-
-
-                                                                              if ($resultsProductsPicture != null) {
-                                                                                foreach ($resultsProductsPicture as $rowProdutos1) {
-                                                                                  echo $rowProdutos1->tblProductPicturePath;
-                                                                                  break;
-                                                                                }
-                                                                              } else {
-                                                                                echo "https://images.unsplash.com/photo-1507608158173-1dcec673a2e5?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1470&q=80";
-                                                                              }
-                                                                              ?>" alt="Spinning glass cube" />
-                                  </a>
-                                   <div class="col-12" style="padding: 6px;">
-                                    <div class="col-12">
-                                        <a data-toggle="modal" data-target="#modalViewProduto" data-toggle="modal" data-id="<?php echo $rowProdutos->idProduct; ?>" class="">
-                                            <h5 class="mb-0 fonte-titulo" style="white-space: pre-line; color: #fff;text-transform: uppercase; font-weight: 800 !important;"><?php echo $rowProdutos->ProductName; ?></h5>
-                                        </a>
-                                    </div>
-                                    <div class="col-12 mt-2">
-                                        <a data-toggle="modal" data-target="#modalViewProduto" data-toggle="modal" data-id="<?php echo $rowProdutos->idProduct; ?>" class="" style="color: #ffffff !important;">
-                                            <p class="color-cinza-b fonte-principal" style="color: #fff !important; max-height: 7em; overflow: hidden;">
-                                                <?php echo $rowProdutos->ProdcuctDescription; ?>
-                                            </p>
-                                        </a>
                                         </div>
+                                        
+                                        <div class="row  overflow-auto">
+                                        
+                                            <?php
+                                          
+                                            include_once('../model/classes/tblProducts.php');
+                                            $products = new Products($dbh);
+                                            $products->setidClient($idusers);
+                                            $resultsProdutos = $products->consulta("WHERE idClient = :idClient  ORDER BY idProduct ASC ");
+                                            if ($resultsProdutos != null) {
+                                                if (is_array($resultsProdutos) || is_object($resultsProdutos)) {
+                                                    foreach ($resultsProdutos as $rowProdutos) {
+                                            ?>
 
+                                                        <div class="card-container bcolor-azul-escuro rounded-4" style="width: -webkit-fill-available; height: 274px; margin-left: 10px !important;">
+                                                            <div class="col-12" style="display: flex; flex-direction: column; min-height: 140px; max-height: 140px; padding: 4px; width: -webkit-fill-available;">
+                                                                <a data-toggle="modal" data-target="#modalViewProduto" data-toggle="modal" data-id="<?php echo $rowProdutos->idProduct; ?>" class="hero-image-container">
+                                                                    <img class="hero-image produtos-img rounded-4" style=" user-drag: none;" src="<?php
+
+                                                                                                                                                    include_once('../model/classes/tblProductPictures.php');
+                                                                                                                                                    $productsPicture = new ProductPictures($dbh);
+                                                                                                                                                    $productsPicture->setidProduct($rowProdutos->idProduct);
+
+                                                                                                                                                    $resultsProductsPicture = $productsPicture->consulta("WHERE idProduct = :idProduct");
+
+
+                                                                                                                                                    if ($resultsProductsPicture != null) {
+                                                                                                                                                        foreach ($resultsProductsPicture as $rowProdutos1) {
+                                                                                                                                                            echo $rowProdutos1->tblProductPicturePath;
+                                                                                                                                                            break;
+                                                                                                                                                        }
+                                                                                                                                                    } else {
+                                                                                                                                                        echo "https://images.unsplash.com/photo-1507608158173-1dcec673a2e5?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1470&q=80";
+                                                                                                                                                    }
+                                                                                                                                                    ?>" alt="Spinning glass cube" />
+                                                                </a>
+                                                                <div class="col-12" style="padding: 6px;">
+                                                                    <div class="col-12">
+                                                                        <a data-toggle="modal" data-target="#modalViewProduto" data-toggle="modal" data-id="<?php echo $rowProdutos->idProduct; ?>" class="">
+                                                                            <h5 class="mb-0 fonte-titulo" style="white-space: pre-line; color: #fff;text-transform: uppercase; font-weight: 800 !important;"><?php echo $rowProdutos->ProductName; ?></h5>
+                                                                        </a>
+                                                                    </div>
+                                                                    <div class="col-12 mt-2">
+                                                                        <a data-toggle="modal" data-target="#modalViewProduto" data-toggle="modal" data-id="<?php echo $rowProdutos->idProduct; ?>" class="" style="color: #ffffff !important;">
+                                                                            <p class="color-cinza-b fonte-principal" style="color: #fff !important; max-height: 7em; overflow: hidden;">
+                                                                                <?php echo $rowProdutos->ProdcuctDescription; ?>
+                                                                            </p>
+                                                                        </a>
+                                                                    </div>
+
+                                                                </div>
+                                                            </div>
+                                                        </div>
+
+                                            <?php }
+                                                }
+                                            } ?>
+                                        </div>
+                                    </div>
                                 </div>
-                                </div>
-                              </div>
+                            </div>
+                        <?php }   ?>
 
-                        <?php }
-                          }
-                        } ?>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              <?php } else {  ?>
-
-              <?php } ?>
+             
             </div>
             <div class="col-md-12">
 
@@ -889,6 +939,7 @@ if ($respoconect != null) {
                 //$queryfeed->execute();
                 //$resultsfeed = $queryfeed->fetchAll(PDO::FETCH_OBJ);
 
+                include_once('../model/classes/tblFeeds.php');
 
                 $feeds = new Feeds($dbh);
                 $feeds->setidClient($idusers);
@@ -925,7 +976,7 @@ if ($respoconect != null) {
                     //$queryuserpost->execute();
                     //$resultsuserpost = $queryuserpost->fetchAll(PDO::FETCH_OBJ);
 
-                    
+                    include_once("../model/classes/tblUserClients.php");
 
                     $userClients = new UserClients($dbh);
 
@@ -970,6 +1021,7 @@ if ($respoconect != null) {
                               //$queryOperationpost->execute();
                               //$resultsOperationpost = $queryOperationpost->fetchAll(PDO::FETCH_OBJ);
 
+                              include_once("../model/classes/tblOperations.php");
 
                               $operations = new Operations($dbh);
 
@@ -1045,6 +1097,7 @@ if ($respoconect != null) {
                           //$queryOperationpost->execute();
                           //$resultsOperationpost = $queryOperationpost->fetchAll(PDO::FETCH_OBJ);
 
+                          include_once('../model/classes/tblCurtidas.php');
 
                           $curtidas = new Curtidas($dbh);
 
@@ -1067,6 +1120,7 @@ if ($respoconect != null) {
                           //$queryOperationpost->execute();
                           //$resultsOperationpost = $queryOperationpost->fetchAll(PDO::FETCH_OBJ);
 
+                          include_once('../model/classes/tblCurtidas.php');
 
                           $curtidas = new Curtidas($dbh);
 
@@ -1119,8 +1173,7 @@ if ($respoconect != null) {
                             <a id="btnCommnet" data-toggle="modal" data-target="#modalEditarProduto" data-id="<?php echo $rowfeed->IdFeed;
                                                                                                               ?>" class="btn like-comment-btn pl-4 pr-4 no-border p-3 hero-image-container2"><span class="btn-comment-post">
                                 <?php
-
-
+                                include_once('../model/classes/tbPostComent.php');
                                 $tbPostComentcont2 = new PostComent($dbh);
                                 $tbPostComentcont2->setidpost($rowfeed->IdFeed);
                                 echo  $tbPostComentcont2->quantidade(" WHERE idpost = :idpost");
@@ -1137,7 +1190,14 @@ if ($respoconect != null) {
                     </div>
                 <?php $numeroCurtidas = 0;
                   }
-                } ?>
+                }else{ ?>
+                 <div id="minhaDiv"  style="margin-top: 80px;display: flex;flex-direction: column;flex-wrap: nowrap;align-content: center;justify-content: center;align-items: center;height: 63%;">
+
+                        <img src="assets/img/logo.png" alt="logo" style="max-width: 71px; border-radius: 10px;">
+                        <h1>This profile doesn't have any posts yet</h1>
+                        <p style="    font-size: medium;">Connect with him to be able to send messages</p>
+                      </div>
+               <?php }    ?>
               </div>
             </div>
           </div>

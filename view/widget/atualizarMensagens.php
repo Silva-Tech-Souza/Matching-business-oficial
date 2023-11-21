@@ -1,11 +1,10 @@
 
 <?php
 include_once('../../model/classes/conexao.php');
-include_once('../../model/classes/tblChat.php');
-
 header('Content-Type: application/json');
 header("Access-Control-Allow-Origin: *");
 
+include_once('../../model/classes/tblChat.php');
 $iduser = $_POST['iduser'];
 $idClientConversa = $_POST['idClientConversa'];
 
@@ -21,16 +20,18 @@ $response = array();
 if ($mensagens != null) {
   foreach ($mensagens as $mensagenUnid) {
     if ($mensagenUnid->idClient == $iduser) {
+        $data = new DateTime($mensagenUnid->Date); 
+         $dataFormatada = $data->format('d/m/Y H:s');
       $response['messages'][] = array(
         'type' => 'repaly',
         'text' => $mensagenUnid->Text,
-        'date' => $mensagenUnid->Date
+        'date' => $dataFormatada
       );
     } else {
       $response['messages'][] = array(
         'type' => 'sender',
         'text' => $mensagenUnid->Text,
-        'date' => $mensagenUnid->Date
+        'date' => $dataFormatada
       );
     }
   }

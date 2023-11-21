@@ -1,6 +1,3 @@
-<?php 
-include_once('../model/classes/tblCountry.php');
-?>
 <div id="add_perfil" class="modal custom-modal fade mt-1" role="dialog">
     <div class="modal-dialog modal-dialog-centered modal-lg">
         <div class="modal-content">
@@ -79,6 +76,7 @@ include_once('../model/classes/tblCountry.php');
                                 <select required class="form-control bordainput sizeinputedit" id="country-select" name="country">
                                     <option value="">Select a country</option>
                                     <?php
+                                    include_once('../model/classes/tblCountry.php');
 
                                     $tblCountry = new Country($dbh);
 

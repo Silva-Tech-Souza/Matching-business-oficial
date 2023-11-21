@@ -1,6 +1,5 @@
 <?php
 include_once('../../model/classes/conexao.php');
-include_once('../../model/classes/tblSearchProfile_Results.php');
 
 if(isset($_SESSION['error'])){
     error_reporting(0);
@@ -21,6 +20,7 @@ $iduser = $_SESSION["id"];
     <?php
 
 
+    include_once('../../model/classes/tblSearchProfile_Results.php');
     $searchProfileResults = new SearchProfile_Results($dbh);
     $searchProfileResults->setidClienteEncontrado($iduser);
     $resultsSearchProfile = $searchProfileResults->consulta("WHERE idClienteEncontrado = :idClienteEncontrado ORDER BY datahora DESC");

@@ -1,4 +1,4 @@
-<div id="emailcolab" class="modal custom-modal fade" role="dialog">
+<div id="emailcolab" class="modal custom-modal fade" role="dialog" data-backdrop="static" data-keyboard="false">
     <div class="modal-dialog modal-dialog-centered modal-lg">
         <div class="modal-content p-2">
             <div class="modal-header p-1">

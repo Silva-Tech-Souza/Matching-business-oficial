@@ -1,6 +1,5 @@
 <?php
 include_once('../../model/classes/conexao.php');
-include_once("../../model/classes/tblCurtidas.php");
 if ( session_status() !== PHP_SESSION_ACTIVE )
 {
    session_start();
@@ -15,7 +14,7 @@ $iduser = $_SESSION["id"];
 $idpost = $_GET['id'];
 
 //parte 1
-
+include_once("../../model/classes/tblCurtidas.php");
 $tblcurtidadelete = new Curtidas($dbh);;
 $tblcurtidadelete->setidpost($idpost);
 $tblcurtidadelete->setidusuario($iduser);

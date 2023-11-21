@@ -1,16 +1,7 @@
 <?php 
 include_once('../model/classes/conexao.php');
- include_once('../model/classes/tblUserClients.php');
-    include_once('../model/classes/tblEmpresas.php');
-
-    if ( session_status() !== PHP_SESSION_ACTIVE )
-    {
-        session_start();
-    }
-    if (!isset($_SESSION["id"])) {
-        header("Location: ../view/login.php");
-    }
-
+ include('../model/classes/tblUserClients.php');
+    include('../model/classes/tblEmpresas.php');
   if ($_POST["enviaremail"] != "") {
  echo "\n".$id = $_SESSION["id"] ;
 echo "\n".$taxid =  $_POST["taxid"];

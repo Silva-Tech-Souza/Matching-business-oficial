@@ -1,8 +1,8 @@
 <?php
-include_once('../model/classes/conexao.php');
-include_once('../model/classes/tblUserClients.php');
-include_once('../model/classes/tblEmpresas.php');
-include_once('../model/classes/tblCountry.php');
+include('../model/classes/conexao.php');
+include('../model/classes/tblUserClients.php');
+include('../model/classes/tblEmpresas.php');
+include('../model/classes/tblCountry.php');
 
 date_default_timezone_set('America/Sao_Paulo');
 if ($_SESSION["id"] < 0 || $_SESSION["id"] == "") {

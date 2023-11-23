@@ -8,8 +8,8 @@ if ( session_status() !== PHP_SESSION_ACTIVE )
     header("Location: home.php");
   }
 }
-include_once('../model/classes/conexao.php');
-include_once('../model/classes/tblCountry.php');
+include('../model/classes/conexao.php');
+include('../model/classes/tblCountry.php');
 
 date_default_timezone_set('America/Sao_Paulo');
 

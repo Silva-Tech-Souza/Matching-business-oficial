@@ -1,13 +1,11 @@
 <?php
 
-include_once('../model/classes/conexao.php');
-include_once('../model/classes/tblLogErrorCode.php');
-include_once('../model/ErrorLog.php');
-include_once('../model/classes/tblUserClients.php');
-include_once('../model/classes/tblOperations.php');
-include_once('../model/classes/tblConect.php');
-include_once('../model/classes/tblUserClients.php');
-include_once('../model/classes/tblOperations.php');
+include('../model/classes/conexao.php');
+include('../model/classes/tblLogErrorCode.php');
+include('../model/ErrorLog.php');
+include('../model/classes/tblUserClients.php');
+include('../model/classes/tblOperations.php');
+include('../model/classes/tblConect.php');
 
 date_default_timezone_set('America/Sao_Paulo');
 if ($_SESSION["id"] < 0 || $_SESSION["id"] == "") {

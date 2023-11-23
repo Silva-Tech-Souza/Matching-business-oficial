@@ -1,21 +1,21 @@
 <?php
 
-include_once('../model/classes/conexao.php');
-include_once('../model/ErrorLog.php');
-include_once('../model/classes/tblEmpresas.php');
-include_once('../model/classes/tblUserClients.php');
-include_once('../model/classes/tbPostComent.php');
-include_once('../model/classes/tblCurtidas.php');
-include_once("../model/classes/tblOperations.php");
-include_once('../model/classes/tblFeeds.php');
-include_once('../model/classes/tblProductPictures.php');
-include_once('../model/classes/tblProducts.php');
-include_once('../model/classes/tblBusiness.php');
-include_once('../model/classes/tblConect.php');
-include_once('../model/classes/tblSearchProfile_Results.php');
-include_once('../model/classes/tblViews.php');
-include_once('../model/classes/tblBusinessCategory.php');
-include_once('../model/classes/tblCountry.php');
+include('../model/classes/conexao.php');
+include('../model/ErrorLog.php');
+include('../model/classes/tblEmpresas.php');
+include('../model/classes/tblUserClients.php');
+include('../model/classes/tbPostComent.php');
+include('../model/classes/tblCurtidas.php');
+include("../model/classes/tblOperations.php");
+include('../model/classes/tblFeeds.php');
+include('../model/classes/tblProductPictures.php');
+include('../model/classes/tblProducts.php');
+include('../model/classes/tblBusiness.php');
+include('../model/classes/tblConect.php');
+include('../model/classes/tblSearchProfile_Results.php');
+include('../model/classes/tblViews.php');
+include('../model/classes/tblBusinessCategory.php');
+include('../model/classes/tblCountry.php');
 
 if ( session_status() !== PHP_SESSION_ACTIVE )
 {

@@ -1,10 +1,10 @@
 <?php
 
-include_once('../model/classes/conexao.php');
-include_once('../model/ErrorLog.php');
-include_once('../model/classes/tblUserClients.php');
-include_once('../model/classes/tblOperations.php');
-include_once('../model/classes/tblCountry.php');
+include('../model/classes/conexao.php');
+include('../model/ErrorLog.php');
+include('../model/classes/tblUserClients.php');
+include('../model/classes/tblOperations.php');
+include('../model/classes/tblCountry.php');
 
 date_default_timezone_set('America/Sao_Paulo');
 

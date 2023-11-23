@@ -1,10 +1,10 @@
 <?php
 
-include_once('../model/classes/conexao.php');
-include_once('../model/ErrorLog.php');
-include_once('../model/classes/tblNumEmpregados.php');
-include_once('../model/classes/tblNivelOperacao.php');
-include_once('../model/classes/tblRangeValues.php');
+include('../model/classes/conexao.php');
+include('../model/ErrorLog.php');
+include('../model/classes/tblNumEmpregados.php');
+include('../model/classes/tblNivelOperacao.php');
+include('../model/classes/tblRangeValues.php');
 
 
 header("Access-Control-Allow-Origin: *");

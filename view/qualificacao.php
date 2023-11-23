@@ -1,8 +1,8 @@
 <?php
 
-include_once('../model/classes/conexao.php');
-include_once('../model/ErrorLog.php');
-include_once('../model/classes/tblOperations.php');
+include('../model/classes/conexao.php');
+include('../model/ErrorLog.php');
+include('../model/classes/tblOperations.php');
 
 header("Access-Control-Allow-Origin: *");
 date_default_timezone_set('America/Sao_Paulo');

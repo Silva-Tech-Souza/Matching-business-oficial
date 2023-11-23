@@ -1,6 +1,6 @@
 <?php
 
-include_once('../model/classes/conexao.php');
+include('../model/classes/conexao.php');
 
 if ( session_status() !== PHP_SESSION_ACTIVE )
 {

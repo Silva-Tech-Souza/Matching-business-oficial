@@ -1,15 +1,15 @@
 <?php
 
-include_once('../model/classes/conexao.php');
-include_once('../model/classes/tblSearch.php');
-include_once('../model/classes/tblUserClients.php');
-include_once('../model/classes/tblSearchResults.php');
-include_once('../model/classes/tblSearchBusiness.php');
-include_once('../model/classes/tblBusiness.php');
-include_once('../model/classes/tblSearchCountry.php');
-include_once('../model/classes/tblCountry.php');
-include_once('../model/classes/tblOperations.php');
-include_once('../model/classes/tblBusinessCategory.php');
+include('../model/classes/conexao.php');
+include('../model/classes/tblSearch.php');
+include('../model/classes/tblUserClients.php');
+include('../model/classes/tblSearchResults.php');
+include('../model/classes/tblSearchBusiness.php');
+include('../model/classes/tblBusiness.php');
+include('../model/classes/tblSearchCountry.php');
+include('../model/classes/tblCountry.php');
+include('../model/classes/tblOperations.php');
+include('../model/classes/tblBusinessCategory.php');
 
 date_default_timezone_set('America/Sao_Paulo');
 if ($_SESSION["id"] < 0 || $_SESSION["id"] == "") {

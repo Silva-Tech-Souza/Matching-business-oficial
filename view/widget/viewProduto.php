@@ -1,11 +1,12 @@
 <?php
 include_once('../../model/classes/conexao.php');
+include_once("../../model/classes/tblProducts.php");
+include_once('../../model/classes/tblProductPictures.php');
 header("Access-Control-Allow-Origin: *");
 $idProduto = $_GET['idProduto'];
 
 // Exemplo de consulta usando PDO
 $qtd = 0;
-include_once("../../model/classes/tblProducts.php");
 
 $products = new Products($dbh);
 $products->setidProduct($idProduto);
@@ -111,7 +112,6 @@ if ($produtoResults != null) {
                         <div class="image-gallery">
                             <ul class="thumbnail-list">
                                 <?php
-                                include_once('../../model/classes/tblProductPictures.php');
                                     $productsPictures = new ProductPictures($dbh);
                                     $productsPictures->setidProduct($idProduto);
                                     $resultsProdutos1 = $productsPictures->consulta("WHERE idProduct = :idProduct");

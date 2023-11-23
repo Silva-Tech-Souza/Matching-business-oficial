@@ -1,8 +1,28 @@
 <?php
 header("Cache-Control: no-cache, must-revalidate");
 include_once('../model/classes/conexao.php');
-
+include_once('../model/classes/tblEmpresas.php');
+include_once('../model/classes/tblUserClients.php');
+include_once('../model/classes/tblFeeds.php');
+include_once('../model/classes/tblCurtidas.php');
+include_once('../model/classes/tbPostComent.php');
+include_once('../model/classes/tblCountry.php');
+include_once('../model/classes/tblOperations.php');
+include_once('../model/classes/tblBusiness.php');
+include_once('../model/classes/tblBusinessCategory.php');
+include_once('../model/classes/tblSearch.php');
+include_once('../model/classes/tblViews.php');
+include_once('../model/classes/tblNumEmpregados.php');
+include_once('../model/classes/tblNivelOperacao.php');
+include_once('../model/classes/tblRangeValues.php');
+include_once('../model/classes/tblcertificado.php');
+include_once('../model/classes/tblCertificadoImg.php');
+include_once('../model/classes/tblProducts.php');
+include_once('../model/classes/tblProductPictures.php');
+include_once('../model/classes/tblConect.php');
 //include_once('../model/ErrorLog.php');
+
+
 date_default_timezone_set('America/Sao_Paulo');
 if ($_SESSION["id"] < 0 || $_SESSION["id"] == "") {
   header("Location: login.php");
@@ -11,11 +31,6 @@ $iduser = $_SESSION["id"];
 
 $_SESSION["n"] = 5;
 
-include_once('../model/classes/tblEmpresas.php');
-include_once('../model/classes/tblUserClients.php');
-include_once('../model/classes/tblFeeds.php');
-include_once('../model/classes/tblCurtidas.php');
-include_once('../model/classes/tbPostComent.php');
 $userClients = new UserClients($dbh);
 
 $userClients->setidClient($iduser);
@@ -67,7 +82,6 @@ if ($corebusiness == "" || $corebusiness == null || $corebusiness == 0) {
 if ($corebusiness == 3 && $VolImports_3Y == null  || $corebusiness == 4 && $VolImports_3Y == null) {
   header("Location: qualidistribuidor.php");
 }
-include('../model/classes/tblCountry.php');
 
 $country = new Country($dbh);
 
@@ -80,7 +94,6 @@ if ($resultsCountry != null) {
     $pais =  $rowCountry->NmCountry;
   }
 }
-include_once('../model/classes/tblOperations.php');
 $operations = new Operations($dbh);
 $operations->setidOperation($corebusiness);
 $resultsoperation = $operations->consulta("WHERE idOperation = :idOperation");
@@ -91,7 +104,6 @@ if ($resultsoperation != null) {
 }
 
 
-include_once('../model/classes/tblBusiness.php');
 $business = new Business($dbh);
 $business->setidBusiness($satBusinessId);
 $resultsbusiness = $business->consulta("WHERE idBusiness = :idBusiness");
@@ -104,7 +116,6 @@ if ($resultsbusiness != null) {
 
 $NmBusinessCategory = "";
 if ($idoperation != null) {
-  include_once('../model/classes/tblBusinessCategory.php');
   $BusinessCategory = new BusinessCategory($dbh);
   $BusinessCategory->setidBusinessCategory($idoperation);
   $resultsBusinessCategory = $BusinessCategory->consulta("WHERE idBusinessCategory = :idBusinessCategory");
@@ -691,7 +702,8 @@ if ($results2colabteste != null) {
                       <p class="d-inline m-0 color-branco"><a href="listcompani.php?text=mysp" class="nav-link">My saved search</a></p>
                     </div>
                     <div class="col-4 d-flex justify-content-end align-middle">
-                      <p class="d-inline m-0 color-branco"><b><?php include_once('../model/classes/tblSearch.php');
+                      <p class="d-inline m-0 color-branco"><b><?php
+
                                                               $Search = new Search($dbh);
                                                               $Search->setidClient($iduser);
                                                               $resultSearch = $Search->consulta("WHERE idClient = :idClient");
@@ -719,8 +731,7 @@ if ($results2colabteste != null) {
                       <p class="d-inline m-0 color-branco"><a href="#" data-toggle="modal" data-target="#exampleModalconect" class="nav-link">Want to Connect</a></p>
                     </div>
                     <div class="col-4 d-flex justify-content-end align-middle">
-                      <p class="d-inline m-0 color-branco"><b><?php include_once('../model/classes/tblConect.php');
-
+                      <p class="d-inline m-0 color-branco"><b><?php 
                                                               $conect = new Conect($dbh);
 
                                                               $conect->setidUserReceb($iduser);
@@ -760,7 +771,6 @@ if ($results2colabteste != null) {
                       <p class="d-inline m-0 color-branco"><b><?php
 
 
-                                                              include_once('../model/classes/tblConect.php');
 
                                                               $conect = new Conect($dbh);
 
@@ -797,7 +807,6 @@ if ($results2colabteste != null) {
                       <p class="d-inline m-0 color-branco"><b><?php
 
 
-                                                              include_once('../model/classes/tblViews.php');
 
                                                               $views = new Views($dbh);
 
@@ -863,7 +872,6 @@ if ($results2colabteste != null) {
                   <div class="row" style="font-size: larger;">
                     <?php
 
-                    include_once('../model/classes/tblNumEmpregados.php');
                     $nEmpre = new NumEmpregados($dbh);
                     $nEmpre->setidNumEmpregados($numEmpregadosid);
                     $resultsnEmpre = $nEmpre->consulta("WHERE idNumEmpregados = :idNumEmpregados");
@@ -873,7 +881,6 @@ if ($results2colabteste != null) {
                       }
                     }
 
-                    include_once('../model/classes/tblNumEmpregados.php');
                     $nEmpresales = new NumEmpregados($dbh);
                     $nEmpresales->setidNumEmpregados($numVendedores);
                     $resultsnEmpresales = $nEmpresales->consulta("WHERE idNumEmpregados = :idNumEmpregados");
@@ -883,7 +890,6 @@ if ($results2colabteste != null) {
                       }
                     }
 
-                    include_once('../model/classes/tblNivelOperacao.php');
                     $nOperacao = new NivelOperacao($dbh);
                     $nOperacao->setidNivelOperacao($numNivelOperacao);
                     $resultsnOperacao = $nOperacao->consulta("WHERE idNivelOperacao = :idNivelOperacao");
@@ -895,7 +901,6 @@ if ($results2colabteste != null) {
 
 
 
-                    include_once('../model/classes/tblRangeValues.php');
 
 
 
@@ -1078,7 +1083,7 @@ if ($results2colabteste != null) {
                     </div>
                     <div class="row rowProduct overflow-auto">
                       <?php
-                      include_once('../model/classes/tblcertificado.php');
+
                       $certificado = new Certificado($dbh);
                       $certificado->setIduser($iduser);
                       $resultscertificado = $certificado->consulta("WHERE iduser = :iduser  ORDER BY id ASC ");
@@ -1091,7 +1096,8 @@ if ($results2colabteste != null) {
                             <div class="card-container bcolor-azul-escuro rounded-4" style="width: -webkit-fill-available; height: 274px; margin-right: 10px !important;;">
                               <div class="col-12" style="display: flex; flex-direction: column; min-height: 140px; max-height: 140px; padding: 4px; width: -webkit-fill-available;">
                                 <a data-toggle="modal" data-target="#modalEditarPertificado" data-id="<?php echo $rowProdutos->id; ?>" class="hero-image-container herocertificado">
-                                  <img class="hero-image produtos-img rounded-4" style=" user-drag: none;object-fit: cover;" src="<?php include_once('../model/classes/tblCertificadoImg.php');
+                                  <img class="hero-image produtos-img rounded-4" style=" user-drag: none;object-fit: cover;" src="<?php
+
                                     $productsPicture2 = new CertiPicture($dbh);
                                     $productsPicture2->setIdCertificado($rowProdutos->id);
                                     $resultsProductsPicture2 = $productsPicture2->consulta("WHERE idcertificado = :idcertificado LIMIT 1");
@@ -1381,7 +1387,7 @@ if ($results2colabteste != null) {
                           </div>
                           <div class="row rowProduct overflow-auto">
                             <?php
-                            include_once('../model/classes/tblProducts.php');
+
                             $products = new Products($dbh);
                             $products->setidClient($iduser);
                             $resultsProdutos = $products->consulta("WHERE idClient = :idClient  ORDER BY idProduct ASC ");
@@ -1394,7 +1400,7 @@ if ($results2colabteste != null) {
                                     <div class="col-12" style="display: flex; flex-direction: column; min-height: 140px; max-height: 140px; padding: 4px; width: -webkit-fill-available;">
                                       <a data-toggle="modal" data-target="#modalEditarProduto" data-id="<?php echo $rowProdutos->idProduct; ?>" class="hero-image-container produtohero">
                                         <img class="hero-image produtos-img rounded-4" style=" user-drag: none;object-fit: cover;" src="<?php
-                                                                                                                                        include_once('../model/classes/tblProductPictures.php');
+
                                                                                                                                         $productsPicture = new ProductPictures($dbh);
                                                                                                                                         $productsPicture->setidProduct($rowProdutos->idProduct);
 
@@ -1791,7 +1797,7 @@ if ($results2colabteste != null) {
         <div class="modal-body">
           <ul class="m-0 overflow-auto p-1 ul-view">
             <?php
-            include_once('../model/classes/tblConect.php');
+
             $connect = new Conect($dbh);
             $connect->setidUserReceb($iduser);
             $resultsconect = $connect->consulta("WHERE idUserReceb = :idUserReceb AND status = '0'  ORDER BY datapedido DESC");
@@ -1803,7 +1809,7 @@ if ($results2colabteste != null) {
 
             ?>
                 <?php
-                include_once('../model/classes/tblUserClients.php');
+
                 $userClients = new UserClients($dbh);
                 $userClients->setidClient($rowviews->idUserPed);
                 $resultsUserClients = $userClients->consulta("WHERE idClient = :idClient");
@@ -1811,7 +1817,6 @@ if ($results2colabteste != null) {
                 if ($resultsUserClients != null) {
                   foreach ($resultsUserClients as $rowcliente) {
 
-                    include_once('../model/classes/tblOperations.php');
                     $operations = new Operations($dbh);
                     $operations->setidOperation($rowcliente->CoreBusinessId);
                     $resultsOperation = $operations->consulta("WHERE FlagOperation != '0' AND idOperation = :idOperation");
@@ -1899,7 +1904,7 @@ if ($results2colabteste != null) {
         <div class="modal-body">
           <ul class="m-0 overflow-auto p-1 ul-view">
             <?php
-            include_once('../model/classes/tblConect.php');
+
             $connect = new Conect($dbh);
             $connect->setidUserReceb($iduser);
             $resultsconect = $connect->consulta("WHERE idUserReceb = :idUserReceb AND status = '1'  ORDER BY datapedido DESC");
@@ -1911,7 +1916,7 @@ if ($results2colabteste != null) {
 
             ?>
                 <?php
-                include_once('../model/classes/tblUserClients.php');
+
                 $userClients = new UserClients($dbh);
                 $userClients->setidClient($rowviews->idUserPed);
                 $resultsUserClients = $userClients->consulta("WHERE idClient = :idClient");
@@ -1919,7 +1924,6 @@ if ($results2colabteste != null) {
                 if ($resultsUserClients != null) {
                   foreach ($resultsUserClients as $rowcliente) {
 
-                    include_once('../model/classes/tblOperations.php');
                     $operations = new Operations($dbh);
                     $operations->setidOperation($rowcliente->CoreBusinessId);
                     $resultsOperation = $operations->consulta("WHERE FlagOperation != '0' AND idOperation = :idOperation");
@@ -2012,7 +2016,6 @@ if ($results2colabteste != null) {
           <ul class="m-0 overflow-y p-1 ul-view">
             <?php
 
-            include_once('../model/classes/tblViews.php');
 
             $views = new Views($dbh);
             $views->setidView($iduser);
@@ -2024,7 +2027,6 @@ if ($results2colabteste != null) {
             ?>
                 <?php
 
-                include_once('../model/classes/tblConect.php');
                 $userClients = new UserClients($dbh);
                 $userClients->setidClient($rowviews->idUser);
                 $resultsUserClients = $userClients->consulta("WHERE idClient = :idClient");
@@ -2033,7 +2035,6 @@ if ($results2colabteste != null) {
                 if ($resultsUserClients != null) {
                   foreach ($resultsUserClients as $rowcliente) {
 
-                    include_once('../model/classes/tblOperations.php');
                     $operations = new Operations($dbh);
                     $operations->setidOperation($rowcliente->CoreBusinessId);
                     $resultsOperation = $operations->consulta("WHERE FlagOperation != '0' AND idOperation = :idOperation");

@@ -1,5 +1,7 @@
 <?php
 include_once('../../model/classes/conexao.php');
+include_once('../../model/classes/tblBusiness.php');
+include_once('../../model/classes/tblBusinessCategory.php');
 if ( session_status() !== PHP_SESSION_ACTIVE )
 {
    session_start();
@@ -13,7 +15,6 @@ header("Access-Control-Allow-Origin: *");
 
 $idbusines2 = $_GET["q"];
 
-include_once('../../model/classes/tblBusiness.php');
 $tblBusiness = new Business($dbh);
 $tblBusiness ->setidBusiness($idbusines2);
 $resultstblBusiness = $tblBusiness->consulta(" WHERE idBusiness = :idBusiness");
@@ -38,7 +39,6 @@ if ($tblBusiness != null) {
     <select name="category[]" required class=" form-select categmulti border-dark inputtamanho selecttamanho selectsp3" multiple  id="floatingSelectGrid" aria-label="Floating label select example">
     <option>Select</option>
             <?php
-            include_once('../../model/classes/tblBusinessCategory.php');
             $tblBusinessCategory = new BusinessCategory($dbh);
             $tblBusinessCategory->setidBusiness($idBusiness);
             $resultstblBusinessCategory = $tblBusinessCategory->consulta(" WHERE idBusiness = :idBusiness");

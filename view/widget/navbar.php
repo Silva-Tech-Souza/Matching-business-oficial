@@ -1,3 +1,13 @@
+<?php
+
+include_once('../model/classes/tblOperations.php');
+include_once('../model/classes/tblOperations.php');
+include_once('../model/classes/tblSearchProfile_Results.php');
+include_once('../model/classes/tblUserClients.php');
+include_once('../model/classes/tblUserClients.php');
+include_once('../model/classes/tblOperations.php');
+
+?>
 <div class="header">
 
     <nav id="navbar" class="bg-light-alt container-fluid position-fixed" style="z-index: 9999999; padding-top: 10px;">
@@ -70,7 +80,6 @@
                                 <datalist id="search-list">
                                     <?php
 
-                                    include_once('../model/classes/tblOperations.php');
                                     $operations = new Operations($dbh);
                                     $resultsOperation = $operations->consulta("WHERE FlagOperation != '0'");
                                     if ($resultsOperation != null) {
@@ -180,7 +189,6 @@
 
                                 <datalist id="search-list">
                                     <?php
-                                    include_once('../model/classes/tblOperations.php');
 
                                     $operations = new Operations($dbh);
                                     $resultsOperation = $operations->consulta("WHERE FlagOperation != '0' LIMIT 8");
@@ -211,7 +219,6 @@
                 <?php
 
 
-                include_once('../model/classes/tblSearchProfile_Results.php');
                 $searchProfileResults = new SearchProfile_Results($dbh);
                 $searchProfileResults->setidClienteEncontrado($iduser);
                 $resultsSearchProfile = $searchProfileResults->consulta("WHERE idClienteEncontrado = :idClienteEncontrado ORDER BY datahora DESC");
@@ -229,7 +236,6 @@
                         $resultsSearchProfileUpdate = $searchProfileResultsUpdate->atualizar("estadoNotif = '1' WHERE id = :id");
 
 
-                        include_once('../model/classes/tblUserClients.php');
                         $userClients = new UserClients($dbh);
                         $userClients->setidClient($idCliente);
                         $resultsUserClients = $userClients->consulta("WHERE idClient = :idClient");
@@ -351,7 +357,6 @@
                         <ul style="padding-left: 19px !important;">
                             <?php
 
-                            include_once('../model/classes/tblUserClients.php');
 
                             $userClientsAtual = new UserClients($dbh);
                             $userClientsAtual->setidClient($_SESSION["id"]);
@@ -386,7 +391,6 @@
                             if ($resultsUserClients != null) {
                                 foreach ($resultsUserClients as $rowcliente) {
 
-                                    include_once('../model/classes/tblOperations.php');
 
                                     $operations = new Operations($dbh);
                                     $operations->setidOperation($rowcliente->CoreBusinessId);

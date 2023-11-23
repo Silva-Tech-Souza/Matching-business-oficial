@@ -3,6 +3,22 @@ include_once('../model/classes/conexao.php');
 include_once('../model/classes/tblConect.php');
 include_once('../model/classes/tblSearchProfile_Results.php');
 
+if ( session_status() !== PHP_SESSION_ACTIVE )
+{
+  session_start();
+
+  if ($_SESSION["id"] < 0 || $_SESSION["id"] == "") {
+    header('Location: ../view/login.php');
+  }
+
+}else{
+
+  if ($_SESSION["id"] < 0 || $_SESSION["id"] == "") {
+    header('Location: ../view/login.php');
+  }
+
+}
+
 if ($_POST["conectar"] != "") {
 
     $geral= $_POST["geral"];
@@ -27,9 +43,7 @@ if ($_POST["conectar"] != "") {
 
 
     header("Location: ../view/viewProfile.php?profile=$iduser");
-}
-  
-if ($_POST["desconectar"] != "") {
+}else if ($_POST["desconectar"] != "") {
     $idconect = $_POST["idconectar"];
     $idperfilpedido = $_POST["idperfilpedido"];
 
@@ -46,9 +60,7 @@ if ($_POST["desconectar"] != "") {
     $conect->deletar("WHERE id = :id");
 
     header("Location: ../view/viewProfile.php?profile=" . $geral);
-}
-  
-if ($_POST["aceitar"] != "") {
+}else if ($_POST["aceitar"] != "") {
     $idconect = $_POST["idconectar"];
     $iduser =$_POST["iduser"];
 
@@ -65,5 +77,9 @@ if ($_POST["aceitar"] != "") {
     $conect->atualizar("status = '1' WHERE id = :id");
 
     header("Location: ../view/viewProfile.php?profile=$iduser");
+}else{
+
+    header("Location: ../view/login.php");
+
 }
 ?>

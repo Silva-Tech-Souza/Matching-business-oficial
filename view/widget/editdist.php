@@ -1,5 +1,16 @@
 <?
+
 include_once('../../model/classes/conexao.php');
+include_once('../model/classes/tblNumEmpregados.php');
+include_once('../model/classes/tblNumEmpregados.php');
+include_once('../model/classes/tblNivelOperacao.php');
+include_once('../model/classes/tblRangeValues.php');
+include_once('../model/classes/tblRangeValues.php');
+include_once('../model/classes/tblRangeValues.php');
+include_once('../model/classes/tblRangeValues.php');
+include_once('../model/classes/tblRangeValues.php');
+include_once('../model/classes/tblRangeValues.php');
+
 header("Access-Control-Allow-Origin: *");
 ?>
 <div id="edit_dist" class="modal custom-modal fade mt-1" role="dialog" data-backdrop="static" data-keyboard="false">
@@ -21,7 +32,6 @@ header("Access-Control-Allow-Origin: *");
                                     <div class="form-floating mb-3">
                                         <select style="font-size: small;height: 4.5rem !important;" required name="numEmpregados" class=" form-select  border-dark inputtamanho" id="floatingSelectGrid" aria-label="Floating label select example">
                                             <?php
-                                            include_once('../model/classes/tblNumEmpregados.php');
                                             $tblNumEmpregados = new NumEmpregados($dbh);
                                             $resultsNumEmpregados = $tblNumEmpregados->consulta("ORDER BY ValorInicial ASC");
                                             if ($resultsNumEmpregados != null) {
@@ -31,14 +41,13 @@ header("Access-Control-Allow-Origin: *");
                                             <?php  }
                                             } ?>
                                         </select>
-                                        <label for="floatingSelectGrid" style=" font-size: larger;">N° of employees:</label>
+                                        <label for="floatingSelectGrid" style=" font-size: larger;">Nï¿½ of employees:</label>
                                     </div>
                                 </div>
                                <div class="col-sm-12">
                                     <div class="form-floating mb-3">
                                         <select style="font-size: small;height: 4.5rem !important;" required name="rangeValues" class=" form-select  border-dark inputtamanho" id="floatingSelectGrid" aria-label="Floating label select example">
                                         <?php
-                                            include_once('../model/classes/tblNumEmpregados.php');
                                             $tblNumEmpregados = new NumEmpregados($dbh);
                                             $resultsNumEmpregados = $tblNumEmpregados->consulta("ORDER BY ValorInicial ASC");
                                             if ($resultsNumEmpregados != null) {
@@ -62,7 +71,6 @@ header("Access-Control-Allow-Origin: *");
 
                                         <select style="font-size: small;height: 4.5rem !important;" required name="nivelOperacao" class=" form-select  border-dark inputtamanho" id="floatingSelectGrid" aria-label="Floating label select example">
                                             <?php
-                                            include_once('../model/classes/tblNivelOperacao.php');
                                             $tblNivelOperacao = new NivelOperacao($dbh);
                                             $resultstblNivelOperacao = $tblNivelOperacao->consulta("");
                                             if ($resultstblNivelOperacao != null) {
@@ -86,7 +94,7 @@ header("Access-Control-Allow-Origin: *");
                                     <div class="form-floating mb-3">
                                         <select style="font-size: small;height: 4.5rem !important;" required name="ano1" class=" form-select  border-dark inputtamanho" id="floatingSelectGrid" aria-label="Floating label select example">
                                             <?php
-                                            include_once('../model/classes/tblRangeValues.php');
+                                            
                                             $tblRangeValues = new RangeValues($dbh);
                                             $resultstblRangeValues = $tblRangeValues->consulta("");
                                             if ($resultstblRangeValues != null) {
@@ -103,7 +111,7 @@ header("Access-Control-Allow-Origin: *");
                                     <div class="form-floating mb-3">
                                         <select style="font-size: small;height: 4.5rem !important;" required name="ano2" class=" form-select  border-dark inputtamanho" id="floatingSelectGrid" aria-label="Floating label select example">
                                             <?php
-                                            include_once('../model/classes/tblRangeValues.php');
+                                            
                                             $tblRangeValues = new RangeValues($dbh);
                                             $resultstblRangeValues = $tblRangeValues->consulta("");
                                             if ($resultstblRangeValues != null) {
@@ -120,7 +128,6 @@ header("Access-Control-Allow-Origin: *");
                                     <div class="form-floating mb-3">
                                         <select style="font-size: small;height: 4.5rem !important;" required name="ano3" class=" form-select  border-dark inputtamanho" id="floatingSelectGrid" aria-label="Floating label select example">
                                             <?php
-                                            include_once('../model/classes/tblRangeValues.php');
                                             $tblRangeValues = new RangeValues($dbh);
                                             $resultstblRangeValues = $tblRangeValues->consulta("");
                                             if ($resultstblRangeValues != null) {
@@ -143,7 +150,6 @@ header("Access-Control-Allow-Origin: *");
                                     <div class="form-floating mb-3">
                                         <select style="font-size: small;height: 4.5rem !important;" required name="ano11" class=" form-select  border-dark inputtamanho" id="floatingSelectGrid" aria-label="Floating label select example">
                                             <?php
-                                            include_once('../model/classes/tblRangeValues.php');
                                             $tblRangeValues = new RangeValues($dbh);
                                             $resultstblRangeValues = $tblRangeValues->consulta("");
                                             if ($resultstblRangeValues != null) {
@@ -160,7 +166,6 @@ header("Access-Control-Allow-Origin: *");
                                     <div class="form-floating mb-3">
                                         <select style="font-size: small;height: 4.5rem !important;" required name="ano22" class=" form-select  border-dark inputtamanho" id="floatingSelectGrid" aria-label="Floating label select example">
                                             <?php
-                                            include_once('../model/classes/tblRangeValues.php');
                                             $tblRangeValues = new RangeValues($dbh);
                                             $resultstblRangeValues = $tblRangeValues->consulta("");
                                             if ($resultstblRangeValues != null) {
@@ -177,7 +182,6 @@ header("Access-Control-Allow-Origin: *");
                                     <div class="form-floating mb-3">
                                         <select style="font-size: small;height: 4.5rem !important;" required name="ano33" class=" form-select  border-dark inputtamanho" id="floatingSelectGrid" aria-label="Floating label select example">
                                             <?php
-                                            include_once('../model/classes/tblRangeValues.php');
                                             $tblRangeValues = new RangeValues($dbh);
                                             $resultstblRangeValues = $tblRangeValues->consulta("");
                                             if ($resultstblRangeValues != null) {

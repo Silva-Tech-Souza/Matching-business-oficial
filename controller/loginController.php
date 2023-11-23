@@ -2,9 +2,11 @@
 
 include_once('../model/classes/conexao.php');
 include_once('../model/classes/tblUserClients.php');
+include_once('../model/classes/tblEmpresas.php');
+
 date_default_timezone_set('America/Sao_Paulo');
- ini_set('display_erros', 1);
-  error_reporting(E_ALL);
+ini_set('display_erros', 1);
+error_reporting(E_ALL);
 if(isset($_COOKIE["remember_me"])){
     if($_COOKIE["remember_me"]!=null){
         $renemberMeArray = json_decode($_COOKIE['remember_me'], true);
@@ -37,7 +39,7 @@ if(isset($_COOKIE["remember_me"])){
                 $_SESSION['fName'] = $row->FirstName;
                 $_SESSION['lName'] = $row->LastName; 
 
-                include_once('../model/classes/tblEmpresas.php');
+                
                 $empresas = new Empresas($dbh); 
                 $empresas->setidClient($row->idClient);
                 $empresas->setTaxid($row->taxid);
@@ -112,7 +114,7 @@ if(isset($_COOKIE["remember_me"])){
         }
     }
 
-}else{
+}else if(isset($_POST["signupsubmit"])){
 
     $username = htmlspecialchars($_POST['user']);
     $password = htmlspecialchars($_POST['password']);
@@ -159,6 +161,10 @@ if(isset($_COOKIE["remember_me"])){
         header("Location: ../view/login.php");
         exit;
     }
+
+}else{
+
+    header("Location: ../view/login.php");
 
 }
 ?>

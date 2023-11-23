@@ -1,11 +1,5 @@
 <?php
 include_once('../model/classes/conexao.php');
-
-date_default_timezone_set('America/Sao_Paulo');
-if ($_SESSION["id"] < 0 || $_SESSION["id"] == "") {
-    header("Location: login.php");
-}
-$iduser = $_SESSION["id"];
 include_once('../model/classes/tblUserClients.php');
 include_once('../model/classes/tblFeeds.php');
 include_once('../model/classes/tblCurtidas.php');
@@ -15,6 +9,15 @@ include_once('../model/classes/tblCountry.php');
 include_once('../model/classes/tblOperations.php');
 include_once('../model/classes/tblBusiness.php');
 include_once('../model/classes/tblBusinessCategory.php');
+include_once('../model/classes/tblProducts.php');
+include_once('../model/classes/tblProductPictures.php');
+
+date_default_timezone_set('America/Sao_Paulo');
+if ($_SESSION["id"] < 0 || $_SESSION["id"] == "") {
+    header("Location: login.php");
+}
+$iduser = $_SESSION["id"];
+
 $qtdcolab = 0;
 $userClients = new UserClients($dbh);
 $userClients->setidClient($iduser);
@@ -39,7 +42,7 @@ if ($results != null) {
     }
 }
 $adm = false;
-if ($_GET["idtax"] != null) {
+if (isset($_GET["idtax"])) {
     $taxidempresa = $_GET["idtax"];
 }
 $empresaDados = new Empresas($dbh);
@@ -686,7 +689,6 @@ if ($idoperationcolab1 != 0) {
                                         </div>
                                         <div class="row rowProduct overflow-auto">
                                             <?php
-                                            include_once('../model/classes/tblProducts.php');
                                             $products = new Products($dbh);
                                             $products->setidClient($colab1);
                                             $resultsProdutos = $products->consulta("WHERE idClient = :idClient  ORDER BY idProduct ASC ");
@@ -700,7 +702,6 @@ if ($idoperationcolab1 != 0) {
                                                                 <a data-toggle="modal" data-target="#modalViewProduto" data-toggle="modal" data-id="<?php echo $rowProdutos->idProduct; ?>" class="hero-image-container">
                                                                     <img class="hero-image produtos-img rounded-4" style=" user-drag: none;" src="<?php
 
-                                                                                                                                                    include_once('../model/classes/tblProductPictures.php');
                                                                                                                                                     $productsPicture = new ProductPictures($dbh);
                                                                                                                                                     $productsPicture->setidProduct($rowProdutos->idProduct);
 

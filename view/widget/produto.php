@@ -1,3 +1,8 @@
+<?php
+
+include_once('../model/classes/tblOperations.php');
+
+?>
 <style>
         .image-preview img {
             width: 150px;
@@ -95,7 +100,6 @@
                                   
                                     <?php
 
-                                    include_once('../model/classes/tblOperations.php');
                                     $operations = new Operations($dbh);
 
                                     $resultsOperation = $operations->consulta("WHERE FlagOperation = '0'");

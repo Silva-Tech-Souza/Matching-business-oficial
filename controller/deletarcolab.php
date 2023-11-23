@@ -8,8 +8,20 @@ include_once('../model/classes/tblEmpresas.php');
 include_once('../model/classes/tblConect.php');
 include_once('../model/classes/tblChat.php');
 
-if ($_SESSION["id"] < 0 || $_SESSION["id"] == "") {
-    header("Location: login.php");
+if ( session_status() !== PHP_SESSION_ACTIVE )
+{
+  session_start();
+
+  if ($_SESSION["id"] < 0 || $_SESSION["id"] == "") {
+    header('Location: ../view/login.php');
+  }
+
+}else{
+
+  if ($_SESSION["id"] < 0 || $_SESSION["id"] == "") {
+    header('Location: ../view/login.php');
+  }
+
 }
 
 $idcolab = $_GET["idcolab"];

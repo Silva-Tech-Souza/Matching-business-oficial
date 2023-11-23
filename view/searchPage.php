@@ -4,6 +4,7 @@ include_once('../model/classes/conexao.php');
 include_once('../model/ErrorLog.php');
 include_once('../model/classes/tblUserClients.php');
 include_once('../model/classes/tblOperations.php');
+include_once('../model/classes/tblCountry.php');
 
 date_default_timezone_set('America/Sao_Paulo');
 
@@ -220,7 +221,6 @@ if ($resultsoperation != null) {
                                             <select required class="form-select border-dark inputtamanho selecttamanho selectsp1" name="corbusiness" onchange="showcorbusiness(this.value)" id="floatingSelectGrid" aria-label="Floating label select example">
                                                 <option valid="">Select</option>
                                                 <?php
-                                                include_once('../model/classes/tblOperations.php');
                                                 $operations = new Operations($dbh);
                                                 $resultsoperation = $operations->consulta(" WHERE idOperation != '1'");
                                                 if ($resultsoperation != null) {
@@ -264,7 +264,6 @@ if ($resultsoperation != null) {
 
                                             <select required name="country[]" class=" form-select categmulti border-dark inputtamanho" multiple id="floatingSelectGrid" aria-label="Floating label select example">
                                                 <?php
-                                                include('../model/classes/tblCountry.php');
 
                                                 $country = new Country($dbh);
 

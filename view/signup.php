@@ -9,6 +9,8 @@ if ( session_status() !== PHP_SESSION_ACTIVE )
   }
 }
 include_once('../model/classes/conexao.php');
+include_once('../model/classes/tblCountry.php');
+
 date_default_timezone_set('America/Sao_Paulo');
 
 ?>
@@ -134,7 +136,6 @@ date_default_timezone_set('America/Sao_Paulo');
                     <select class="inputtamanho form-select selectfontsize fonteinput" id="country-select" name="country" required>
                       <option value="">Select a country</option>
                       <?php
-                      include_once('../model/classes/tblCountry.php');
 
                       $tblCountry = new Country($dbh);
 

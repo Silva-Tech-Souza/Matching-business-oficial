@@ -1,13 +1,29 @@
 <?php
+
+include_once('../model/classes/conexao.php');
+include_once('../model/ErrorLog.php');
+include_once('../model/classes/tblEmpresas.php');
+include_once('../model/classes/tblUserClients.php');
+include_once('../model/classes/tbPostComent.php');
+include_once('../model/classes/tblCurtidas.php');
+include_once("../model/classes/tblOperations.php");
+include_once('../model/classes/tblFeeds.php');
+include_once('../model/classes/tblProductPictures.php');
+include_once('../model/classes/tblProducts.php');
+include_once('../model/classes/tblBusiness.php');
+include_once('../model/classes/tblConect.php');
+include_once('../model/classes/tblSearchProfile_Results.php');
+include_once('../model/classes/tblViews.php');
+include_once('../model/classes/tblBusinessCategory.php');
+include_once('../model/classes/tblCountry.php');
+
 if ( session_status() !== PHP_SESSION_ACTIVE )
 {
    session_start();
 }
 error_reporting(0);
-include_once('../model/classes/conexao.php');
-include_once('../model/ErrorLog.php');
+
 date_default_timezone_set('America/Sao_Paulo');
-include_once('../model/classes/tblEmpresas.php');
 
 if ($_SESSION["id"] < 0 || $_SESSION["id"] == "") {
   header("Location: index.php");
@@ -22,7 +38,6 @@ $idusers = $_GET["profile"];
 $geral = $_SESSION["id"];
 
 
-include_once('../model/classes/tblUserClients.php');
 
 $UserClient = new UserClients($dbh);
 $UserClient->setidClient($idusers);
@@ -73,7 +88,6 @@ if ($resultsreal != null) {
 
 
 
-include_once('../model/classes/tblCountry.php');
 
 $Country = new Country($dbh);
 $Country->setidCountry($idcountry);
@@ -86,7 +100,6 @@ if ($resultsCountry != null) {
 }
 
 
-include_once('../model/classes/tblOperations.php');
 
 $Operations = new Operations($dbh);
 $Operations->setidOperation($corebusiness);
@@ -100,7 +113,6 @@ if ($resultsbusiness != null) {
 
 
 if ($satBusinessId != null) {
-  include_once('../model/classes/tblBusiness.php');
 
   $Business = new Business($dbh);
   $Business->setidBusiness($satBusinessId);
@@ -114,7 +126,6 @@ if ($satBusinessId != null) {
 }
 
 
-include_once('../model/classes/tblBusinessCategory.php');
 
 $BusinessCategory = new BusinessCategory($dbh);
 $BusinessCategory->setidBusinessCategory($idoperation);
@@ -129,7 +140,6 @@ if ($resultsbusinesscateg != null) {
 
 
 
-include_once('../model/classes/tblViews.php');
 
 $Views = new Views($dbh);
 $Views->setidUser($geral);
@@ -138,7 +148,6 @@ $resultView = $Views->consulta("WHERE idUser = :idUser AND idView = :idView AND 
 
 if ($resultView == null) {
 
-  include_once('../model/classes/tblViews.php');
 
   $Views = new Views($dbh);
   $Views->setidUser($geral);
@@ -149,7 +158,6 @@ if ($resultView == null) {
 
 
 
-  include_once('../model/classes/tblSearchProfile_Results.php');
 
   $searchprofile_results = new SearchProfile_Results($dbh);
 
@@ -164,7 +172,6 @@ if ($resultView == null) {
 
 
 
-include_once('../model/classes/tblConect.php');
 
 $connecttem = new Conect($dbh);
 
@@ -643,7 +650,6 @@ if ($results2colabteste != null) {
             <div class="row p-2 ml-0">
               <ul id="tree2">
                 <?php
-                include_once('../model/classes/tblOperations.php');
                 $operations1 = new Operations($dbh);
                 $resultsOperation1 = $operations1->consulta("WHERE FlagOperation != '0'");
                 if ($resultsOperation1 != null) {
@@ -664,7 +670,6 @@ if ($results2colabteste != null) {
                       <?php if ($rowOperation->FlagOperation != "D") { ?>
                         <ul>
                           <?php
-                          include_once('../model/classes/tblBusiness.php');
                           $business1 = new Business($dbh);
                           $resultsbusiness1 = $business1->consulta("WHERE FlagOperation = '0' ORDER BY NmBusiness ASC");
                           if ($resultsbusiness1 != null) {
@@ -867,7 +872,6 @@ if ($results2colabteste != null) {
                                         
                                             <?php
                                           
-                                            include_once('../model/classes/tblProducts.php');
                                             $products = new Products($dbh);
                                             $products->setidClient($idusers);
                                             $resultsProdutos = $products->consulta("WHERE idClient = :idClient  ORDER BY idProduct ASC ");
@@ -881,7 +885,6 @@ if ($results2colabteste != null) {
                                                                 <a data-toggle="modal" data-target="#modalViewProduto" data-toggle="modal" data-id="<?php echo $rowProdutos->idProduct; ?>" class="hero-image-container">
                                                                     <img class="hero-image produtos-img rounded-4" style=" user-drag: none;" src="<?php
 
-                                                                                                                                                    include_once('../model/classes/tblProductPictures.php');
                                                                                                                                                     $productsPicture = new ProductPictures($dbh);
                                                                                                                                                     $productsPicture->setidProduct($rowProdutos->idProduct);
 
@@ -939,7 +942,6 @@ if ($results2colabteste != null) {
                 //$queryfeed->execute();
                 //$resultsfeed = $queryfeed->fetchAll(PDO::FETCH_OBJ);
 
-                include_once('../model/classes/tblFeeds.php');
 
                 $feeds = new Feeds($dbh);
                 $feeds->setidClient($idusers);
@@ -976,7 +978,6 @@ if ($results2colabteste != null) {
                     //$queryuserpost->execute();
                     //$resultsuserpost = $queryuserpost->fetchAll(PDO::FETCH_OBJ);
 
-                    include_once("../model/classes/tblUserClients.php");
 
                     $userClients = new UserClients($dbh);
 
@@ -1021,7 +1022,6 @@ if ($results2colabteste != null) {
                               //$queryOperationpost->execute();
                               //$resultsOperationpost = $queryOperationpost->fetchAll(PDO::FETCH_OBJ);
 
-                              include_once("../model/classes/tblOperations.php");
 
                               $operations = new Operations($dbh);
 
@@ -1097,7 +1097,6 @@ if ($results2colabteste != null) {
                           //$queryOperationpost->execute();
                           //$resultsOperationpost = $queryOperationpost->fetchAll(PDO::FETCH_OBJ);
 
-                          include_once('../model/classes/tblCurtidas.php');
 
                           $curtidas = new Curtidas($dbh);
 
@@ -1120,7 +1119,6 @@ if ($results2colabteste != null) {
                           //$queryOperationpost->execute();
                           //$resultsOperationpost = $queryOperationpost->fetchAll(PDO::FETCH_OBJ);
 
-                          include_once('../model/classes/tblCurtidas.php');
 
                           $curtidas = new Curtidas($dbh);
 
@@ -1173,7 +1171,6 @@ if ($results2colabteste != null) {
                             <a id="btnCommnet" data-toggle="modal" data-target="#modalEditarProduto" data-id="<?php echo $rowfeed->IdFeed;
                                                                                                               ?>" class="btn like-comment-btn pl-4 pr-4 no-border p-3 hero-image-container2"><span class="btn-comment-post">
                                 <?php
-                                include_once('../model/classes/tbPostComent.php');
                                 $tbPostComentcont2 = new PostComent($dbh);
                                 $tbPostComentcont2->setidpost($rowfeed->IdFeed);
                                 echo  $tbPostComentcont2->quantidade(" WHERE idpost = :idpost");

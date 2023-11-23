@@ -2,6 +2,22 @@
 include_once('../model/classes/conexao.php');
 include_once('../model/classes/tblUserClients.php');
 
+if ( session_status() !== PHP_SESSION_ACTIVE )
+{
+  session_start();
+
+  if ($_SESSION["id"] < 0 || $_SESSION["id"] == "") {
+    header('Location: ../view/login.php');
+  }
+
+}else{
+
+  if ($_SESSION["id"] < 0 || $_SESSION["id"] == "") {
+    header('Location: ../view/login.php');
+  }
+
+}
+
 if ($_POST["create"] != "") {
     $senha = $_POST["password"];
     $confmsenha = $_POST["password-confirm"];
@@ -133,5 +149,9 @@ if ($_POST["create"] != "") {
     $_POST["create"] = "";
 
     }
+}else{
+
+    header('Location: ../view/login.php');
+
 }
 ?>

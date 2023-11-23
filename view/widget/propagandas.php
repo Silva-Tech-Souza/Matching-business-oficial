@@ -2,6 +2,8 @@
 include_once('../../model/classes/conexao.php');
 include_once("../../model/classes/tblEmpresas.php");
 include_once('../../model/classes/tblUserClients.php');
+include_once('../../model/classes/tblOperations.php');
+include_once('../../model/classes/tblBusiness.php');
 
 $empresas = new Empresas($dbh);
 $resultsempresas = $empresas->consulta("LIMIT 12");
@@ -36,7 +38,6 @@ if ($resultsempresas != null) {
         }
 
         
-include_once('../../model/classes/tblOperations.php');
 $operationspropa = new Operations($dbh);
 $operationspropa->setidOperation($CoreBusinessId);
 $resultsoperationprop = $operationspropa->consulta("WHERE idOperation = :idOperation");
@@ -48,7 +49,6 @@ if ($resultsoperationprop != null) {
 
 
 
-include_once('../../model/classes/tblBusiness.php');
 $business = new Business($dbh);
 $business->setidBusiness($SatBusinessId);
 $resultsbusiness = $business->consulta("WHERE idBusiness = :idBusiness");

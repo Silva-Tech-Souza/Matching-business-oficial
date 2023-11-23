@@ -2,7 +2,6 @@
 
 //error_reporting(0);
 include_once('../model/classes/conexao.php');
-
 include_once("../model/classes/tblEmpresas.php");
 include_once('../model/classes/tblUserClients.php');
 include_once('../model/classes/tblOperations.php');
@@ -15,7 +14,8 @@ include_once('../model/classes/tblProductPictures.php');
 include_once('../model/classes/tblFeeds.php');
 include_once('../model/classes/tblCurtidas.php');
 include_once('../model/classes/tbPostComent.php');
-include_once('../model/classes/tblEmpresas.php');
+include_once('../model/classes/tblCountry.php');
+include_once('../model/classes/tblContract.php');
 
 date_default_timezone_set('America/Sao_Paulo');
 if ($_SESSION["id"] < 0 || $_SESSION["id"] == "") {
@@ -62,7 +62,6 @@ if($corebusiness == "" || $corebusiness == null || $corebusiness == 0){
 //$queryCountry->execute();
 //$resultsCountry = $queryCountry->fetchAll(PDO::FETCH_OBJ);
 
-include('../model/classes/tblCountry.php');
 
 $country = new Country($dbh);
 
@@ -981,8 +980,6 @@ if ($results2colabteste != null) {
 
                                                 $x = 0;
 
-                                                include_once('../model/classes/conexao.php');
-                                                include_once("../model/classes/tblEmpresas.php");
 
                                                 $empresas = new Empresas($dbh);
                                                 $resultsempresas = $empresas->consulta("");
@@ -1600,7 +1597,6 @@ if ($results2colabteste != null) {
           <?php
 
 
-          include_once('../model/classes/tblContract.php');
 
           $conect = new Contract($dbh);
 
@@ -1633,7 +1629,6 @@ if ($results2colabteste != null) {
           <?php
 
 
-          include_once('../model/classes/tblContract.php');
 
           $conect = new Contract($dbh);
 
@@ -1666,7 +1661,6 @@ if ($results2colabteste != null) {
           <?php
 
 
-          include_once('../model/classes/tblContract.php');
 
           $conect = new Contract($dbh);
 
@@ -1806,7 +1800,6 @@ if ($results2colabteste != null) {
           <?php
 
 
-          include_once('../model/classes/tblContract.php');
 
           $conect = new Contract($dbh);
 

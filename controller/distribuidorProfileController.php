@@ -1,5 +1,23 @@
 <?php 
 include_once('../model/classes/conexao.php');
+include_once('../model/classes/tblUserClients.php');
+
+if ( session_status() !== PHP_SESSION_ACTIVE )
+{
+  session_start();
+
+  if ($_SESSION["id"] < 0 || $_SESSION["id"] == "") {
+    header('Location: ../view/login.php');
+  }
+
+}else{
+
+  if ($_SESSION["id"] < 0 || $_SESSION["id"] == "") {
+    header('Location: ../view/login.php');
+  }
+
+}
+
 if ($_POST["savedistribuidor"] != "") {
 
      $id =  $_SESSION["id"]."<br>";
@@ -21,7 +39,7 @@ if ($_POST["savedistribuidor"] != "") {
     $ano22 = $_POST["ano22"];
     $ano33 = $_POST["ano33"];
 
-    include_once('../model/classes/tblUserClients.php');
+    
     $distributorProfile = new UserClients($dbh);
   
     $distributorProfile->setAnoFundacao($year);
@@ -49,6 +67,9 @@ if ($_POST["savedistribuidor"] != "") {
 
    $resultsdistributorProfile = $distributorProfile->atualizar("AnoFundacao = :AnoFundacao, NumEmpregados = :NumEmpregados, NumVendedores = :NumVendedores, NivelOperacao = :NivelOperacao, Fob_3Y = :Fob_3Y, Vol_3Y = :Vol_3Y, Fob_2Y = :Fob_2Y, Vol_2Y = :Vol_2Y, Fob_1Y = :Fob_1Y, Vol_1Y = :Vol_1Y, FobImports_3Y = :FobImports_3Y, VolImports_3Y = :VolImports_3Y, FobImports_2Y = :FobImports_2Y, VolImports_2Y = :VolImports_2Y, FobImports_1Y = :FobImports_1Y, VolImports_1Y= :VolImports_1Y  WHERE idClient = :idClient");
     header("Location: ../view/profile.php");
+
 }else{
+
+    header('Location: ../view/login.php');
 
 }

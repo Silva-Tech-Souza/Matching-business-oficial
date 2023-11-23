@@ -1,11 +1,14 @@
 <?php
+
 include_once('../../model/classes/conexao.php');
+include_once('../../model/classes/tblcertificado.php');
+include_once('../../model/classes/tblCertificadoImg.php');
+
 header("Access-Control-Allow-Origin: *");
 $idProduto = $_GET['idProduto'];
 
 // Exemplo de consulta usando PDO
 
-include_once('../../model/classes/tblcertificado.php');
 $certificado = new Certificado($dbh);
 $certificado->setId($idProduto);
 $resultscertificado = $certificado->consulta("WHERE id = :id  ORDER BY id ASC ");
@@ -18,7 +21,6 @@ if ($resultscertificado != null) {
     }
 }
 $qtd = 0;
-include_once('../../model/classes/tblCertificadoImg.php');
 $productsPicture = new CertiPicture($dbh);
 $productsPicture->setIdCertificado($idProduct);
 $resultsProductsPicture = $productsPicture->consulta("WHERE idcertificado = :idcertificado");

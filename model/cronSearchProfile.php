@@ -1,5 +1,6 @@
 <?php
     include_once('classes/conexao.php');
+    include_once('classes/tblUserClients.php');
 
     $query = "CALL `ProcedureMestre`()";
 
@@ -16,8 +17,6 @@
     
     
     //Teste de Perfil inativo sem criação de senha
-    
-    include_once('classes/tblUserClients.php');
 
     $usuarioModel = new UserClients($dbh);
 

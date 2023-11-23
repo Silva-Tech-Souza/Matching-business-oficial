@@ -1,5 +1,8 @@
 <?php
 include_once('../../model/classes/conexao.php');
+include_once('../../model/classes/tblBusiness.php');
+include_once('../../model/classes/tblOperations.php');
+include_once('../../model/classes/tblBusiness.php');
 
 if(isset($_SESSION['error'])){
     error_reporting(0);
@@ -9,7 +12,6 @@ date_default_timezone_set('America/Sao_Paulo');
 
 
 $idbusines = $_GET["q"];
-include_once('../../model/classes/tblOperations.php');
 $tblOperations1 = new Operations($dbh);
 $tblOperations1->setidOperation($idbusines);
 $resultstblOperations = $tblOperations1->consulta("WHERE idOperation = :idOperation");
@@ -36,7 +38,6 @@ if ($tblOperations1 != null) {
         <select name="business[]" required class=" form-select categmulti border-dark inputtamanho selecttamanho selectsp2" multiple='multiple' id="floatingSelectGrid" aria-label="Floating label select example">
           <option>Select</option>
           <?php
-          include_once('../../model/classes/tblBusiness.php');
           $tblBusiness = new Business($dbh);
           $resultstblBusiness = $tblBusiness->consulta("WHERE FlagOperation = '0'");
           if ($tblBusiness != null) {
@@ -66,7 +67,6 @@ if ($tblOperations1 != null) {
         <select name="business" required onchange="showcategoria(this.value)" class="form-select border-dark inputtamanho selectsp2" id="floatingSelectGrid" aria-label="Floating label select example">
           <option>Select</option>
           <?php
-          include_once('../../model/classes/tblBusiness.php');
           $tblBusiness = new Business($dbh);
           $resultstblBusiness = $tblBusiness->consulta("WHERE FlagOperation = '0'");
           if ($tblBusiness != null) {

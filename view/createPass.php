@@ -1,5 +1,6 @@
 <?php
 include_once('../model/classes/conexao.php');
+include_once('../model/classes/tblContract.php');
 error_reporting(0);
 date_default_timezone_set('America/Sao_Paulo');
 
@@ -139,7 +140,6 @@ if ($codigoVerifEmail != "" && $codigoVerifEmail != '0') {
           <?php
 
 
-          include_once('../model/classes/tblContract.php');
 
           $conect = new Contract($dbh);
 

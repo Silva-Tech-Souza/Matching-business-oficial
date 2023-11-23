@@ -1,7 +1,24 @@
 <?php
 
-include("../model/classes/conexao.php");
+include_once("../model/classes/conexao.php");
 include_once('../model/classes/tblEmpresas.php');
+
+if ( session_status() !== PHP_SESSION_ACTIVE )
+{
+  session_start();
+
+  if ($_SESSION["id"] < 0 || $_SESSION["id"] == "") {
+    header('Location: ../view/login.php');
+  }
+
+}else{
+
+  if ($_SESSION["id"] < 0 || $_SESSION["id"] == "") {
+    header('Location: ../view/login.php');
+  }
+
+}
+
 if(isset($_POST["editarPerfilempresa"])){
     $idempresa = $_POST["idempresa"];
     $arquivoUser = $_FILES['user-image'];
@@ -158,7 +175,7 @@ if(isset($_POST["editarPerfilempresa"])){
 
 }else{
 
-    header("Location: ../view/empresa.php");
+  header('Location: ../view/login.php');
 
 }
 

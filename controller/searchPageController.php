@@ -6,8 +6,26 @@ include_once('../model/classes/tblSearchCategory.php');
 include_once('../model/classes/tblSearchCountry.php');
 include_once('../model/classes/tblSearchEspecificationTag.php');
 include_once('../model/classes/tblSearchSpecification.php');
+include_once('../model/classes/tblBusinessCategory.php');
+include_once("../model/classes/tblUserClients.php");
+include_once("../model/classes/tblBusiness.php");
 
 
+if ( session_status() !== PHP_SESSION_ACTIVE )
+{
+  session_start();
+
+  if ($_SESSION["id"] < 0 || $_SESSION["id"] == "") {
+    header('Location: ../view/login.php');
+  }
+
+}else{
+
+  if ($_SESSION["id"] < 0 || $_SESSION["id"] == "") {
+    header('Location: ../view/login.php');
+  }
+
+}
 $corbusiness = $_POST["corbusiness"];
 //echo "corbusiness: " . $corbusiness . "<br>";
 if(isset($_POST["news"])){
@@ -134,7 +152,6 @@ if($_POST["flagtipo"] == "A"){
 
         }
 
-        include_once("../model/classes/tblUserClients.php");
         $user = new UserClients($dbh);
         $user->setidClient($_SESSION["id"]);
         $user->setPontos(200);
@@ -167,7 +184,6 @@ if($_POST["flagtipo"] == "A"){
     
             }
     
-            include_once('../model/classes/tblBusinessCategory.php');
 
             $businesCat = new BusinessCategory($dbh);
 
@@ -239,7 +255,6 @@ if($_POST["flagtipo"] == "A"){
       
         $searchspecification->cadastrar();
 
-        include_once("../model/classes/tblUserClients.php");
         $user = new UserClients($dbh);
         $user->setidClient($_SESSION["id"]);
         $user->setPontos(200);
@@ -303,7 +318,6 @@ if($_POST["flagtipo"] == "A"){
 
         }
 
-        include_once("../model/classes/tblUserClients.php");
         $user = new UserClients($dbh);
         $user->setidClient($_SESSION["id"]);
         $user->setPontos(200);
@@ -322,7 +336,6 @@ if($_POST["flagtipo"] == "A"){
 
     if($idSearch!= null){
 
-        include_once("../model/classes/tblBusiness.php");
 
         $operation = new Business($dbh);
 
@@ -366,7 +379,6 @@ if($_POST["flagtipo"] == "A"){
             
                 }
         
-                include_once("../model/classes/tblUserClients.php");
                 $user = new UserClients($dbh);
                 $user->setidClient($_SESSION["id"]);
                 $user->setPontos(200);

@@ -1,3 +1,11 @@
+<?php 
+
+include_once('../model/classes/tblOperations.php');
+include_once('../model/classes/tblBusiness.php');
+include_once('../model/classes/tblBusiness.php');
+
+?>
+
 <div id="add_perfil" class="modal custom-modal fade mt-1" role="dialog" data-backdrop="static" data-keyboard="false">
     <div class="modal-dialog modal-dialog-centered modal-lg">
         <div class="modal-content">
@@ -100,7 +108,6 @@
                                     <select class="form-control bordainput sizeinputedit" onchange="showbusines(this.value)" required id="coreBusiness" name="coreBusiness">
 
                                         <?php
-                                        include_once('../model/classes/tblOperations.php');
                                         $operations = new Operations($dbh);
                                         $resultsoperation = $operations->consulta("");
                                         if ($operations != null) {
@@ -120,7 +127,6 @@
                                         <label class="txtinput sizetituloedit">Business:</label>
                                         <select onchange="showbusines2(this.value)" required class="form-control bordainput sizeinputedit" id="satellite" name="satellite">
                                             <?php
-                                            include_once('../model/classes/tblBusiness.php');
                                             $bussiness = new Business($dbh);
 
                                             $resultsbusiness = $bussiness->consulta("WHERE FlagOperation = '0' AND FlagOperation != 'D'");
@@ -143,7 +149,6 @@
 
                                         <?php
 
-                                        include_once('../model/classes/tblBusiness.php');
                                         $bussinesscategory = new BusinessCategory($dbh);
                                         $bussinesscategory->setidBusinessCategory($idoperation);
                                         $resultsbussinesscategory = $bussinesscategory->consulta("WHERE idBusinessCategory = :idBusinessCategory");

@@ -1,6 +1,23 @@
 <?php
 include_once('../model/classes/conexao.php');
 include_once('../model/classes/tblUserClients.php');
+
+if ( session_status() !== PHP_SESSION_ACTIVE )
+{
+  session_start();
+
+  if ($_SESSION["id"] < 0 || $_SESSION["id"] == "") {
+    header('Location: ../view/login.php');
+  }
+
+}else{
+
+  if ($_SESSION["id"] < 0 || $_SESSION["id"] == "") {
+    header('Location: ../view/login.php');
+  }
+
+}
+
 $iduser = $_SESSION["id"];
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
@@ -27,10 +44,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $nomeArquivoMaisTipo = "LogoPicture_$iduser." . $file_type;
             if (move_uploaded_file($file_temp, "../view/assets/img/$iduser/" . $nomeArquivoMaisTipo)) {
               $caminho = "assets/img/$iduser/$nomeArquivoMaisTipo";
-    
-                  
-    
-              include_once('../model/classes/tblUserClients.php');
     
               $userClients = new UserClients($dbh);
     
@@ -62,7 +75,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             if (move_uploaded_file($file_temp, "../view/assets/img/$iduser/" . $nomeArquivoMaisTipo)) {
               $caminho = "assets/img/$iduser/$nomeArquivoMaisTipo";
     
-              include_once('../model/classes/tblUserClients.php');
     
               $userClients = new UserClients($dbh);
     

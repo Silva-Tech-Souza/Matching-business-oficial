@@ -3,7 +3,12 @@
 include_once('../model/classes/conexao.php');
 include_once('../model/classes/tblLogErrorCode.php');
 include_once('../model/ErrorLog.php');
-error_reporting(0);
+include_once('../model/classes/tblUserClients.php');
+include_once('../model/classes/tblOperations.php');
+include_once('../model/classes/tblConect.php');
+include_once('../model/classes/tblUserClients.php');
+include_once('../model/classes/tblOperations.php');
+
 date_default_timezone_set('America/Sao_Paulo');
 if ($_SESSION["id"] < 0 || $_SESSION["id"] == "") {
   header("Location: login.php");
@@ -20,7 +25,6 @@ $idClientConversa = "7";
 }
 
 
-include_once('../model/classes/tblUserClients.php');
 
 $userClients = new UserClients($dbh);
 
@@ -40,21 +44,29 @@ if ($results != null) {
     $imgcapa = $row->LogoPicturePath;
   }
 }
+/*
+if($idoperation != null){
+*/
+  $operations = new Operations($dbh);
 
-include_once('../model/classes/tblOperations.php');
-$operations = new Operations($dbh);
-
-$operations->setidOperation($idoperation);
-$resultsoperation = $operations->consulta("WHERE idOperation = :idOperation");
+  $operations->setidOperation($idoperation);
+  $resultsoperation = $operations->consulta("WHERE idOperation = :idOperation");
 
 
-if ($resultsoperation != null) {
-  foreach ($resultsoperation as $rowoperation) {
-    $_SESSION["tipoflag"] =  $rowbusiness->FlagOperation;
-    $NmOperation = $rowbusiness->NmOperation;
+  if ($resultsoperation != null) {
+    foreach ($resultsoperation as $rowoperation) {
+      $_SESSION["tipoflag"] =  $rowbusiness->FlagOperation;
+      $NmOperation = $rowbusiness->NmOperation;
+    }
   }
-}
+/*
+}else{
 
+  $_SESSION["tipoflag"] =  "D";
+  $NmOperation = "";
+
+}
+*/
 
 ?>
 
@@ -132,7 +144,6 @@ if ($resultsoperation != null) {
                         <div class="tab-pane fade show active" id="Open" role="tabpanel" aria-labelledby="Open-tab">
                           <!-- chat-list -->
                           <div class="chat-list"><?php
-                                                  include_once('../model/classes/tblConect.php');
                                                   $conects = new Conect($dbh);
                                                   $conects->setidUserPed($iduser);
                                                   $conects->setidUserReceb($iduser);
@@ -144,7 +155,6 @@ if ($resultsoperation != null) {
                                                       } else {
                                                         $idconectado = $row->idUserReceb;
                                                       }
-                                                      include_once('../model/classes/tblUserClients.php');
                                                       $userClients = new UserClients($dbh);
                                                       $userClients->setidClient($idconectado);
                                                       $resultsUserClients = $userClients->consulta("WHERE idClient = :idClient");
@@ -165,7 +175,6 @@ if ($resultsoperation != null) {
                                       <div class="flex-grow-1 ms-3">
                                         <h3><?php echo $rowCon->FirstName . " " . $rowCon->LastName; ?></h3>
                                         <p><?php
-                                                          include_once('../model/classes/tblOperations.php');
 
                                                           $Operations = new Operations($dbh);
                                                           $Operations->setidOperation($rowCon->CoreBusinessId);

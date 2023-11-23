@@ -1,13 +1,15 @@
 <?php
 include_once('../model/classes/conexao.php');
 include_once('../model/classes/tblUserClients.php');
+include_once('../model/classes/tblEmpresas.php');
+include_once('../model/classes/tblCountry.php');
+
 date_default_timezone_set('America/Sao_Paulo');
 if ($_SESSION["id"] < 0 || $_SESSION["id"] == "") {
   header("Location: login.php");
 }
 $txaid = openssl_decrypt($_GET["dixat"], openssl_get_cipher_methods()[2] ,"matchingBussinessMelhorSistema");
 
-include_once('../model/classes/tblEmpresas.php');
 $NOMEEMRPESA = "";
 $empresas = new Empresas($dbh);
 
@@ -207,7 +209,6 @@ $qtdcolab = openssl_decrypt($_GET["balocdtq"], openssl_get_cipher_methods()[2] ,
                     <select class="inputtamanho form-select selectfontsize" id="country-select" name="country" required>
                       <option value="">Select a country</option>
                       <?php
-                      include_once('../model/classes/tblCountry.php');
 
                       $tblCountry = new Country($dbh);
 

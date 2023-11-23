@@ -4,6 +4,8 @@ if ( session_status() !== PHP_SESSION_ACTIVE )
 {
   session_start();
 }
+include_once('classes/tblLogError.php');
+include_once('classes/conexao.php');
 
 function myLog()
 {
@@ -12,7 +14,6 @@ function myLog()
         // obtendo informações do erro e disparando uma Exception
         extract( $error , EXTR_SKIP );
 
-        include_once('../model/classes/tblLogError.php');
         
 
         $logErrorCode = new LogErrorCode($dbh);
@@ -104,9 +105,9 @@ function log_error( $code , $error , $file , $line )
     // obtendo informações do erro e disparando uma Exception
     if( error_reporting() === 0 ) return;
 
-    include_once('../model/classes/tblLogError.php');
     
-
+    
+    include_once('classes/conexao.php');
     $logErrorCode = new LogErrorCode($dbh);
 
     $logErrorCode->setDescLogError($error.

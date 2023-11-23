@@ -2,6 +2,8 @@
 
 include_once('../model/classes/conexao.php');
 include_once('../model/ErrorLog.php');
+include_once('../model/classes/tblOperations.php');
+
 header("Access-Control-Allow-Origin: *");
 date_default_timezone_set('America/Sao_Paulo');
 
@@ -104,7 +106,6 @@ date_default_timezone_set('America/Sao_Paulo');
                                         <select onchange="showbusines(this.value)" class="form-control inputtamanho selectsize" name="coreBusiness">
                                             <option value="0">Select</option>
                                             <?php
-                                            include_once('../model/classes/tblOperations.php');
 
                                             $tblOperations = new Operations($dbh);
 

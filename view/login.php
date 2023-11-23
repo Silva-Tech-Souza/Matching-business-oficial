@@ -1,10 +1,12 @@
 <?php
+
+include_once('../model/classes/conexao.php');
+
 if ( session_status() !== PHP_SESSION_ACTIVE )
 {
    
    $_SESSION["n"] = 8;
 }
-include_once('../model/classes/conexao.php');
 try {
     if (isset($_COOKIE["remember_me"])) {
         if ($_COOKIE["remember_me"] != null) {

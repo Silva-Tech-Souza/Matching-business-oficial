@@ -1,5 +1,12 @@
 <?php
+
 include_once('../../model/classes/conexao.php');
+include_once('../../model/classes/tblOperations.php');
+include_once('../../model/classes/tblNumEmpregados.php');
+include_once('../../model/classes/tblRangeValues.php');
+include_once('../../model/classes/tblNivelOperacao.php');
+
+
 if ( session_status() !== PHP_SESSION_ACTIVE )
 {
    session_start();
@@ -10,7 +17,6 @@ if(isset($_SESSION['error'])){
 date_default_timezone_set('America/Sao_Paulo');
 
 $idbusines = $_GET["q"];
-include_once('../../model/classes/tblOperations.php');
 $tblOperations1 = new Operations($dbh);
 $tblOperations1->setidOperation($idbusines);
 $resultstblOperations = $tblOperations1->consulta("WHERE idOperation = :idOperation");
@@ -59,7 +65,6 @@ if ($_SESSION["FlagOperation"] == "A" || $_SESSION["FlagOperation"] == "C") {
             <div class="form-floating mb-3">
                 <select required name="numempregados" class=" form-select  border-dark inputtamanho" id="floatingSelectGrid" aria-label="Floating label select example">
                     <?php
-                    include_once('../../model/classes/tblNumEmpregados.php');
                     $tblNumEmpregados = new NumEmpregados($dbh);
                     $resultsNumEmpregados = $tblNumEmpregados->consulta("ORDER BY ValorInicial ASC");
                     if ($tblNumEmpregados != null) {
@@ -76,7 +81,6 @@ if ($_SESSION["FlagOperation"] == "A" || $_SESSION["FlagOperation"] == "C") {
                                     <div class="form-floating mb-3">
                                         <select style="font-size: small;height: 4rem !important;" required name="numSellers" class=" form-select  border-dark inputtamanho" id="floatingSelectGrid" aria-label="Floating label select example">
                                             <?php
-                                            include_once('../model/classes/tblNumEmpregados.php');
                                             $tblNumEmpregados = new NumEmpregados($dbh);
                                             $resultsNumEmpregados = $tblNumEmpregados->consulta("ORDER BY ValorInicial ASC");
                                             if ($resultsNumEmpregados != null) {
@@ -93,7 +97,6 @@ if ($_SESSION["FlagOperation"] == "A" || $_SESSION["FlagOperation"] == "C") {
             <div class="form-floating mb-3">
                 <select required name="rangevalues" class=" form-select  border-dark inputtamanho" id="floatingSelectGrid" aria-label="Floating label select example">
                     <?php
-                    include_once('../../model/classes/tblRangeValues.php');
                     $tblRangeValues = new RangeValues($dbh);
                     $resultsRangeValues = $tblRangeValues->consulta("ORDER BY ValorInicial ASC");
                     if ($tblRangeValues != null) {
@@ -110,7 +113,6 @@ if ($_SESSION["FlagOperation"] == "A" || $_SESSION["FlagOperation"] == "C") {
             <div class="form-floating mb-3">
                 <select required name="rangevalues2" class=" form-select  border-dark inputtamanho" id="floatingSelectGrid" aria-label="Floating label select example">
                     <?php
-                    include_once('../../model/classes/tblRangeValues.php');
                     $tblRangeValues = new RangeValues($dbh);
                     $resultsRangeValues = $tblRangeValues->consulta("ORDER BY ValorInicial ASC");
                     if ($tblRangeValues != null) {
@@ -130,7 +132,6 @@ if ($_SESSION["FlagOperation"] == "A" || $_SESSION["FlagOperation"] == "C") {
 
                 <select required name="niveloperacao" class=" form-select  border-dark inputtamanho" id="floatingSelectGrid" aria-label="Floating label select example">
                     <?php
-                    include_once('../../model/classes/tblNivelOperacao.php');
                     $tblNivelOperacao = new NivelOperacao($dbh);
                     $resultstblNivelOperacao = $tblNivelOperacao->consulta("");
                     if ($resultstblNivelOperacao != null) {

@@ -2,6 +2,22 @@
 include_once('../model/classes/conexao.php');
 include_once('../model/classes/tblUserClients.php');
 
+if ( session_status() !== PHP_SESSION_ACTIVE )
+{
+  session_start();
+
+  if ($_SESSION["id"] < 0 || $_SESSION["id"] == "") {
+    header('Location: ../view/login.php');
+  }
+
+}else{
+
+  if ($_SESSION["id"] < 0 || $_SESSION["id"] == "") {
+    header('Location: ../view/login.php');
+  }
+
+}
+
 if(isset($_POST['sendEmail'])){
 
     $email = $_POST['email'];
@@ -35,6 +51,10 @@ if(isset($_POST['sendEmail'])){
         header("Location: ../view/esqueceuSenha.php?emailEnviado=0");
 
     }
+
+}else{
+
+    header('Location: ../view/login.php');
 
 }
 

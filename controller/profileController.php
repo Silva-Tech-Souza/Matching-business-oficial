@@ -1,6 +1,31 @@
 <?php
 
 include_once('../model/classes/conexao.php');
+include_once('../model/classes/tblUserClients.php');
+include_once('../model/classes/tblProductPictures.php');
+include_once('../model/classes/tblProducts.php');
+include_once("../model/classes/tblBusiness.php");
+include_once('../model/classes/tblcertificado.php');
+include_once('../model/classes/tblCertificadoImg.php');
+include_once('../model/classes/tblConect.php');
+include_once('../model/classes/tblEmpresas.php');
+include_once('../model/classes/tblSearchProfile_Results.php');
+
+if ( session_status() !== PHP_SESSION_ACTIVE )
+{
+  session_start();
+
+  if ($_SESSION["id"] < 0 || $_SESSION["id"] == "") {
+    header('Location: ../view/login.php');
+  }
+
+}else{
+
+  if ($_SESSION["id"] < 0 || $_SESSION["id"] == "") {
+    header('Location: ../view/login.php');
+  }
+
+}
 
 $iduser = $_SESSION["id"];
 
@@ -9,7 +34,7 @@ if (isset($_POST["AdicionarProdutos"])) {
   $POSTnomeproduto = $_POST["nomeproduto"];
   $POSTdescricao = $_POST["descricao"];
 
-  include_once('../model/classes/tblUserClients.php');
+
 
   $userClients = new UserClients($dbh);
 
@@ -33,7 +58,7 @@ if (isset($_POST["AdicionarProdutos"])) {
   //$queryprodutos->bindParam(':Category', $satBusinessId, PDO::PARAM_INT);
   //$queryprodutos->execute();
 
-  include_once('../model/classes/tblProducts.php');
+  
   $Produtos = new Products($dbh);
 
   $Produtos->setidClient($iduser);
@@ -81,7 +106,7 @@ if (isset($_POST["AdicionarProdutos"])) {
           if (move_uploaded_file($file_temp, "../view/assets/img/$iduser/" . $nomeArquivoMaisTipo)) {
             $caminho = "assets/img/$iduser/$nomeArquivoMaisTipo";
 
-            include_once('../model/classes/tblProductPictures.php');
+            
 
             $ProductPictures = new ProductPictures($dbh);
 
@@ -118,7 +143,7 @@ if (isset($_POST["AdicionarProdutos"])) {
           if (move_uploaded_file($file_temp, "../view/assets/img/$iduser/" . $nomeArquivoMaisTipo)) {
             $caminho = "assets/img/$iduser/$nomeArquivoMaisTipo";
 
-            include_once('../model/classes/tblProductPictures.php');
+            
 
             $ProductPictures = new ProductPictures($dbh);
 
@@ -141,7 +166,7 @@ if (isset($_POST["AdicionarProdutos"])) {
 
   $_POST["AdicionarProdutos"] = "";
 
-  include_once("../model/classes/tblUserClients.php");
+  
   $user = new UserClients($dbh);
   $user->setidClient($_SESSION["id"]);
   $user->setPontos(1000);
@@ -149,7 +174,7 @@ if (isset($_POST["AdicionarProdutos"])) {
 
   header("Location: ../view/profile.php");
 } else if (isset($_POST["editarPerfil"])) {
-  include_once('../model/classes/tblUserClients.php');
+  
 
 
 
@@ -165,7 +190,7 @@ if (isset($_POST["AdicionarProdutos"])) {
 
   if ($_POST["coreBusiness"] >= 6) {
 
-    include_once("../model/classes/tblBusiness.php");
+    
 
     $operation = new Business($dbh);
 
@@ -230,7 +255,7 @@ if (isset($_POST["AdicionarProdutos"])) {
     header("Location: ../view/profile.php");
   }
 } else if (isset($_POST["salvar"])) {
-  include_once('../model/classes/tblUserClients.php');
+  
   $arquivoUser = $_FILES['user-image'];
   $arquivoCompany = $_FILES['banner-image'];
 
@@ -253,7 +278,7 @@ if (isset($_POST["AdicionarProdutos"])) {
         if (move_uploaded_file($file_temp, "assets/img/$iduser/" . $nomeArquivoMaisTipo)) {
           $caminho = "assets/img/$iduser/$nomeArquivoMaisTipo";
 
-          include_once('../model/classes/tblUserClients.php');
+          
 
           $userClients = new UserClients($dbh);
 
@@ -295,7 +320,7 @@ if (isset($_POST["AdicionarProdutos"])) {
           //$queryupimg->bindParam(':idClient', $iduser, PDO::PARAM_INT);
           //$queryupimg->execute();
 
-          include_once('../model/classes/tblUserClients.php');
+          
 
           $userClients = new UserClients($dbh);
 
@@ -333,7 +358,7 @@ if (isset($_POST["AdicionarProdutos"])) {
           //$queryupimg->bindParam(':idClient', $iduser, PDO::PARAM_INT);
           //$queryupimg->execute();          
 
-          include_once('../model/classes/tblUserClients.php');
+          
 
           $userClients = new UserClients($dbh);
 
@@ -364,7 +389,7 @@ if (isset($_POST["AdicionarProdutos"])) {
         if (move_uploaded_file($file_temp, "../view/assets/img/$iduser/" . $nomeArquivoMaisTipo)) {
           $caminho = "assets/img/$iduser/$nomeArquivoMaisTipo";
 
-          include_once('../model/classes/tblUserClients.php');
+          
 
           $userClients = new UserClients($dbh);
 
@@ -384,7 +409,7 @@ if (isset($_POST["AdicionarProdutos"])) {
   }
   $_POST["salvar"] = "";
 
-  include_once("../model/classes/tblUserClients.php");
+  
   $user = new UserClients($dbh);
   $user->setidClient($_SESSION["id"]);
   $user->setPontos(200);
@@ -394,7 +419,7 @@ if (isset($_POST["AdicionarProdutos"])) {
   $titulocartificado = $_POST["titulocartificado"];
   $POSTdescricao = $_POST["descricao"];
 
-  include_once('../model/classes/tblcertificado.php');
+  
   $certificado = new Certificado($dbh);
   $certificado->setIduser($iduser);
   $certificado->setTitulo($titulocartificado);
@@ -428,7 +453,7 @@ if (isset($_POST["AdicionarProdutos"])) {
           if (move_uploaded_file($file_temp, "../view/assets/img/$iduser/" . $nomeArquivoMaisTipo)) {
             $caminho = "assets/img/$iduser/$nomeArquivoMaisTipo";
 
-            include_once('../model/classes/tblCertificadoImg.php');
+            
             $ProductPictures = new CertiPicture($dbh);
             $ProductPictures->setCaminho($caminho);
             $ProductPictures->setIdCertificado($lastInsertedId);
@@ -457,7 +482,7 @@ if (isset($_POST["AdicionarProdutos"])) {
           if (move_uploaded_file($file_temp, "../view/assets/img/$iduser/" . $nomeArquivoMaisTipo)) {
             $caminho = "assets/img/$iduser/$nomeArquivoMaisTipo";
 
-            include_once('../model/classes/tblCertificadoImg.php');
+            
             $ProductPictures = new CertiPicture($dbh);
             $ProductPictures->setCaminho($caminho);
             $ProductPictures->setIdCertificado($lastInsertedId);
@@ -473,18 +498,18 @@ if (isset($_POST["AdicionarProdutos"])) {
   header("Location: ../view/profile.php");
 }else if (isset($_POST["deletecertificado"])) {
   $idproduto = $_POST["idproduto"];
-  include_once('../model/classes/tblcertificado.php');
+  
   $certificado = new Certificado($dbh);
   $certificado->setId($idproduto);
   $certificado->deletar("WHERE id = :id");
   header("Location: ../view/profile.php");
 }
  else if (isset($_POST["deleteproduto"])) {
-  include_once('../model/classes/tblUserClients.php');
+
   $idproduto = $_POST["idproduto"];
   $_POST["deleteproduto"] = "";
 
-  include_once('../model/classes/tblProducts.php');
+  
 
   $Product = new Products($dbh);
 
@@ -502,7 +527,7 @@ if (isset($_POST["AdicionarProdutos"])) {
   $nomeproduto = $_POST["nomeproduto"];
   $descricao = $_POST["descricao"];
 
-   include_once('../model/classes/tblcertificado.php');
+   
   $certificado = new Certificado($dbh);
   $certificado->setTitulo($nomeproduto);
   $certificado->setDescricao($descricao);
@@ -512,7 +537,7 @@ if (isset($_POST["AdicionarProdutos"])) {
 
   $total = count($_FILES['imgproduto']['name']);
   if ($_FILES['imgproduto']['name'][0] != "") {
-    include_once('../model/classes/tblCertificadoImg.php');
+    
     $ProductPictures = new CertiPicture($dbh);
     $ProductPictures->setIdCertificado($idproduto);
     $ProductPictures->deletar("WHERE idcertificado = :idcertificado");
@@ -552,7 +577,7 @@ if (isset($_POST["AdicionarProdutos"])) {
 
         if (move_uploaded_file($file_temp, "../view/" . $caminho)) {
 
-          include_once('../model/classes/tblCertificadoImg.png');
+          
           $ProductPictures = new CertiPicture($dbh);
           $ProductPictures->setCaminho($caminho);
           $ProductPictures->setIdCertificado($idproduto);
@@ -568,7 +593,7 @@ if (isset($_POST["AdicionarProdutos"])) {
 
   header("Location: ../view/profile.php");
 }else if (isset($_POST["updateproduto"])) {
-  include_once('../model/classes/tblUserClients.php');
+  
 
   $userClients = new UserClients($dbh);
 
@@ -598,7 +623,7 @@ if (isset($_POST["AdicionarProdutos"])) {
   //$queryprodutos->bindParam(':Category', $CoreBusinessIdpost, PDO::PARAM_INT);
   //$queryprodutos->execute();
 
-  include_once('../model/classes/tblProducts.php');
+
 
   $Product = new Products($dbh);
 
@@ -627,7 +652,7 @@ if (isset($_POST["AdicionarProdutos"])) {
 
   if ($_FILES['imgproduto']['name'][0] != "") {
 
-    include_once('../model/classes/tblProductPictures.php');
+    
 
     $ProductPictures = new ProductPictures($dbh);
     $ProductPictures->setidProduct($idproduto);
@@ -669,7 +694,7 @@ if (isset($_POST["AdicionarProdutos"])) {
 
         if (move_uploaded_file($file_temp, "../view/" . $caminho)) {
 
-          include_once('../model/classes/tblProductPictures.php');
+          
 
           $ProductPictures = new ProductPictures($dbh);
 
@@ -687,7 +712,7 @@ if (isset($_POST["AdicionarProdutos"])) {
 
   header("Location: ../view/profile.php");
 } else if (isset($_POST["conectar"])) {
-  include_once('../model/classes/tblUserClients.php');
+  
   $idconect = $_POST["idconectar"];
   $idperfilpedido = $_POST["idperfilpedido"];
 
@@ -696,7 +721,6 @@ if (isset($_POST["AdicionarProdutos"])) {
   //$queryconectup->bindParam(':id', $idconect, PDO::PARAM_INT);
   //$queryconectup->execute();
 
-  include_once('../model/classes/tblConect.php');
 
   $conect = new Conect($dbh);
 
@@ -712,7 +736,6 @@ if (isset($_POST["AdicionarProdutos"])) {
   //$queryinsertpost->bindParam(':idClienteEncontrado', $idperfilpedido, PDO::PARAM_INT);
   //$queryinsertpost->execute();
 
-  include_once('../model/classes/tblSearchProfile_Results.php');
 
   $tblsearchprofile_results = new SearchProfile_Results($dbh);
 
@@ -725,7 +748,7 @@ if (isset($_POST["AdicionarProdutos"])) {
 
   $tblsearchprofile_results->cadastrar();
 
-  include_once("../model/classes/tblUserClients.php");
+
   $user = new UserClients($dbh);
   $user->setidClient($_SESSION["id"]);
   $user->setPontos(1000);
@@ -733,11 +756,10 @@ if (isset($_POST["AdicionarProdutos"])) {
 
   header("Location: ../view/viewProfile.php?profile=$iduser");
 } else if (isset($_POST["desconectar"])) {
-  include_once('../model/classes/tblUserClients.php');
+
   $idconect = $_POST["idconectar"];
   $idperfilpedido = $_POST["idperfilpedido"];
 
-  include_once('../model/classes/tblConect.php');
 
   $conect = new Conect($dbh);
 
@@ -750,7 +772,6 @@ if (isset($_POST["AdicionarProdutos"])) {
   //$queryconectdelet->bindParam(':id', $idconect, PDO::PARAM_INT);
   //$queryconectdelet->execute();
 
-  include_once("../model/classes/tblUserClients.php");
   $user = new UserClients($dbh);
   $user->setidClient($_SESSION["id"]);
   $user->setPontos(500);
@@ -759,7 +780,6 @@ if (isset($_POST["AdicionarProdutos"])) {
   header("Location: ../view/profile.php");
 } else if (isset($_POST["enviaremail"])) {
 
-  include_once("../model/classes/tblUserClients.php");
   $email = $_POST["emailcolab"];
   $qtdcolab = $_POST["qtdcolab"];
   $nomeempresa = $_POST["nomeempresa"];
@@ -812,7 +832,7 @@ if (isset($_POST["AdicionarProdutos"])) {
   $ano22 = $_POST["ano22"];
   $ano33 = $_POST["ano33"];
 
-  include_once('../model/classes/tblUserClients.php');
+
   $distributorProfile = new UserClients($dbh);
 
   $distributorProfile->setAnoFundacao($anoFundacao);
@@ -840,7 +860,7 @@ if (isset($_POST["AdicionarProdutos"])) {
   $resultsdistributorProfile = $distributorProfile->atualizar("AnoFundacao = :AnoFundacao, NumEmpregados = :NumEmpregados, NumVendedores = :NumVendedores,NivelOperacao = :NivelOperacao, Fob_3Y = :Fob_3Y, Vol_3Y = :Vol_3Y, Fob_2Y = :Fob_2Y, Vol_2Y = :Vol_2Y, Fob_1Y = :Fob_1Y, Vol_1Y = :Vol_1Y, FobImports_3Y = :FobImports_3Y, VolImports_3Y = :VolImports_3Y, FobImports_2Y = :FobImports_2Y, VolImports_2Y = :VolImports_2Y, FobImports_1Y = :FobImports_1Y, VolImports_1Y= :VolImports_1Y  WHERE idClient = :idClient");
   header("Location: ../view/profile.php");
 } else if (isset($_POST["editarPerfilempresa"])) {
-  include_once('../model/classes/tblEmpresas.php');
+
   $idempresa = $_POST["idempresa"];
   $arquivoUser = $_FILES['user-image'];
   $arquivoCompany = $_FILES['banner-image'];

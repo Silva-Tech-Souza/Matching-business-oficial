@@ -6,9 +6,10 @@ include_once('../model/classes/tblUserClients.php');
 include_once('../model/classes/tblSearchResults.php');
 include_once('../model/classes/tblSearchBusiness.php');
 include_once('../model/classes/tblBusiness.php');
-
 include_once('../model/classes/tblSearchCountry.php');
 include_once('../model/classes/tblCountry.php');
+include_once('../model/classes/tblOperations.php');
+include_once('../model/classes/tblBusinessCategory.php');
 
 date_default_timezone_set('America/Sao_Paulo');
 if ($_SESSION["id"] < 0 || $_SESSION["id"] == "") {
@@ -504,7 +505,6 @@ if ($results != null) {
               <div class="row p-2 ml-0">
                 <ul id="tree1">
                   <?php
-                  include_once('../model/classes/tblOperations.php');
                   $operations = new Operations($dbh);
                   $resultsOperation = $operations->consulta("WHERE FlagOperation != '0'");
                   if ($resultsOperation != null) {
@@ -526,7 +526,6 @@ if ($results != null) {
                         <?php if ($rowOperation->FlagOperation != "D") { ?>
                           <ul>
                             <?php
-                            include_once('../model/classes/tblBusiness.php');
                             $business = new Business($dbh);
                             $resultsbusiness = $business->consulta("WHERE FlagOperation = '0' ORDER BY NmBusiness ASC");
                             if ($business != null) {
@@ -669,7 +668,7 @@ if ($results != null) {
                             foreach ($countrysearchresults as $rowcountrysearch) {
 
                                 $qtdcountry++;
-                                $idcountry = $rowcountrysearch->idCountry;
+                                //$idcountry = $rowcountrysearch->idCountry;
                                 
 
           
@@ -719,7 +718,6 @@ if ($results != null) {
                       $idcat = $rowOperationselect->SatBusinessId;
 
                       if ($busines != null && $busines != "") {
-                      include_once('../model/classes/tblBusinessCategory.php');
 
                       $BusinessCategory = new BusinessCategory($dbh);
                       $BusinessCategory->setidBusinessCategory($idcat);
@@ -857,7 +855,6 @@ if ($results != null) {
                       $idcat = $rowOperationselect->SatBusinessId;
 
                       if ($busines != null && $busines != "") {
-                      include_once('../model/classes/tblBusinessCategory.php');
 
                       $BusinessCategory = new BusinessCategory($dbh);
                       $BusinessCategory->setidBusinessCategory($idcat);

@@ -1,5 +1,19 @@
 <?php
+  if ( session_status() !== PHP_SESSION_ACTIVE )
+  {
+    session_start();
 
+    if ($_SESSION["id"] < 0 || $_SESSION["id"] == "") {
+      header('Location: ../view/login.php');
+    }
+
+  }else{
+
+    if ($_SESSION["id"] < 0 || $_SESSION["id"] == "") {
+      header('Location: ../view/login.php');
+    }
+
+  }
 
  $from = "noreplay@matchingbusiness.online";
             $to = "llucas.silva2231@gmail.com";
